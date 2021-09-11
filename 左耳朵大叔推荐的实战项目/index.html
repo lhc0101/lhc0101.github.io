@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="程序员练级攻略（2018）实践项目一无论你用Python，还是Node.js，还是PHP，我希望你能做一个非常简单的Blog系统，或是BBS系统，需要支持如下功能：  用户登录和注册（不需密码找回）。 用户发贴（不需要支持富文本，只需要支持纯文本）。 用户评论（不需要支持富文本，只需要支持纯文本）。 你需要从前端一直做到后端，也就是说，从HTML/CSS/JavaScript，到后面的PHP（Py">
+<meta name="keywords" content="实战项目,左耳朵耗子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="左耳朵大叔推荐的实战项目">
+<meta property="og:url" content="http://xchcloud.cn/左耳朵大叔推荐的实战项目/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="程序员练级攻略（2018）实践项目一无论你用Python，还是Node.js，还是PHP，我希望你能做一个非常简单的Blog系统，或是BBS系统，需要支持如下功能：  用户登录和注册（不需密码找回）。 用户发贴（不需要支持富文本，只需要支持纯文本）。 用户评论（不需要支持富文本，只需要支持纯文本）。 你需要从前端一直做到后端，也就是说，从HTML/CSS/JavaScript，到后面的PHP（Py">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:56:18.416Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="左耳朵大叔推荐的实战项目">
+<meta name="twitter:description" content="程序员练级攻略（2018）实践项目一无论你用Python，还是Node.js，还是PHP，我希望你能做一个非常简单的Blog系统，或是BBS系统，需要支持如下功能：  用户登录和注册（不需密码找回）。 用户发贴（不需要支持富文本，只需要支持纯文本）。 用户评论（不需要支持富文本，只需要支持纯文本）。 你需要从前端一直做到后端，也就是说，从HTML/CSS/JavaScript，到后面的PHP（Py">
+
+<link rel="canonical" href="http://xchcloud.cn/左耳朵大叔推荐的实战项目/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>左耳朵大叔推荐的实战项目 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/左耳朵大叔推荐的实战项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          左耳朵大叔推荐的实战项目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-17 10:50:16" itemprop="dateCreated datePublished" datetime="2018-08-17T10:50:16+08:00">2018-08-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:56:18" itemprop="dateModified" datetime="2021-09-11T16:56:18+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/左耳朵耗子/" itemprop="url" rel="index"><span itemprop="name">左耳朵耗子</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/左耳朵大叔推荐的实战项目/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="左耳朵大叔推荐的实战项目/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="程序员练级攻略（2018）"><a href="#程序员练级攻略（2018）" class="headerlink" title="程序员练级攻略（2018）"></a>程序员练级攻略（2018）</h4><h5 id="实践项目一"><a href="#实践项目一" class="headerlink" title="实践项目一"></a>实践项目一</h5><p>无论你用Python，还是Node.js，还是PHP，我希望你能做一个非常简单的Blog系统，或是BBS系统，需要支持如下功能：</p>
+<ul>
+<li>用户登录和注册（不需密码找回）。</li>
+<li>用户发贴（不需要支持富文本，只需要支持纯文本）。</li>
+<li>用户评论（不需要支持富文本，只需要支持纯文本）。</li>
+<li>你需要从前端一直做到后端，也就是说，从HTML/CSS/JavaScript，到后面的PHP（Python/Node.js），再到数据库。这其中需要你查阅很多的知识。</li>
+</ul>
+<p><strong>这里有几个技术点你需要关注一下</strong></p>
+<ul>
+<li>用户登录时的密码不应该保存为明文，应该用MD5+Salt来保存（关于这个是什么，希望你能自行Google）.</li>
+<li>用户登录后，对于用户自己的贴子可以有 “重新编辑” 或 “删除” 的功能，但是无权编辑或删除其它用户的贴子。</li>
+<li><p>数据库的设计，你需要三张表：用户表、文章表和评论表，它们之间是怎么关联的，你需要学习一下。- 这里有个PHP的blog教你怎么建表，你可以 前往一读。</p>
+<a id="more"></a>
+<p><strong>如果你有兴趣，你可以顺着这个小项目，研究一下下面这几个事：</strong></p>
+</li>
+<li><p>图片验证码。</p>
+</li>
+<li>上传图片。</li>
+<li>阻止用户在发文章或评论时输入带HTML或JavaScript的内容。</li>
+<li>防范SQL注入。参看 <a href="http://php.net/manual/zh/security.database.sql-injection.php" target="_blank" rel="noopener">PHP官方文档</a> 或 <a href="https://technet.microsoft.com/zh-cn/library/ms161953%28v=sql.105%29.aspx?f=255&amp;MSPPError=-2147217396" target="_blank" rel="noopener">微软官方文档</a> ，或者你自己Google一下。</li>
+</ul>
+<p>上面这些东西，不是什么高深的东西，但是可以让你从中学到很多东西。相信你只需要自己Google一下就能搞定。</p>
+<h5 id="实践项目二"><a href="#实践项目二" class="headerlink" title="实践项目二"></a>实践项目二</h5><p>这回我们需要设计一个投票系统的项目。</p>
+<p><strong>业务上的需求如下：</strong></p>
+<ul>
+<li>用户只有在登录后，才可以生成投票表单。</li>
+<li>投票项可以单选，可以多选。</li>
+<li>其它用户投票后显示当前投票结果（但是不能刷票）。</li>
+<li>投票有相应的时间，页面上需要出现倒计时。</li>
+<li>投票结果需要用不同颜色不同长度的横条，并显示百分比和人数。</li>
+</ul>
+<p><strong>技术上的需求如下：</strong></p>
+<ul>
+<li>这回要用Java Spring Boot来实现了，然后，后端不返回任何的HTML，只返回JSon数据给前端。</li>
+<li>由前端的JQuery来处理并操作相关的HTML动态生成在前端展示的页面。</li>
+<li>前端的页面还要是响应式的，也就是可以在手机端和电脑端有不同的呈现。 这个可以用Bootstrap来完成。</li>
+</ul>
+<p><strong>如果你有兴趣，还可以挑战以下这些功能：</strong></p>
+<ul>
+<li>在微信中，通过微信授权后记录用户信息，以防止刷票。</li>
+<li>可以不用刷页面，就可以动态地看到投票结果的变化。</li>
+<li>Google一些画图表的JavaScript库，然后把图片表得风骚一些。</li>
+</ul>
+<h5 id="实践项目三"><a href="#实践项目三" class="headerlink" title="实践项目三"></a>实践项目三</h5><p>我们已经学习完了编程语言、理论学科和系统知识三部分内容，下面就来做几个实践项目，小试牛刀一下。实现语言可以用C、C++或Java。</p>
+<p><strong>实现一个telnet版本的聊天服务器，主要有以下需求。</strong></p>
+<ul>
+<li>每个客户端可以用使用telnet ip:port的方式连接到服务器上。</li>
+<li>新连接需要用用户名和密码登录，如果没有，则需要注册一个。</li>
+<li>然后可以选择一个聊天室加入聊天。</li>
+<li>管理员有权创建或删除聊天室，普通人员只有加入、退出、查询聊天室的权力。</li>
+<li>聊天室需要有人数限制，每个人发出来的话，其它所有的人都要能看得到。</li>
+</ul>
+<p><strong>实现一个简单的HTTP服务器，主要有以下需求。</strong></p>
+<ul>
+<li>解释浏览器传来的HTTP协议，只需要处理URL path。</li>
+<li>然后把所代理的目录列出来。</li>
+<li>在浏览器上可以浏览目录里的文件和下级目录。</li>
+<li>如果点击文件，则把文件打开传给浏览器（浏览器能够自动显示图片、PDF，或HTML、CSS、JavaScript以及文本文件）。</li>
+<li>如果点击子目录，则进入到子目录中，并把子目录中的文件列出来。</li>
+</ul>
+<p><strong>实现一个生产者/消费者消息队列服务，主要有以下需求。</strong></p>
+<ul>
+<li>消息队列采用一个Ring-buffer的数据结构。</li>
+<li>可以有多个topic供生产者写入消息及消费者取出消息。</li>
+<li>需要支持多个生产者并发写。</li>
+<li>需要支持多个消费者消费消息（只要有一个消费者成功处理消息就可以删除消息）。</li>
+<li>消息队列要做到不丢数据（要把消息持久化下来）。</li>
+<li>能做到性能很高。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/左耳朵大叔推荐的实战项目/" title="左耳朵大叔推荐的实战项目">http://xchcloud.cn/左耳朵大叔推荐的实战项目/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/实战项目/" rel="tag"><i class="fa fa-tag"></i> 实战项目</a>
+              <a href="/tags/左耳朵耗子/" rel="tag"><i class="fa fa-tag"></i> 左耳朵耗子</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/左耳朵大叔介绍的书籍、文章、网站/" rel="prev" title="左耳朵大叔介绍的书籍、文章、网站">
+      <i class="fa fa-chevron-left"></i> 左耳朵大叔介绍的书籍、文章、网站
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/玩转kali系统/" rel="next" title="玩转kali系统">
+      玩转kali系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序员练级攻略（2018）"><span class="nav-text">程序员练级攻略（2018）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实践项目一"><span class="nav-text">实践项目一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实践项目二"><span class="nav-text">实践项目二</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实践项目三"><span class="nav-text">实践项目三</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="全部数据类型 定义Model，建立数据库第一种方式：先定义Model，然后通过db.create_tables()创建或Model.create_table()创建表。">
+<meta name="keywords" content="数据库,python,peewee">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-peewee">
+<meta property="og:url" content="http://xchcloud.cn/python-peewee/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="全部数据类型 定义Model，建立数据库第一种方式：先定义Model，然后通过db.create_tables()创建或Model.create_table()创建表。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:01:06.927Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-peewee">
+<meta name="twitter:description" content="全部数据类型 定义Model，建立数据库第一种方式：先定义Model，然后通过db.create_tables()创建或Model.create_table()创建表。">
+
+<link rel="canonical" href="http://xchcloud.cn/python-peewee/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python-peewee | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/python-peewee/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python-peewee
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-19 13:44:24" itemprop="dateCreated datePublished" datetime="2021-03-19T13:44:24+08:00">2021-03-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:01:06" itemprop="dateModified" datetime="2021-09-11T17:01:06+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/python-peewee/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="python-peewee/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="全部数据类型"><a href="#全部数据类型" class="headerlink" title="全部数据类型"></a>全部数据类型</h2><p><img data-src="http://tuchuang.xchcloud.cn/20210319141915.png" alt="20210319141915"></p>
+<h2 id="定义Model，建立数据库"><a href="#定义Model，建立数据库" class="headerlink" title="定义Model，建立数据库"></a>定义Model，建立数据库</h2><h3 id="第一种方式："><a href="#第一种方式：" class="headerlink" title="第一种方式："></a>第一种方式：</h3><p>先定义Model，然后通过db.create_tables()创建或Model.create_table()创建表。<br><a id="more"></a><br>例如，我们需要建一个Person表，里面有name、birthday和is_relative三个字段，我们定义的Model如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from peewee import *</span><br><span class="line"></span><br><span class="line"># 连接数据库</span><br><span class="line">database = MySQLDatabase(&apos;test&apos;, user=&apos;root&apos;, host=&apos;localhost&apos;, port=3306)</span><br><span class="line"></span><br><span class="line"># 定义Person</span><br><span class="line">class Person(Model):</span><br><span class="line">    name = CharField()</span><br><span class="line">    birthday = DateField()</span><br><span class="line">    is_relative = BooleanField()</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        database = database</span><br><span class="line">然后，我们就可以创建表了</span><br><span class="line"></span><br><span class="line"># 创建表</span><br><span class="line">Person.create_table()</span><br></pre></td></tr></table></figure></p>
+<p>创建表也可以这样, 可以创建多个<br>database.create_tables([Person])<br>其中，CharField、DateField、BooleanField等这些类型与数据库中的数据类型一一对应，我们直接使用它就行，至于CharField =&gt; varchar(255)这种转换Peewee已经为我们做好了 。</p>
+<h3 id="第二种方式："><a href="#第二种方式：" class="headerlink" title="第二种方式："></a>第二种方式：</h3><p>已经存在过数据库，则直接通过python -m pwiz批量创建Model。<br>例如，上面我已经创建好了test库，并且创建了Person表，表中拥有id、name、birthday和is_relative字段。那么，我可以使用下面命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># 指定mysql，用户为root，host为localhost，数据库为test</span><br><span class="line">python -m pwiz -e mysql -u root -H localhost --password test &gt; testModel.py</span><br><span class="line">然后，输入密码，pwiz脚本会自动创建Model，内容如下：</span><br><span class="line"></span><br><span class="line">from peewee import *</span><br><span class="line"></span><br><span class="line">database = MySQLDatabase(&apos;test&apos;, **&#123;&apos;charset&apos;: &apos;utf8&apos;, &apos;use_unicode&apos;: True, &apos;host&apos;: &apos;localhost&apos;, &apos;user&apos;: &apos;root&apos;, &apos;password&apos;: &apos;&apos;&#125;)</span><br><span class="line"></span><br><span class="line">class UnknownField(object):</span><br><span class="line">    def __init__(self, *_, **__): pass</span><br><span class="line"></span><br><span class="line">class BaseModel(Model):</span><br><span class="line">    class Meta:</span><br><span class="line">        database = database</span><br><span class="line"></span><br><span class="line">class Person(BaseModel):</span><br><span class="line">    birthday = DateField()</span><br><span class="line">    is_relative = IntegerField()</span><br><span class="line">    name = CharField()</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        table_name = &apos;person&apos;</span><br></pre></td></tr></table></figure></p>
+<p>操作数据库<br>操作数据库，就是增、删、改和查。</p>
+<h2 id="一、增"><a href="#一、增" class="headerlink" title="一、增"></a>一、增</h2><p>直接创建示例，然后使用save()就添加了一条新数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 添加一条数据</span><br><span class="line">p = Person(name=&apos;liuchungui&apos;, birthday=date(1990, 12, 20), is_relative=True)</span><br><span class="line">p.save()</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、删"><a href="#二、删" class="headerlink" title="二、删"></a>二、删</h3><p>使用delete().where().execute()进行删除，where()是条件，execute()负责执行语句。若是已经查询出来的实例，则直接使用delete_instance()删除。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 删除姓名为perter的数据</span><br><span class="line">Person.delete().where(Person.name == &apos;perter&apos;).execute()</span><br><span class="line"></span><br><span class="line"># 已经实例化的数据, 使用delete_instance</span><br><span class="line">p = Person(name=&apos;liuchungui&apos;, birthday=date(1990, 12, 20), is_relative=False)</span><br><span class="line">p.id = 1</span><br><span class="line">p.save()</span><br><span class="line">p.delete_instance()</span><br></pre></td></tr></table></figure></p>
+<h3 id="三、改"><a href="#三、改" class="headerlink" title="三、改"></a>三、改</h3><p>若是，已经添加过数据的的实例或查询到的数据实例，且表拥有primary key时，此时使用save()就是修改数据；若是未拥有实例，则使用update().where()进行更新数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 已经实例化的数据,指定了id这个primary key,则此时保存就是更新数据</span><br><span class="line">p = Person(name=&apos;liuchungui&apos;, birthday=date(1990, 12, 20), is_relative=False)</span><br><span class="line">p.id = 1</span><br><span class="line">p.save()</span><br><span class="line"></span><br><span class="line"># 更新birthday数据</span><br><span class="line">q = Person.update(&#123;Person.birthday: date(1983, 12, 21)&#125;).where(Person.name == &apos;liuchungui&apos;)</span><br><span class="line">q.execute()</span><br></pre></td></tr></table></figure></p>
+<h3 id="四、查"><a href="#四、查" class="headerlink" title="四、查"></a>四、查</h3><p>单条数据使用Person.get()就行了，也可以使用Person.select().where().get()。若是查询多条数据，则使用Person.select().where()，去掉get()就行了。语法很直观，select()就是查询，where是条件，get是获取第一条数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 查询单条数据</span><br><span class="line">p = Person.get(Person.name == &apos;liuchungui&apos;)</span><br><span class="line">print(p.name, p.birthday, p.is_relative)</span><br><span class="line"></span><br><span class="line"># 使用where().get()查询</span><br><span class="line">p = Person.select().where(Person.name == &apos;liuchungui&apos;).get()</span><br><span class="line">print(p.name, p.birthday, p.is_relative)</span><br><span class="line"></span><br><span class="line"># 查询多条数据</span><br><span class="line">persons = Person.select().where(Person.is_relative == True)</span><br><span class="line">for p in persons:</span><br><span class="line">    print(p.name, p.birthday, p.is_relative)</span><br></pre></td></tr></table></figure></p>
+<h4 id="1、查询单条数据"><a href="#1、查询单条数据" class="headerlink" title="1、查询单条数据"></a>1、查询单条数据</h4><p>我们可以直接使用get()获取单条数据，在参数中传递查询条件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 查询name为liuchungui的Person</span><br><span class="line">p = Person.get(Person.name == &apos;liuchungui&apos;)</span><br><span class="line">print(p.name) # 打印出liuchungui</span><br></pre></td></tr></table></figure></p>
+<h4 id="2、查询多条数据"><a href="#2、查询多条数据" class="headerlink" title="2、查询多条数据"></a>2、查询多条数据</h4><p>使用select()查询，后面不添加where()是查询整个表的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查询Person整张表的数据</span><br><span class="line">persons = Person.select()</span><br><span class="line"># 遍历数据</span><br><span class="line">for p in persons:</span><br><span class="line">    print(p.name, p.birthday, p.is_relative)</span><br></pre></td></tr></table></figure></p>
+<p>我们可以在select()后面添加where()当做查询条件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取is_relative为True的数据</span><br><span class="line">persons = Person.select().where(Person.is_relative == True)</span><br><span class="line">for p in persons:</span><br><span class="line">    print(p.name, p.birthday, p.is_relative)</span><br></pre></td></tr></table></figure></p>
+<p>我们可以通过sql()方法转换为SQL语句进行查看理解<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">persons = Person.select().where(Person.is_relative == True)</span><br><span class="line"># 打印出的结果为：(&apos;SELECT `t1`.`id`, `t1`.`name`, `t1`.`is_relative` FROM `Person` AS `t1` WHERE (`t1`.`is_relative` = %s)&apos;, [True])</span><br><span class="line">print(persons.sql())</span><br></pre></td></tr></table></figure></p>
+<p>使用 filter()函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    ps = Person.filter(name=&apos;bobby&apos;)</span><br><span class="line">    for item in ps:</span><br><span class="line">        print(item.name)    # bobby</span><br></pre></td></tr></table></figure></p>
+<h4 id="3、查询数据条数、排序、Limit"><a href="#3、查询数据条数、排序、Limit" class="headerlink" title="3、查询数据条数、排序、Limit"></a>3、查询数据条数、排序、Limit</h4><p>查询数据条数，直接在后面加上count()就行了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查询整张表的数据条数</span><br><span class="line">total_num = Person.select().count()</span><br><span class="line"></span><br><span class="line"># 查询name为liuchungui的Person数量, 返回数量为1</span><br><span class="line">num = Person.select().where(Person.name == &apos;liuchungui&apos;).count()</span><br></pre></td></tr></table></figure></p>
+<p>排序，使用的是order_by()，参数内加上按对应字段进行排序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 按照创建时间降序排序</span><br><span class="line">persons = Person.select().order_by(Person.create_time.desc())</span><br><span class="line"></span><br><span class="line"># 按照创建时间升序排序</span><br><span class="line">persons = Person.select().order_by(Person.create_time.asc())</span><br></pre></td></tr></table></figure></p>
+<p>Limit是使用limit()，传递一个数字，例如2就是获取前两条数据，它可以搭配offset()一起使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 相当于sql语句: select * from person order by create_time desc limit 5</span><br><span class="line">persons = Person.select().order_by(Person.create_time.asc()).limit(5)</span><br><span class="line"></span><br><span class="line"># 相当于sql语句中：select * from person order by create_time desc limit 2, 5</span><br><span class="line">persons = Person.select().order_by(Person.create_time.asc()).limit(5).offset(2)</span><br></pre></td></tr></table></figure></p>
+<h4 id="四、查询操作符"><a href="#四、查询操作符" class="headerlink" title="四、查询操作符"></a>四、查询操作符</h4><p><img data-src="http://tuchuang.xchcloud.cn/20210319140423.png" alt="20210319140423"></p>
+<p>其中，==、&lt;、&lt;=、&gt;、&gt;=、!=是很容易理解的，重点提下&lt;&lt;、&gt;&gt;和%。用示例说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># &lt;&lt;使用，查询省份属于湖北和湖南的，对应sql语句：select * from person where province in (&apos;湖南&apos;, &apos;湖北&apos;)</span><br><span class="line">persons = Person.select().where(Person.province &lt;&lt; [&apos;湖南&apos;, &apos;湖北&apos;])</span><br><span class="line"></span><br><span class="line"># &gt;&gt;使用，查询省份为空的，sql语句: select * from person where province is Null</span><br><span class="line">persons = Person.select().where(Person.province &gt;&gt; None)</span><br><span class="line"></span><br><span class="line"># %使用，查询省份中含有 湖 字，sql语句：select * from person where province like &apos;%湖%&apos;</span><br><span class="line">persons = Person.select().where(Person.province % &apos;%湖%&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>有时，我们查询条件不止一个，需要使用逻辑运算符连接，而Python中的and、or在Peewee是不支持的，此时我们需要使用Peewee封装好的运算符，如下：</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/20210319140522.png" alt="20210319140522"></p>
+<p>使用示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查询湖南和湖北的, 注意需要用()将Person.province == &apos;湖南&apos;包一层</span><br><span class="line">persons = Person.select().where((Person.province == &apos;湖南&apos;) | (Person.province == &apos;湖北&apos;))</span><br><span class="line"></span><br><span class="line"># 查询湖南和身高1.75</span><br><span class="line">persons = Person.select().where((Person.province == &apos;湖南&apos;) &amp; (Person.height == 1.75))</span><br><span class="line">注意：使用的时候，需要内部还使用()将Person.province == &apos;湖南&apos;包起来，否则不会生效。示例：persons = Person.select().where((Person.province == &apos;湖南&apos;) | (Person.province == &apos;湖北&apos;))</span><br></pre></td></tr></table></figure></p>
+<p>除了上面的操作符以外，Peewee还有更多没有重载的操作符，如下：</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/20210319140550.png" alt="20210319140550"></p>
+<h4 id="五、联表查询"><a href="#五、联表查询" class="headerlink" title="五、联表查询"></a>五、联表查询</h4><p>有时，我们需要查询两个表中的数据，在Peewee中也可以实现，官方示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">query = (Tweet</span><br><span class="line">         .select(Tweet.content, Tweet.timestamp, User.username)</span><br><span class="line">         .join(User, on=(User.id == Tweet.user_id))</span><br><span class="line">         .order_by(Tweet.timestamp.desc()))</span><br></pre></td></tr></table></figure></p>
+<p>上面查询的结果，会在Tweet的Model中添加一个属性user，此时我们可以通过user来访问到查询到的User表信息，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for tweet in query:</span><br><span class="line">    print(tweet.content, tweet.timestamp, tweet.user.username)</span><br></pre></td></tr></table></figure>
+<h2 id="Peewee批量插入数据"><a href="#Peewee批量插入数据" class="headerlink" title="Peewee批量插入数据"></a>Peewee批量插入数据</h2><p>最近，需要同步数据到Mysql中，数据量有几百万。但是，自己写一个for循环，然后使用Model.create()添加，发现这种方式特别慢。难道，像去年爬数据一样，将几百万的数据从Redis取出来，然后使用多线程进行保存？</p>
+<p>在Google上搜索了之后，找到一种更简单的方式，那就是使用Peewee原生的方法insert_many()，进行批量数据插入。</p>
+<p>那么，它的速度有多快？</p>
+<p>下面，是我简单的比较了插入10000条数据到本地数据库中，四种方式所需要的时间。</p>
+<h3 id="第一种，for循环和Model-create"><a href="#第一种，for循环和Model-create" class="headerlink" title="第一种，for循环和Model.create()"></a>第一种，for循环和Model.create()</h3><p>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from xModels import XUser, database</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">NUM = 10000</span><br><span class="line">start_time = time.time()</span><br><span class="line"></span><br><span class="line">users = []</span><br><span class="line">for i in range(NUM):</span><br><span class="line">    XUser.create(phone=&apos;13847374833&apos;, password=&apos;123456&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>print(“插入{}条数据, 花费: {:.3}秒”.format(NUM, time.time()-start_time))<br>结果：插入10000条数据, 花费: 10.5秒</p>
+<h3 id="第二种，for循环和Model-create-，并放入事务中"><a href="#第二种，for循环和Model-create-，并放入事务中" class="headerlink" title="第二种，for循环和Model.create()，并放入事务中"></a>第二种，for循环和Model.create()，并放入事务中</h3><p>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from xModels import XUser, database</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">NUM = 10000</span><br><span class="line">start_time = time.time()</span><br><span class="line"></span><br><span class="line">with database.atomic():</span><br><span class="line">    for i in range(NUM):</span><br><span class="line">        XUser.create(phone=&apos;13847374833&apos;, password=&apos;123456&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>print(“插入{}条数据, 花费: {:.3}秒”.format(NUM, time.time()-start_time))<br>结果：插入10000条数据, 花费: 4.94秒</p>
+<h3 id="第三种，使用原生的insert-many-方法"><a href="#第三种，使用原生的insert-many-方法" class="headerlink" title="第三种，使用原生的insert_many()方法"></a>第三种，使用原生的insert_many()方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from xModels import XUser, database</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">NUM = 10000</span><br><span class="line">data = [&#123;</span><br><span class="line">            &apos;phone&apos;: &apos;13847374833&apos;,</span><br><span class="line">            &apos;password&apos;: &apos;123456&apos;</span><br><span class="line">        &#125; for i in range(NUM)]</span><br><span class="line"></span><br><span class="line">start_time = time.time()</span><br><span class="line"></span><br><span class="line">for i in range(0, NUM, 100):</span><br><span class="line">    XUser.insert_many(data[i:i + 100]).execute()</span><br></pre></td></tr></table></figure>
+<p>print(“插入{}条数据, 花费: {:.3}秒”.format(NUM, time.time()-start_time))<br>结果：插入10000条数据, 花费: 0.505秒</p>
+<p>第四种，使用原生的insert_many()方法，并放入事务中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from xModels import XUser, database</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">NUM = 10000</span><br><span class="line">data = [&#123;</span><br><span class="line">            &apos;phone&apos;: &apos;13847374833&apos;,</span><br><span class="line">            &apos;password&apos;: &apos;123456&apos;</span><br><span class="line">        &#125; for i in range(NUM)]</span><br><span class="line"></span><br><span class="line">start_time = time.time()</span><br><span class="line"></span><br><span class="line">with database.atomic():</span><br><span class="line">    for i in range(0, NUM, 100):</span><br><span class="line">        # 每次批量插入100条，分成多次插入</span><br><span class="line">        XUser.insert_many(data[i:i + 100]).execute()</span><br></pre></td></tr></table></figure></p>
+<p>print(“插入{}条数据, 花费: {:.3}秒”.format(NUM, time.time()-start_time))<br>结果：插入10000条数据, 花费: 0.401秒</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>insert_many()比使用for+Model.create()方式快很多，在上面例子中快了十倍不止<br>使用事务，可以些许提升</p>
+<h2 id="Peewee使用之事务"><a href="#Peewee使用之事务" class="headerlink" title="Peewee使用之事务"></a>Peewee使用之事务</h2><h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><p>Peewee实现事务最常用的方法是Database.atomic()方法，非常简单，代码示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from xModels import XUser, database</span><br><span class="line"></span><br><span class="line">with database.atomic() as transaction:</span><br><span class="line">    XUser.create(phone=&apos;184738373833&apos;, password=&apos;123456&apos;)</span><br><span class="line">    XUser.create(phone=&apos;184738373833332323232&apos;, password=&apos;123456&apos;)</span><br><span class="line">当事务执行成功之后，它会自动commit()，不需要我们手动调。当事务的代码块中抛出异常时，它会自动调用rollback()。</span><br></pre></td></tr></table></figure></p>
+<p>例如，如果上面的phone设置了长度限制，第二条语句中的phone太长，那么就会抛出异常，然后上面结果是两个用户都不会被添加到数据库中。</p>
+<p>注意：上面database是在xModels文件中MySQLDatabase的一个实例，创建方法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from peewee import MySQLDatabase</span><br><span class="line">database = MySQLDatabase(&apos;test&apos;, **&#123;&apos;charset&apos;: &apos;utf8&apos;, &apos;use_unicode&apos;: True, &apos;host&apos;: &apos;localhost&apos;, &apos;user&apos;: &apos;root&apos;, &apos;password&apos;: &apos;&apos;&#125;)</span><br><span class="line">除了自动commit()和rollback()之外，我们也可以手动调用commit()和rollback()方法。</span><br></pre></td></tr></table></figure></p>
+<p>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">with database.atomic() as transaction:</span><br><span class="line">    XUser.create(phone=&apos;199999999999&apos;, password=&apos;123456&apos;)</span><br><span class="line">    transaction.commit()</span><br><span class="line">    XUser.create(phone=&apos;188888888888&apos;, password=&apos;123456&apos;)</span><br><span class="line">    transaction.rollback()</span><br><span class="line">结果：手动调用了commit()，phone为199999999999的用户成功添加，而188888888888因为rollback()，不会被添加到数据库中。</span><br></pre></td></tr></table></figure></p>
+<h3 id="两种使用方式"><a href="#两种使用方式" class="headerlink" title="两种使用方式"></a>两种使用方式</h3><p>Peewee中实现事务有两种使用方式，一种是将atomic当做Context manager使用，另外一种将atomic当修饰器使用。</p>
+<h4 id="Context-manager"><a href="#Context-manager" class="headerlink" title="Context manager"></a>Context manager</h4><p>这种方式，就是我们前面已经使用过了，示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from xModels import XUser, database</span><br><span class="line"></span><br><span class="line">with database.atomic() as transaction:</span><br><span class="line">    XUser.create(phone=&apos;184738373833&apos;, password=&apos;123456&apos;)</span><br><span class="line">    XUser.create(phone=&apos;184738373833332323232&apos;, password=&apos;123456&apos;)</span><br><span class="line">修饰器</span><br><span class="line">@database.atomic()</span><br><span class="line">def create_user(phone, password):</span><br><span class="line">    XUser.create(phone=phone, password=password)</span><br><span class="line">    raise Exception(&apos;just a test&apos;)</span><br><span class="line"></span><br><span class="line">create_user(phone=&apos;184738373833&apos;, password=&apos;383838&apos;)</span><br><span class="line">上面，由于create_user()中抛出了一个异常，修饰器中会执行rollback()，从而导致创建用户失败。</span><br></pre></td></tr></table></figure></p>
+<h4 id="事务嵌套使用"><a href="#事务嵌套使用" class="headerlink" title="事务嵌套使用"></a>事务嵌套使用</h4><p>Peewee中事务还可以进行嵌套，示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">with database.atomic() as txn:</span><br><span class="line">    XUser.create(phone=&apos;18734738383&apos;)</span><br><span class="line"></span><br><span class="line">    with database.atomic() as nested_txn:</span><br><span class="line">        XUser.create(phone=&apos;1883328484&apos;)</span><br><span class="line">当上面没有抛出异常时，两个用户同时被添加；当其中任何一条语句抛出异常时，两个用户都不会添加。</span><br></pre></td></tr></table></figure></p>
+<p>不过，它还是跟非嵌套有些区别的，看下面示例。</p>
+<h4 id="第一种情况，在嵌套事务中执行rollback-，代码如下："><a href="#第一种情况，在嵌套事务中执行rollback-，代码如下：" class="headerlink" title="第一种情况，在嵌套事务中执行rollback()，代码如下："></a>第一种情况，在嵌套事务中执行rollback()，代码如下：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">with database.atomic() as txn:</span><br><span class="line">    XUser.create(phone=&apos;188888888&apos;)</span><br><span class="line"></span><br><span class="line">    with database.atomic() as nested_txn:</span><br><span class="line">        XUser.create(phone=&apos;199999999&apos;)</span><br><span class="line">        nested_txn.rollback()</span><br><span class="line">结果：188888888用户被添加，而199999999不会被添加。</span><br></pre></td></tr></table></figure>
+<h4 id="第二种情况，在外层的事务中执行rollback-，代码如下："><a href="#第二种情况，在外层的事务中执行rollback-，代码如下：" class="headerlink" title="第二种情况，在外层的事务中执行rollback()，代码如下："></a>第二种情况，在外层的事务中执行rollback()，代码如下：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">with database.atomic() as txn:</span><br><span class="line">    XUser.create(phone=&apos;188888888&apos;)</span><br><span class="line"></span><br><span class="line">    with database.atomic() as nested_txn:</span><br><span class="line">        XUser.create(phone=&apos;199999999&apos;)</span><br><span class="line"></span><br><span class="line">    txn.rollback()</span><br><span class="line">结果：两个用户都不会被添加。</span><br></pre></td></tr></table></figure>
+<p>也就是说，外层的rollback()会将嵌套中的事务也回滚，而嵌套中的事务不能回滚外层的内容。当然，这只是我的一个尝试，可能还有其他的不同，还需要再探索。</p>
+<h3 id="全手动实现事务"><a href="#全手动实现事务" class="headerlink" title="全手动实现事务"></a>全手动实现事务</h3><p>全手动实现事务使用的是Database.manual_commit()方法，它也有Context manager和修饰器两种方式。</p>
+<p>下面，我们使用Context manager方式来实现前面说的atomic()方法，示例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">with database.manual_commit():</span><br><span class="line">    database.begin()  # 开始事务</span><br><span class="line">    try:</span><br><span class="line">        XUser.create(phone=&apos;188888888&apos;) # 添加用户</span><br><span class="line">    except:</span><br><span class="line">        database.rollback()  # 执行rollback</span><br><span class="line">        raise</span><br><span class="line">    else:</span><br><span class="line">        try:</span><br><span class="line">            database.commit()  # 没有发生异常，执行commit</span><br><span class="line">        except:</span><br><span class="line">            database.rollback() #commit发生异常时，执行rollback</span><br><span class="line">            raise</span><br></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Peewee实现事务最简单的方法就是atomic()，它可以使用Context manager和修饰器两种方式，它也可以手动调用commit()和rollback()。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/python-peewee/" title="python-peewee">http://xchcloud.cn/python-peewee/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/peewee/" rel="tag"><i class="fa fa-tag"></i> peewee</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-实用demo/" rel="prev" title="python-实用demo">
+      <i class="fa fa-chevron-left"></i> python-实用demo
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux-系统参数配置/" rel="next" title="linux-系统参数配置">
+      linux-系统参数配置 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#全部数据类型"><span class="nav-text">全部数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义Model，建立数据库"><span class="nav-text">定义Model，建立数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种方式："><span class="nav-text">第一种方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种方式："><span class="nav-text">第二种方式：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、增"><span class="nav-text">一、增</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二、删"><span class="nav-text">二、删</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、改"><span class="nav-text">三、改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、查"><span class="nav-text">四、查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、查询单条数据"><span class="nav-text">1、查询单条数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、查询多条数据"><span class="nav-text">2、查询多条数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、查询数据条数、排序、Limit"><span class="nav-text">3、查询数据条数、排序、Limit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、查询操作符"><span class="nav-text">四、查询操作符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、联表查询"><span class="nav-text">五、联表查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Peewee批量插入数据"><span class="nav-text">Peewee批量插入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种，for循环和Model-create"><span class="nav-text">第一种，for循环和Model.create()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种，for循环和Model-create-，并放入事务中"><span class="nav-text">第二种，for循环和Model.create()，并放入事务中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三种，使用原生的insert-many-方法"><span class="nav-text">第三种，使用原生的insert_many()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Peewee使用之事务"><span class="nav-text">Peewee使用之事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种使用方式"><span class="nav-text">两种使用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context-manager"><span class="nav-text">Context manager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务嵌套使用"><span class="nav-text">事务嵌套使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种情况，在嵌套事务中执行rollback-，代码如下："><span class="nav-text">第一种情况，在嵌套事务中执行rollback()，代码如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种情况，在外层的事务中执行rollback-，代码如下："><span class="nav-text">第二种情况，在外层的事务中执行rollback()，代码如下：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全手动实现事务"><span class="nav-text">全手动实现事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

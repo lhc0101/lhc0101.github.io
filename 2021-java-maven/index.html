@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Maven代理设置">
+<meta name="keywords" content="java,maven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021-java-maven">
+<meta property="og:url" content="http://xchcloud.cn/2021-java-maven/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="Maven代理设置">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:52:55.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2021-java-maven">
+<meta name="twitter:description" content="Maven代理设置">
+
+<link rel="canonical" href="http://xchcloud.cn/2021-java-maven/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2021-java-maven | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/2021-java-maven/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2021-java-maven
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-17 18:23:11" itemprop="dateCreated datePublished" datetime="2021-01-17T18:23:11+08:00">2021-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:52:55" itemprop="dateModified" datetime="2021-09-11T16:52:55+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2021-java-maven/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021-java-maven/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Maven代理设置"><a href="#Maven代理设置" class="headerlink" title="Maven代理设置"></a>Maven代理设置</h2><a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;proxy&gt;</span><br><span class="line">      &lt;id&gt;optional&lt;/id&gt;</span><br><span class="line">      &lt;active&gt;true&lt;/active&gt;</span><br><span class="line">      &lt;protocol&gt;http&lt;/protocol&gt;</span><br><span class="line">      &lt;username&gt;proxyuser&lt;/username&gt;</span><br><span class="line">      &lt;password&gt;proxypass&lt;/password&gt;</span><br><span class="line">      &lt;host&gt;proxy.host.net&lt;/host&gt;</span><br><span class="line">      &lt;port&gt;80&lt;/port&gt;</span><br><span class="line">      &lt;nonProxyHosts&gt;local.net|some.host.com&lt;/nonProxyHosts&gt;</span><br><span class="line">&lt;/proxy&gt;</span><br><span class="line"></span><br><span class="line">&lt;proxy&gt;</span><br><span class="line">      &lt;id&gt;ss&lt;/id&gt;</span><br><span class="line">      &lt;active&gt;true&lt;/active&gt;</span><br><span class="line">      &lt;protocol&gt;socks5&lt;/protocol&gt;</span><br><span class="line">      &lt;username&gt;&lt;/username&gt;</span><br><span class="line">      &lt;password&gt;&lt;/password&gt;</span><br><span class="line">      &lt;host&gt;127.0.0.1&lt;/host&gt;</span><br><span class="line">      &lt;port&gt;8093&lt;/port&gt;</span><br><span class="line">      &lt;nonProxyHosts&gt;127.0.0.1&lt;/nonProxyHosts&gt;</span><br><span class="line"> &lt;/proxy&gt;</span><br><span class="line"></span><br><span class="line">id：代理的名称（随便设，XYZ也行）</span><br><span class="line">active：表示该代理是否激活</span><br><span class="line">protocol：代理协议，这个不用改  (socks5/http)</span><br><span class="line">username：当代理需要认证时的用户名</span><br><span class="line">password：当代理需要认证时的密码</span><br><span class="line">host：代理的IP地址</span><br><span class="line">port：代理的端口号</span><br><span class="line">nonProxyHost：指定不需要使用代理的主机，可不设置。如果有多个，用 | 分隔</span><br><span class="line">（P.S. 如果代理不需要用户认证，username 和 password 两个节点可注释掉）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">命令行 export MAVEN_OPTS=&quot;-DsocksProxyHost=127.0.0.1 -DsocksProxyPort=1080&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="maven插件"><a href="#maven插件" class="headerlink" title="maven插件"></a>maven插件</h2><h3 id="插件-plugings"><a href="#插件-plugings" class="headerlink" title="插件 plugings"></a>插件 plugings</h3><p>什么是插件？ maven提供的功能,用来执行清理、编译、测试、报告、打包的程序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">①. clean插件maven-clean-plugin:2.5</span><br><span class="line">clean阶段是独立的一个阶段,功能就是清除工程目前下的target目录</span><br><span class="line"></span><br><span class="line">②. resources插件maven-resources-plugin:2.6</span><br><span class="line">resource插件的功能就是把项目需要的配置文件拷贝到指定的目当,默认是拷贝src\main\resources目录下的件到classes目录下</span><br><span class="line"></span><br><span class="line">③. compile插件maven-compiler-plugin</span><br><span class="line">compile插件执行时先调用resouces插件,功能就是把src\mainjava源码编译成字节码生成class文件,并把编译好的class文件输出到target\classes目录下</span><br><span class="line"></span><br><span class="line">④. test测试插件</span><br><span class="line">单元测试所用的compile和resources插件和主代码是相同的,但执行的目标不行,目标testCompile和testResources是把src\test\java下的代码编译成字节码输出到target\test-classes,同时把src\test\resources下的配置文件拷贝到target\test-classes</span><br><span class="line"></span><br><span class="line">⑤. package打包插件maven-jar-plugin</span><br><span class="line">这个插件是把class文件、配置文件打成一个jar(war或其它格式)包</span><br><span class="line"></span><br><span class="line">⑥. deploy发布插件maven-install-plugin</span><br><span class="line">发布插件的功能就是把构建好的artifact部署到本地仓库,还有一个deploy插件是将构建好的artifact部署到远程仓库</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h3><p>maven实际上一个插件执行框架，所有的工作实际上都是通过插件完成，一个插件通常提供若干目标（goal），通过如下形式的命令执行插件目标：<br><code>mvn [plugin name]:[goal name]</code></p>
+<p>例如可以通过编译插件compiler去编译目标，命令如下：<br><code>mvn compiler:compile</code></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/20210117205350.png" alt="20210117205350"></p>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><p>maven是一种基于构建生命周期(build lifecycle)的项目构建工具, 也就是说一个项目的构建和发布是要经历几个过程的，目前主要包含三个过程：<br>clean<br>default<br>site<br><img data-src="http://tuchuang.xchcloud.cn/20210117210308.png" alt="20210117210308"></p>
+<p>使用过mvn的就会发现，一个phase对应一个mvn的命令，比如当执行mvn compile命令时就是执行该phase之前的所有phase。<br>但是前言中说过mvn是通过插件来执行任务的，当执行mvn compile这个phase时，实际上是执行绑定在compile这个phase上的插件目标，由于compile这个phase默认绑定了compiler: compile（compiler插件的compile目标）,因此执行mvn compile等于去执行了mvn compiler:compile</p>
+<p>再例如：执行mvn package 实际上执行了插件mvn jar:jar(注意此处假设pom里配置了<packaging>jar<package>), 因为package这个phase默认绑定了jar:jar这个插件目标。</package></packaging></p>
+<h4 id="插件配置"><a href="#插件配置" class="headerlink" title="插件配置"></a>插件配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;</span><br><span class="line">  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">  xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0</span><br><span class="line">                      https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line">  &lt;build&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">      &lt;plugin&gt;</span><br><span class="line">        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;2.6&lt;/version&gt;</span><br><span class="line">        &lt;extensions&gt;false&lt;/extensions&gt;</span><br><span class="line">        &lt;inherited&gt;true&lt;/inherited&gt;</span><br><span class="line">        &lt;configuration&gt;</span><br><span class="line">          &lt;classifier&gt;test&lt;/classifier&gt;</span><br><span class="line">        &lt;/configuration&gt;</span><br><span class="line">        &lt;dependencies&gt;...&lt;/dependencies&gt;</span><br><span class="line">        &lt;executions&gt;...&lt;/executions&gt;</span><br><span class="line">      &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">  &lt;/build&gt;</span><br><span class="line">&lt;/project&gt;</span><br><span class="line"></span><br><span class="line">一个&lt;plugin&gt;&lt;/plugin&gt;表示一个插件， &lt;groupId&gt;,&lt;artifactId&gt;,&lt;version&gt;都是引入必要配置。插件本质上托管在mvn仓库里。</span><br><span class="line"></span><br><span class="line">&lt;inherited&gt;表示是否当前pom的子pom中继承这个插件配置，true表示子pom继承父pom这个插件配置，那么你就可以在子pom上通过mvn命令使用这个插件</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;中包含了插件类实例化时用于初始化类成员信息</span><br><span class="line"></span><br><span class="line">&lt;dependencies&gt;, 插件自身也会依赖外部包，&lt;dependencies&gt;中可以为插件指定特定的依赖包， 引入方式如下:</span><br><span class="line"></span><br><span class="line">&lt;executions&gt;, 一个插件可能包含多个goal，&lt;executions&gt;中可以单独为某个goal指定配置，以及将goal绑定到某个phase。</span><br><span class="line"></span><br><span class="line">executions包含的elements如下：</span><br><span class="line">&lt;executions&gt;</span><br><span class="line">       &lt;execution&gt;</span><br><span class="line">         &lt;!--需要在&lt;executions&gt;里面唯一的id--&gt;</span><br><span class="line">         &lt;id&gt;&lt;/id&gt;</span><br><span class="line">          &lt;!--列出需要特定去配置的所有goal--&gt;</span><br><span class="line">         &lt;goals&gt;</span><br><span class="line">           &lt;goal&gt;run&lt;/goal&gt;</span><br><span class="line">         &lt;/goals&gt;</span><br><span class="line">         &lt;!--将这些goal绑定到phase--&gt;</span><br><span class="line">         &lt;phase&gt;verify&lt;/phase&gt;</span><br><span class="line">         &lt;!--指定子pom是否继承这些配置--&gt;</span><br><span class="line">         &lt;inherited&gt;false&lt;/inherited&gt;</span><br><span class="line">         &lt;configuration&gt;</span><br><span class="line">           &lt;!--这里指定配置--&gt;</span><br><span class="line">         &lt;/configuration&gt;</span><br><span class="line">       &lt;/execution&gt;</span><br><span class="line">       &lt;execution&gt;</span><br><span class="line">         ...</span><br><span class="line">       &lt;/execution&gt;</span><br><span class="line">       ...</span><br><span class="line">&lt;/executions&gt;</span><br></pre></td></tr></table></figure>
+<p>比如下面就是一个几乎所有人都会用到的插件配置，compiler：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">       &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">       &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">       &lt;version&gt;3.5.1&lt;/version&gt;  &lt;!--指定compiler插件版本信息--&gt;</span><br><span class="line">       &lt;configuration&gt;</span><br><span class="line">           &lt;!--插件实例化参数，这个参数是设置javac -source的值--&gt;</span><br><span class="line">          &lt;source&gt;1.7&lt;/source&gt;  </span><br><span class="line">           &lt;!--插件实例化参数，这个参数是设置javac -target的值--&gt;</span><br><span class="line">          &lt;target&gt;1.7&lt;/target&gt;</span><br><span class="line">       &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br><span class="line"></span><br><span class="line">这里没有指定&lt;executions&gt;，因为compiler插件的目标compile默认被绑定到compile这个phase上了，</span><br><span class="line">目标testCompile被绑定到了test-compile这个phase上了。</span><br><span class="line">当然你可以显式指定，加入如下配置即可：</span><br><span class="line">&lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">              &lt;id&gt;compile&lt;/id&gt;</span><br><span class="line">              &lt;goals&gt;</span><br><span class="line">                  &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">             &lt;/goals&gt;</span><br><span class="line">             &lt;phase&gt;compile&lt;/phase&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">             &lt;id&gt;testCompile&lt;/id&gt;</span><br><span class="line">             &lt;phase&gt;test-compile&lt;/phase&gt;</span><br><span class="line">             &lt;goals&gt;</span><br><span class="line">                 &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">             &lt;/goals&gt;</span><br><span class="line">       &lt;/execution&gt;</span><br><span class="line"> &lt;/executions&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="scala插件scala-maven-plugin"><a href="#scala插件scala-maven-plugin" class="headerlink" title="scala插件scala-maven-plugin"></a>scala插件scala-maven-plugin</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugins&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.scala-tools&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;maven-scala-plugin&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;2.15.2&lt;/version&gt;</span><br><span class="line">            &lt;executions&gt;</span><br><span class="line">                &lt;execution&gt;</span><br><span class="line">                    &lt;id&gt;scala-compile&lt;/id&gt;</span><br><span class="line">                    &lt;goals&gt;</span><br><span class="line">                        &lt;goal&gt;compile&lt;/goal&gt;</span><br><span class="line">                    &lt;/goals&gt;</span><br><span class="line">                    &lt;configuration&gt;</span><br><span class="line">                        &lt;!--includes是一个数组，包含要编译的code--&gt;</span><br><span class="line">                        &lt;includes&gt;</span><br><span class="line">                            &lt;include&gt;**/*.scala&lt;/include&gt;</span><br><span class="line">                        &lt;/includes&gt;</span><br><span class="line">                    &lt;/configuration&gt;</span><br><span class="line">                &lt;/execution&gt;</span><br><span class="line">                &lt;execution&gt;</span><br><span class="line">                    &lt;id&gt;scala-test-compile&lt;/id&gt;</span><br><span class="line">                    &lt;goals&gt;</span><br><span class="line">                        &lt;goal&gt;testCompile&lt;/goal&gt;</span><br><span class="line">                    &lt;/goals&gt;</span><br><span class="line">                &lt;/execution&gt;</span><br><span class="line">            &lt;/executions&gt;</span><br><span class="line">        &lt;/plugin&gt;</span><br><span class="line">&lt;/plugins&gt;</span><br></pre></td></tr></table></figure>
+<p>比较常用的两个goal：<br>compile 编译 scala code<br>testCompile 编译 test code</p>
+<p>运行命令行：<br><code>mvn clean scala:compile compile</code></p>
+<h3 id="项目打包插件"><a href="#项目打包插件" class="headerlink" title="项目打包插件"></a>项目打包插件</h3><h4 id="maven-assembly-plugin"><a href="#maven-assembly-plugin" class="headerlink" title="maven-assembly-plugin"></a>maven-assembly-plugin</h4><p>可用来打可发布可独立运行的jar包， 也就是说它可以将项目中所有依赖打进包。<br><code>mvn assembly:single</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugins&gt;</span><br><span class="line">  &lt;plugin&gt;</span><br><span class="line">    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;!--这个插件会输出多个包，原始包不包含任何依赖，</span><br><span class="line">        以及一个或者多个包含所有依赖的包，这些包以&lt;descriptorRef&gt;中的value为后缀。 这里可以配置n个&lt;descriptorRef&gt;，就会多生成n个包含所有依赖的包--&gt;</span><br><span class="line">        &lt;descriptorRefs&gt;</span><br><span class="line">            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;</span><br><span class="line">        &lt;/descriptorRefs&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;!--这里将single这个goal绑定在package这个phase上--&gt;</span><br><span class="line">            &lt;id&gt;make-assembly&lt;/id&gt;</span><br><span class="line">            &lt;phase&gt;package&lt;/phase&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;single&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">            &lt;!--&lt;configuration&gt;--&gt;</span><br><span class="line">                &lt;!--&lt;archive&gt;--&gt;</span><br><span class="line">                    &lt;!--&lt;manifest&gt;--&gt;</span><br><span class="line">                        &lt;!--&lt;mainClass&gt;me.test.sparktest.WordCount&lt;/mainClass&gt;--&gt;</span><br><span class="line">                    &lt;!--&lt;/manifest&gt;--&gt;</span><br><span class="line">                &lt;!--&lt;/archive&gt;--&gt;</span><br><span class="line">            &lt;!--&lt;/configuration&gt;--&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">  &lt;/plugin&gt;</span><br><span class="line">&lt;/plugins&gt;</span><br><span class="line"></span><br><span class="line">去掉上面配置中&lt;configuration&gt;&lt;/configuration&gt;的注释，&lt;mainClass&gt;这个元素指定了MANIFEST.MF中的Main-Class。</span><br></pre></td></tr></table></figure></p>
+<h4 id="maven-shade-plugin"><a href="#maven-shade-plugin" class="headerlink" title="maven-shade-plugin"></a>maven-shade-plugin</h4><p>和assembly插件一样它也可以将所有依赖打到包中，同时也可以打可执行的jar包。<br>运行命令<code>mvn package</code>（将shade绑定在package这个phase上，不然会出错）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;3.1.0&lt;/version&gt;</span><br><span class="line">  &lt;configuration&gt;</span><br><span class="line">    &lt;!-- put your configurations here --&gt;</span><br><span class="line">  &lt;/configuration&gt;</span><br><span class="line">  &lt;executions&gt;</span><br><span class="line">    &lt;execution&gt;</span><br><span class="line">      &lt;!--将shade 这个goal绑定到package这个phase上--&gt;</span><br><span class="line">      &lt;phase&gt;package&lt;/phase&gt;</span><br><span class="line">      &lt;goals&gt;</span><br><span class="line">        &lt;goal&gt;shade&lt;/goal&gt;</span><br><span class="line">      &lt;/goals&gt;</span><br><span class="line">    &lt;/execution&gt;</span><br><span class="line">  &lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="spring-boot-插件"><a href="#spring-boot-插件" class="headerlink" title="spring boot 插件"></a>spring boot 插件</h3><p>Spring Boot的 maven 插件能够以 maven 命令行的方式提供对 spring boot 应用打包和运行的支持。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugins&gt;</span><br><span class="line">  &lt;plugin&gt;</span><br><span class="line">      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;1.5.4.RELEASE&lt;/version&gt;</span><br><span class="line">      &lt;configuration&gt;</span><br><span class="line">        &lt;layout&gt;WAR&lt;/layout&gt;</span><br><span class="line">      &lt;/configuration&gt;</span><br><span class="line">      &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">          &lt;goals&gt;</span><br><span class="line">            &lt;goal&gt;repackage&lt;/goal&gt;</span><br><span class="line">          &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">      &lt;/executions&gt;</span><br><span class="line">    &lt;/plugin&gt;</span><br><span class="line">&lt;/plugins&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/20210117191122.png" alt="20210117191122"></p>
+<h4 id="repackage"><a href="#repackage" class="headerlink" title="repackage"></a>repackage</h4><p>绑定在package 这个phase上，可以为spring boot应用生成一个可执行的jar或war包。<br>以上面的plugin配置为例，运行mvn package会生成两个jar包，一个是原始jar包（也就是不使用这个插件时运行mvn package生成的jar包），一个是可执行的spring boot 应用的jar包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">下面是我的一个使用spring boot插件实例项目生成的两个war包（jar包类似）：</span><br><span class="line">webtest-1.0-SNAPSHOT.war    插件生成的war包</span><br><span class="line">webtest-1.0-SNAPSHOT.war.original     这是原始的war包</span><br></pre></td></tr></table></figure></p>
+<p>原始包被重命名成以.original为后缀的包，改变后缀可使用如下配置方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;execution&gt;</span><br><span class="line">      &lt;goals&gt;</span><br><span class="line">        &lt;goal&gt;repackage&lt;/goal&gt;</span><br><span class="line">      &lt;/goals&gt;</span><br><span class="line">      &lt;configuration&gt;</span><br><span class="line">        &lt;!--原始包的后缀将变成.exec--&gt;</span><br><span class="line">        &lt;classifier&gt;exec&lt;/classifier&gt;   </span><br><span class="line">      &lt;/configuration&gt;</span><br><span class="line">    &lt;/execution&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
+<p>repackage生成的jar/war包会修改MANIFEST.MF文件，比如下面是我生成的war包中的MANIFEST.MF文件内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Manifest-Version: 1.0</span><br><span class="line">Spring-Boot-Classes: WEB-INF/classes/</span><br><span class="line">Built-By: eric</span><br><span class="line">Build-Jdk: 1.7.0_71</span><br><span class="line">Start-Class: me.test.webtest.WebMain</span><br><span class="line">Created-By: Apache Maven 3.3.9</span><br><span class="line">Spring-Boot-Lib: WEB-INF/lib/</span><br><span class="line">Spring-Boot-Version: 1.5.4.RELEASE</span><br><span class="line">Main-Class: org.springframework.boot.loader.WarLauncher</span><br><span class="line">Archiver-Version: Plexus Archiver</span><br></pre></td></tr></table></figure></p>
+<p>我的测试项目main方法在WebMain这个类里面，但是可以看到生成的manifest文件中Main-Class是WarLaucher，还多了一个叫Start-Class的属性值是才是我的main方法所在类。<br>这是跟spring boot的启动方式有关系，运行该war包先启动WarLauncher会完成一些前期准备工作，完后最终会加载WebMain运行。打成jar也是一样的道理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">最终打包的的类型取决&lt;layout&gt;这个元素（第一个pom示例中有）,可选值有如下：</span><br><span class="line">WAR, 此时Main-Class如上</span><br><span class="line">JAR， 此时Main-Class 是JarLauncher</span><br><span class="line">ZIP, 包目录结构类似JAR，实时Main-Class是PropertiesLauncher</span><br><span class="line">MODULE，只将当前module打进包，且不包含任何XXXLauncher</span><br><span class="line">NONE， 和MODULE的区别是它会把当前的module的依赖也会打进包</span><br></pre></td></tr></table></figure>
+<h4 id="run"><a href="#run" class="headerlink" title="run"></a>run</h4><p>在命令行运行mvn spring-boot:run可以启动spring boot应用（不过一般我们调试不都是直接在ide里点吗）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">可以通过如下配置给启动的jvm传递参数：</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">  &lt;configuration&gt;</span><br><span class="line">    &lt;jvmArguments&gt;</span><br><span class="line">      -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</span><br><span class="line">    &lt;/jvmArguments&gt;</span><br><span class="line">  &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="dev-tools"><a href="#dev-tools" class="headerlink" title="dev-tools"></a>dev-tools</h4><p>spring boot 1.3之后引入了dev-tools可以让你方便开发应用，在spring boot应用启动后，它监听资源文件的改变，或者重新编译生成class，有变化之后自动刷新（repackage是不会把dev-tools打进包的，所以生产环境dev-tool是不会起作用的）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">通过在pom中引入：</span><br><span class="line">&lt;dependencies&gt;</span><br><span class="line"> &lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.5.4.RELEASE&lt;/version&gt;</span><br><span class="line">    &lt;!--指定optional为true可以避免被repackage打war时devtools也被打进war包--&gt;</span><br><span class="line">    &lt;optional&gt;true&lt;/optional&gt;</span><br><span class="line">  &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure></p>
+<p>可以通过设置 <code>spring.devtools.remote.restart.enabled=false</code> 这个java系统属性，是的dev-tools只在静态资源改变是才刷新。</p>
+<h4 id="start"><a href="#start" class="headerlink" title="start"></a>start</h4><h4 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h4><h2 id="解决jar包冲突问题"><a href="#解决jar包冲突问题" class="headerlink" title="解决jar包冲突问题"></a>解决jar包冲突问题</h2><p>出现的原因是:pom.xml中导入的jar包和maven自带的tomcat中的jar包发生了冲突<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--放置的都是项目所要依赖的jar包--&gt;</span><br><span class="line">&lt;!--provided的意思是编译时使用它,运行时不使用--&gt;</span><br><span class="line">   &lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;javax.servlet&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;2.5&lt;/version&gt;</span><br><span class="line">     &lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">   &lt;/dependency&gt;</span><br><span class="line">   &lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;javax.servlet.jsp&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;jsp-api&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;2.0&lt;/version&gt;</span><br><span class="line">     &lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">   &lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="DarchetypeCatalog-internal"><a href="#DarchetypeCatalog-internal" class="headerlink" title="-DarchetypeCatalog=internal"></a>-DarchetypeCatalog=internal</h2><p>这个参数的意思是:<br>如果我们使用maven为我们提供好的骨架来创建maven工程,一般是要联网的.<br>为了在不联网的情况下我们可以正常创建工程,配了这样一个参数,只要我们之前联网下载过之前相关创建工程的插件,它就会从本地仓库找到对应插件,而不会联网下载</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/2021-java-maven/" title="2021-java-maven">http://xchcloud.cn/2021-java-maven/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+              <a href="/tags/maven/" rel="tag"><i class="fa fa-tag"></i> maven</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux-监控/" rel="prev" title="linux-监控">
+      <i class="fa fa-chevron-left"></i> linux-监控
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021-悬剑知识库/" rel="next" title="2021-悬剑知识库">
+      2021-悬剑知识库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Maven代理设置"><span class="nav-text">Maven代理设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maven插件"><span class="nav-text">maven插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插件-plugings"><span class="nav-text">插件 plugings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用插件"><span class="nav-text">使用插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生命周期"><span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插件配置"><span class="nav-text">插件配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scala插件scala-maven-plugin"><span class="nav-text">scala插件scala-maven-plugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目打包插件"><span class="nav-text">项目打包插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#maven-assembly-plugin"><span class="nav-text">maven-assembly-plugin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#maven-shade-plugin"><span class="nav-text">maven-shade-plugin</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-boot-插件"><span class="nav-text">spring boot 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#repackage"><span class="nav-text">repackage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#run"><span class="nav-text">run</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dev-tools"><span class="nav-text">dev-tools</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#start"><span class="nav-text">start</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stop"><span class="nav-text">stop</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决jar包冲突问题"><span class="nav-text">解决jar包冲突问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DarchetypeCatalog-internal"><span class="nav-text">-DarchetypeCatalog=internal</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据仓库简介什么是数据仓库数据仓库，是为企业所有级别的决策制定过程，提供所有类型数据支持的战略集合。它出于分析性报告和决策支持目的而创建。为需要业务智能的企业，提供指导业务流程改进、监视时间、成本、质量以及控制。 数据仓库的特点数据仓库的数据是面向主题的主题是一个抽象的概念，是较高层次上企业信息系统中的数据综合、归类并进行分析利用的抽象。在逻辑意义上，它是对应企业中某一宏观分析领域所涉及的分析对象">
+<meta name="keywords" content="Java,大数据,数仓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-大数据-数仓">
+<meta property="og:url" content="http://xchcloud.cn/java-大数据-数仓/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="数据仓库简介什么是数据仓库数据仓库，是为企业所有级别的决策制定过程，提供所有类型数据支持的战略集合。它出于分析性报告和决策支持目的而创建。为需要业务智能的企业，提供指导业务流程改进、监视时间、成本、质量以及控制。 数据仓库的特点数据仓库的数据是面向主题的主题是一个抽象的概念，是较高层次上企业信息系统中的数据综合、归类并进行分析利用的抽象。在逻辑意义上，它是对应企业中某一宏观分析领域所涉及的分析对象">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:57:09.277Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java-大数据-数仓">
+<meta name="twitter:description" content="数据仓库简介什么是数据仓库数据仓库，是为企业所有级别的决策制定过程，提供所有类型数据支持的战略集合。它出于分析性报告和决策支持目的而创建。为需要业务智能的企业，提供指导业务流程改进、监视时间、成本、质量以及控制。 数据仓库的特点数据仓库的数据是面向主题的主题是一个抽象的概念，是较高层次上企业信息系统中的数据综合、归类并进行分析利用的抽象。在逻辑意义上，它是对应企业中某一宏观分析领域所涉及的分析对象">
+
+<link rel="canonical" href="http://xchcloud.cn/java-大数据-数仓/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java-大数据-数仓 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/java-大数据-数仓/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java-大数据-数仓
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-22 23:01:51" itemprop="dateCreated datePublished" datetime="2020-10-22T23:01:51+08:00">2020-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:57:09" itemprop="dateModified" datetime="2021-09-11T16:57:09+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/java-大数据-数仓/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="java-大数据-数仓/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="数据仓库简介"><a href="#数据仓库简介" class="headerlink" title="数据仓库简介"></a>数据仓库简介</h2><h3 id="什么是数据仓库"><a href="#什么是数据仓库" class="headerlink" title="什么是数据仓库"></a>什么是数据仓库</h3><p>数据仓库，是为企业所有级别的决策制定过程，提供所有类型数据支持的战略集合。它出于分析性报告和决策支持目的而创建。<br>为需要业务智能的企业，提供指导业务流程改进、监视时间、成本、质量以及控制。</p>
+<h3 id="数据仓库的特点"><a href="#数据仓库的特点" class="headerlink" title="数据仓库的特点"></a>数据仓库的特点</h3><h4 id="数据仓库的数据是面向主题的"><a href="#数据仓库的数据是面向主题的" class="headerlink" title="数据仓库的数据是面向主题的"></a>数据仓库的数据是面向主题的</h4><p>主题是一个抽象的概念，是较高层次上企业信息系统中的数据综合、归类并进行分析利用的抽象。在逻辑意义上，它是对应企业中某一宏观分析领域所涉及的分析对象。<br><a id="more"></a><br>数据集市，数据展示、报表</p>
+<h4 id="数据仓库的数据是集成的"><a href="#数据仓库的数据是集成的" class="headerlink" title="数据仓库的数据是集成的"></a>数据仓库的数据是集成的</h4><p>数据仓库的数据是从原有的分散的数据库数据抽取来的。<br>1、数据仓库   抽取转换加载（ETL），就是需要现数据标准化，单位统一、字长一致、异名同义。<br>2、T + 1 与 T - 1 的数据什么意思。一个是实时的，一个是分区的。<br>3、 </p>
+<h4 id="数据仓库的数据是不可更新的"><a href="#数据仓库的数据是不可更新的" class="headerlink" title="数据仓库的数据是不可更新的"></a>数据仓库的数据是不可更新的</h4><h4 id="数据仓库的数据是随时间不断变化的"><a href="#数据仓库的数据是随时间不断变化的" class="headerlink" title="数据仓库的数据是随时间不断变化的"></a>数据仓库的数据是随时间不断变化的</h4><h2 id="集群搭建问题总结"><a href="#集群搭建问题总结" class="headerlink" title="集群搭建问题总结"></a>集群搭建问题总结</h2><p>1、Namenode 部分节点缺失</p>
+<p>疑似原因一： 主机 ip 变化导致之前的date有问题，删除重新进行格式化，持怀疑态度？  误区  不是！<br>            每次 namenode format 会重新创建一个 namenodeId, 而 data 目录包含了上次 format 时的 id,namenode format 清空了 namenode 下的数据 , 但是没有清空 datanode 下的数据 , 导致启动时失败 , 所要做的就是每次 fotmat 前 , 清空 data 下的所有目录 .<br>解决方法：   停掉集群，删除问题节点的data目录下的所有内容。即hdfs-site.xml文件中配置的dfs.data.dir目录。重新格式化namenode。<br>            先停掉集群，然后将datanode节点目录/dfs/data/current/VERSION中的修改为与namenode一致即可。<br>疑似原因二： core-seting 配置文件缺少部分参数，比如最小内存以及Cpu个数</p>
+<p>2、hadoop启动没有nodemanager</p>
+<p>问题：发现如下错误：FATAL org.apache.hadoop.yarn.server.nodemanager.NodeManager: Error starting NodeManager org.apache.hadoop.yarn.exceptions.YarnRuntimeException: org.apache.hadoop.yarn.exceptions.YarnRuntimeException: Recieved SHUTDOWN signal from Resourcemanager ,Registration of NodeManager failed, Message from ResourceManager: NodeManager </p>
+<p>from  hadoop22 doesn’t satisfy minimum allocations, Sending SHUTDOWN signal to theNodeManager.其实就是yarn-site.xml配置有点问题。nodemanager要求的内存最低1024MB</p>
+<p>解决方法：更改yarn-site.xml的配置文件（如下）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1024&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.resource.cpu-vcores&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<p>3、免密登陆最简单方式</p>
+<p>通过ssh-copy-id的方式</p>
+<p><code>命令： ssh-copy-id -i ~/.ssh/id_rsa.put &lt;romte_ip&gt;</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">authorized_keys:存放远程免密登录的公钥,主要通过这个文件记录多台机器的公钥</span><br><span class="line"></span><br><span class="line">　　id_rsa : 生成的私钥文件</span><br><span class="line"></span><br><span class="line">　　id_rsa.pub ： 生成的公钥文件</span><br><span class="line"></span><br><span class="line">　　know_hosts : 已知的主机公钥清单</span><br><span class="line"></span><br><span class="line">　　如果希望ssh公钥生效需满足至少下面两个条件：</span><br><span class="line"></span><br><span class="line">　　1) .ssh目录的权限必须是700</span><br><span class="line"></span><br><span class="line">　　2) .ssh/authorized_keys文件权限必须是600</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20201025/T6BfYxsYtRYX.png" alt="mark"></p>
+<p>4、Hive SQL任务执行报错 (Container killed on request. Exit code is 143)</p>
+<ul>
+<li>错误描述</li>
+</ul>
+<p>执行 hive 任务报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Diagnostic Messages for this Task:</span><br><span class="line">Container [pid=27756,containerID=container_1460459369308_5864_01_000570] is running beyond physical memory limits. Current usage: 4.2 GB of 4 GB physical memory used; 5.0 GB of 16.8 GB virtual memory used. Killing container.</span><br><span class="line">Container killed on request. Exit code is 143</span><br><span class="line">Container exited with a non-zero exit code 143</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Hive 任务执行时设置的参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">查看关于 container 内存的配置:</span><br><span class="line"></span><br><span class="line">hive (default)&gt; SET mapreduce.map.memory.mb;</span><br><span class="line">mapreduce.map.memory.mb=4096</span><br><span class="line">hive (default)&gt; SET mapreduce.reduce.memory.mb;</span><br><span class="line">mapreduce.reduce.memory.mb=4096</span><br><span class="line">hive (default)&gt; SET yarn.nodemanager.vmem-pmem-ratio;</span><br><span class="line">yarn.nodemanager.vmem-pmem-ratio=4.2</span><br><span class="line"></span><br><span class="line">注:</span><br><span class="line">yarn.nodemanager.vmem-pmem-ratio: 虚拟内存率，默认2.1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>错误分析</li>
+</ul>
+<p>从 hive 报错看是由于物理内存达到限制，导致 container 被 kill 掉报错。<br>看日志的末端，看出现报错是属于哪一个阶段，是map task阶段或者reduce task阶段，是哪一阶段的内存不足导致的问题。</p>
+<ul>
+<li>结论</li>
+</ul>
+<p>从上面执行时候配置的参数看，单个map 和 reduce 分配物理内存 4G; 虚拟内存限制 4 * 4.2 = 16.8G 。<br>所以从上面的报错信息来看，是由于单个 task (map task 或 reduce task) 处理的数据量超过物理内存 4G 限制导致的，所以设置mapreduce.map.memory.mb = 8092 或者 mapreduce.reduce.memory.mb = 8092 即可解决该问题。</p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<p>方案一：mapred-site.xml中设置map和reduce任务的内存配置如下：(value中实际配置的内存需要根据自己机器内存大小及应用情况进行修改)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">　　&lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;</span><br><span class="line">　　&lt;value&gt;1536&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">　　&lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;</span><br><span class="line">　　&lt;value&gt;-Xmx1024M&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">　　&lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">　　&lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">　　&lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;</span><br><span class="line">　　&lt;value&gt;-Xmx2560M&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<p>方案二：或者是关掉虚拟内存检查。我们选这个，修改yarn-site.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;yarn.nodemanager.vmem-check-enabled&lt;/name&gt;</span><br><span class="line">&lt;value&gt;false&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></p>
+<p>5、虚拟机固定ip</p>
+<p>拓展虚拟机配置胡总和其他莫名其妙情况，会导致虚拟机ip改变</p>
+<p>方案一：<br>1、获取虚拟机ip以及网关<br><code>ip a</code><br>2、修改网络配置</p>
+<p><code>vim /etc/sysconfig/network-scripts/ifcfg-en33</code><br><img data-src="http://tuchuang.xchcloud.cn/blog/20201025/9yBXdHJ4j8Ka.png" alt="mark"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">HWADDR=&quot;00:0C:29:F4:7E:C9&quot;</span><br><span class="line">IPV6INIT=&quot;yes&quot;</span><br><span class="line">NM_CONTROLLED=&quot;yes&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">TYPE=&quot;Ethernet&quot;</span><br><span class="line">UUID=&quot;2a76c2f8-cd47-44af-936d-11559b3a498d&quot;</span><br><span class="line">IPADDR=&quot;192.168.73.100&quot;</span><br><span class="line">NETMASK=&quot;255.255.255.0&quot;</span><br><span class="line">GATEWAY=&quot;192.168.73.2&quot;</span><br><span class="line"></span><br><span class="line">DNS1=192.168.123.1</span><br><span class="line">DNS2=114.114.114.114</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">注意：GATEWAY 是 2   不然连不了外网  DNS 也需要配置  可以公共的DNS 也可以是电脑的DNS</span><br></pre></td></tr></table></figure></p>
+<p>3、重启网络或者虚拟机生效</p>
+<p>5、flume unableto tail files</p>
+<p>已解决，问题在于配置的拦截器有问题，导致所有event在拦截器处被拦截，flume在为event分配channel的时候，event为null，故抛出NPE</p>
+<h2 id="数据分层"><a href="#数据分层" class="headerlink" title="数据分层"></a>数据分层</h2><h3 id="分层的概念"><a href="#分层的概念" class="headerlink" title="分层的概念"></a>分层的概念</h3><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201026/t9LufQ2eLvuf.png" alt="mark"></p>
+<h3 id="分层结构"><a href="#分层结构" class="headerlink" title="分层结构"></a>分层结构</h3><h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><h3 id="表的分类"><a href="#表的分类" class="headerlink" title="表的分类"></a>表的分类</h3><p>实体表：事实存在的业务对象。用户、商家、商品、销售人员。<br>维度表：就是业务状态，代码的解释表————码表。订单支付状态表、地区表、支付方式、审批状态、商品分类。</p>
+<p>事务型事实表：产生的业务数据，特点一旦产生不会改变。交易流水、操作日志、出入库记录等等。<br>交易流水表通常包含哪些字段：编号对外业务编号、订单编号、用户编号、支付宝流水编号、支付金额、交易内容、支付类型、支付时间。<br>周期性事实表：也是业务产生的数据，但是特点是数据是周期性变化的。贷款申请、订单表。<br>订单表包含的字段；订单编号、订单金额、订单状态、用户id、支付方式、支付流水线号、创建时间、操作时间</p>
+<p>订单表与订单流水表有什么区别呢？</p>
+<h3 id="同步策略"><a href="#同步策略" class="headerlink" title="同步策略"></a>同步策略</h3><p>全量表、增量表、新增及变化表、拉链表。<br>上面四种表是啥意思？</p>
+<p>实体表同步策略：<br>每日全量~</p>
+<p>维度表同步策略：<br>每日全量~：有变化的做每日全量、无变化的做固定值</p>
+<p>事务型事实表同步策略：<br>每日增量~：每日增量表，每日创建一个分区存储。<br>分区存储啥意意思？</p>
+<p>周期型事务表同步策略：<br>数据的新增以及修改比较多，利用每日新增和变化表制作一张你拉链表。</p>
+<h3 id="范式理论"><a href="#范式理论" class="headerlink" title="范式理论"></a>范式理论</h3><p>范式概念</p>
+<p>关系型数据库设计时，遵照一定的规范要求，目的在于降低数据的冗余性，目前业界范式有：第一范式(1NF)、第二范式(2NF)、第三范式(3NF)、巴斯-科德范式(BCNF)、第四范式(4NF)、第五范式(5NF)。</p>
+<p>范式的标准定义是：符合某一种级别的关系模式的集合，表示一个关系内部各属性之间的联系的合理化程度。通俗地讲，范式可以理解为一张数据表的表结构，所符合的某种设计标准的级别。</p>
+<p>使用范式的根本目的是：<br>  1）减少数据冗余，尽量让每个数据只出现一次。<br>  2）保证数据一致性<br> 缺点是获取数据时，需要通过join拼接出最后的数据。</p>
+<p>函数依赖：<br>完全函数依赖：AB能推出C，但是不能单独推出C。<br>部分函数依赖：AB能推出C，A和B都能单独推出C。<br>传递函数依赖：A能推B，B能推C，但是反过来推不了。</p>
+<p>三范式区分：<br>1、第一范式：属性不可分割<br>2、第二范式：<br>3、第三范式</p>
+<h3 id="关系模型与维度模型"><a href="#关系模型与维度模型" class="headerlink" title="关系模型与维度模型"></a>关系模型与维度模型</h3><h3 id="雪花模型、星型模型和星座模型"><a href="#雪花模型、星型模型和星座模型" class="headerlink" title="雪花模型、星型模型和星座模型"></a>雪花模型、星型模型和星座模型</h3><h3 id="DWD-ODS"><a href="#DWD-ODS" class="headerlink" title="DWD ODS"></a>DWD ODS</h3><p>去空 判重  导入数据</p>
+<p>甲苯要看</p>
+<p>降维是个什么鬼？</p>
+<h3 id="DWS"><a href="#DWS" class="headerlink" title="DWS"></a>DWS</h3><p>宽表是个什么鬼；做什么统计呢？</p>
+<h3 id="ADS"><a href="#ADS" class="headerlink" title="ADS"></a>ADS</h3><p>交易额  转化率  日活  </p>
+<p>漏斗分析</p>
+<p>复购率</p>
+<h2 id="ODS-amp-DWD"><a href="#ODS-amp-DWD" class="headerlink" title="ODS &amp; DWD"></a>ODS &amp; DWD</h2><h3 id="ODS"><a href="#ODS" class="headerlink" title="ODS"></a>ODS</h3><p>1、内部表与外部表啥意思</p>
+<p>外部表：跨部门协作、多人操作同一张表<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">外部表：临时表 自己测试使用的</span><br><span class="line"></span><br><span class="line">表名要见名生意~   ods_</span><br><span class="line"></span><br><span class="line">LZO 压缩处理：  输入格式就是lzo，输出运算结果是text</span><br><span class="line"></span><br><span class="line">设置数据存储位置：</span><br><span class="line">```</span><br><span class="line">hive (gmall)&gt; </span><br><span class="line">drop table if exists ods_start_log;</span><br><span class="line">CREATE EXTERNAL TABLE  `ods_start_log`(`line` string)</span><br><span class="line">PARTITIONED BY (`dt` string)</span><br><span class="line">STORED AS</span><br><span class="line">  INPUTFORMAT &apos;com.hadoop.mapred.DeprecatedLzoTextInputFormat&apos;</span><br><span class="line">  OUTPUTFORMAT &apos;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&apos;</span><br><span class="line">LOCATION &apos;/warehouse/gmall/ods/ods_start_log&apos;;</span><br><span class="line">```</span><br><span class="line"></span><br><span class="line">### DWD</span><br><span class="line"></span><br><span class="line">看不明白，啥玩意是一进一出？多进多出？</span><br><span class="line"></span><br><span class="line">``干啥的？ </span><br><span class="line"></span><br><span class="line">除了最后一层不能压缩 中间的都能压缩</span><br><span class="line"></span><br><span class="line">压缩会不会影响性能？</span><br><span class="line"></span><br><span class="line">启动日志基础明细表</span><br><span class="line">时间日志基础明细表    两个啥区别？</span><br><span class="line"></span><br><span class="line">GenericUDTF 什么鬼？</span><br><span class="line"></span><br><span class="line">工厂类？？？长啥样？  Java 设计模式咋玩的？？？？</span><br><span class="line"></span><br><span class="line">hive 的一个优化策略</span><br><span class="line"></span><br><span class="line">导数据有六种</span><br><span class="line"></span><br><span class="line">base_analizer 怎么处理空字符串  怎么防止数组越界</span><br><span class="line"></span><br><span class="line">## 业务术语</span><br><span class="line">新增用户：</span><br><span class="line">日新增  月新增   周新增   拉融资~</span><br></pre></td></tr></table></figure></p>
+<p>活跃用户：<br>打开就算~~</p>
+<p>周活跃   月活跃</p>
+<p>沉默用户仅在当日活跃</p>
+<p>版本分布：不同版本的周内新增用户数、活跃用户数、判断版本差异的优劣和用户行为</p>
+<p>本周回流：上周未启动 本周启动了</p>
+<p>连续n周活跃：<br>连续活跃：<br>近期流失用户：  多少周内没有使用的<br>留存用户：  某段时间新增的   过了多久之后还剩余多少用户<br>用户新鲜率：老用户  与 新用户 活跃占比<br>单次使用时间：<br>日使用时间：<br>启动次数计算标准：</p>
+<p> collect_set函数</p>
+<p> hive 的其他函数多练练  连熟悉  特别是蚂蚁金服的那玩意  sql 是要每天要练习的   大量练习  练出感觉</p>
+<h2 id="需求-用户活跃主题"><a href="#需求-用户活跃主题" class="headerlink" title="需求  用户活跃主题"></a>需求  用户活跃主题</h2><h3 id="DWS层"><a href="#DWS层" class="headerlink" title="DWS层"></a>DWS层</h3><p> 日活  周活  月活  是所有公司必须统计的  </p>
+<h3 id="ADS层"><a href="#ADS层" class="headerlink" title="ADS层"></a>ADS层</h3><p>## </p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/java-大数据-数仓/" title="java-大数据-数仓">http://xchcloud.cn/java-大数据-数仓/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/大数据/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+              <a href="/tags/数仓/" rel="tag"><i class="fa fa-tag"></i> 数仓</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/java-大数据-电信运营商流量经营系统/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/java-maven/" rel="next" title="java-maven">
+      java-maven <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据仓库简介"><span class="nav-text">数据仓库简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是数据仓库"><span class="nav-text">什么是数据仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据仓库的特点"><span class="nav-text">数据仓库的特点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据仓库的数据是面向主题的"><span class="nav-text">数据仓库的数据是面向主题的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据仓库的数据是集成的"><span class="nav-text">数据仓库的数据是集成的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据仓库的数据是不可更新的"><span class="nav-text">数据仓库的数据是不可更新的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据仓库的数据是随时间不断变化的"><span class="nav-text">数据仓库的数据是随时间不断变化的</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群搭建问题总结"><span class="nav-text">集群搭建问题总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据分层"><span class="nav-text">数据分层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分层的概念"><span class="nav-text">分层的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分层结构"><span class="nav-text">分层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-text">函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理论"><span class="nav-text">理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表的分类"><span class="nav-text">表的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步策略"><span class="nav-text">同步策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#范式理论"><span class="nav-text">范式理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关系模型与维度模型"><span class="nav-text">关系模型与维度模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#雪花模型、星型模型和星座模型"><span class="nav-text">雪花模型、星型模型和星座模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DWD-ODS"><span class="nav-text">DWD ODS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DWS"><span class="nav-text">DWS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ADS"><span class="nav-text">ADS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ODS-amp-DWD"><span class="nav-text">ODS &amp; DWD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ODS"><span class="nav-text">ODS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需求-用户活跃主题"><span class="nav-text">需求  用户活跃主题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DWS层"><span class="nav-text">DWS层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ADS层"><span class="nav-text">ADS层</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

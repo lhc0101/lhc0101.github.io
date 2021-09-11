@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="博客资料创客百科推荐极客先锋OpenCV 开发笔记博文导航物联网 IoT 经验分享小站树莓派开发笔记SPtuan的个人实验地 工具Pi Dashboard (Pi 仪表盘) github项目库 参考项目 趣无尽  自动灌溉系统用本地网络控制的树莓派摄影云台 Github：https://github.com/Mjrovai/WebCam-Pan-Tilt-Control-via-Flask基于PH">
+<meta name="keywords" content="python,树莓派">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派填坑系列">
+<meta property="og:url" content="http://xchcloud.cn/树莓派填坑系列/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="博客资料创客百科推荐极客先锋OpenCV 开发笔记博文导航物联网 IoT 经验分享小站树莓派开发笔记SPtuan的个人实验地 工具Pi Dashboard (Pi 仪表盘) github项目库 参考项目 趣无尽  自动灌溉系统用本地网络控制的树莓派摄影云台 Github：https://github.com/Mjrovai/WebCam-Pan-Tilt-Control-via-Flask基于PH">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:54:38.390Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="树莓派填坑系列">
+<meta name="twitter:description" content="博客资料创客百科推荐极客先锋OpenCV 开发笔记博文导航物联网 IoT 经验分享小站树莓派开发笔记SPtuan的个人实验地 工具Pi Dashboard (Pi 仪表盘) github项目库 参考项目 趣无尽  自动灌溉系统用本地网络控制的树莓派摄影云台 Github：https://github.com/Mjrovai/WebCam-Pan-Tilt-Control-via-Flask基于PH">
+
+<link rel="canonical" href="http://xchcloud.cn/树莓派填坑系列/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>树莓派填坑系列 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/树莓派填坑系列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          树莓派填坑系列
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-28 21:01:27" itemprop="dateCreated datePublished" datetime="2018-11-28T21:01:27+08:00">2018-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:54:38" itemprop="dateModified" datetime="2021-09-11T16:54:38+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树莓派/" itemprop="url" rel="index"><span itemprop="name">树莓派</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/树莓派填坑系列/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="树莓派填坑系列/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="博客资料"><a href="#博客资料" class="headerlink" title="博客资料"></a>博客资料</h2><p><a href="http://wiki.nxez.com/" target="_blank" rel="noopener">创客百科</a><em>推荐</em><br><a href="https://www.cnblogs.com/jikexianfeng/category/853162.html" target="_blank" rel="noopener">极客先锋</a><br><a href="https://blog.csdn.net/u013162035/article/details/81841135" target="_blank" rel="noopener">OpenCV 开发笔记博文导航</a><br><a href="https://blog.csdn.net/xukai871105/article/category/1436049" target="_blank" rel="noopener">物联网 IoT 经验分享小站</a><br><a href="https://blog.csdn.net/u013162035/column/info/18279" target="_blank" rel="noopener">树莓派开发笔记</a><br><a href="https://steinslab.io/archives/category/projects" target="_blank" rel="noopener">SPtuan的个人实验地</a></p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p><a href="http://maker.quwj.com/project/10" target="_blank" rel="noopener">Pi Dashboard (Pi 仪表盘)</a> <a href="https://github.com/spoonysonny/pi-dashboard" target="_blank" rel="noopener">github项目库</a></p>
+<h3 id="参考项目"><a href="#参考项目" class="headerlink" title="参考项目"></a>参考项目</h3><hr>
+<p><a href="http://maker.quwj.com/" target="_blank" rel="noopener">趣无尽</a></p>
+<hr>
+<p><a href="http://maker.quwj.com/project/78" target="_blank" rel="noopener">自动灌溉系统</a><br><a href="http://maker.quwj.com/project/60/" target="_blank" rel="noopener">用本地网络控制的树莓派摄影云台</a> Github：<a href="https://github.com/Mjrovai/WebCam-Pan-Tilt-Control-via-Flask" target="_blank" rel="noopener">https://github.com/Mjrovai/WebCam-Pan-Tilt-Control-via-Flask</a><br><a href="http://shumeipai.nxez.com/2017/03/14/server-monitoring-assistant-based-on-php-probe-and-python-crawler.html" target="_blank" rel="noopener">基于PHP探针和Python爬虫的服务器监控</a><br><a href="https://blog.csdn.net/xukai871105/article/details/38356755" target="_blank" rel="noopener">Python SQLite插入温度记录</a></p>
+<hr>
+<p><a href="http://maker.quwj.com/project/78" target="_blank" rel="noopener">树莓派+Arduino+TensorFlow搭建图像识别小车</a> :TensorFlow；模型训练<br><a href="http://shumeipai.nxez.com/2018/06/13/build-baby-monitor-raspberry-pi.html" target="_blank" rel="noopener">使用树莓派构建一个婴儿监视器</a> :<a href="https://opensource.com/article/18/3/build-baby-monitor-raspberry-pi" target="_blank" rel="noopener">原文参考 英文</a><br><a href="http://shumeipai.nxez.com/2018/03/09/real-time-face-recognition-an-end-to-end-project-with-raspberry-pi.html" target="_blank" rel="noopener">用树莓派实现实时的人脸检测</a> :<a href="https://github.com/Mjrovai/OpenCV-Face-Recognition" target="_blank" rel="noopener">项目地址</a><br><a href="http://shumeipai.nxez.com/2018/08/12/facial-recognition-identification-on-raspberry-pi.html" target="_blank" rel="noopener">在树莓派上实现人脸识别</a> :<a href="https://www.hackster.io/AdamMiltonBarker/facial-recognition-identification-on-raspberry-pi-1c7495" target="_blank" rel="noopener">参考链接 英文</a><br><a href="http://shumeipai.nxez.com/2017/12/25/not-santa-keras-deep-learning-raspberry-pi.html" target="_blank" rel="noopener">圣诞老人检测机：基于树莓派和 Keras 的深度学习 AI</a> :<a href="https://www.pyimagesearch.com/2017/12/18/keras-deep-learning-raspberry-pi/" target="_blank" rel="noopener">原文参考 英文</a><br><a href="http://shumeipai.nxez.com/2017/03/16/raspberry-pi-face-recognition-system.html" target="_blank" rel="noopener">使用树莓派进行简易人脸识别</a> : <a href="https://jireren.github.io/blog/2016/02/27/face-recognition-system-based-on-raspberry-pi-2/" target="_blank" rel="noopener">blog</a> + <a href="https://courses.ece.cornell.edu/ece5990/ECE5990_Fall15_FinalProjects/Andre_Heil/ece5990_final_report/avh34_jr986.html" target="_blank" rel="noopener">课程报告</a><br><a href="http://shumeipai.nxez.com/2017/07/02/dingdang-an-open-source-chinese-smart-speaker-project.html" target="_blank" rel="noopener">叮当：一个开源的树莓派中文智能音箱项目</a></p>
+<hr>
+<h2 id="密码123456"><a href="#密码123456" class="headerlink" title="密码123456"></a>密码123456</h2><p>pi<br>raspberry</p>
+<p>改密码：</p>
+<pre><code>
+sudo passwd pi                           #修改 Pi 密码  
+sudo passwd root                         #设置 root 密码    
+su root                                  #切换到 root 用户  
+su pi                                    #切换到 pi 用户 
+</code></pre>
+
+
+<h2 id="树莓派换源"><a href="#树莓派换源" class="headerlink" title="树莓派换源"></a>树莓派换源</h2><p><a href="https://mirror.tuna.tsinghua.edu.cn/help/raspbian/" target="_blank" rel="noopener"> 清华大学开源软件镜像站</a></p>
+<p>使用管理员权限（经由sudo），编辑/etc/apt/sources.list文件。参考命令行为：</p>
+<pre><code>$ sudo nano /etc/apt/sources.list</code></pre>
+
+<p>用#注释掉原文件内容，用以下内容取代：<br><a id="more"></a></p>
+<pre><code>deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi
+deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main contrib non-free rpi</code></pre>
+
+<p>使用管理员权限（经由sudo），编辑/etc/apt/sources.list.d/raspi.list文件。参考命令行为：</p>
+<pre><code>$ sudo nano /etc/apt/sources.list.d/raspi.list</code></pre>
+
+<p>用#注释掉原文件内容，用以下内容取代：</p>
+<pre><code>deb http://mirror.tuna.tsinghua.edu.cn/raspberrypi/ stretch main ui
+deb-src http://mirror.tuna.tsinghua.edu.cn/raspberrypi/ stretch main ui</code></pre>
+
+<p>注意： 网址末尾的raspbian重复两次是必须的。因为Raspbian的仓库中除了APT软件源还包含其他代码。APT软件源不在仓库的根目录，而在raspbian/子目录下。</p>
+<p>编辑镜像站后，请使用sudo apt-get update命令，更新软件源列表，同时检查您的编辑是否正确。</p>
+<h2 id="摄像头安装"><a href="#摄像头安装" class="headerlink" title="摄像头安装"></a>摄像头安装</h2><ol>
+<li>RPi固件和raspi-config已经为了摄像头更新，请执行一次apt-get update; apt-get upgrade;</li>
+<li>raspi-config中选择camera，启动RPi固件中的摄像头驱动，然后重启</li>
+<li>使用命令行程序raspivid和raspistill操作摄像头，捕捉视频片段或图像</li>
+<li>捕捉到的视频片段需要用mplayer播放</li>
+</ol>
+<p><a href="https://www.rs-online.com/designspark/chi-pi-cam-setup-tutorial" target="_blank" rel="noopener">参考教程1</a><br><a href></a></p>
+<h3 id="拍照"><a href="#拍照" class="headerlink" title="拍照"></a>拍照</h3><pre><code>$ raspistill -o 1.jpg -t 2000 </code></pre>
+这句命令将在 2000ms 后拍摄一张照片，然后保存为 1.jpg。
+
+raspiyuv 工具用法差不多，只不过拍摄得到的是一张未处理过的raw图像。
+
+通过摄像头模块拍视频
+想要用摄像头模块拍一段视频的话，可以从命令行运行 raspivid 工具。下面这句命令会按照默认配置(长度5秒，分辨率1920x1080，比特率 17Mbps)拍摄一段视频。
+
+<pre><code>$ raspivid -o ex.h264</code></pre>
+
+<p>如果你想改变拍摄时长，只要通过 “-t” 选项来设置你想要的长度就行了（单位是毫秒）。</p>
+<pre><code>$ raspivid -o ex.h264 -t 10000</code></pre>
+
+<p>使用 “-w” 和 “-h” 选项将分辨率降为 1280x720…</p>
+<pre><code>$ raspivid -o ex.h264 -t 10000 -w 1280 -h 720</code></pre>
+
+<p>raspivid 的输出是一段未压缩的 H.264 视频流，而且这段视频不含声音。为了能被通常的视频播放器所播放，这个 raw 的 H.264 视频还需要转换。可以使用 gpac 包中所带有的 MP4Box 应用。</p>
+<p>在 Raspbian 上安装 gpac，输入命令：</p>
+<pre><code>$ sudo apt-get install -y gpac </code></pre>
+然后将这段 raw 的 H.264 格式的视频流转换为每秒30帧的 .mp4 格式视频：
+
+<pre><code>$ MP4Box -fps 30 -add keychain.h264 keychain.mp4 </code></pre>
+视频长度为10秒，使用默认分辨率以及比特率。下面是一段通过 Pi Camera 拍摄的一段实例视频。
+
+### 如何将摄像头的数据通过网络直播播发出去：
+
+通过nc命令（ncat - Concatenate and redirect sockets）将摄像头的输入数据，直接重定向到网络端口实现输出.
+<pre><code>
+How to stream video from the Raspberry Pi camera over a network
+
+To view the feed on Linux
+
+Install the dependencies by running the following in a terminal:
+
+sudo apt-get install mplayer netcat
+
+Find your IP address by running ifconfig. (Your IP address will be listed in the console output and will probably be of the form 192.168.1.XXX).
+
+Run the following command in a terminal to view the feed using MPlayer:
+
+nc -l -p 5001   mplayer -fps 31 -cache 1024 -
+
+To view the feed on Windows
+
+Install and run Linux instead.
+
+Find your IP address by running ipconfig. (Your IP address will be listed in the console output and will probably be of the form 192.168.1.XXX).
+
+Download MPlayer.
+
+Download Netcat.
+
+Note that your browser may complain that these files are malicious, as they are unsigned executables.
+
+Press the Windows key and the ‘r’ key simultaneously to bring up the “Run” dialog. Enter cmd.exe into the dialog and press enter/return to open a DOS prompt.
+
+Enter the following command at the prompt to view the feed using MPlayer:
+
+[Path to nc.exe]\nc.exe -L -p 5001   [Path to mplayer.exe]\mplayer.exe -fps 31 -cache 1024 -
+
+To view the feed on OS X
+
+Download MPlayer.
+
+Alternatively, you can download mplayer using Brew, which we recommend.
+
+Find your IP address by running ifconfig. (Your IP address will be listed in the console output and will probably be of the form 192.168.1.XXX).
+
+Run the following command in Terminal to view the feed using MPlayer:
+
+nc -l -p 5001   mplayer -fps 31 -cache 1024 -
+
+To view the feed on a Raspberry Pi:
+
+Find your IP address by running ifconfig. (Your IP address will be listed in the console output and will probably be of the form 192.168.1.XXX).
+
+Run the following commands in a terminal on the receiving Pi:
+
+mkfifo buffer
+
+nc -p 5001 -l > buffer   /opt/vc/src/hello_pi/hello_video/hello_video.bin buffer
+
+To transmit the feed from the Pi with camera module attached
+
+After setting up the “receiving” machine as per the instructions above, run the following commands in a terminal on the “transmitting” Pi:
+
+raspivid -t 999999 -o –   nc [insert the IP address of the client] 5001
+
+
+You can then use the commands listed in the “How to use the Raspberry Pi camera software” section above to change the capture time or to add a video effect.
+</code></pre>
+
+<h2 id="raspberryPi摄像头命令行软件raspistill帮助文档"><a href="#raspberryPi摄像头命令行软件raspistill帮助文档" class="headerlink" title="raspberryPi摄像头命令行软件raspistill帮助文档"></a>raspberryPi摄像头命令行软件raspistill帮助文档</h2><p><a href="http://shumeipai.nxez.com/2014/09/21/raspicam-documentation.html" target="_blank" rel="noopener">树莓派摄像头模块应用程序文档翻译[转]</a><br><a href="https://github.com/raspberrypi/userland/tree/master/host_applications/linux/apps/raspicam" target="_blank" rel="noopener">英文项目Github地址</a></p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><pre><code>
+常用命令：
+# 两秒钟（时间单位为毫秒）延迟后拍摄一张照片，并保存为 image.jpg
+raspistill -t 2000 -o image.jpg
+
+# 拍摄一张自定义大小的照片。
+raspistill -t 2000 -o image.jpg -w 640 -h 480
+
+# 降低图像质量，减小文件尺寸
+raspistill -t 2000 -o image.jpg -q 5
+
+# 强制使预览窗口出现在坐标为 100,100 的位置，并且尺寸为宽 300 和高 200 像素。
+raspistill -t 2000 -o image.jpg -p 100,100,300,200
+
+# 禁用预览窗口
+raspistill -t 2000 -o image.jpg -n
+
+# 将图像保存为 PNG 文件（无损压缩格式，但是要比 JPEG 速度慢）。注意，当选择图像编码时，文件扩展名将被忽略。
+raspistill -t 2000 -o image.png –e png
+
+# 向 JPEG 文件中添加一些 EXIF 信息。该命令将会把作者名称标签设置为 Dreamcolor，GPS 海拔高度为 123.5米。
+raspistill -t 2000 -o image.jpg -x IFD0.Artist=Dreamcolor -x GPS.GPSAltitude=1235/10
+
+# 设置浮雕风格图像特效
+raspistill -t 2000 -o image.jpg -ifx emboss
+
+# 设置 YUV 图像的 U 和 V 通道为指定的值（128:128 为黑白图像）
+raspistill -t 2000 -o image.jpg -cfx 128:128
+
+# 仅显示两秒钟预览图像，而不对图像进行保存。
+raspistill -t 2000
+
+# 间隔获取图片，在 10 分钟（10 分钟 = 600000 毫秒）的时间里，每 10 秒获取一张，并且命名为 image_number_1_today.jpg，image_number_2_today.jpg... 的形式。
+raspistill -t 600000 -tl 10000 -o image_num_%d_today.jpg
+
+# 获取一张照片并发送至标准输出设备
+raspistill -t 2000 -o -
+
+# 获取一张照片并保存为一个文件
+raspistill -t 2000 -o - > my_file.jpg
+</code></pre>
+
+<h3 id="图像参数与命令"><a href="#图像参数与命令" class="headerlink" title="图像参数与命令"></a>图像参数与命令</h3><pre><code>
+-?,  --help             : 帮助文档
+-w,  --width            : 设置图像宽度 <尺寸>
+-h, --height            : 设置图像高度 <尺寸>
+-q, --quality           : 设置jpeg品质 <0到100>
+-r, --raw               : 增加raw原始拜尔数据到JPEG元数据
+-o, --output            : 输出文件名 <文件名>，如果要写到stdout，使用`-o -`，如果不特别指定，图像文件不会被保存
+-l, --latest            : 链接最近的完整图像到指定文件 <文件名>
+-v, --verbose           : 在运行摄像头时输出详细信息
+-t, --timeout           : 拍照和关闭时的延时指定，未指定时默认是5s
+-th, --thumb            : 设置预览图（小图）参数（包括X、Y、品质）或者不设置
+-d, --demo              : 运行一个demo模式（cycle through range of camera options, no capture），括号里的我可以理解成循环测试模式吗？
+-e, --encoding          : 编码来输出指定格式文件 （jpg, bmp, gif, png）
+-x, --exif              :将可交换图像文件应用到捕获中（格式：`key=value`）或者不设置
+-tl, --timelapse        : 间隔拍摄，每<ms>拍摄一张图片
+-fp, --fullpreview      : 用静态捕捉分辨率运行预览（可能会减小预览帧率）
+-k, --keypress          : 按键触发，按`ENTER`键拍照，按`X`然后`ENTER`键退出
+-s, -signal             : 信号触发，等待另一个进程信号来拍摄一张照片
+-g, -gl                 : 绘制预览到文本，而不是使用视频渲染组件（啥意思？）
+-gc, --glcapture        : 捕获GL帧buffer而不是摄像机图像
+-set, --settings        : 检索摄像机设置值然后写出到stdout
+-cs, --camselect        : 选择摄像头设备 <数字>，默认0
+-bm, --burst            : 运行burst capture mode
+
+-sh, --sharpness        : 设置图像锐度 （-100 到 100）
+-co, --contrast         : 设置图像对比度 （-100 到 100）
+-br, --brightness       : 设置图像亮度 （0 到 100）
+-sa, --saturation       : 设置图像饱和度 （-100 到 100）
+-ISO, --ISO             : 设置摄像头感光度
+-vs, --vstab            : Turn on video stabilisation 开启摄像头防抖模式（是这个意思吗？）
+-ev, --ev               : 设置EV补偿
+-ex, --exposure         : 设置曝光模式（参见提示）
+-awb, --awb             : 设置AWB模式（参见提示）
+-ifx, --imxfx           : 设置图像效应（参见提示）
+-cfx, --colfx           : 设置色彩效应（参见提示）
+-mm, --metering         : 设置测光模式（参见提示）
+-rot, --rotation        : 设置图像旋转 （0到359）
+-hf, --hflip            : 设置水平翻转 horizontal flip
+-vf, --vflip            : 设置垂直翻转 vertical flip
+-roi, --roi             : 设置interest区域 （啥叫interset?）
+--ss, --shutter         : 设置快门速度，微秒
+--awbg, --awbgains      : 设置AWB阈值， AWB模式必须关闭
+--drc, --drc            : 设置DRC水平
+
+</数字></ms></文件名></文件名></0到100></尺寸></尺寸></code></pre>
+
+<h3 id="预览参数与命令"><a href="#预览参数与命令" class="headerlink" title="预览参数与命令"></a>预览参数与命令</h3><pre><code>
+-p, --preview           : 预览窗口大小设置 <x,y,w,h>
+-f, --fullscreen        : 全屏幕预览模式
+-op, --opacity          : 预览窗口透明度 （0-255）
+-n, --nopreview         : 不显示预览窗口
+-gs, -glscene           : GL屏幕尺寸等参数
+-gw, -glwin             : GL窗口参数
+</x,y,w,h></code></pre>
+
+<h3 id="曝光模式选项"><a href="#曝光模式选项" class="headerlink" title="曝光模式选项"></a>曝光模式选项</h3><pre><code>
+auto                    : 自动曝光模式
+night                   : 夜间拍摄模式
+nightpreview            : 夜间预览拍摄模式
+backlight               : 逆光拍摄模式
+spotlight               : 聚光灯拍摄模式
+sports                  : 运动拍摄模式
+snow                    : 雪景拍摄模式
+beach                   : 海滩拍摄模式
+verylong                : 长时间曝光拍摄模式
+fixedfps                : 帧约束拍摄模式
+antishake               : 防抖模式
+fireworks               : 烟火拍摄模式
+</code></pre>
+
+<h3 id="自动白平衡选项"><a href="#自动白平衡选项" class="headerlink" title="自动白平衡选项"></a>自动白平衡选项</h3><pre><code>
+off                     : 关闭白平衡测算
+auto                    : 自动模式（默认）
+sun                     : 日光模式
+cloud                   : 多云模式
+shade                   : 阴影模式
+tungsten                : 钨灯模式
+fluorescent             : 荧光灯模式
+incandescent            : 白炽灯模式
+flash                   : 闪光模式
+horizon                 : 地平线模式
+</code></pre>
+
+<h3 id="图像特效选项"><a href="#图像特效选项" class="headerlink" title="图像特效选项"></a>图像特效选项</h3><pre><code>
+none                    : 无特效（默认）
+negative                : 反色图像
+solarise                : 曝光过度图像
+posterize               : 色调图像
+whiteboard              : 白板特效
+blackboard              : 黑板特效
+sketch                  : 素描风格特效
+denoise                 : 降噪图像
+emboss                  : 浮雕图像
+oilpaint                : 油画风格特效
+hatch                   : 草图特效
+gpen                    : 马克笔特效
+pastel                  : 柔化风格特效
+watercolour             : 水彩风格特效
+film                    : 胶片颗粒风格特效
+blur                    : 模糊图像
+saturation              : 色彩饱和图像
+colourswap              : 暂未可用
+washedout               : 暂未可用
+posterise               : 暂未可用
+colourpoint             : 暂未可用
+colourbalance           : 暂未可用
+cartoon                 : 暂未可用
+</code></pre>
+
+<h3 id="测光模式选项"><a href="#测光模式选项" class="headerlink" title="测光模式选项"></a>测光模式选项</h3><pre><code>
+average                 : 全画面平衡测光
+spot                    : 点测光
+backlit                 : 模拟背光图像
+matrix                  : 阵列测光
+</code></pre>
+
+<h2 id="使用motion搭建视频监控系统"><a href="#使用motion搭建视频监控系统" class="headerlink" title="使用motion搭建视频监控系统"></a>使用motion搭建视频监控系统</h2><p>motion是Linux下一款轻量级的视频监控软件，motion可以提供网络摄像头的功能，当拍摄过程中画面发生变动时，Motion可以保存动作发生时的图片和视频，这时如果将抓拍的图片或视频上传到百度云或者DropBox中就可以实现一个简单的监控系统。具体实现如下：</p>
+<p>安装motion</p>
+<pre><code>$sudo apt-get install motion</code></pre>
+
+<p>配置motion选项时，先对配置文件进行备份</p>
+<pre><code>$sudo cp /etc/motion/motion.conf /etc/motion/motion.conf.bak</code></pre>
+修改/etc/motion/motion.conf选项
+
+<pre><code>$sudo vim /etc/motion/motion.conf</code></pre>
+
+<pre><code>
+daemon on                            #开启守护进程（选配）
+target_dir /home/pi/motion-images    #文件保存的路径，图像变化时图片保存的路径         
+stream_localhost off                 #允许通过网页查看摄像
+</code></pre>
+
+
+<p>值得注意的是target_dir选项，默认值为/var/lib/motion。这是motion存储文件的目标文件夹。所存储文件包括了运动捕捉产生的图片或视频。用户motion必须对该目标文件夹有写入权限。这里我们将默认的文件目标进行了修改。同时注意，流媒体的默认端口是8081，这里后面会使用到。</p>
+<p>最后，在设置文件中，默认的视频设备（videodevice项）是/dev/video0。如果你连接好了摄像头，却无法在/dev下找到video0，那么可以尝试加载V4L2驱动：</p>
+<p><pre><code><br>sudo rpi-update<br>sudo modprobe bcm2835-v4l2 #加载驱动模块<br></code></pre><br>这样每次启动都要重新加载v4l2驱动，如果你希望开机就加载v4l2驱动可以在/etc/modules文件中加入bcm2835-v4l2，这样每次开机就可以直接加载v4l2驱动模块。</p>
+<p>修改/etc/default/motion，更改守护进程的设置：</p>
+<p><pre><code>start_motion_daemon=yes</code></pre><br>然后，启动motion</p>
+<p><pre><code>sudo motion</code></pre><br>在同一局域网下的其他电脑上，用浏览器打开192.168.23.122:8081，可以直接看到即时拍摄的流媒体：</p>
+<p>动作捕捉的图片和视频将存储在目录/home/pi/motion-images下。如果想改变动作捕捉的相关参数，例如动作捕捉的敏感度等，可以在/etc/motion/motion.conf中修改,这里需要参考具体motion的使用。</p>
+<p>当拍摄过程中画面发生变动时，Motion可以保存动作发生时的图片和视频</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p><a href="http://lavrsen.dk/foswiki/bin/view/Motion/ConfigFileOptions" target="_blank" rel="noopener">Motion - Config File Options</a><br><a href="https://blog.csdn.net/u013162035/article/details/78580486" target="_blank" rel="noopener">汉化参数参考</a></p>
+<h2 id="DIY网页端的树莓派流畅监控，官方CSI摄像头的正确用法"><a href="#DIY网页端的树莓派流畅监控，官方CSI摄像头的正确用法" class="headerlink" title="DIY网页端的树莓派流畅监控，官方CSI摄像头的正确用法"></a>DIY网页端的树莓派流畅监控，官方CSI摄像头的正确用法</h2><p>参考连接：</p>
+<p><a href="https://blog.csdn.net/NCTU_to_prove_safety/article/details/68928496" target="_blank" rel="noopener">https://blog.csdn.net/NCTU_to_prove_safety/article/details/68928496</a></p>
+<p>先安装依赖：</p>
+<p><code>apt-get install libjpeg8-dev cmake</code></p>
+<p>今天的主角 —— 别人的Github</p>
+<p>先在树莓派上下载其软件：</p>
+<p><code>wget https://github.com/jacksonliam/mjpg-streamer/archive/master.zip</code></p>
+<p><code># unzip master.zip   #解压~</code></p>
+<p><code># cd mjpg-streamer-master/mjpg-streamer-experimental</code></p>
+<p><code># vim plugins/input_raspicam/input_raspicam.c    #编辑该文件，没有vim就用别的</code></p>
+<p>进去以后，搜索fps，也就是按一下/键，然后输入fps，然后回车</p>
+<p><img data-src="http://source.jianyujianyu.com/input_raspicam.c.png" alt></p>
+<p>然后保存退出编辑器后，编译：</p>
+<p><code># make clean all</code></p>
+<p>写个脚本<br>假设刚才mjpg-streamer-master文件夹就在/test目录。</p>
+<p>回到自己的目录，编写脚本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># cd</span><br><span class="line"></span><br><span class="line"># vim start_web_video.sh</span><br></pre></td></tr></table></figure>
+<p>复制以下两句：</p>
+<p><code>cd /test/mjpg-streamer-master/mjpg-streamer-experimental
+./mjpg_streamer -i &quot;./input_raspicam.so&quot; -o &quot;./output_http.so -w ./www&quot;</code></p>
+<p>保存退出，给予权限：</p>
+<p><code># chmod +x start_web_video.sh</code></p>
+<p>运行<br><code>./start_web_video.sh</code></p>
+<p><img data-src="http://source.jianyujianyu.com/%E5%90%AF%E5%8A%A8start_web_video.sh.png" alt></p>
+<p>用浏览器访问<br>在你的电脑的浏览器访问</p>
+<p><code>http://你树莓派的ip:8080</code></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/树莓派填坑系列/" title="树莓派填坑系列">http://xchcloud.cn/树莓派填坑系列/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/树莓派/" rel="tag"><i class="fa fa-tag"></i> 树莓派</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/数据结构与算法之美/" rel="prev" title="数据结构与算法之美">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法之美
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Linux经验汇总/" rel="next" title="Linux经验汇总">
+      Linux经验汇总 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#博客资料"><span class="nav-text">博客资料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工具"><span class="nav-text">工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考项目"><span class="nav-text">参考项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码123456"><span class="nav-text">密码123456</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树莓派换源"><span class="nav-text">树莓派换源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#摄像头安装"><span class="nav-text">摄像头安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拍照"><span class="nav-text">拍照</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#raspberryPi摄像头命令行软件raspistill帮助文档"><span class="nav-text">raspberryPi摄像头命令行软件raspistill帮助文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用命令"><span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像参数与命令"><span class="nav-text">图像参数与命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预览参数与命令"><span class="nav-text">预览参数与命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#曝光模式选项"><span class="nav-text">曝光模式选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动白平衡选项"><span class="nav-text">自动白平衡选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像特效选项"><span class="nav-text">图像特效选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测光模式选项"><span class="nav-text">测光模式选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用motion搭建视频监控系统"><span class="nav-text">使用motion搭建视频监控系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DIY网页端的树莓派流畅监控，官方CSI摄像头的正确用法"><span class="nav-text">DIY网页端的树莓派流畅监控，官方CSI摄像头的正确用法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="jcli 笔记特性易于维护的 jcli 配置文件支持管理多个 Jenkins插件管理（列表、搜索、安装、上传）任务管理（搜索、构建、日志）在浏览器中打开 Jenkins重启 Jenkins支持连接代理 安装你可以从 jenkins-cli 的代码仓库中克隆 jcli（Go语言开发）。目前，我们支持三个主流的操作 系统平台： MacOS、Linux、和 Windows。">
+<meta name="keywords" content="jenkins,jcli">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins-jcli">
+<meta property="og:url" content="http://xchcloud.cn/jenkins-jcli/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="jcli 笔记特性易于维护的 jcli 配置文件支持管理多个 Jenkins插件管理（列表、搜索、安装、上传）任务管理（搜索、构建、日志）在浏览器中打开 Jenkins重启 Jenkins支持连接代理 安装你可以从 jenkins-cli 的代码仓库中克隆 jcli（Go语言开发）。目前，我们支持三个主流的操作 系统平台： MacOS、Linux、和 Windows。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:58:38.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jenkins-jcli">
+<meta name="twitter:description" content="jcli 笔记特性易于维护的 jcli 配置文件支持管理多个 Jenkins插件管理（列表、搜索、安装、上传）任务管理（搜索、构建、日志）在浏览器中打开 Jenkins重启 Jenkins支持连接代理 安装你可以从 jenkins-cli 的代码仓库中克隆 jcli（Go语言开发）。目前，我们支持三个主流的操作 系统平台： MacOS、Linux、和 Windows。">
+
+<link rel="canonical" href="http://xchcloud.cn/jenkins-jcli/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>jenkins-jcli | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/jenkins-jcli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jenkins-jcli
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-07 09:00:47" itemprop="dateCreated datePublished" datetime="2018-10-07T09:00:47+08:00">2018-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:58:38" itemprop="dateModified" datetime="2021-09-11T16:58:38+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/jenkins/" itemprop="url" rel="index"><span itemprop="name">jenkins</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/jenkins-jcli/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="jenkins-jcli/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="jcli-笔记"><a href="#jcli-笔记" class="headerlink" title="jcli 笔记"></a>jcli 笔记</h3><h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><p>易于维护的 jcli 配置文件<br>支持管理多个 Jenkins<br>插件管理（列表、搜索、安装、上传）<br>任务管理（搜索、构建、日志）<br>在浏览器中打开 Jenkins<br>重启 Jenkins<br>支持连接代理</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>你可以从 <a href="https://github.com/jenkins-zh/jenkins-cli" target="_blank" rel="noopener">jenkins-cli</a> 的代码仓库中克隆 jcli（Go语言开发）。目前，我们支持三个主流的操作 系统平台： MacOS、Linux、和 Windows。<br><a id="more"></a><br>MacOS<br>你可以使用 brew 安装 jcli。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew tap jenkins-zh/jcli</span><br><span class="line">brew install jcli</span><br><span class="line">Linux</span><br></pre></td></tr></table></figure>
+<p>在 Linux 下安装也是非常的简单。你只需要执行下面的命令即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://github.com/jenkins-zh/jenkins-cli/releases/latest/download/jcli-linux-amd64.tar.gz|tar xzv</span><br><span class="line">sudo mv jcli /usr/local/bin/</span><br></pre></td></tr></table></figure></p>
+<p>Windows<br>你可以点击<a href="https://github.com/jenkins-zh/jenkins-cli/releases/latest/download/jcli-windows-386.tar.gz" target="_blank" rel="noopener">下载链接</a>到最新的版本。 然后，下载 tar 文件，把解压后的 jcli 拷贝到系统目录下。</p>
+<h4 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h4><p>你安装好 jcli 后，可以通过下面的命令生成一个配置样本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ jcli config generate</span><br><span class="line">current: yourServer</span><br><span class="line">jenkins_servers:</span><br><span class="line">- name: yourServer</span><br><span class="line">  url: http://localhost:8080/jenkins</span><br><span class="line">  username: admin</span><br><span class="line">  token: 111e3a2f0231198855dceaff96f20540a9</span><br><span class="line">  proxy: &quot;&quot;</span><br><span class="line">  proxyAuth: &quot;&quot;</span><br><span class="line"># Goto &apos;http://localhost:8080/jenkins/me/configure&apos;, then you can generate your token.</span><br></pre></td></tr></table></figure></p>
+<p>在大多数情况下，你应该只需要修改三个字段，包括：url、username 和 token。好的，我相信你已经准备好了。 然后，就可以通过下面的命令来检查你的 Jenkins 中是否安装了 github 插件：</p>
+<p><code>jcli plugin list --filter name=github</code></p>
+<p>下面是详细命令说明。</p>
+<h4 id="command"><a href="#command" class="headerlink" title="command"></a>command</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">jcli [Command] [Flags]        # 文档中 [command] 为必须含有命令，[flags] 为参数</span><br><span class="line"></span><br><span class="line">Available Commands:</span><br><span class="line">  config                                                  配置相关</span><br><span class="line">  center                                                  管理和更新中心</span><br><span class="line">  completion  Genereate bash completion scripts           ？？？？？？？</span><br><span class="line">  config      Manage the config of jcli                   配置管理jcli的配置</span><br><span class="line">  crumb       Print crumbIssuer of Jenkins                停止job</span><br><span class="line">  doc         Generate document for all jcl commands      生成说明文档</span><br><span class="line">  help        Help about any command                      帮助</span><br><span class="line">  job         Print the job of your Jenkins               job 管理</span><br><span class="line">  open        Open your Jenkins with a browse             应该就是浏览器打开，没用</span><br><span class="line">  plugin      Manage the plugins of Jenkins               管理插件</span><br><span class="line">  queue       Manage the queue of your Jenkins            管理队列</span><br><span class="line">  restart     Restart your Jenkins                        重启</span><br><span class="line">  user        Print the user of your Jenkins              用户管理</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Global Flags:</span><br><span class="line">      --configFile string   备用配置文件</span><br><span class="line">      --debug               将输出打印到 debug.html</span><br><span class="line">  -j, --jenkins string      选择要控制的 jenkins 服务器</span><br><span class="line">  -v, --version             打印 Jenkins CLI</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">全局可用参数：</span><br><span class="line">[root@VM_89_116_centos ~]# jcli -j ex2</span><br><span class="line">Jenkins CLI (jcli) manage your Jenkins</span><br><span class="line">Current Jenkins is: ex2</span><br><span class="line"></span><br><span class="line">[root@VM_89_116_centos ~]# jcli -v</span><br><span class="line">Jenkins CLI (jcli) manage your Jenkins</span><br><span class="line">Version: v0.0.22</span><br><span class="line">Commit: eade6aa</span><br></pre></td></tr></table></figure>
+<h4 id="config"><a href="#config" class="headerlink" title="config"></a>config</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">命令参数说明：</span><br><span class="line"></span><br><span class="line"># jcli config [command][Flags]</span><br><span class="line"></span><br><span class="line">  add         添加一个配置项</span><br><span class="line">  edit        修改一个配置项</span><br><span class="line">  generate    生成一个配置文件做参考</span><br><span class="line">  list        列出所有的配置项</span><br><span class="line">  remove      移除一个配置项</span><br><span class="line">  select      选择一个配置项</span><br></pre></td></tr></table></figure>
+<h5 id="generate"><a href="#generate" class="headerlink" title="generate"></a>generate</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_89_116_centos ~]# jcli config generate</span><br><span class="line"></span><br><span class="line">生成的默认配置文件：</span><br><span class="line"></span><br><span class="line">current: yourServer</span><br><span class="line">language: &quot;&quot;</span><br><span class="line">jenkins_servers:</span><br><span class="line">- name: yourServer</span><br><span class="line">  url: http://localhost:8080/jenkins</span><br><span class="line">  username: admin</span><br><span class="line">  token: 111e3a2f0231198855dceaff96f20540a9</span><br><span class="line">  proxy: &quot;&quot;</span><br><span class="line">  proxyAuth: &quot;&quot;</span><br><span class="line">  description: &quot;&quot;</span><br><span class="line">preHooks: []</span><br><span class="line">postHooks: []</span><br><span class="line">pluginSuites: []</span><br><span class="line"></span><br><span class="line"># Language context is accept-language for HTTP header, It contains zh-CN/zh-TW/en/en-US/ja and so on</span><br><span class="line"># Goto &apos;http://localhost:8080/jenkins/me/configure&apos;, then you can generate your token.</span><br><span class="line"></span><br><span class="line">#语言上下文是 HTTP 头的接受语言，它包含 zh-CN/zh-TW/en/en-US/ja 等</span><br><span class="line">#转到“http://localhost:8080/jenkins/me/configure”，然后可以生成令牌。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">配置文件参数说明：</span><br><span class="line">username：你生成密匙时所登录的用户名</span><br><span class="line">proxy: 代理</span><br><span class="line">proxyAuth: &quot;&quot;</span><br><span class="line">description: &quot;&quot;</span><br><span class="line">preHooks: []</span><br><span class="line">postHooks: []</span><br><span class="line">pluginSuites: []</span><br></pre></td></tr></table></figure>
+<h5 id="add"><a href="#add" class="headerlink" title="add"></a>add</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli config add [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -d, --description string   Description of the Jenkins</span><br><span class="line">  -h, --help                 help for add</span><br><span class="line">  -n, --name string          Name of the Jenkins</span><br><span class="line">  -p, --proxy string         Proxy of the Jenkins</span><br><span class="line">  -a, --proxyAuth string     ProxyAuth of the Jenkins</span><br><span class="line">  -t, --token string         Token of the Jenkins</span><br><span class="line">      --url string           URL of the Jenkins</span><br><span class="line">  -u, --username string      UserName of the Jenkins</span><br><span class="line"></span><br><span class="line">example：</span><br><span class="line">增加配置两种方式：</span><br><span class="line">[root@VM_89_116_centos ~]# jcli config add -n ex1 -t 11ae42858f43b1d28335067efa4aaf6ada -u admin --url=http://localhost:8080</span><br><span class="line">[root@VM_89_116_centos ~]# jcli config add -n ex2</span><br><span class="line">新建 ex2 文件后，通过文件编辑器对 edit 修改文件。</span><br><span class="line"></span><br><span class="line">在大多数情况下，只需要注意四个字段，包括：name、url、username 和 token。</span><br><span class="line"></span><br><span class="line">[root@VM_89_116_centos ~]# jcli config edit</span><br><span class="line">current: yourServer</span><br><span class="line">language: &quot;&quot;</span><br><span class="line">jenkins_servers:</span><br><span class="line">- name: yourServer</span><br><span class="line">  url: http://localhost:8080</span><br><span class="line">  username: admin</span><br><span class="line">  token: 11d61409b3a23c5a5a340eb0423b5121b4</span><br><span class="line">  proxy: &quot;&quot;</span><br><span class="line">  proxyAuth: &quot;&quot;</span><br><span class="line">  description: &quot;&quot;</span><br><span class="line">- name: ex1</span><br><span class="line">  url: http://localhost:8080</span><br><span class="line">  username: admin</span><br><span class="line">  token: 11ae42858f43b1d28335067efa4aaf6ada</span><br><span class="line">  proxy: &quot;&quot;</span><br><span class="line">  proxyAuth: &quot;&quot;</span><br><span class="line">  description: &quot;&quot;</span><br><span class="line">preHooks: []</span><br><span class="line">postHooks: []</span><br><span class="line">pluginSuites: []</span><br></pre></td></tr></table></figure>
+<h5 id="list"><a href="#list" class="headerlink" title="list"></a>list</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_89_116_centos ~]# jcli config list</span><br><span class="line"></span><br><span class="line">number name        url                       description</span><br><span class="line">0      *yourServer http://localhost:8080</span><br><span class="line">1      ex1         http://localhost:8080</span><br></pre></td></tr></table></figure>
+<h5 id="edit"><a href="#edit" class="headerlink" title="edit"></a>edit</h5><p><code>[root@VM_89_116_centos ~]# jcli config edit ex1</code></p>
+<h5 id="select"><a href="#select" class="headerlink" title="select"></a>select</h5><p><code>[root@VM_89_116_centos ~]# jcli config select ex1</code></p>
+<h5 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli config remove [flags]</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli config remove ex1</span><br></pre></td></tr></table></figure>
+<h4 id="center"><a href="#center" class="headerlink" title="center"></a>center</h4><p>控制 jenkins 的下载更新</p>
+<h5 id="upgrade"><a href="#upgrade" class="headerlink" title="upgrade"></a>upgrade</h5><p>Upgrade your Jenkins</p>
+<p><code>[root@VM_89_116_centos ~]# jcli center upgrade</code></p>
+<h5 id="download"><a href="#download" class="headerlink" title="download"></a>download</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli center download [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help            help for download</span><br><span class="line">      --lts             If you want to download Jenkins as LTS (default true)</span><br><span class="line">  -o, --output string   The file of output (default &quot;jenkins.war&quot;)</span><br><span class="line">      --progress        If you want to show the download progress (default true)</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli center download</span><br><span class="line">[root@VM_89_116_centos ~]# jcli center download -o ex4.war --progress=false</span><br><span class="line">重命名为ex4.war，progress 默认为 true，显示下载进度条。</span><br></pre></td></tr></table></figure>
+<h5 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Watch your update center status</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli center watch [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">      --count int               Count of watch (default 9999)</span><br><span class="line">                                计数（默认9999）</span><br><span class="line">  -i, --interval int            Interval of watch (default 1)</span><br><span class="line">                                间隔（默认值1）</span><br><span class="line">      --util-install-complete   The watch will be continue util all Jenkins plugins installation is completed </span><br><span class="line">                                监视将继续直到所有 Jenkins 插件安装完成</span><br><span class="line">      --util-need-restart       The watch will be continue util Jenkins needs restart</span><br><span class="line">                                启动监视将继续直到 Jenkins 需要重新启动</span><br><span class="line"></span><br><span class="line">watch 的参数可调，调节监控间隔时间、触发条件，通常用不到。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli center watch</span><br><span class="line">Jenkins Version: 2.190.2</span><br></pre></td></tr></table></figure>
+<h4 id="completion"><a href="#completion" class="headerlink" title="completion"></a>completion</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Genereate bash completion scripts</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli completion </span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line"># Installing bash completion on macOS using homebrew</span><br><span class="line">        ## If running Bash 3.2 included with macOS</span><br><span class="line">        brew install bash-completion</span><br><span class="line">        ## or, if running Bash 4.1+</span><br><span class="line">        brew install bash-completion@2</span><br><span class="line">        ## you may need add the completion to your completion directory</span><br><span class="line">        jcli completion &gt; $(brew --prefix)/etc/bash_completion.d/jcli</span><br><span class="line">        ## If you get trouble, please visit https://github.com/jenkins-zh/jenkins-cli/issues/83.</span><br><span class="line"></span><br><span class="line">[root@VM_89_116_centos ~]# jcli completion &gt; $(brew --prefix)/etc/bash_completion.d/jcli</span><br></pre></td></tr></table></figure>
+<h4 id="crumb"><a href="#crumb" class="headerlink" title="crumb"></a>crumb</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Print crumbIssuer of Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli crumb </span><br><span class="line"></span><br><span class="line">example：</span><br><span class="line">  [root@VM_89_116_centos ~]# jcli crumb</span><br><span class="line">  Jenkins-Crumb=9775c2ca9bcbac492dcb16ca2509d5b7f89bae378553d1d761865c42ec3a924c</span><br></pre></td></tr></table></figure>
+<h4 id="job"><a href="#job" class="headerlink" title="job"></a>job</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Print the job of your Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job [flags]</span><br><span class="line">  jcli job [command]</span><br><span class="line"></span><br><span class="line">Available Commands:</span><br><span class="line">  artifact    Print the artifact list of target job：   显示出目标 job 的所有制品</span><br><span class="line">  build       Build the job of your Jenkins：           构建job</span><br><span class="line">  create      Create a job in your Jenkins：            创造job</span><br><span class="line">  delete      Delete a job in your Jenkins              删除job</span><br><span class="line">  edit        Edit the job of your Jenkins              修改一个job</span><br><span class="line">  history     Print the history of job in your Jenkins  显示出 job 历史记录</span><br><span class="line">  input       Input a job in your Jenkins               输入一个 job</span><br><span class="line">  log         Print the job of your Jenkins             打印 job 日志</span><br><span class="line">  param       Get param of the job of your Jenkins      获取 job 的参数</span><br><span class="line">  search      Print the job of your Jenkins             查询 job</span><br><span class="line">  stop        Stop a job build in your Jenkins          停止 job</span><br><span class="line">  type        Print the types of job which in your Jenkins   打印出 job 的类型</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help            help for job</span><br><span class="line">  -o, --output string   Format the output (default &quot;json&quot;)</span><br></pre></td></tr></table></figure>
+<h5 id="artifact-（？）"><a href="#artifact-（？）" class="headerlink" title="artifact （？）"></a>artifact （？）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Print the artifact list of target job</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job artifact &lt;jobName&gt; [buildID] [flags]</span><br><span class="line">  jcli job artifact [command]</span><br><span class="line"></span><br><span class="line">Available Commands:</span><br><span class="line">  download    Download the artifact of target job</span><br><span class="line">Flags:</span><br><span class="line">  -h, --help</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli job artifact download &lt;jobName&gt; [buildID] [flags]</span><br><span class="line"></span><br><span class="line">Download the artifact of target job</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">      --download-dir string   The directory which artifact will be downloaded</span><br><span class="line">  -h, --help                  help for download</span><br><span class="line">  -i, --id string             ID of the job artifact</span><br><span class="line">      --progress              Whether show the progress (default true)</span><br></pre></td></tr></table></figure>
+<h5 id="build"><a href="#build" class="headerlink" title="build"></a>build</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Build the job of your Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job build &lt;jobName&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -b, --batch          Batch mode, no need confirm   批处理模式，无需确认</span><br><span class="line">  -h, --help           help for build</span><br><span class="line">      --param string   Params of the job             作业参数</span><br><span class="line">      --verbose        Output the verbose            详细输出</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job build devops_ci_cd_pipline_ex1 -b --verbose</span><br></pre></td></tr></table></figure>
+<h5 id="create"><a href="#create" class="headerlink" title="create"></a>create</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Create a job in your Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job create &lt;jobName&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">      --copy string   Copy an exists job</span><br><span class="line">  -h, --help          help for create</span><br><span class="line">      --type string   Which type do you want to create</span><br><span class="line"></span><br><span class="line">type:</span><br><span class="line">    Folder</span><br><span class="line">    GitHub Organization</span><br><span class="line">    Multibranch Pipeline</span><br><span class="line">    Freestyle project</span><br><span class="line">    Maven project</span><br><span class="line">    Multi-configuration project</span><br><span class="line">    Pipeline</span><br><span class="line">    External Job</span><br><span class="line">    MultiJob Project</span><br><span class="line"></span><br><span class="line">example: </span><br><span class="line">通过复制已有任务来创建新任务</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job create ex4 --copy devops_ci_cd_pipline_ex1</span><br><span class="line">创建新任务</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job create ex5</span><br></pre></td></tr></table></figure>
+<h5 id="edit-1"><a href="#edit-1" class="headerlink" title="edit"></a>edit</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Edit the job of your Jenkins </span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job edit &lt;jobName&gt; </span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job edit devops_pipeline</span><br><span class="line"></span><br><span class="line">安装 pipeline-restful-api 插件然后重启</span><br></pre></td></tr></table></figure>
+<h5 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Delete a job in your Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job delete &lt;jobName&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -b, --batch   Batch mode, no need confirm   不用询问确认是否创建</span><br><span class="line">  -h, --help    help for delete</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job delete ex5 -b</span><br></pre></td></tr></table></figure>
+<h5 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Stop a job build in your Jenkins</span><br><span class="line">似乎有 bug ，要触发两次才能生效。</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job stop &lt;jobName&gt; &lt;buildNumber&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -b, --batch   Batch mode, no need confirm          批处理模式，无需确认</span><br><span class="line">  -h, --help    help for stop</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">    jcli job stop devops_ci_cd_pipline_ex1 37 -b</span><br></pre></td></tr></table></figure>
+<h5 id="input（？）"><a href="#input（？）" class="headerlink" title="input（？）"></a>input（？）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input a job in your Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job input &lt;jobName&gt; [buildID] [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">      --action string   The action wether you want to process or abort.  </span><br><span class="line">                        活动处理或者终止</span><br><span class="line">  -h, --help            help for input</span><br></pre></td></tr></table></figure>
+<h5 id="history"><a href="#history" class="headerlink" title="history"></a>history</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Print the history of job in your Jenkins</span><br><span class="line">查看历史构建状态。</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job history &lt;jobName&gt; </span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job history devops_ci_cd_pipline_ex1</span><br><span class="line">    number displayname building result</span><br><span class="line">    0      #42         false    FAILURE</span><br><span class="line">    1      #41         true</span><br><span class="line">    2      #40         true</span><br><span class="line">    3      #39         false    SUCCESS</span><br><span class="line">    4      #38         false    ABORTED</span><br></pre></td></tr></table></figure>
+<h5 id="log"><a href="#log" class="headerlink" title="log"></a>log</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">查看历史构建日志信息（控制台输出信息）。</span><br><span class="line">Usage:</span><br><span class="line">  jcli job log &lt;jobName&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help           help for log</span><br><span class="line">  -s, --history int    Specific build history of log (default -1)  特殊构建历史日志</span><br><span class="line">  -i, --interval int   Interval of watch (default 1)               查看间隔</span><br><span class="line">  -w, --watch          Watch the job logs                          查看 job 日志</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job log devops_ci_cd_pipline_ex1</span><br></pre></td></tr></table></figure>
+<h5 id="search"><a href="#search" class="headerlink" title="search"></a>search</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli job search [keyword] [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">      --all       Print all items if there&apos;s no keyword</span><br><span class="line">                  打印所有 job</span><br><span class="line">  -h, --help      help for search</span><br><span class="line">      --max int   The number of limitation to print (default 10)</span><br><span class="line">                  每次打印限制个数，默认为10</span><br></pre></td></tr></table></figure>
+<h5 id="type"><a href="#type" class="headerlink" title="type"></a>type</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Print the types of job which in your Jenkins   统计 jenkins 里面的类型</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job type &lt;jobName&gt;</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job type devops_ci_cd_pipline_ex1</span><br><span class="line">    number name                        type</span><br><span class="line">    0      Freestyle project           Standalone Projects</span><br><span class="line">    1      Maven project               Standalone Projects</span><br><span class="line">    2      Pipeline                    Standalone Projects</span><br><span class="line">    3      External Job                Standalone Projects</span><br><span class="line">    4      Multi-configuration project Standalone Projects</span><br><span class="line">    0      MultiJob Project            Uncategorized</span><br><span class="line">    0      Folder                      Nested Projects</span><br><span class="line">    1      GitHub Organization         Nested Projects</span><br><span class="line">    2      Multibranch Pipeline        Nested Projects</span><br></pre></td></tr></table></figure>
+<h5 id="param"><a href="#param" class="headerlink" title="param"></a>param</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Get param of the job of your Jenkins</span><br><span class="line">获取 job 的参数</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli job param &lt;jobName&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help     help for param</span><br><span class="line">      --indent   Output with indent    缩进输出</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli job param pipeline_cicd_ex3</span><br><span class="line"></span><br><span class="line">[&#123;&quot;Description&quot;:&quot;please give a name&quot;,&quot;name&quot;:&quot;userName&quot;,&quot;Type&quot;:&quot;StringParameterDefinition&quot;,&quot;value&quot;:&quot;&quot;,&quot;DefaultParameterValue&quot;:&#123;&quot;Description&quot;:&quot;&quot;,&quot;Value&quot;:&quot;Anthony&quot;&#125;&#125;,&#123;&quot;Description&quot;:&quot;select the version to test&quot;,&quot;name&quot;:&quot;version&quot;,&quot;Type&quot;:&quot;ChoiceParameterDefinition&quot;,&quot;value&quot;:&quot;&quot;,&quot;DefaultParameterValue&quot;:&#123;&quot;Description&quot;:&quot;&quot;,&quot;Value&quot;:&quot;1.1&quot;&#125;&#125;,&#123;&quot;Description&quot;:&quot;you is boy or not&quot;,&quot;name&quot;:&quot;is_boy&quot;,&quot;Type&quot;:&quot;BooleanParameterDefinition&quot;,&quot;value&quot;:&quot;&quot;,&quot;DefaultParameterValue&quot;:&#123;&quot;Description&quot;:&quot;&quot;,&quot;Value&quot;:true&#125;&#125;]</span><br><span class="line"></span><br><span class="line">pipeline_cicd_ex3:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pipeline&#123;</span><br><span class="line"> </span><br><span class="line">    agent any</span><br><span class="line">    parameters &#123;</span><br><span class="line">        string(name: &apos;userName&apos;, defaultValue: &apos;Anthony&apos;, description: &apos;please give a name&apos;)</span><br><span class="line">        choice(name: &apos;version&apos;, choices: [&apos;1.1&apos;, &apos;1.2&apos;, &apos;1.3&apos;], description: &apos;select the version to test&apos;)</span><br><span class="line">        booleanParam(name: &apos;is_boy&apos;, defaultValue: true, description: &apos;you is boy or not&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(&apos;test&apos;) &#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                script &#123;</span><br><span class="line">                    sh &quot;java -version&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="open"><a href="#open" class="headerlink" title="open"></a>open</h4><p>Open your Jenkins with a browse<br>（用不到）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli open [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -c, --config        Open the configuration page of Jenkins</span><br><span class="line">  -h, --help          help for open</span><br><span class="line">  -i, --interactive   Interactive mode</span><br><span class="line">  -n, --name string   Open a specific Jenkins by name</span><br></pre></td></tr></table></figure></p>
+<h4 id="plugin"><a href="#plugin" class="headerlink" title="plugin"></a>plugin</h4><p>插件管理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli plugin [command]</span><br><span class="line"></span><br><span class="line">Available Commands:</span><br><span class="line">  check       Checkout update center server                 检查可更新</span><br><span class="line">  download    Download the plugins                          下载插件</span><br><span class="line">  install     Install the plugins                           安装插件</span><br><span class="line">  list        Print all the plugins which are installed     打印已安装的插件</span><br><span class="line">  open        Openout update center server                  启动更新</span><br><span class="line">  search      Print the plugins of your Jenkins             查找已安装的插件</span><br><span class="line">  trend       Show the trend of the plugin                  显示出插件趋势</span><br><span class="line">  uninstall   Uninstall the plugins                         卸载插件</span><br><span class="line">  upgrade     Upgrade the specific plugin                   更新特定的插件</span><br><span class="line">  upload      Upload a plugin  to your Jenkins              上传插件</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line"></span><br><span class="line">  jcli plugin upgrade [plugin name] --filter stringArray   Filter for the list, like: name=foo</span><br></pre></td></tr></table></figure></p>
+<h5 id="upgrade-1"><a href="#upgrade-1" class="headerlink" title="upgrade"></a>upgrade</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Upgrade the specific plugin</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin upgrade [plugin name] [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">      --filter stringArray   Filter for the list, like: name=foo    筛选</span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli plugin upgrade pipeline-model-api</span><br></pre></td></tr></table></figure>
+<h5 id="trend"><a href="#trend" class="headerlink" title="trend"></a>trend</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Show the trend of the plugin</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin trend &lt;pluginName&gt; </span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli plugin trend pipeline-model-api</span><br><span class="line">***************** 180628</span><br><span class="line">***************** 179369</span><br></pre></td></tr></table></figure>
+<h5 id="check"><a href="#check" class="headerlink" title="check"></a>check</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Checkout update center server</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin check </span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli plugin check -h</span><br><span class="line">Checkout update center server</span><br></pre></td></tr></table></figure>
+<h5 id="download-1"><a href="#download-1" class="headerlink" title="download"></a>download</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Download the plugins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin download &lt;keyword&gt;        关键字。。。。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli plugin download pipeline-github</span><br><span class="line">Start to collect plugin dependencies...</span><br><span class="line">Ready to download plugins, total: 31.</span><br><span class="line">Start to download plugin pipeline-github, version: 2.5, number: 0</span><br><span class="line">Start to download plugin workflow-cps, version: 2.76, number: 1</span><br><span class="line">Start to download plugin workflow-api, version: 2.37, number: 2</span><br><span class="line">Start to download plugin workflow-step-api, version: 2.20, number: 3</span><br><span class="line">Start to download plugin structs, version: 1.20, number: 4</span><br><span class="line">Start to download plugin jdk-tool, version: 1.3, number: 5</span><br><span class="line">Start to download plugin jaxb, version: 2.3.0.1, number: 6</span><br><span class="line">Start to download plugin trilead-api, version: 1.0.5, number: 7</span><br><span class="line">Start to download plugin scm-api, version: 2.6.3, number: 8</span><br></pre></td></tr></table></figure>
+<h5 id="uninstall"><a href="#uninstall" class="headerlink" title="uninstall"></a>uninstall</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Uninstall the plugins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin uninstall [pluginName] </span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli plugin uninstall mapdb-api</span><br></pre></td></tr></table></figure>
+<h5 id="install"><a href="#install" class="headerlink" title="install"></a>install</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Install the plugins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin install [pluginName] [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help           help for install</span><br><span class="line">      --suite string   Suite of plugins</span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli plugin install pipeline-github</span><br><span class="line"></span><br><span class="line">注意：插件安装后要重启，要重启~</span><br></pre></td></tr></table></figure>
+<h5 id="search-1"><a href="#search-1" class="headerlink" title="search"></a>search</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_89_116_centos ~]# jcli plugin search github</span><br><span class="line">number name                                  installed version installedVersion title</span><br><span class="line">0      github-branch-source                  true              2.5.8            GitHub Branch Source Plugin</span><br><span class="line">1      github                                true              1.29.5           GitHub plugin</span><br><span class="line">2      github-api                            true              1.95             GitHub API Plugin</span><br><span class="line">3      pipeline-github-lib                   true              1.0              Pipeline: GitHub Groovy Libraries</span><br><span class="line">4      blueocean-github-pipeline             false     1.19.0                   GitHub Pipeline for Blue Ocean</span><br><span class="line">5      disable-github-multibranch-status     false     1.1                      Disable GitHub Multibranch Status</span><br><span class="line">6      github-autostatus                     false     3.6.0                    Job and Stage monitoring</span><br><span class="line">7      github-coverage-reporter              false     1.8                      GitHub Coverage Reporter</span><br><span class="line">8      github-issues                         false     1.2.4                    GitHub Issues</span><br><span class="line">9      github-oauth                          false     0.33                     GitHub Authentication</span><br><span class="line">10     github-organization-folder            false     1.6                      GitHub Organization Folder</span><br><span class="line">11     github-pr-comment-build               false     2.1                      GitHub PR Comment Build</span><br><span class="line">12     github-pr-coverage-status             false     2.1.1                    GitHub Pull Request Coverage Status</span><br><span class="line">13     github-pullrequest                    false     0.2.6</span><br></pre></td></tr></table></figure>
+<h5 id="list-1"><a href="#list-1" class="headerlink" title="list"></a>list</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_89_116_centos ~]# jcli plugin list</span><br><span class="line">number name                               version    update</span><br><span class="line">0      mercurial                          2.8        false</span><br><span class="line">1      pipeline-milestone-step            1.3.1      false</span><br><span class="line">2      locale                             1.4        false</span><br><span class="line">3      teamconcert                        1.3.0      false</span><br><span class="line">4      mapdb-api                          1.0.9.0    false</span><br><span class="line">5      throttle-concurrents               2.0.1      false</span><br><span class="line">6      workflow-scm-step                  2.9        false</span><br><span class="line">7      tfs                                5.157.0    false</span><br><span class="line">8      cvs                                2.14       false</span><br><span class="line">9      credentials-binding                1.20       false</span><br><span class="line">10     matrix-auth                        2.5        false</span><br><span class="line">11     pam-auth                           1.6        false</span><br><span class="line">12     ssh                                2.6.1      false</span><br><span class="line">13     emailext-template                  1.1        false</span><br><span class="line">14     momentjs                           1.1.1      false</span><br></pre></td></tr></table></figure>
+<h5 id="upload"><a href="#upload" class="headerlink" title="upload:"></a>upload:</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Upload a plugin from local filesystem or remote URL to your Jenkins</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line">  jcli plugin upload [flags]</span><br><span class="line"></span><br><span class="line">Aliases:</span><br><span class="line">  upload, up</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help                     help for upload</span><br><span class="line">  -r, --remote string            Remote plugin URL</span><br><span class="line">      --remote-jenkins string    Remote Jenkins which will find from config list</span><br><span class="line">      --remote-password string   Password of remote plugin URL</span><br><span class="line">      --remote-user string       User of remote plugin URL</span><br><span class="line">      --show-progress            Whether show the upload progress (default true)</span><br><span class="line">      --skip-posthook            Whether skip the post command hook</span><br><span class="line">      --skip-prehook             Whether skip the previous command hook</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">    jcli plugin upload --remote https://server/sample.hpi</span><br><span class="line">    jcli plugin upload sample.hpi</span><br><span class="line">    jcli plugin upload sample.hpi --show-progress=false</span><br></pre></td></tr></table></figure>
+<h4 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h4><p>队列管理</p>
+<h5 id="list-2"><a href="#list-2" class="headerlink" title="list"></a>list</h5><p>列出所有队列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli queue list [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help            help for list</span><br><span class="line">  -o, --output string   Format the output (default &quot;json&quot;)</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli queue list</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;Items&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;Blocked&quot;: false,</span><br><span class="line">      &quot;Buildable&quot;: true,</span><br><span class="line">      &quot;ID&quot;: 122,</span><br><span class="line">      &quot;Params&quot;: &quot;&quot;,</span><br><span class="line">      &quot;Pending&quot;: false,</span><br><span class="line">      &quot;Stuck&quot;: false,</span><br><span class="line">      &quot;URL&quot;: &quot;queue/item/122/&quot;,</span><br><span class="line">      &quot;Why&quot;: &quot;等待下一个可用的执行器&quot;,</span><br><span class="line">      &quot;BuildableStartMilliseconds&quot;: 1573714706814,</span><br><span class="line">      &quot;InQueueSince&quot;: 1573714706758,</span><br><span class="line">      &quot;Actions&quot;: []</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;Blocked&quot;: false,</span><br><span class="line">      &quot;Buildable&quot;: true,</span><br><span class="line">      &quot;ID&quot;: 120,</span><br><span class="line">      &quot;Params&quot;: &quot;&quot;,</span><br><span class="line">      &quot;Pending&quot;: false,</span><br><span class="line">      &quot;Stuck&quot;: false,</span><br><span class="line">      &quot;URL&quot;: &quot;queue/item/120/&quot;,</span><br><span class="line">      &quot;Why&quot;: &quot;等待下一个可用的执行器&quot;,</span><br><span class="line">      &quot;BuildableStartMilliseconds&quot;: 1573714673447,</span><br><span class="line">      &quot;InQueueSince&quot;: 1573714673446,</span><br><span class="line">      &quot;Actions&quot;: []</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;Blocked&quot;: false,</span><br><span class="line">      &quot;Buildable&quot;: true,</span><br><span class="line">      &quot;ID&quot;: 118,</span><br><span class="line">      &quot;Params&quot;: &quot;&quot;,</span><br><span class="line">      &quot;Pending&quot;: false,</span><br><span class="line">      &quot;Stuck&quot;: false,</span><br><span class="line">      &quot;URL&quot;: &quot;queue/item/118/&quot;,</span><br><span class="line">      &quot;Why&quot;: &quot;等待下一个可用的执行器&quot;,</span><br><span class="line">      &quot;BuildableStartMilliseconds&quot;: 1573714663446,</span><br><span class="line">      &quot;InQueueSince&quot;: 1573714663418,</span><br><span class="line">      &quot;Actions&quot;: []</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="cancel"><a href="#cancel" class="headerlink" title="cancel"></a>cancel</h5><p>取消队列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli queue cancel &lt;id&gt; [flags]</span><br><span class="line">Flags:</span><br><span class="line">  -h, --help</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli queue cancel 118</span><br></pre></td></tr></table></figure></p>
+<h4 id="restart"><a href="#restart" class="headerlink" title="restart"></a>restart</h4><p>重启<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli restart [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -b, --batch   Batch mode, no need confirm</span><br></pre></td></tr></table></figure></p>
+<h4 id="user"><a href="#user" class="headerlink" title="user"></a>user</h4><p>用户管理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli user [flags]</span><br><span class="line">  jcli user [command]</span><br><span class="line"></span><br><span class="line">Available Commands:</span><br><span class="line">  create      Create a user for your Jenkins</span><br><span class="line">  delete      Delete a user for your Jenkins</span><br><span class="line">  edit        Edit the user of your Jenkins</span><br><span class="line">  token       Token the user of your Jenkins</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help            help for user</span><br><span class="line">  -o, --output string   Format the output (default &quot;json&quot;)</span><br></pre></td></tr></table></figure></p>
+<h5 id="create-1"><a href="#create-1" class="headerlink" title="create"></a>create</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jcli user create &lt;username&gt; [password] </span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli user create admin1 admin1</span><br><span class="line">create user success. Password is: admin1</span><br></pre></td></tr></table></figure>
+<h5 id="delete-1"><a href="#delete-1" class="headerlink" title="delete"></a>delete</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli user delete &lt;username&gt; [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -b, --batch   Batch mode, no need confirm           批处理模式，无需确认</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli user delete admin1</span><br><span class="line">? Are you sure to delete user admin1 ? Yes</span><br></pre></td></tr></table></figure>
+<h5 id="edit-2"><a href="#edit-2" class="headerlink" title="edit"></a>edit</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli user edit [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -d, --desc   Edit the description</span><br><span class="line"></span><br><span class="line">仅仅修改描述，不支持修改密码权等高级功能</span><br></pre></td></tr></table></figure>
+<h5 id="token"><a href="#token" class="headerlink" title="token"></a>token</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line">  jcli user token -g [flags]</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -g, --generate      Generate the token</span><br><span class="line">  -n, --name string   Name of the token</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[root@VM_89_116_centos ~]# jcli user token -g</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;Status&quot;: &quot;ok&quot;,</span><br><span class="line">  &quot;Data&quot;: &#123;</span><br><span class="line">    &quot;TokenName&quot;: &quot;jcli-Mouseflash&quot;,</span><br><span class="line">    &quot;TokenUUID&quot;: &quot;d7de368b-bb54-44a4-99ef-db1674a07e42&quot;,</span><br><span class="line">    &quot;TokenValue&quot;: &quot;1109aceacc74236930f5ef2d6372d2704e&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[root@VM_89_116_centos ~]# jcli user token -g -n 测试</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;Status&quot;: &quot;ok&quot;,</span><br><span class="line">  &quot;Data&quot;: &#123;</span><br><span class="line">    &quot;TokenName&quot;: &quot;测试&quot;,</span><br><span class="line">    &quot;TokenUUID&quot;: &quot;8a642d49-78ee-448a-8abc-59d29b5f4a68&quot;,</span><br><span class="line">    &quot;TokenValue&quot;: &quot;114229e08012d8b29f15d98986ef0f8f09&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="问题总结"><a href="#问题总结" class="headerlink" title="问题总结"></a>问题总结</h4><p>1、jcli job build devops_ci_cd_pipline_ex1 -b<br>不支持连续，需要等待上一条 build 完全进入 build 才会 启动下一条 build</p>
+<p>2、不支持查看正在构建的任务清单。</p>
+<p>3、不支持修改构建任务的配置。</p>
+<p>4、不支持查看已经存在的用户列表</p>
+<p>5、job create 的 type 参数不可用</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/jenkins-jcli/" title="jenkins-jcli">http://xchcloud.cn/jenkins-jcli/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/jenkins/" rel="tag"><i class="fa fa-tag"></i> jenkins</a>
+              <a href="/tags/jcli/" rel="tag"><i class="fa fa-tag"></i> jcli</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/java-web之面向百度编程笔记/" rel="prev" title="java-web之面向百度编程笔记">
+      <i class="fa fa-chevron-left"></i> java-web之面向百度编程笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/java-web-会话及其会话技术/" rel="next" title="java-web-会话及其会话技术">
+      java-web-会话及其会话技术 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#jcli-笔记"><span class="nav-text">jcli 笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特性"><span class="nav-text">特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开始使用"><span class="nav-text">开始使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#command"><span class="nav-text">command</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#config"><span class="nav-text">config</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#generate"><span class="nav-text">generate</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#add"><span class="nav-text">add</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#list"><span class="nav-text">list</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#edit"><span class="nav-text">edit</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#select"><span class="nav-text">select</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#remove"><span class="nav-text">remove</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#center"><span class="nav-text">center</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#upgrade"><span class="nav-text">upgrade</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#download"><span class="nav-text">download</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#watch"><span class="nav-text">watch</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#completion"><span class="nav-text">completion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#crumb"><span class="nav-text">crumb</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#job"><span class="nav-text">job</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#artifact-（？）"><span class="nav-text">artifact （？）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#build"><span class="nav-text">build</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#create"><span class="nav-text">create</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#edit-1"><span class="nav-text">edit</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delete"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stop"><span class="nav-text">stop</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#input（？）"><span class="nav-text">input（？）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#history"><span class="nav-text">history</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#log"><span class="nav-text">log</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#search"><span class="nav-text">search</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#type"><span class="nav-text">type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#param"><span class="nav-text">param</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#open"><span class="nav-text">open</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#plugin"><span class="nav-text">plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#upgrade-1"><span class="nav-text">upgrade</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#trend"><span class="nav-text">trend</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#check"><span class="nav-text">check</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#download-1"><span class="nav-text">download</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uninstall"><span class="nav-text">uninstall</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#install"><span class="nav-text">install</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#search-1"><span class="nav-text">search</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#list-1"><span class="nav-text">list</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#upload"><span class="nav-text">upload:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#queue"><span class="nav-text">queue</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#list-2"><span class="nav-text">list</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cancel"><span class="nav-text">cancel</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#restart"><span class="nav-text">restart</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#user"><span class="nav-text">user</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#create-1"><span class="nav-text">create</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#delete-1"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#edit-2"><span class="nav-text">edit</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#token"><span class="nav-text">token</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题总结"><span class="nav-text">问题总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

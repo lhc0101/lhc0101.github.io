@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="程序员练级攻略（2018） 《Teach Yourself Programming in Ten Years》 (中文版)十年学会编程 “ The Key To Accelerating Your Coding Skills”：快速提高自己的编程能力 《程序员的荒谬之言还是至理名言？》学习建议 一定要坚持，要保持长时间学习，甚至终生学习的态度。 一定要动手，不管例子多么简单，建议至少自己动手敲一遍">
+<meta name="keywords" content="左耳朵耗子,书籍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="左耳朵大叔介绍的书籍、文章、网站">
+<meta property="og:url" content="http://xchcloud.cn/左耳朵大叔介绍的书籍、文章、网站/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="程序员练级攻略（2018） 《Teach Yourself Programming in Ten Years》 (中文版)十年学会编程 “ The Key To Accelerating Your Coding Skills”：快速提高自己的编程能力 《程序员的荒谬之言还是至理名言？》学习建议 一定要坚持，要保持长时间学习，甚至终生学习的态度。 一定要动手，不管例子多么简单，建议至少自己动手敲一遍">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:56:15.026Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="左耳朵大叔介绍的书籍、文章、网站">
+<meta name="twitter:description" content="程序员练级攻略（2018） 《Teach Yourself Programming in Ten Years》 (中文版)十年学会编程 “ The Key To Accelerating Your Coding Skills”：快速提高自己的编程能力 《程序员的荒谬之言还是至理名言？》学习建议 一定要坚持，要保持长时间学习，甚至终生学习的态度。 一定要动手，不管例子多么简单，建议至少自己动手敲一遍">
+
+<link rel="canonical" href="http://xchcloud.cn/左耳朵大叔介绍的书籍、文章、网站/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>左耳朵大叔介绍的书籍、文章、网站 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/左耳朵大叔介绍的书籍、文章、网站/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          左耳朵大叔介绍的书籍、文章、网站
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-16 21:28:15" itemprop="dateCreated datePublished" datetime="2018-08-16T21:28:15+08:00">2018-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:56:15" itemprop="dateModified" datetime="2021-09-11T16:56:15+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/书籍/" itemprop="url" rel="index"><span itemprop="name">书籍</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/左耳朵大叔介绍的书籍、文章、网站/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="左耳朵大叔介绍的书籍、文章、网站/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="程序员练级攻略（2018）"><a href="#程序员练级攻略（2018）" class="headerlink" title="程序员练级攻略（2018）"></a>程序员练级攻略（2018）</h3><ul>
+<li><a href="http://norvig.com/21-days.html" target="_blank" rel="noopener">《Teach Yourself Programming in Ten Years》</a></li>
+<li><a href="https://liuyandong.com/2017/10/25/122/" target="_blank" rel="noopener">(中文版)十年学会编程</a></li>
+<li><a href="http://blog.thefirehoseproject.com/posts/learn-to-code-and-be-self-reliant/" target="_blank" rel="noopener">“ The Key To Accelerating Your Coding Skills”</a>：快速提高自己的编程能力</li>
+<li><a href="https://coolshell.cn/articles/4235.html" target="_blank" rel="noopener">《程序员的荒谬之言还是至理名言？》</a><h4 id="学习建议"><a href="#学习建议" class="headerlink" title="学习建议"></a>学习建议</h4></li>
+<li>一定要坚持，要保持长时间学习，甚至终生学习的态度。</li>
+<li>一定要动手，不管例子多么简单，建议至少自己动手敲一遍看看是否理解了里头的细枝末节。</li>
+<li>一定要学会思考，思考为什么要这样，而不是那样。还要举一反三地思考。</li>
+<li>不要乱买书，不要乱追新技术新名词，基础的东西经过很长时间积累，会在未来至少10年通用。</li>
+<li>回顾一下历史，看看历史时间线上技术的发展，你才能明白明天会是什么样的。<a id="more"></a>
+<h4 id="程序员的修养"><a href="#程序员的修养" class="headerlink" title="程序员的修养"></a>程序员的修养</h4></li>
+<li><a href="https://www.quora.com/What-are-some-of-the-most-basic-things-every-programmer-should-know" target="_blank" rel="noopener">What are some of the most basic things every programmer should know?</a></li>
+<li><a href="https://97-things-every-x-should-know.gitbooks.io/97-things-every-programmer-should-know/content/en/index.html" target="_blank" rel="noopener">《97 Things Every Programmer Should Know》</a><h4 id="在线编程入门的网站"><a href="#在线编程入门的网站" class="headerlink" title="在线编程入门的网站"></a>在线编程入门的网站</h4></li>
+<li><a href="https://www.codecademy.com/learn" target="_blank" rel="noopener">Codecademy: Learn Python</a></li>
+<li><a href="https://www.peoplecanprogram.com/" target="_blank" rel="noopener">People Can Program</a></li>
+<li><a href="http://www.codeabbey.com/index/task_list" target="_blank" rel="noopener">CodeAbbey 编程练习</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web" target="_blank" rel="noopener">Mozilla Developer Network 的 Web开发入门</a><h4 id="入门学习JavaScript"><a href="#入门学习JavaScript" class="headerlink" title="入门学习JavaScript"></a>入门学习JavaScript</h4></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank" rel="noopener">MDN JavaScript教程</a></li>
+<li><a href="http://www.w3school.com.cn/js/" target="_blank" rel="noopener">W3School JavaScript教程 </a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000" target="_blank" rel="noopener">JavaScript全栈教程（廖雪峰） </a><h4 id="前后端"><a href="#前后端" class="headerlink" title="前后端"></a>前后端</h4></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS" target="_blank" rel="noopener">CSS文档 </a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank" rel="noopener">HTML文档</a></li>
+<li><a href="https://www.w3schools.com/js/js_htmldom.asp" target="_blank" rel="noopener">W3Schools的JavaScript HTML DOM的教程</a></li>
+<li><a href="http://www.w3school.com.cn/php/index.asp" target="_blank" rel="noopener">W3School的PHP教程</a></li>
+<li><a href="http://php.net/manual/zh/" target="_blank" rel="noopener">PHP的官网文档</a><h4 id="写代码的修养"><a href="#写代码的修养" class="headerlink" title="写代码的修养"></a>写代码的修养</h4></li>
+<li>《重构：改善既有代码的设计》</li>
+<li>《修改代码的艺术》</li>
+<li>《代码整洁之道》</li>
+<li><p>《程序员的职业素养》</p>
+<h5 id="不错的Code-Review的文章"><a href="#不错的Code-Review的文章" class="headerlink" title="不错的Code Review的文章"></a>不错的Code Review的文章</h5></li>
+<li><p><a href="https://medium.com/@palantir/code-review-best-practices-19e02780015f" target="_blank" rel="noopener">Code Review Best Practices</a>.</p>
+</li>
+<li><a href="https://dzone.com/articles/how-google-does-code-review" target="_blank" rel="noopener">How Google Does Code Review</a></li>
+<li><a href="https://thenewstack.io/linkedin-code-review/" target="_blank" rel="noopener">LinkedIn’s Tips for Highly Effective Code Review</a><h5 id="Unit-Test的不错文章"><a href="#Unit-Test的不错文章" class="headerlink" title="Unit Test的不错文章"></a>Unit Test的不错文章</h5></li>
+<li><a href="https://stackify.com/unit-testing-basics-best-practices/" target="_blank" rel="noopener">You Still Don’t Know How to Do Unit Testing</a></li>
+<li><a href="https://dzone.com/articles/unit-testing-best-practices" target="_blank" rel="noopener">Unit Testing Best Practices: JUnit Reference Guide</a></li>
+<li><a href="http://www.kyleblaney.com/junit-best-practices/" target="_blank" rel="noopener">JUnit Best Practices</a><h5 id="学习JUnit"><a href="#学习JUnit" class="headerlink" title="学习JUnit"></a>学习JUnit</h5></li>
+<li><a href="https://junit.org/junit5/docs/current/user-guide/" target="_blank" rel="noopener">JUnit User Guide(官网)</a></li>
+<li><a href="http://sjyuan.cc/junit5/user-guide-cn/" target="_blank" rel="noopener">中文版(官网)</a></li>
+</ul>
+<h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><h5 id="编程的IDE"><a href="#编程的IDE" class="headerlink" title="编程的IDE"></a>编程的IDE</h5><ul>
+<li><a href="http://www.runoob.com/eclipse/eclipse-tutorial.html" target="_blank" rel="noopener">Eclipse（教程）</a></li>
+<li><a href="https://www.gitbook.com/book/dancon/intellij-idea/details" target="_blank" rel="noopener">Intellij IDEA（教程）</a></li>
+<li><a href="https://www.gitbook.com/book/jeasonstudio/vscode-cn-doc/details" target="_blank" rel="noopener">Visual Studio Code</a><h5 id="版本管理工具"><a href="#版本管理工具" class="headerlink" title="版本管理工具"></a>版本管理工具</h5></li>
+<li><a href="https://git-scm.com/book/zh/v2/" target="_blank" rel="noopener">Pro Git 第二版 </a>：非常系统,首选</li>
+<li><a href="https://backlog.com/git-tutorial/cn/" target="_blank" rel="noopener">猴子都能懂的Git入门</a></li>
+<li>Git环境安装和准备以及GitHub使用：</li>
+<li><ul>
+<li><a href="https://github.com/JiapengLi/GitTutorial" target="_blank" rel="noopener">Github and Git 图文教程 </a></li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://www.jianshu.com/p/1b65ed31da97" target="_blank" rel="noopener">Git图文教程及详解</a><h5 id="调试前端程序"><a href="#调试前端程序" class="headerlink" title="调试前端程序"></a>调试前端程序</h5><a href="http://www.igeekbar.com/igeekbar/post/156.htm" target="_blank" rel="noopener"> 超完整的Chrome浏览器客户端调试大全</a><h5 id="数据库设计工具"><a href="#数据库设计工具" class="headerlink" title="数据库设计工具"></a>数据库设计工具</h5><a href="https://dev.mysql.com/doc/refman/5.7/en/" target="_blank" rel="noopener">MySQL WorkBench官方文档</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h4><h5 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h5><ul>
+<li><a href="https://www.owasp.org/index.php/Main_Page" target="_blank" rel="noopener">OWASP - Open Web Application Security Project</a><h5 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h5></li>
+<li><a href="https://www.keycdn.com/blog/http-security-headers/" target="_blank" rel="noopener">《Hardening Your HTTP Security Headers》</a><h5 id="安全编程"><a href="#安全编程" class="headerlink" title="安全编程"></a>安全编程</h5></li>
+<li><a href="https://security.berkeley.edu/secure-coding-practice-guidelines" target="_blank" rel="noopener">伯克立大学的Secure Coding Practice Guidelines</a></li>
+<li><a href="https://wiki.sei.cmu.edu/confluence/display/seccode/SEI+CERT+Coding+Standards" target="_blank" rel="noopener">卡内基梅隆大学的 SEI CERT Coding Standards</a><h5 id="防御性编程-维基百科"><a href="#防御性编程-维基百科" class="headerlink" title="防御性编程(维基百科)"></a><a href="https://en.wikipedia.org/wiki/Defensive_programming" target="_blank" rel="noopener">防御性编程(维基百科)</a></h5></li>
+<li><a href="https://medium.com/web-engineering-vox/the-art-of-defensive-programming-6789a9743ed4" target="_blank" rel="noopener">The Art of Defensive Programming</a></li>
+<li><a href="https://medium.com/@cvitullo/overly-defensive-programming-e7a1b3d234c2" target="_blank" rel="noopener">Overly defensive programming</a><h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4></li>
+<li><a href="https://book.douban.com/subject/4187479/" target="_blank" rel="noopener">《完美软件：对软件测试的各种幻想》</a></li>
+<li><a href="https://book.douban.com/subject/25742200/" target="_blank" rel="noopener">《Google软件测试之道》</a><h4 id="上线Checklist"><a href="#上线Checklist" class="headerlink" title="上线Checklist"></a>上线Checklist</h4></li>
+<li><a href="https://github.com/mtdvio/going-to-production/blob/master/serverside-checklist.md" target="_blank" rel="noopener">Server Side checklist</a></li>
+<li><a href="https://github.com/mtdvio/going-to-production/blob/master/spa-checklist.md" target="_blank" rel="noopener">Single Page App Checklist</a><h4 id="运维方面的入门文章"><a href="#运维方面的入门文章" class="headerlink" title="运维方面的入门文章"></a>运维方面的入门文章</h4></li>
+<li><a href="https://www.datadoghq.com/blog/monitoring-101-collecting-data/" target="_blank" rel="noopener">《Monitoring 101》</a>:告诉你最基本的监控线上运行软件的方法和实践。</li>
+</ul>
+<h4 id="各种语言的编程规范"><a href="#各种语言的编程规范" class="headerlink" title="各种语言的编程规范"></a>各种语言的编程规范</h4><ul>
+<li><a href="http://note.youdao.com/noteshare?id=db702a4a94b411c75f42957611a54233&amp;sub=wcp1534430224807260" target="_blank" rel="noopener">各种语言的编程规范</a></li>
+</ul>
+<h3 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h3><h4 id="Java语言"><a href="#Java语言" class="headerlink" title="Java语言"></a>Java语言</h4><ul>
+<li><a href="https://book.douban.com/subject/26880667/" target="_blank" rel="noopener">《Java核心技术：卷1基础知识》</a></li>
+<li><a href="https://book.douban.com/subject/26767354/" target="_blank" rel="noopener">《Spring实战》</a></li>
+<li><a href="https://book.douban.com/subject/26857423/" target="_blank" rel="noopener">《Spring Boot实战》</a></li>
+<li><a href="https://book.douban.com/subject/27047716/" target="_blank" rel="noopener">《Effective Java》</a></li>
+<li><a href="https://github.com/google/guava" target="_blank" rel="noopener"> Google Guava 库</a></li>
+<li><a href="https://book.douban.com/subject/10484692/" target="_blank" rel="noopener">《Java并发编程实战》</a></li>
+<li><a href="https://book.douban.com/subject/26740520/" target="_blank" rel="noopener">《Java性能权威指南》</a></li>
+<li><a href="https://book.douban.com/subject/24722612/" target="_blank" rel="noopener">《深入理解Java虚拟机》</a></li>
+<li><a href="https://book.douban.com/subject/2130190/" target="_blank" rel="noopener">《Java编程思想》</a></li>
+<li><a href="https://book.douban.com/subject/26952826/" target="_blank" rel="noopener">《精通Spring 4.x》</a></li>
+<li><a href="https://book.douban.com/subject/1052241/" target="_blank" rel="noopener">《设计模式》</a></li>
+<li><a href="https://book.douban.com/subject/2243615/" target="_blank" rel="noopener">《Head First设计模式》</a></li>
+</ul>
+<h4 id="C-C-语言"><a href="#C-C-语言" class="headerlink" title="C/C++语言"></a>C/C++语言</h4><ul>
+<li><a href="https://book.douban.com/subject/1139336/" target="_blank" rel="noopener">《C程序设计语言》C语言之父Dennis M. Ritchie和著名科学家Brian W. Kernighan</a></li>
+<li><a href="https://book.douban.com/subject/2280547/" target="_blank" rel="noopener">《C语言程序设计现代方法》</a></li>
+<li><a href="https://book.douban.com/subject/2778632/" target="_blank" rel="noopener">《C陷阱与缺陷》</a></li>
+<li><a href="https://coolshell.cn/articles/7992.html" target="_blank" rel="noopener">“C++的坑真的多吗？”</a></li>
+<li><a href="https://book.douban.com/subject/25708312/" target="_blank" rel="noopener">《C++ Primer中文版》</a></li>
+<li><a href="https://book.douban.com/subject/5387403/" target="_blank" rel="noopener">《Effective C++》</a></li>
+<li><a href="https://book.douban.com/subject/5908727/" target="_blank" rel="noopener">《More Effective C++》</a></li>
+<li><a href="https://book.douban.com/subject/10427315/" target="_blank" rel="noopener">《深度探索C++对象模型》</a></li>
+<li><a href="https://coolshell.cn/articles/12165.html" target="_blank" rel="noopener">《C++虚函数表解析》</a></li>
+<li><a href="https://coolshell.cn/articles/12176.html" target="_blank" rel="noopener">《C++对象内存布局》</a></li>
+<li><a href="http://www.stroustrup.com/bs_faq.html" target="_blank" rel="noopener"> 《C++ FAQ》Bjarne Stroustrup </a></li>
+<li><a href="http://www.stroustrup.com/bsfaqcn.html" target="_blank" rel="noopener">《C++ FAQ》(中文版)</a></li>
+</ul>
+<h4 id="Go语言"><a href="#Go语言" class="headerlink" title="Go语言"></a>Go语言</h4><ul>
+<li><a href="https://gobyexample.com/" target="_blank" rel="noopener"> Go by Example</a>：入门</li>
+<li><a href="https://go101.org/article/101.html" target="_blank" rel="noopener">Go 101</a></li>
+<li><a href="https://book.douban.com/subject/26337545/" target="_blank" rel="noopener">The Go Programming Language</a></li>
+<li><a href="https://coolshell.cn/articles/8460.html" target="_blank" rel="noopener"> “GO 语言简介（上）- 语法”</a>：参考</li>
+<li><a href="https://coolshell.cn/articles/8489.html" target="_blank" rel="noopener"> “GO 语言简介（下）- 特性”</a>：参考</li>
+<li><a href="https://golang.org/doc/effective_go.html" target="_blank" rel="noopener"> Effective Go</a>：必读</li>
+<li><a href="https://github.com/golang/go/wiki/Articles" target="_blank" rel="noopener">Go精华文章列表(Github)</a></li>
+<li><a href="https://github.com/golang/go/wiki/Blogs" target="_blank" rel="noopener">Go相关博客列表(Github)</a></li>
+<li><a href="https://github.com/golang/go/wiki/GoTalks" target="_blank" rel="noopener">Go Talks(Github)</a></li>
+<li><a href="https://github.com/avelino/awesome-go" target="_blank" rel="noopener">Go资源列表 Awesome Go(Github)</a></li>
+</ul>
+<h3 id="理论学科"><a href="#理论学科" class="headerlink" title="理论学科"></a>理论学科</h3><p>算法、数据结构、网络模型、计算机原理等这样的计算机科学专业需要学习的理论知识是必须要学习的</p>
+<h4 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h4><h5 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h5><ul>
+<li><a href="https://book.douban.com/subject/10432347/" target="_blank" rel="noopener">《算法》</a></li>
+<li><a href="https://book.douban.com/subject/26979890/" target="_blank" rel="noopener">《算法图解》</a></li>
+</ul>
+<h5 id="理论加持"><a href="#理论加持" class="headerlink" title="理论加持"></a>理论加持</h5><ul>
+<li><a href="https://book.douban.com/subject/20432061/" target="_blank" rel="noopener">《算法导论》</a></li>
+</ul>
+<h5 id="思维改善"><a href="#思维改善" class="headerlink" title="思维改善"></a>思维改善</h5><ul>
+<li><a href="https://book.douban.com/subject/3227098/" target="_blank" rel="noopener">《编程珠玑》</a></li>
+</ul>
+<h5 id="基础算法题"><a href="#基础算法题" class="headerlink" title="基础算法题"></a>基础算法题</h5><p>其中有大量的算法题，解这些题都是有套路的，不是用递归（深度优先DFS，广度优先BFS），就是要用动态规划（Dynamic Programming），或是折半查找（Binary Search），或是回溯（Back tracing），或是分治法（Divide and Conquer），还有大量的对树、数组、链表、字符串和hash表的操作。通过做这些题能让你对这些最基础的算法的思路有非常扎实的了解和训练。对我而言，Dynamic Programming是我的短板，尤其是一些比较复杂的问题，在推导递推公式上总是有思维的缺陷（数学是我的硬伤）。做了这些题后，我能感到我在动态编程的思路上受到了很大的启发。</p>
+<h5 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h5><p>比如：atoi，strstr，add two nums，括号匹配，字符串乘法，通配符匹配，文件路径简化，Text Justification，反转单词等，这些题的Edge Case和Corner Case有很多。这些题需要你想清楚了再干，只要你稍有疏忽，就会有几个case让你痛不欲生，而且一不小心就会让你的代码写得又臭又长，无法阅读。通过做这些题，可以非常好地训练你对各种情况的考虑，以及你对程序代码组织的掌控（其实就是其中的状态变量）。</p>
+<ul>
+<li><ul>
+<li><a href="https://github.com/haoel/leetcode" target="_blank" rel="noopener">Leetcode  Github </a></li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://www.wikiwand.com/en/List_of_algorithms" target="_blank" rel="noopener">List of Algorithms(算法字典)</a></li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html" target="_blank" rel="noopener">Data Structure Visualizations(数据结构动画图)</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="其它理论基础知识"><a href="#其它理论基础知识" class="headerlink" title="其它理论基础知识"></a>其它理论基础知识</h4><ul>
+<li><a href="https://book.douban.com/subject/1139426/" target="_blank" rel="noopener">《数据结构与算法分析》</a></li>
+<li><a href="https://book.douban.com/subject/1929984/" target="_blank" rel="noopener">《数据库系统概念》</a></li>
+<li><a href="https://book.douban.com/subject/3852290/" target="_blank" rel="noopener">《现代操作系统》</a></li>
+<li><a href="https://book.douban.com/subject/1391207/" target="_blank" rel="noopener">《计算机网络》</a></li>
+<li><a href="https://book.douban.com/subject/1148282/" target="_blank" rel="noopener">《计算机程序的构造和解释》</a></li>
+<li><a href="https://book.douban.com/subject/3296317/" target="_blank" rel="noopener">《编译原理》</a></li>
+</ul>
+<h3 id="计算机系统相关知识"><a href="#计算机系统相关知识" class="headerlink" title="计算机系统相关知识"></a>计算机系统相关知识</h3><ul>
+<li><a href="https://book.douban.com/subject/5333562/" target="_blank" rel="noopener">《深入理解计算机系统》原名：《Computer Systems A Programmer’s Perspective》</a>:程序员必读<h4 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h4></li>
+<li><a href="https://book.douban.com/subject/4141733/" target="_blank" rel="noopener">《Linux C编程一站式学习》</a></li>
+<li><a href="https://book.douban.com/subject/25911735/" target="_blank" rel="noopener">《TCP/IP网络编程》</a></li>
+<li><a href="https://book.douban.com/subject/24737674/" target="_blank" rel="noopener">《图解TCP/IP》</a></li>
+<li><a href="http://www.tcpipguide.com/free/index.htm" target="_blank" rel="noopener">《The TCP/IP Guide》</a></li>
+<li><a href="https://book.douban.com/subject/21691692/" target="_blank" rel="noopener">《Wireshark数据包分析实战》</a>:抓包相关<h4 id="深入"><a href="#深入" class="headerlink" title="深入"></a>深入</h4></li>
+<li><a href="https://book.douban.com/subject/1788421/" target="_blank" rel="noopener">《Unix高级环境编程》</a></li>
+<li><a href="https://book.douban.com/subject/1500149/" target="_blank" rel="noopener">《Unix网络编程》 第1卷 套接口API </a></li>
+<li><a href="https://book.douban.com/subject/4118577/" target="_blank" rel="noopener">《Unix网络编程》第2卷 进程间通信 </a></li>
+<li><p><a href="https://book.douban.com/subject/1088054/" target="_blank" rel="noopener">《TCP/IP详解 卷I 协议》</a></p>
+</li>
+<li><p><a href="https://book.douban.com/subject/25809330/" target="_blank" rel="noopener">《Linux/Unix系统编程手册》</a></p>
+</li>
+<li><a href="http://igm.univ-mlv.fr/~yahya/progsys/linux.pdf" target="_blank" rel="noopener">Linux System Programming 英文电子版</a></li>
+<li><p><a href="https://book.douban.com/subject/25828773/" target="_blank" rel="noopener">中文翻译版Linux系统编程 </a></p>
+</li>
+<li><p><a href="https://www.oschina.net/translate/c10k" target="_blank" rel="noopener">“C10K Problem （中文翻译版）”</a></p>
+</li>
+<li><a href="http://highscalability.com/blog/2013/5/13/the-secret-to-10-million-concurrent-connections-the-kernel-i.html" target="_blank" rel="noopener">The Secret To 10 Million Concurrent Connections -The Kernel Is The Problem, Not The Solution</a>:C10M问题</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/左耳朵大叔介绍的书籍、文章、网站/" title="左耳朵大叔介绍的书籍、文章、网站">http://xchcloud.cn/左耳朵大叔介绍的书籍、文章、网站/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/左耳朵耗子/" rel="tag"><i class="fa fa-tag"></i> 左耳朵耗子</a>
+              <a href="/tags/书籍/" rel="tag"><i class="fa fa-tag"></i> 书籍</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/服务器环境搭建/" rel="prev" title="服务器环境搭建">
+      <i class="fa fa-chevron-left"></i> 服务器环境搭建
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/左耳朵大叔推荐的实战项目/" rel="next" title="左耳朵大叔推荐的实战项目">
+      左耳朵大叔推荐的实战项目 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序员练级攻略（2018）"><span class="nav-text">程序员练级攻略（2018）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#学习建议"><span class="nav-text">学习建议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序员的修养"><span class="nav-text">程序员的修养</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在线编程入门的网站"><span class="nav-text">在线编程入门的网站</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#入门学习JavaScript"><span class="nav-text">入门学习JavaScript</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前后端"><span class="nav-text">前后端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写代码的修养"><span class="nav-text">写代码的修养</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#不错的Code-Review的文章"><span class="nav-text">不错的Code Review的文章</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Unit-Test的不错文章"><span class="nav-text">Unit Test的不错文章</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#学习JUnit"><span class="nav-text">学习JUnit</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#工具"><span class="nav-text">工具</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#编程的IDE"><span class="nav-text">编程的IDE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#版本管理工具"><span class="nav-text">版本管理工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调试前端程序"><span class="nav-text">调试前端程序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据库设计工具"><span class="nav-text">数据库设计工具</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安全"><span class="nav-text">安全</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Web"><span class="nav-text">Web</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HTTP"><span class="nav-text">HTTP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安全编程"><span class="nav-text">安全编程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#防御性编程-维基百科"><span class="nav-text">防御性编程(维基百科)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上线Checklist"><span class="nav-text">上线Checklist</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运维方面的入门文章"><span class="nav-text">运维方面的入门文章</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#各种语言的编程规范"><span class="nav-text">各种语言的编程规范</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程语言"><span class="nav-text">编程语言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java语言"><span class="nav-text">Java语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-C-语言"><span class="nav-text">C/C++语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go语言"><span class="nav-text">Go语言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理论学科"><span class="nav-text">理论学科</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构和算法"><span class="nav-text">数据结构和算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基础知识"><span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#理论加持"><span class="nav-text">理论加持</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#思维改善"><span class="nav-text">思维改善</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基础算法题"><span class="nav-text">基础算法题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编程题"><span class="nav-text">编程题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其它理论基础知识"><span class="nav-text">其它理论基础知识</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机系统相关知识"><span class="nav-text">计算机系统相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#入门"><span class="nav-text">入门</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#深入"><span class="nav-text">深入</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="关于守门员的一点设想">
+<meta name="keywords" content="java,大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-大数据-茶电商平台">
+<meta property="og:url" content="http://xchcloud.cn/java-大数据-茶电商平台/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="关于守门员的一点设想">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:48:05.030Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java-大数据-茶电商平台">
+<meta name="twitter:description" content="关于守门员的一点设想">
+
+<link rel="canonical" href="http://xchcloud.cn/java-大数据-茶电商平台/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java-大数据-茶电商平台 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/java-大数据-茶电商平台/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java-大数据-茶电商平台
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-16 14:08:19" itemprop="dateCreated datePublished" datetime="2020-11-16T14:08:19+08:00">2020-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:48:05" itemprop="dateModified" datetime="2021-09-11T16:48:05+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/项目/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/java-大数据-茶电商平台/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="java-大数据-茶电商平台/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>215</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script src="/crypto-js.js"></script><script src="/mcommon.js"></script><h3 id="encrypt-message">请输入访问密匙</h3><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"> <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> <div id="security"> <div> <div class="input-group"> <input type="text" class="form-control" aria-label="Enter the password." id="pass"/> <div class="input-group-btn"> <button type="button" class="btn btn-default" onclick="decryptAES()">Decrypt</button> </div> </div> </div> </div> <div id="encrypt-blog" style="display:none"> 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 </div>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/java-大数据-茶电商平台/" title="java-大数据-茶电商平台">http://xchcloud.cn/java-大数据-茶电商平台/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+              <a href="/tags/大数据/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/java-大数据-一海游项目/" rel="prev" title="java-大数据-一海游项目">
+      <i class="fa fa-chevron-left"></i> java-大数据-一海游项目
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/java-反射/" rel="next" title="java-反射">
+      java-反射 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#encrypt-message"><span class="nav-text">请输入访问密匙</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

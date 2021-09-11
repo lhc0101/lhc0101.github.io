@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="etc/etc/mtab文件的作用：记载的是现在系统已经装载的文件系统，包括操作系统建立的虚拟文件等；而/etc/fstab是系统准备装载的 etc/fstab文件的作用 ：记录了计算机上硬盘分区的相关信息，启动 Linux 的时候，检查分区的 fsck 命令，和挂载分区的 mount 命令，都需要 fstab 中的信息，来正确的检查和挂载硬盘。 /etc/ld.so.conf 此文件记录了编译时">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux复盘笔记">
+<meta property="og:url" content="http://xchcloud.cn/Linux复盘笔记/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="etc/etc/mtab文件的作用：记载的是现在系统已经装载的文件系统，包括操作系统建立的虚拟文件等；而/etc/fstab是系统准备装载的 etc/fstab文件的作用 ：记录了计算机上硬盘分区的相关信息，启动 Linux 的时候，检查分区的 fsck 命令，和挂载分区的 mount 命令，都需要 fstab 中的信息，来正确的检查和挂载硬盘。 /etc/ld.so.conf 此文件记录了编译时">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:59:34.777Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux复盘笔记">
+<meta name="twitter:description" content="etc/etc/mtab文件的作用：记载的是现在系统已经装载的文件系统，包括操作系统建立的虚拟文件等；而/etc/fstab是系统准备装载的 etc/fstab文件的作用 ：记录了计算机上硬盘分区的相关信息，启动 Linux 的时候，检查分区的 fsck 命令，和挂载分区的 mount 命令，都需要 fstab 中的信息，来正确的检查和挂载硬盘。 /etc/ld.so.conf 此文件记录了编译时">
+
+<link rel="canonical" href="http://xchcloud.cn/Linux复盘笔记/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux复盘笔记 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/Linux复盘笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux复盘笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-02 20:26:46" itemprop="dateCreated datePublished" datetime="2019-10-02T20:26:46+08:00">2019-10-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:59:34" itemprop="dateModified" datetime="2021-09-11T16:59:34+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/Linux复盘笔记/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="Linux复盘笔记/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>35k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>31 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="etc"><a href="#etc" class="headerlink" title="etc"></a>etc</h3><p><strong>/etc/mtab</strong>文件的作用：记载的是现在系统已经装载的文件系统，包括操作系统建立的虚拟文件等；而/etc/fstab是系统准备装载的</p>
+<p><strong>etc/fstab</strong>文件的作用 ：记录了计算机上硬盘分区的相关信息，启动 Linux 的时候，检查分区的 fsck 命令，和挂载分区的 mount 命令，都需要 fstab 中的信息，来正确的检查和挂载硬盘。</p>
+<p><strong>/etc/ld.so.conf</strong> 此文件记录了编译时使用的动态库的路径，也就是加载so库的路径。</p>
+<p>xdm （X Display Manager）是一种图形化的登录界面。配置文件都放在<strong>/etc/X11/xdm</strong>目录下<br><a id="more"></a><br>Xsession文件决定了用户会话的风格，包含用户会话使用的命令<br>Xsetup_0文件中的程序会和图形登录界面一起运行<br>GiveConsole文件决定了在Xwindows移交给用户之前要执行的一些程序。 </p>
+<p><strong>/etc/rc.d/rc.local</strong>：一个启动加载配置文件，这个配置文件会在用户登陆之前读取，这个文件中写入了什么命令，在每次系统启动时都会执行一次。也就是说，如果有任何需要在系统启动时运行的工作，则只需写入 /etc/rc.d/rc.local 配置文件即可。把一个程序加入开机启动，一般也可以通过修改rc.local来完成。</p>
+<p>/&gt; 和&gt;&gt;：他们俩其实唯一的区别就是&gt;是重定向到一个文件，&gt;&gt;是追加内容到文件。两个命令都是如果文件不存在则创建文件。</p>
+<p>1&gt;&gt;、2&gt;&gt;、1&gt;、2&gt;：1表示运行程序时程序正确运行输出结果的重定向、1表示运行程序时时程序错误运行信息（如异常信息）的重定向，然后&gt;&gt;与&gt;的区别和上面一样。</p>
+<p>注：echo “mkdir /misc/<code>date +%Y%m%d</code>“ &gt;&gt; /etc/rc.d/rc.local不一定在实际操作中有用，应为rc.local会被Linux的不同版本修改，如ubuntu中在case语句块里脚本就退出了，追加到文件尾部的话不会被执行。</p>
+<h3 id="log"><a href="#log" class="headerlink" title="log"></a>log</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/var/log/messages — 包括整体系统信息，其中也包含系统启动期间的日志。此外，mail，cron，daemon，kern和auth等内容也记录在var/log/messages日志中。</span><br><span class="line">/var/log/dmesg — 包含内核缓冲信息（kernel ring buffer）。在系统启动时，会在屏幕上显示许多与硬件有关的信息。可以用dmesg查看它们。</span><br><span class="line">/var/log/auth.log — 包含系统授权信息，包括用户登录和使用的权限机制等。</span><br><span class="line">/var/log/boot.log — 包含系统启动时的日志。</span><br><span class="line">/var/log/daemon.log — 包含各种系统后台守护进程日志信息。</span><br><span class="line">/var/log/dpkg.log – 包括安装或dpkg命令清除软件包的日志。</span><br><span class="line">/var/log/kern.log – 包含内核产生的日志，有助于在定制内核时解决问题。</span><br><span class="line">/var/log/lastlog — 记录所有用户的最近信息。这不是一个ASCII文件，因此需要用lastlog命令查看内容。</span><br><span class="line">/var/log/maillog /var/log/mail.log — 包含来着系统运行电子邮件服务器的日志信息。例如，sendmail日志信息就全部送到这个文件中。</span><br><span class="line">/var/log/user.log — 记录所有等级用户信息的日志。</span><br><span class="line">/var/log/Xorg.x.log — 来自X的日志信息。</span><br><span class="line">/var/log/alternatives.log – 更新替代信息都记录在这个文件中。</span><br><span class="line">/var/log/btmp – 记录所有失败登录信息。使用last命令可以查看btmp文件。例如，”last -f /var/log/btmp | more“。</span><br><span class="line">/var/log/cups — 涉及所有打印信息的日志。</span><br><span class="line">/var/log/anaconda.log — 在安装Linux时，所有安装信息都储存在这个文件中。</span><br><span class="line">/var/log/yum.log — 包含使用yum安装的软件包信息。</span><br><span class="line">/var/log/cron — 每当cron进程开始一个工作时，就会将相关信息记录在这个文件中。</span><br><span class="line">/var/log/secure — 包含验证和授权方面信息。例如，sshd会将所有信息记录（其中包括失败登录）在这里。</span><br><span class="line">/var/log/wtmp或/var/log/utmp — 包含登录信息。使用wtmp可以找出谁正在登陆进入系统，谁使用命令显示这个文件或信息等。</span><br><span class="line">/var/log/faillog – 包含用户登录失败信息。此外，错误登录命令也会记录在本文件中。</span><br><span class="line">除了上述Log文件以外， /var/log还基于系统的具体应用包含以下一些子目录：</span><br><span class="line"></span><br><span class="line">/var/log/httpd/或/var/log/apache2 — 包含服务器access_log和error_log信息。</span><br><span class="line">/var/log/lighttpd/ — 包含light HTTPD的access_log和error_log。</span><br><span class="line">/var/log/mail/ –  这个子目录包含邮件服务器的额外日志。</span><br><span class="line">/var/log/prelink/ — 包含.so文件被prelink修改的信息。</span><br><span class="line">/var/log/audit/ — 包含被 Linux audit daemon储存的信息。</span><br><span class="line">/var/log/samba/ – 包含由samba存储的信息。</span><br><span class="line">/var/log/sa/ — 包含每日由sysstat软件包收集的sar文件。</span><br><span class="line">/var/log/sssd/ – 用于守护进程安全服务。</span><br></pre></td></tr></table></figure>
+<p>批量删除当前目录下后缀名为.c的文件。如a.c、b.c。<br>rm <em>.c<br>find . -name “</em>.c” -maxdepth 1 | xargs rm<br>-maxdepth  参数要写在其他参数的前面，同时在路径的后面<br>用 xargs 是由于很多命令不支持 | 管道来传递参数，而日常工作中有有这个必要，所以就有了 xargs 命令</p>
+<p>线性访问内存非法时，当前线程会进入信号处理函数</p>
+<p>在UNIX中<br>$$ 表示当前命令的进程标识数<br>$<em>表示所有位置参量，<br>$@与$</em>类似，不同处在于$@：”$1” “$2” … “$n”； $*: “$1 $2 … $n”。<br>$# 参数个数</p>
+<p><strong>sort</strong> 是按ASCII码排序<br>-n   依照数值的大小排序。<br>-r   以相反的顺序来排序。<br>uniq -c 是去重并显示个数<br>head -n 3 为取前3行</p>
+<p>有一个文件ip.txt，每行一条ip记录，共若干行，下面哪个命令可以实现“<strong>统计</strong>出现次数最多的前3个ip及其次数”？</p>
+<p>sort ip.txt | uniq -c | sort -rn | head -n 3</p>
+<p>首先排序sort，相同的ip会排在一起，然后uniq -c 会去掉重复的ip，只有保留一条，同时记录重复数在行首，如： 3 ip1   \n    1 ip2   \n 2 ip3，再按照数字反向排序即可sort -nr，-n是按照数字，-r是降序，最好 head -n 3取出前三个即可。</p>
+<p><strong>创建用户</strong>时不指定用户主目录的参数 useradd -M</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>全称</th>
+<th>释义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-b</td>
+<td>base-dir BASE_DIR</td>
+<td>新账户的主目录的基目录</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>comment COMMENT</td>
+<td>新账户的 GECOS 字段</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>home-dir HOME_DIR</td>
+<td>新账户的主目录</td>
+</tr>
+<tr>
+<td>-D</td>
+<td>defaults</td>
+<td>显示或更改默认的 useradd 配置</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>expiredate EXPIRE_DATE</td>
+<td>新账户的过期日期</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>inactive INACTIVE</td>
+<td>新账户的密码不活动期</td>
+</tr>
+<tr>
+<td>-g</td>
+<td>gid GROUP</td>
+<td>新账户主组的名称或 ID</td>
+</tr>
+<tr>
+<td>-G</td>
+<td>groups GROUPS</td>
+<td>新账户的附加组列表</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>help</td>
+<td>显示此帮助信息并推出</td>
+</tr>
+<tr>
+<td>-k</td>
+<td>skel SKEL_DIR</td>
+<td>使用此目录作为骨架目录</td>
+</tr>
+<tr>
+<td>-K</td>
+<td>key KEY=VALUE</td>
+<td>不使用 /etc/login.defs 中的默认值</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>no-log-init</td>
+<td>不要将此用户添加到最近登录和登录失败数据库</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>create-home</td>
+<td>创建用户的主目录</td>
+</tr>
+<tr>
+<td>-M</td>
+<td>no-create-home</td>
+<td>不创建用户的主目录</td>
+</tr>
+<tr>
+<td>-N</td>
+<td>no-user-group</td>
+<td>不创建同名的组</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>non-unique</td>
+<td>允许使用重复的 UID 创建用户</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>password PASSWORD</td>
+<td>加密后的新账户密码</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>system</td>
+<td>创建一个系统账户</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>shell SHELL</td>
+<td>新账户的登录 shell</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>uid UID</td>
+<td>新账户的用户 ID</td>
+</tr>
+<tr>
+<td>-U</td>
+<td>user-group</td>
+<td>创建与用户同名的组</td>
+</tr>
+<tr>
+<td>-Z</td>
+<td>selinux-user SEUSER</td>
+<td>为 SELinux 用户映射使用指定 SEUSER</td>
+</tr>
+</tbody>
+</table>
+<h3 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h3><p><strong>计划</strong>让系统自动在每个月的第一天早上4点钟执行一个维护工作:<br>00 4 1 1-12 * /maintenance.pl<br><img data-src="https://uploadfiles.nowcoder.com/images/20170814/9067279_1502703501686_5BBE4306EE92AAA51FEF3179E76007A5" alt><br><img data-src="https://uploadfiles.nowcoder.com/images/20170814/9067279_1502703477808_F1444EA3F0939C35C2674B656C2CF7CB" alt></p>
+<p>每5分钟运行一次crond任务exam：<br><em>/5 </em> <em> </em> * exam</p>
+<p>每5分钟运行一次exam<br>基本格式 :<br><em>　　</em>　　<em>　　</em>　　<em>　　command<br>分　时　日　月　周　命令<br>第1列表示分钟1～59 每分钟用</em>或者 */1表示<br>第2列表示小时1～23（0表示0点）<br>第3列表示日期1～31<br>第4列表示月份1～12<br>第5列标识号星期0～6（0表示星期天）<br>第6列要运行的命令<br><img data-src="https://uploadfiles.nowcoder.com/images/20160927/474717_1474935914553_2E857D0459E6718C8203149173376D1A" alt></p>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><p><strong>查找列出</strong>/usr/local这个目录下所有包含字符mrtg的文件<br>grep -Rn “mrtg” /usr/local</p>
+<p>查找当前目录一个月(30天)以前大于100M的日志文件(.log)并删除<br>find  . -name “*.log” –mtime +30 –type f –size +100M |xargs rm –rf {} ;</p>
+<p>统计出现次数最多的前3个ip及其次数<br>sort ip.txt│uniq -c│sort -rn│head -n 3</p>
+<p>统计一个文件中”牛客”出现的行数<br>grep “牛客” 文件名 | wc -l</p>
+<p>查看file1文件的第300-500行的内容<br>cat file1| head -n 500 | tail -n +300<br>sed -n ‘300,500p’ file1</p>
+<p>找到文件try_grep含有以a字母为行开头的内容<br>grep -E ^a try_grep</p>
+<p>在当前目录及其子目录所有的.cpp文件中查找字符串”example”<br>grep -i -r example ./*.cpp</p>
+<p>cat,less,more都可以查看，只是查看的方式不一样，<br>less可以让光标上下移动，<br>more只能用enter键往下翻，<br>cat的话直接跳到最后一页了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">查看file1文件的第300-500行的内容</span><br><span class="line"></span><br><span class="line">方法一：</span><br><span class="line">tail -n +K是输出从第K行开始的内容。</span><br><span class="line">先输出从第300行开始的内容，然后输出前200行。</span><br><span class="line">cat file1 | tail -n +300 | head -n 200</span><br><span class="line"></span><br><span class="line">方法二：</span><br><span class="line">tail -n K是输出最后K行的内容。</span><br><span class="line">先输出前500行，然后输出其中从第300行开始的内容。</span><br><span class="line">cat file1| head -n 500 | tail -n + 300</span><br><span class="line"></span><br><span class="line">方法三：</span><br><span class="line">直接通过sed -n命令获取指定范围的内容，其中p ：列印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行。</span><br><span class="line">sed -n ‘300,500p’ file1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">格式</span><br><span class="line">grep [options]</span><br><span class="line"></span><br><span class="line">主要参数</span><br><span class="line">[options]主要参数：</span><br><span class="line">－c：只输出匹配行的计数。</span><br><span class="line">－I：不区分大 小写(只适用于单字符)。</span><br><span class="line">－h：查询多文件时不显示文件名。</span><br><span class="line">－l：查询多文件时只输出包含匹配字符的文件名。</span><br><span class="line">－n：显示匹配行及 行号。</span><br><span class="line">－s：不显示不存在或无匹配文本的错误信息。</span><br><span class="line">－v：显示不包含匹配文本的所有行。</span><br><span class="line">pattern正则表达式主要参数：</span><br><span class="line">\： 忽略正则表达式中特殊字符的原有含义。</span><br><span class="line">^：匹配正则表达式的开始行。</span><br><span class="line">$: 匹配正则表达式的结束行。</span><br><span class="line">\&lt;：从匹配正则表达 式的行开始。</span><br><span class="line">\&gt;：到匹配正则表达式的行结束。</span><br><span class="line">[ ]：单个字符，如[A]即A符合要求 。</span><br><span class="line">[ - ]：范围，如[A-Z]，即A、B、C一直到Z都符合要求 。</span><br><span class="line">。：所有的单个字符。</span><br><span class="line">* ：有字符，长度可以为0。</span><br></pre></td></tr></table></figure>
+<p>POSIX线程同步方式包括：互斥锁、条件变量（cond）、读写锁和POSIX信号量.<br><a href="https://www.cnblogs.com/iamwho/p/10450093.html" target="_blank" rel="noopener">资料链接</a></p>
+<p><strong>/etc/fstab</strong>是用来存放文件系统的静态信息的文件。位于/etc/目录下，可以用命令less /etc/fstab 来查看，如果要修改的话，则用命令 vi /etc/fstab 来修改。<br>当系统启动的时候，系统会自动地从这个文件读取信息，并且会自动将此文件中指定的文件系统挂载到指定的目录。下面我来介绍如何在此文件下填写信息。<br><a href="http://blog.csdn.net/richerg85/article/details/17917129" target="_blank" rel="noopener">资料链接</a></p>
+<p>下列有关<strong>Nginx</strong>配置文件nginx.conf的叙述正确的是（）<br>A. 进程数设置为CPU总核心数最佳。  (正确)<br>B. 配置虚拟主机，多个域名时，用 空格 分隔。 (错误)<br>C. 设定http服务器中 sendfile on;   #开启高效文件传输模式<br>    普通应用设置为on；<br>    用于进行下载等应用磁盘IO重负载应用，设置为off，以平衡磁盘与网络I/O处理速度，降低系统的负载。(错误)<br>D. 工作模式与连接数上限 ：（最大连接数 = 连接数 * 进程数）(正确)<br><a href="https://blog.csdn.net/weixin_41850404/article/details/84563798" target="_blank" rel="noopener">资料链接</a></p>
+<p>Linux系统中，已经将DHCP服务器架设好，客户端的网络接口eth0，可以通过（ ）命令获得服务器分配的IP地址。<br>dhclient         使用动态主机配置协议动态的配置网络接口的网络参数。<br>ifdown eth0；ifup eth0<br>service network stop；service network start</p>
+<p>在linux<strong>网络编程</strong>中,以下关于socket描述符正确的是:</p>
+<p>socket存在两种模式:阻塞和非阻塞<br>系统调用read从socket中读取数据时,当read返回0的时候,表示socket中数据读取完毕<br>如果socket设置成非阻塞模式,当socket的输入缓冲区没有可读数据时,read操作会返回错误</p>
+<p><a href="https://blog.csdn.net/hguisu/article/details/7453390" target="_blank" rel="noopener">资料链接</a></p>
+<p>使用vi编辑文件时，要将某文本文件第1行到5行的内容<strong>复制</strong>到文件中的指定位置，以下（  ）操作能实现该功能。</p>
+<p>将光标移到第1行，在vi命令模式下输入5yy,然后将光标移到制定位置，按p键<br>使用末行命令1，5y，然后将光标移到制定位置，按p键</p>
+<p>nyy：复制以下n行<br>n,my：指定n到m行复制<br>p：在光标下一行粘贴<br>P（大写）：在光标上一行粘贴（插入）</p>
+<p>我希望看最近执行的3个命令(不包括history)，需要用哪个命令:<br>history 4<br>history没有-n选项。</p>
+<h3 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h3><p>不算 main 这个进程自身，到底创建了多少个<strong>进程</strong>啊？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, char* argv[])</span><br><span class="line">&#123;</span><br><span class="line">   fork();</span><br><span class="line">   fork() &amp;&amp; fork() || fork();</span><br><span class="line">   fork();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>考查两个点<br>1、A&amp;&amp;B||C<br>A为假，跳过B，判断C<br>A为真，判断B，若B为真，跳过C<br>                          若B为假，判断C<br>2、fork（）函数父进程返回子进程ID；子进程返回0</p>
+<p>第一条语句新增1个<br>第二条语句新增4<em>2个<br><img data-src="http://uploadfiles.nowcoder.com/images/20150721/542107_1437489378052_QQ%E5%9B%BE%E7%89%8720150721223854.png" alt><br>第三条语句，此时已有进程1+1+4</em>2个，所以新增10个</p>
+<p>Fork后子进程保留了父进程的什么？<br>环境变量<br>当前工作目录</p>
+<p>使用fork函数得到的子进程从父进程的继承了整个进程的地址空间，包括：进程上下文、进程堆栈、内存信息、打开的文件描述符、信号控制设置、进程优先级、进程组号、当前工作目录、根目录、资源限制、控制终端等。<br>子进程与父进程的区别在于：<br>1、父进程设置的锁，子进程不继承（因为如果是排它锁，被继承的话，矛盾了）<br>2、各自的进程ID和父进程ID不同<br>3、子进程的未决告警被清除；<br>4、子进程的未决信号集设置为空集。<br><a href="https://blog.csdn.net/xiaojun111111/article/details/51764389" target="_blank" rel="noopener">参考资料</a></p>
+<p>fork()是全部复制<br>vfork()是共享内存<br>clone()是可以将父进程资源有选择地复制给子进程，而没有复制的数据结构则通过指针的复制让子进程共享，具体要复制哪些资源给子进程，由参数列表中的clone_flags来决定。另外，clone()返回的是子进程的pid。<br>fork() 函数复制时将父进程的所以资源都通过复制数据结构进行了复制，然后传递给子进程，所以 fork() 函数不带参数；<br>clone() 函数则是将部分父进程的资源的数据结构进行复制，复制哪些资源是可选择的，这个可以通过参数设定，所以 clone() 函数带参数，没有复制的资源可以通过指针共享给子进程</p>
+<h3 id="feof"><a href="#feof" class="headerlink" title="feof"></a>feof</h3><p>若fp已定义为指向某文件的指针,且没有读到该文件的末尾,C语言函数feof( fp)的函数返回值是 0<br><strong>feof</strong>函数的用法是从输入流读取数据,如果到达稳健末尾(遇文件结束符),eof函数值为非零值,否则为0</p>
+<h3 id="declare-和-typeset"><a href="#declare-和-typeset" class="headerlink" title="declare 和 typeset"></a>declare 和 typeset</h3><p>bash中有两个内置的命令 declare 和 typeset 可用于创建变量。除了使用内置命令来创建和设置变量外，还可以直接赋值，格式为：变量名=变量值<br>    注意：变量名前面不应加美元“$”符号。（和PHP不同）<br>    等号“=”前后不可以有空格。<br>    Shell中不需要显式的语法来声明变量。<br>    变量名不可以直接和其他字符相连，如果想相连，必须用括号：<br>    echo “this is $(he)llo!”</p>
+<h3 id="vi-查找"><a href="#vi-查找" class="headerlink" title="vi 查找"></a>vi 查找</h3><p>使用vi编辑文件report.txt时，要自下而上查找字符串“2006”，应该在命令模式下使用<br>?2006<br>在使用VI编辑器的时候，查找内容的方法有两种：<br>1、“/”：这个查找是自上而下<br>2、“？”：这个查找是自下而上<br>针对“/”：使用“n”查找下一个，使用“N”查找上一个</p>
+<p>chmod命令为所有权限；<br>Linux more 命令类似 cat ，不过会以一页一页的形式显示，更方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能（与 vi 相似）；<br>cp命令主要用于复制文件或目录。<br>touch(指令改变档案的时间记录)</p>
+<p>ping命令用来检测两部主机之间的信道是否畅通；<br>route命令用来显示目前本机路由表的内容，并对路由表作相应的修改；<br>tranceroute命令用来探测路由的经过；<br>ifconfig命令用来检测和设置本机的网络接口；  </p>
+<h3 id="mysqldump"><a href="#mysqldump" class="headerlink" title="mysqldump"></a>mysqldump</h3><p>linux下<strong>mysqldump</strong>备份命令及参数描述正确的是<br>mysqldump -h ip -uroot -p DBNAME &gt;bck.sql<br>-h  目标ip地址<br>-u   跟上用户名<br>-p   用户的密码<br>DBNAME  数据库名<br>/&gt; 重定向到bck.sql </p>
+<p>字符串的处理：<br>拷贝：strcpy,memcpy,sprintf;strncpy,_snprintf<br>合并：strcat,sprintf;strncat,_snprintf<br>比较：strcmp,memcmp;strncmp<br>strcpy() sprintf() strcat() 存在安全隐患， 其对应的安全版为：<br>strncpy() snprintf() strncat()<br><img data-src="https://uploadfiles.nowcoder.com/images/20190807/459981086_1565164326246_215D0A1091F05C093CD1034D721FC787" alt></p>
+<p>邮件服务器为每个用户限制磁盘存储空间上限，执行checkquota -cug /var/mail指令后, 在/var/mail目录自动创建的配置文件是<br>aquota.user<br>aquota.group</p>
+<p>aquota.group与aqouta.user分别是组以及用户磁盘配额需要的配置文件，而且权限还是600<br>-g 扫描磁盘空间时，计算每个群组识别码所占用的目录和文件数目。<br>-R 排除根目录所在的分区。<br>-u 扫描磁盘空间时，计算每个用户识别码所占用的目录和文件数目。</p>
+<p>/var/log/lastlog:记录系统中所有用户最后一次的登录时间的曰志。这个文件也是二进制文件.不能直接用Vi 查看。而要使用lastlog命令查看<br>/var/log/wtmp :永久记录所有用户的登陆、注销信息，同时记录系统的后动、重启、关机事件。同样，这个文件也是二进制文件.不能直接用Vi查看，而要使用last命令查看.<br>/var/log/utmp:记录当前已经登录的用户的信息。这个文件会随着用户的登录和注销而不断变化，只记录当前登录用户的信息。同样，这个文件不能直接用Vi查看，而要使用w、who、users等命令查看.</p>
+<p>/etc/passwd中存放本地用户基本信息，<br>/etc/shadow存放用户密码</p>
+<p>cp命令 ：cp指令用于复制文件或目录。<br>        将文件file1复制成文件file2命令如下：cp file1 file2<br>cat命令 ：cat命令是linux下的一个文本输出命令，通常是用于观看某个文件的内容的。<br>         一次显示整个文件命令如下： cat filename</p>
+<blockquote>
+<p>: linux中的数据流重导向：输出导向，覆盖导向的文件内容。<br>&lt; : linux中的数据流重导向：输入导向，理解为原本由键盘输入改为文本输入<br>dd命令 : 作用是用指定大小的块拷贝一个文件，并在拷贝的同时进行指定的转换。<br>        参数：if  输入文件（或设备名称）  of  输出文件（或设备名称）<br>       将文件file1拷贝到文件file2中命令如下：  dd if=file1 of=file2<br>| ：管道命令操作符，处理经由前面一个指令传出的正确输出信息，然后，传递给下一个命令，作为标准的输入</p>
+</blockquote>
+<p>Binwalk是用于搜索给定二进制镜像文件以获取嵌入的文件和代码的工具。<br>Linux file命令用于辨识文件类型。<br>firmware-mod-kit工具的功能和binwalk工具的类似<br>Netstat 命令用于显示各种网络相关信息，如网络连接，路由表，接口状态 (Interface Statistics)，masquerade 连接，多播成员 (Multicast Memberships) 等等。</p>
+<h3 id="UNIX中有如下的通信方式："><a href="#UNIX中有如下的通信方式：" class="headerlink" title="UNIX中有如下的通信方式："></a>UNIX中有如下的通信方式：</h3><p>1) 文件和记录锁定。<br>为避免两个进程间同时要求访问同一共享资源而引起访问和操作的混乱，在进程对<br>共享资源进行访问前必须对其进行锁定，该进程访问完后再释放。这是UNIX为共享<br>资源提供的互斥性保障。<br>2 ）管道。<br>管道一般用于两个不同进程之间的通信。当一个进程创建一个管道，并调用fork创<br>建自己的一个子进程后，父进程关闭读管道端，子进程关闭写管道端，这样 提供了<br>两个进程之间数据流动的一种方式。<br>3 ） FIFO 。<br>FIFO是一种先进先出的队列。它类似于一个管道，只允许数据的单向流动。每个<br>FIFO都有一个名字，允许不相关的进程访问同一个FIFO。因此也成为命名管。<br>4）消息队列。<br>UNIX下不同进程之间可实现共享资源的一种机制；UNIX允许不同进程将格式化的数<br>据流以消息形式发送给任意<br>进程。对消息队列具有操作权限的进程都可以使用msget完成对消息队列的操作控制<br>。通过使用消息类型，进程可以按任何顺序读消息，或为消息安排优先级顺序。<br>5 ）信号灯。<br>作为进程间通讯的一种方法，它不是用于交换大批数据，而用于多进程之间的同步<br>（协调对共享存储段的存取）。<br>6 ）共享内存。<br>通过信号灯实现存储共享（类似“红灯停、绿灯行”）<br><img data-src="http://blog.chinaunix.net/attachment/201110/12/25906157_13184153928yic.png" alt></p>
+<h3 id="进程通信方式："><a href="#进程通信方式：" class="headerlink" title="进程通信方式："></a>进程通信方式：</h3><p>（1）（无名）管道（Pipe）：管道可用于具有亲缘关系进程间的通信，允许一个进程和另一个与它有共同祖先的进程之间进行通信。<br>（2）命名管道（named pipe）：命名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信。命名管道在文件系统中有对应的文件名。命名管道通过命令mkfifo或系统调用mkfifo来创建。<br>（3）信号（Signal）：信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身；linux除了支持Unix早期信号语义函数sigal外，还支持语义符合Posix.1标准的信号函数sigaction（实际上，该函数是基于BSD的，BSD为了实现可靠信号机制，又能够统一对外接口，用sigaction函数重新实现了signal函数）。<br>（4）消息（Message）队列：消息队列是消息的链接表，包括Posix消息队列system V消息队列。有足够权限的进程可以向队列中添加消息，被赋予读权限的进程则可以读走队列中的消息。消息队列克服了信号承载信息量少，管道只能承载无格式字节流以及缓冲区大小受限等缺<br>（5）共享内存：使得多个进程可以访问同一块内存空间，是最快的可用IPC形式。是针对其他通信机制运行效率较低而设计的。往往与其它通信机制，如信号量结合使用，来达到进程间的同步及互斥。<br>（6）内存映射（mapped memory）：内存映射允许任何多个进程间通信，每一个使用该机制的进程通过把一个共享的文件映射到自己的进程地址空间来实现它。<br>（7）信号量（semaphore）：主要作为进程间以及同一进程不同线程之间的同步手段。<br>（8）套接口（Socket）：更为一般的进程间通信机制，可用于不同机器之间的进程间通信。起初是由Unix系统的BSD分支开发出来的，但现在一般可以移植到其它类Unix系统上：Linux和System V的变种都支持套接字。<br>（9）文件锁；</p>
+<h3 id="打包生成静态库"><a href="#打包生成静态库" class="headerlink" title="打包生成静态库"></a>打包生成静态库</h3><p>假设我有test1.c,test2.c两个源文件，先使用gcc -c <em>.c将源文件编译成目标文件，可以生成了test1.o,test2.o两个目标文件，然后，使用ar命令：ar crv libtest.a </em>.o将该目录下的所有目标文件打包生成了libtest.a文件。这样，你在编译的时候就可以直接使用这个静态库了。</p>
+<p><strong>Find</strong>是一个非常有效的工具，它可以遍历当前目录甚至于整个文件系统来查找某些文件或目录.</p>
+<p>主要选项:<br>-name 按照文件名查找文件<br>-perm 按照文件权限来查找文件<br>-prune 不在当前指定的目录中查找<br>-user 按照文件属主来查找文件<br>-group 按照文件所属的组来查找文件<br>-mtime -n +n 按照文件的更改时间来查找文件，-n表示文件更改时间距现在n天以内，+ n表示文件更改时间距现在n天以前.<br>-nogroup 查找无有效所属组的文件，即该文件所属的组不存在<br>-nouser 查找无有效属主的文件<br>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件<br>-type 查找某一类型的文件</p>
+<p>tar是操作.tar的命令<br>gzip是压缩.gz压缩包的命令<br>compress：压缩.Z文件<br>uncompress：解压缩.Z文件</p>
+<p>/sbin/init在核心完整的加载后，开始运行系统的第一支程序，主要的功能就是准备软件运行的环境，包括系统的主机名称、网络配置、语系处理、文件系统格式及其他服务的启动等。<br>/bin/sh解释脚本的shell命令，开机后运行<br>/etc/sysvinit就是 system V 风格的 init 系统，顾名思义，它源于 System V 系列 UNIX。sysvinit 中运行模式描述了系统各种预订的运行模式。<br>/etc/inittab定义了系统引导时的运行级别, 进入或者切换到一个运行级别时做什么。</p>
+<p>Linux启动流程：<br>1，BIOS加电自检；<br>2，从硬盘0柱面 0磁道 第一扇区读512字节的MBR主引导记录；<br>3，运行引导程序Grub并根据其配置加载kernel镜像后初始化；<br>4，根据/etc/inittab中系统初始化配置执行/etc/rc.sysinit脚本；<br>5，根据第3步读到的runlevel值启动对应服务；<br>6，运行/etc/rc.local;<br>7，生成终端待用户登录。</p>
+<p>crontab文件由6个域组成，每个域之间用空格分隔，下列哪个排列方式是正确的？<br>MIN HOUR DAY MONTH DAYOFWEEK COMMAND</p>
+<p>在crontab文件中如何输入需要执行的命令和时间。该文件中每行都包括六个域，其中前五个域是指定命令被执行的时间，最后一个域是要被执行的命令。每个域之间使用空格或者制表符分隔。格式如下： minute hour day-of-month month-of-year day-of-week commands 第一项是分钟，第二项是小时，第三项是一个月的第几天，第四项是一年的第几个月，第五项是一周的星期几，第六项是要执行的命令。这些项都不能为空，必 须填入。如果用户不需要指定其中的几项，那么可以使用<em>代替。因为</em>是统配符，可以代替任何字符，所以就可以认为是任何时间，也就是该项被忽略了。</p>
+<p>fopen是打开文件的函数,文件也可以看成是一个设备,打开一个设备将导致给设备所属的驱动程序发送一个IRP,而与真实硬件相关的驱动程序都运行于内核.<br>exit函数是结束进程的函数,结束进程需要访问PCB(进程控制块)和TCB(线程控制块)等等一些数据结构,而这些数据都存在于内核中.</p>
+<p>.bash_profile 类似于编程中的构造函数，当登录shell时，shell会寻找该文件做环境初始化。<br>.bashrc 是在bash环境时.bash_profile的替补。<br>.bash_logout 类似于编程中的析构函数，当登录shell退出时，shell会寻找该文件，并按其指示办事。<br>/etc/profile是系统文件,对系统下全体用户起作用</p>
+<p>:s/old/new 将当前行中查找到的第一个字符“old” 串替换为“new”<br>:s/old/new/g 将当前行中查找到的所有字符串“old” 替换为“new”<br>:#,#s/old/new/g 在行号“#,#”范围内替换所有的字符串“old”为“new”<br>:%s/old/new/g 在整个文件范围内替换所有的字符串“old”为“new”<br>:s/old/new/c 在替换命令末尾加入c命令，将对每个替换动作提示用户进行确认</p>
+<p>在Linux 系统中，在运行一个程序时，程序中未初始化的全局变量会被加载到以下哪个内存段中?<br>BSS</p>
+<p>BSS（Block Started by Symbol）通常是指用来存放程序中未初始化的全局变量和静态变量的一块内存区域。特点是:可读写的，在程序执行之前BSS段会自动清0。所以，未初始的全局变量在程序执行之前已经成0了。</p>
+<p>数据段：数据段（data segment）通常是指用来存放程序中已初始化的全局变量的一块内存区域。数据段属于静态内存分配。</p>
+<p>代码段：代码段（code segment/text segment）通常是指用来存放程序执行代码的一块内存区域。这部分区域的大小在程序运行前就已经确定，并且内存区域通常属于只读, 某些架构也允许代码段为可写，即允许修改程序。在代码段中，也有可能包含一些只读的常数变量，例如字符串常量等。</p>
+<p>堆（heap）：堆是用于存放进程运行中被动态分配的内存段，它的大小并不固定，可动态扩张或缩减。当进程调用malloc等函数分配内存时，新分配的内存就被动态添加到堆上（堆被扩张）；当利用free等函数释放内存时，被释放的内存从堆中被剔除（堆被缩减）</p>
+<p>栈(stack)：栈又称堆栈， 是用户存放程序临时创建的局部变量，也就是说我们函数括弧“{}”中定义的变量（但不包括static声明的变量，static意味着在数据段中存放变量）。除此以外，在函数被调用时，其参数也会被压入发起调用的进程栈中，并且待到调用结束后，函数的返回值也会被存放回栈中。由于栈的先进先出特点，所以栈特别方便用来保存/恢复调用现场。从这个意义上讲，我们可以把堆栈看成一个寄存、交换临时数据的内存区</p>
+<p><strong>umask</strong><br>功能说明：指定在建立文件时预设的权限掩码。<br>语　　法：umask [-S][权限掩码]<br>补充说明：umask可用来设定[权限掩码]。[权限掩码]是由3个八进制的数字所组成，将现有的存取权限减掉权限掩码后，即可产生建立文件时预设的权限。<br>umask 命令允许你设定文件创建时的缺省模式，对应每一类用户(文件属主、同组用户、其他用户)存在一个相应的umask值中的数字。对于文件来说，这一数字的最 大值分别是6。系统不允许你在创建一个文本文件时就赋予它执行权限，必须在创建后用chmod命令增加这一权限。目录则允许设置执行权限，这样针对目录来 说，umask中各个数字最大可以到7。<br>对于新建文件 权限 666-244得到422<br>linux系统中权限rwx对应数值为421，故文件权限为r– -w- -w-</p>
+<p>linux提供了一种机制可以保证只要父进程想知道子进程结束时的状态信息， 就可以得到。这种机制就是: 在每个进程退出的时候,内核释放该进程所有的资源,包括打开的文件,占用的内存等。 但是仍然为其保留一定的信息(包括进程号the process ID,退出状态the termination status of the process,运行时间the amount of CPU time taken by the process等)。直到父进程通过wait / waitpid来取时才释放。</p>
+<p>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。<br>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
+<p>僵死进程并不是问题的根源，罪魁祸首是产生出大量僵死进程的那个父进程，所以，解决方法就是kill那个父进程，于是僵尸进程就可以被init进程接收，释放。</p>
+<h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><p>使用git merge命令；<br>使用git pull命令；<br>使用git cherry-pick命令<br>都可以合并<br>执行git blame;命令时,会逐行显示文件,并在每一行的行首显示commit号,提交者,最早的提交日期等</p>
+<p>kill pid让进程正常退出<br>kill %job number 直接杀掉进程</p>
+<h3 id="Linux网络编程"><a href="#Linux网络编程" class="headerlink" title="Linux网络编程"></a>Linux网络编程</h3><p>Nagle算法的规则：<br>（1）如果包长度达到MSS，则允许发送；<br>（2）如果该包含有FIN，则允许发送；<br>（3）设置了TCP_NODELAY选项，则允许发送；<br>（4）未设置TCP_CORK选项时，若所有发出去的小数据包（包长度小于MSS）均被确认，则允许发送；<br>（5）上述条件都未满足，但发生了超时（一般为200ms），则立即发送。</p>
+<p>Nagle算法只允许一个未被ACK的包存在于网络，它并不管包的大小，因此它事实上就是一个扩展的停-等协议，只不过它是基于包停-等的，而不是基于字节停-等的。Nagle算法完全由TCP协议的ACK机制决定，这会带来一些问题，比如如果对端ACK回复很快的话，Nagle事实上不会拼接太多的数据包，虽然避免了网络拥塞，网络总体的利用率依然很低。<br>Nagle算法是silly window syndrome(SWS)预防算法的一个半集。SWS算法预防发送少量的数据，Nagle算法是其在发送方的实现，而接收方要做的是不要通告缓冲空间的很小增长，不通知小窗口，除非缓冲区空间有显著的增长。这里显著的增长定义为完全大小的段（MSS）或增长到大于最大窗口的一半。<br>注意：BSD的实现是允许在空闲链接上发送大的写操作剩下的最后的小段，也就是说，当超过1个MSS数据发送时，内核先依次发送完n个MSS的数据包，然后再发送尾部的小数据包，其间不再延时等待。（假设网络不阻塞且接收窗口足够大）<br>举个例子，比如之前的blog中的实验，一开始client端调用socket的write操作将一个int型数据（称为A块）写入到网络中，由于此时连接是空闲的（也就是说还没有未被确认的小段），因此这个int型数据会被马上发送到server端，接着，client端又调用write操作写入‘\r\n’（简称B块），这个时候，A块的ACK没有返回，所以可以认为已经存在了一个未被确认的小段，所以B块没有立即被发送，一直等待A块的ACK收到（大概40ms之后），B块才被发送。整个过程如图所示：<br>这里还隐藏了一个问题，就是A块数据的ACK为什么40ms之后才收到？这是因为TCP/IP中不仅仅有nagle算法，还有一个TCP确认延迟机制 。当Server端收到数据之后，它并不会马上向client端发送ACK，而是会将ACK的发送延迟一段时间（假设为t），它希望在t时间内server端会向client端发送应答数据，这样ACK就能够和应答数据一起发送，就像是应答数据捎带着ACK过去。在我之前的时间中，t大概就是40ms。这就解释了为什么’\r\n’（B块）总是在A块之后40ms才发出。<br>当然，TCP确认延迟40ms并不是一直不变的，TCP连接的延迟确认时间一般初始化为最小值40ms，随后根据连接的重传超时时间（RTO）、上次收到数据包与本次接收数据包的时间间隔等参数进行不断调整。另外可以通过设置TCP_QUICKACK选项来取消确认延迟。</p>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>/dev/null文件的权限是crw-rw-rw- root root所以一般用户是不具备执行权限的，也就无法通过/dev/null删除dirs了<br>/dev/null就是一个黑洞，移进去的文件就会消失，但非root用户没有执行权限<br>rm -rf /directory<br>-r 表示递归删除（文件夹删除）<br>-f 表示强制删除<br>mv 是移动命令</p>
+<h3 id="内存屏蔽"><a href="#内存屏蔽" class="headerlink" title="内存屏蔽"></a>内存屏蔽</h3><p>内存屏障主要有：读屏障、写屏障、通用屏障、优化屏障、几种。<br>以读屏障为例，它用于保证读操作有序。屏障之前的读操作一定会先于屏障之后的读操作完成，写操作不受影响，同属于屏障的某一侧的读操作也不受影响。类似的，写屏障用于限制写操作。而通用屏障则对读写操作都有作用。而优化屏障则用于限制编译器的指令重排，不区分读写。前三种屏障都隐含了优化屏障的功能。</p>
+<h3 id="查看文件大小"><a href="#查看文件大小" class="headerlink" title="查看文件大小"></a>查看文件大小</h3><p>ls -lh 可以查看文件权限，大小；<br>df 主要是查看文件系统占用的磁盘空间使用情况；<br>du 主要是可以查看指定文件和目录所占用的空间大小。</p>
+<h3 id="rmp"><a href="#rmp" class="headerlink" title="rmp"></a>rmp</h3><p>－ivh：安装显示安装进度–install–verbose–hash<br>－Uvh：升级软件包–Update；<br>－qpl：列出RPM软件包内的文件信息[Query Package list]；<br>－qpi：列出RPM软件包的描述信息[Query Package install package(s)]；<br>－qf：查找指定文件属于哪个RPM软件包[Query File]；<br>－Va：校验所有的RPM软件包，查找丢失的文件[View Lost]；<br>－e：删除包</p>
+<h3 id="TCB、PCB、MMU"><a href="#TCB、PCB、MMU" class="headerlink" title="TCB、PCB、MMU"></a>TCB、PCB、MMU</h3><p>A.TCB,线程控制块；PCB，进程控制块<br>B.MMU(Memory Management Unit) 内存管理单元，是中央处理器用来管理虚拟内存和物理内存寄存器的控制线路，同时也负责虚拟内存映射为物理内存等。<br>C.CACHE,感觉在这道题里应该指的是高速缓冲存储器。<br>D.DMA，（direct memory access）直接内存存储，传输数据从一个地址空间到另一个地址空间。</p>
+<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p>新建一个管理员用户admin,需要使用的参数<br>useradd -u 0 -o admin<br>-u 表示指定用户的用户号，由于系统用户的用户号是0，所以指定用户号为0。如果同时有-o选项，则可以重复使用其他用户的标识号；即-u 0 -o admin的到相同的效果。但是系统本身勋在用户号为0 的系统用户，则这里应该使用-o admin参数；</p>
+<h3 id="实现文件去重并排序"><a href="#实现文件去重并排序" class="headerlink" title="实现文件去重并排序"></a>实现文件去重并排序</h3><p>sort demo.txt|uniq</p>
+<p>uniq 命令删除文件中的重复行。uniq 命令读取由 InFile 参数指定的标准输入或文件。<br>该命令首先比较相邻的行，然后除去第二行和该行的后续副本。重复的行一定相邻。（在发出 uniq 命令之前，请使用 sort 命令使所有重复行相邻。<br>uniq命令这种方式估计是想节省系统资源）最后，uniq 命令将最终单独的行写到标准输出或由 OutFile 参数指定的文件。<br>InFile 和 OutFile 参数必须指定不同的文件。</p>
+<h3 id="Linux系统进程类型"><a href="#Linux系统进程类型" class="headerlink" title="Linux系统进程类型"></a>Linux系统进程类型</h3><p>交互进程——由一个shell启动的进程。交互进程既可以在前台运行，也可以在后台运行。<br>批处理进程——这种进程和终端没有联系，是一个进程序列。</p>
+<p>监控进程（也称守护进程）——Linux系统启动时启动的进程，并在后台运行。</p>
+<h3 id="退出交互式的shell"><a href="#退出交互式的shell" class="headerlink" title="退出交互式的shell"></a>退出交互式的shell</h3><p>esc，在vi的插入模式或者底行命令模式下进入命令模式<br>exit，一般用于退出会话式程序或者交互式命令行，如ssh远程连接，切换 shell（Linux中）<br>q，用来退出 man 手册查看命令或者配置文件的状态，或者more、less等命令查看文件的状态<br>quit，一般用于图形界面的退出<br>以上的exit和quit仅是个人总结，非权威，python中的exit()和quit()都可以用来退出python的交互式shell</p>
+<h3 id="apache目录访问控制的参数"><a href="#apache目录访问控制的参数" class="headerlink" title="apache目录访问控制的参数"></a>apache目录访问控制的参数</h3><p>AuthName:验证窗口的名称<br>AuthType:验证的类型，这里定义的是Basic<br>AuthUserFile:验证所使用的帐号密码配置文件<br>Require:指定可以登录网页的用户</p>
+<h3 id="常见文件系统-系统函数"><a href="#常见文件系统-系统函数" class="headerlink" title="常见文件系统 系统函数"></a>常见文件系统 系统函数</h3><p>fcntl  文件控制<br>open  打开文件<br>creat  创建新文件<br>close  关闭文件描述字<br>read  读文件<br>write  写文件<br>readv  从文件读入数据到缓冲数组中<br>writev  将缓冲数组里的数据写入文件<br>pread 对文件随机读<br>pwrite  对文件随机写</p>
+<h3 id="man的级别："><a href="#man的级别：" class="headerlink" title="man的级别："></a>man的级别：</h3><p>1：查看命令的帮助<br>2：查看可被内核调用的函数的帮助<br>3：查看函数和函数库的帮助<br>4：查看特殊文件的帮助（主要是/dev目录下的文件）<br>5：查看配置文件的帮助<br>6：查看游戏的帮助<br>7：查看其它杂项的帮助<br>8：查看系统管理员可用命令的帮助<br>man -f 【命令】–可以查看这个命令有哪些级别</p>
+<h3 id="DHCP-服务器，dhcpd-conf-配置文件"><a href="#DHCP-服务器，dhcpd-conf-配置文件" class="headerlink" title="DHCP 服务器，dhcpd.conf 配置文件"></a>DHCP 服务器，dhcpd.conf 配置文件</h3><p>option routers                  192.168.0.1;配置默认网关<br>option subnet-mask             255.255.255.0;配置子网掩码<br>option domain-name-servers     192.168.1.1;指定DNS服务器<br>option domain-name-servers         配置多个DNS服务器</p>
+<p>建立动态路由需要用到的文件有<br>/etc/gateways</p>
+<p>/etc下主要配置文件解释<br>/etc/hosts：主机名到 IP 地址的映射关系的文件；<br>/etc/resolv.conf：DNS 服务的配置文件 ；<br>/etc/gateways：建立动态路由需要用到的文件 ；<br>/etc/services：定义了网络服务的端口；<br>/etc/resolv.conf：设置DNS。</p>
+<p>DNS服务器主配置文件：  /etc/named.conf</p>
+<h3 id="查找-1"><a href="#查找-1" class="headerlink" title="查找"></a>查找</h3><p>locate并不真正对硬盘上的文件系统进行查找，而是对文件名数据库进行检索，而且可以使用通配符？和*<br>find命令从指定的起始目录开始，递归地搜索其各个子目录，查找满足寻找条件的文件并对之采取相关的操作<br>whereis命令只能用于程序名的搜索，而且只搜索二进制文件（参数-b）、man说明文件（参数-m）和源代码文件（参数-s）<br>type命令用来显示指定命令的类型，判断给出的指令是内部指令还是外部指令</p>
+<h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>管道实际上是一种固定大小的缓冲区，管道对于管道两端的进程而言，就是一个文件，但它不是普通的文件，它不属于某种文件系统，而是自立门户，单独构成一种文件系统，并且只存在于内存中。它类似于通信中半双工信道的进程通信机制，一个管道可以实现双向 的数据传输，而同一个时刻只能最多有一个方向的传输，不能两个方向同时进行。管道的容 量大小通常为内存上的一页，它的大小并不是受磁盘容量大小的限制。当管道满时，进程在 写管道会被阻塞，而当管道空时，进程读管道会被阻塞。</p>
+<p>由于管道采用半双工通信方式。因此，数据只能在一个方向上流动。<br>管道是由内核管理的一个缓冲区，其容量受多方面因素影响，包括缓冲区的大小、磁盘容量大小等问题。<br>当管道中没有信息的话，从管道中读取的进程会等待，直到另一端的进程放入信息。当管道被放满信息的时候，尝试放入信息的进程会等待，直到另一端的进程取出信息。当两个进程都终结的时候，管道也自动消失。进程对管道进行读操作和写操作都可能被阻塞。<br>管道的一端连接一个进程的输出。这个进程会向管道中放入信息。管道的另一端连接一个进程的输入，这个进程取出被放入管道的信息，管道可以同时进行读进程和写进程。</p>
+<h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>使用pthread库的多线程程序编译时需要加什么连接参数?<br>-lpthread<br>-fthis-is-varialble 就是向传统c++看齐，可以使用this当一般变量使用.<br>-fcond-mismatch允许 条件表达式 的第二和第三参数 类型不匹配 ，表达式的值将为void类型<br>-MMD和-MM相同，但是输出将导入到.d的文件里面</p>
+<h3 id="三剑客"><a href="#三剑客" class="headerlink" title="三剑客"></a>三剑客</h3><p>csh:调用 C shell。<br>Tcsh是csh的增强版，并且完全兼容csh。它不但具有csh的全部功能，还具有命令行编辑、拼写校正、可编程字符集、历史纪录、 作业控制 等功能，以及C语言风格的语法结构。<br>AWK 是一种优良的文本处理工具， Linux 及 Unix 环境中现有的功能最强大的数据处理引擎之一, AWK 提供了极其强大的功能：可以进行样式装入、 流控制 、数学 运算符 、进程 控制语句 甚至于内置的变量和函数。<br>SED: Stream EDitor</p>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><p>rsync是中小型企业常用的同步工具是基于内容的同步，其他的也都可以，但是存在一些问题，<br>rsync结合inotify可以达到实时同步,最重要的是rsync是同步差异的内容，而不是同步差异的文件开销比其他的小,并且是基于ssh协议的，sshd服务都是服务器必备的，不需要额外装其他服务<br>wget 基于 http/ftp 协议的.<br>ftp 需要其他服务<br>scp 基于 ssh 协议 ，这些都是基于文件内容做同步开销大</p>
+<p><a href="https://blog.csdn.net/5iasp/article/details/13630927" target="_blank" rel="noopener">linux下两台服务器文件实时同步方案设计和实现</a></p>
+<p>任何shell都会执行 exec 和 fork<br>而    ls会执行read<br>三个加起来</p>
+<h3 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h3><p>在Linux的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号inode 。<br><strong>软连接</strong>，其实就是新建立一个文件，这个文件就是专门用来指向别的文件的（那就和windows 下的快捷方式的那个文件有很接近的意味）。软链接产生的是一个新的文件，但这个文件的作用就是专门指向某个文件的，删了这个软连接文件，那就等于不需要这个连接，和原来的存在的实体原文件没有任何关系，但删除原来的文件，则相应的软连接不可用（cat那个软链接文件，则提示“没有该文件或目录“）</p>
+<p><strong>硬连接</strong>是不会建立inode的，他只是在文件原来的inode link count域再增加1而已，也因此硬链接是不可以跨越文件系统的。相反都是软连接会重新建立一个inode，当然inode的结构跟其他的不一样，他只是一个指明源文件的字符串信息。一旦删除源文件，那么软连接将变得毫无意义。而硬链接删除的时候，系统调用会检查inode link count的数值，如果他大于等于1，那么inode不会被回收。因此文件的内容不会被删除。</p>
+<p><strong>硬链接</strong>实际上是为文件建一个别名，链接文件和原文件实际上是同一个文件。可以通过ls -i来查看一下，这两个文件的inode号是同一个，说明它们是同一个文件；而软链接建立的是一个指向，即链接文件内的内容是指向原文件的指针，它们是两个文件。</p>
+<p><strong>软链接</strong>可以跨文件系统，硬链接不可以；软链接可以对一个不存在的文件名(filename)进行链接（当然此时如果你vi这个软链接文件，linux会自动新建一个文件名为filename的文件）,硬链接不可以（其文件必须存在，inode必须存在）；软链接可以对目录进行连接，硬链接不可以。两种链接都可以通过命令 ln 来创建。ln 默认创建的是硬链接。使用 -s 开关可以创建软链接。</p>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><p>由于硬链接是有着相同 inode 号仅文件名不同的文件，因此硬链接存在以下几点特性：</p>
+<ul>
+<li>文件有相同的 inode 及 data block；</li>
+<li>只能对已存在的文件进行创建；</li>
+<li>不能交叉文件系统进行硬链接的创建；</li>
+<li>不能对目录进行创建，只可对文件创建；</li>
+<li>删除一个硬链接文件并不影响其他有相同 inode 号的文件。<br><img data-src="https://uploadfiles.nowcoder.com/images/20160813/191137_1471066228575_2F783EFDFEA497F113EAA26ADA59E8FB" alt></li>
+</ul>
+<p>软链接与硬链接不同，若文件用户数据块中存放的内容是另一文件的路径名的指向，则该文件就是软连接。软链接就是一个普通文件，只是数据块内容有点特殊。软链接有着自己的 inode 号以及用户数据块。因此软链接的创建与使用没有类似硬链接的诸多限制：</p>
+<p><strong>软链接</strong>有自己的文件属性及权限等；</p>
+<ul>
+<li>可对不存在的文件或目录创建软链接；</li>
+<li>软链接可交叉文件系统；</li>
+<li>软链接可对文件或目录创建；</li>
+<li>创建软链接时，链接计数 i_nlink 不会增加；</li>
+<li>删除软链接并不影响被指向的文件，但若被指向的原文件被删除，则相关软连接被称为死链接（即 dangling link，若被指向路径文件被重新创建，死链接可恢复为正常的软链接）。</li>
+</ul>
+<p>删除源文件的话，软连接则指向了一个空文件。</p>
+<h3 id="WC"><a href="#WC" class="headerlink" title="WC"></a>WC</h3><p>Linux系统中的wc (Word Count) 命令的功能为统计指定文件中的字节数、字数、行数，并将统计结果显示输出。</p>
+<p>1． 命令格式：<br>wc [选项]文件…<br>2． 命令功能：<br>统计指定文件中的字节数、字数、行数，并将统计结果显示输出。该命令统计指定文件中的字节数、字数、行数。如果没有给出文件名，则从标准输入读取。wc同时也给出所指定文件的总统计数。<br>3． 命令参数：<br>-c 统计字节数。<br>-l 统计行数。<br>-m 统计字符数。这个标志不能与 -c 标志一起使用。<br>-w 统计字数。一个字被定义为由空白、跳格或换行字符分隔的字符串<br>-L 打印最长行的长度。<br>-help 显示帮助信息<br>–version 显示版本信息</p>
+<h3 id="内存管理模式中，会产生外零头的是"><a href="#内存管理模式中，会产生外零头的是" class="headerlink" title="内存管理模式中，会产生外零头的是"></a>内存管理模式中，会产生外零头的是</h3><p>段式<br>请求段式<br>操作系统在分配内存时，有时候会产生一些空闲但是无法被正常使用的内存区域，这些就是内存碎片，或者称为内存零头，这些内存零头一共分为两类：<strong>内零头和外零头</strong>。<br><strong>内零头</strong>是指进程在向操作系统请求内存分配时，系统满足了进程所需要的内存需求后，还额外还多分了一些内存给该进程，也就是说额外多出来的这部分内存归该进程所有，其他进程是无法访问的。<br><strong>外零头</strong>是指内存中存在着一些空闲的内存区域，这些内存区域虽然不归任何进程所有，但是因为内存区域太小，无法满足其他进程所申请的内存大小而形成的内存零头。<br>页式存储管理是以页为单位（页面的大小由系统确定，且大小是固定的）向进程分配内存的，例如：假设内存总共有100K,分为10页，每页大小为10K。现在进程A提出申请56K内存，因为页式存储管理是以页为单位进程内存分配的，所以系统会向进程A提供6个页面，也就是60K的内存空间，那么在最后一页中进程只使用了6K，从而多出了4K的内存碎片，但是这4K的内存碎片系统已经分配给进程A了，其他进程是无法再访问这些内存区域的，这种内存碎片就是内零头。<br>段式存储管理是段（段的大小是程序逻辑确定，且大小不是固定的）为单位向进程进行内存分配的，进程申请多少内存，系统就给进程分配多少内存，这样就不会产生内零头，但是段式分配会产生外零头。<br>例如：假设内存总的大小为100K，现在进程A向系统申请60K的内存，系统在满足了进程A的内存申请要求后，还剩下40K的空闲内存区域；这时如果进程B向系统申请50K的内存区域，而系统只剩下了40K的内存区域，虽然这40K的内存区域不归任何进程所有，但是因为大小无法满足进程B的要求，所以也无法分配给进程B，这样就产生了外零头。请求段式存储管理是在段式存储管理的基础上增加了请求调段功能和段置换功能。</p>
+<p>1.固定分区分配：产生内部碎片。<br>2.页式：产生内部碎片<br>3.段式：产生外部碎片<br>4:段页式：产生内部碎片</p>
+<h3 id="UNIX系统代码段和数据段分开的目的"><a href="#UNIX系统代码段和数据段分开的目的" class="headerlink" title="UNIX系统代码段和数据段分开的目的"></a>UNIX系统代码段和数据段分开的目的</h3><p>可共享正文<br>可共享数据<br>可重入<br>可保护代码为只读<br>更好支持内存回收策略</p>
+<p>1）防止程序指令被修改，设置代码段权限为只读，设置数据段权限为可读写<br>2）代码段和数据段分开有利于提高程序的局部性，现代CPU缓存一般设计为数据缓存和指令缓存分离，指令和数据分开存放可以提高CPU缓存命中率。<br>3）共享指令，当系统运行多个程序的副本时，它们指令时一样的，因此内存只需保存一份程序的指令代码。每个副本进程的数据区是进程私有，可以节省内存。</p>
+<p>1）代码段：代码段是用来存放可执行文件的操作指令，也就是说是它是可执行程序在内存中的镜像。代码段需要防止在运行时被非法修改，所以只准许读取操作，而不允许写入（修改）操作——它是不可写的。<br>2）数据段：数据段用来存放可执行文件中已初始化全局变量，换句话说就是存放程序静态分配的变量和全局变量。<br>3）BSS段：BSS段包含了程序中未初始化的全局变量，在内存中 bss段全部置零。<br>4）堆（heap）：堆是用于存放进程运行中被动态分配的内存段，它的大小并不固定，可动态扩张或缩减。当进程调用malloc等函数分配内存时，新分配的内存就被动态添加到堆上（堆被扩张）；当利用free等函数释放内存时，被释放的内存从堆中被剔除（堆被缩减）<br>它的物理内存空间是由程序申请的，并由程序负责释放。<br>5）栈：栈是用户存放程序临时创建的局部变量，也就是说我们函数括弧“{}”中定义的变量（但不包括static声明的变量，static意味着在数据段中存放变量）。除此以外，在函数被调用时，其参数也会被压入发起调用的进程栈中，并且待到调用结束后，函数的返回值也会被存放回栈中。由于栈的先进先出特点，所以栈特别方便用来保存/恢复调用现场。从这个意义上讲，我们可以把堆栈看成一个寄存、交换临时数据的内存区。<br>实际上,在Linux系统下并没有强调分段,每个进程缺省情况下“数据段”，“堆栈段”和“代码段”都使用等价的段描述,映射到相同的线性地址空间,除非你个别设置LDT.</p>
+<h3 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h3><p>chmod +权限 +文件或目录<br>chown +属主.属组+文件或目录<br>chgrp +属组 +目录<br>就本题目而言，设置目录的权限可以这样：<br>chmod  777  /ftproot<br>或者直接设置目录的属主为apache：<br>chown apache   /ftproot  加上权限 chmod  7xx  /ftproot</p>
+<h3 id="nohup"><a href="#nohup" class="headerlink" title="nohup"></a>nohup</h3><p>crontab  用于设置周期性被执行的指令<br>nohup    在注销后使用  nohup  命令运行后台中的程序。</p>
+<h3 id="存储区域"><a href="#存储区域" class="headerlink" title="存储区域"></a>存储区域</h3><p>（1）从静态存储区域分配：<br>内存在程序编译时就已经分配好，这块内存在程序的整个运行期间都存在。速度快、不容易出错，因为有系统会善后。例如全局变量，static变量等。<br>（2）在栈上分配：<br>在执行函数时，函数内局部变量的存储单元都在栈上创建，函数执行结束时这些存储单元自动被释放。栈内存分配运算内置于处理器的指令集中，效率很高，但是分配的内存容量有限。<br>（3）从堆上分配：<br>即动态内存分配。程序在运行的时候用malloc或new申请任意大小的内存，程序员自己负责在何时用free或delete释放内存。动态内存的生存期由程序员决定，使用非常灵活。如果在堆上分配了空间，就有责任回收它，否则运行的程序会出现内存泄漏，另外频繁地分配和释放不同大小的堆空间将会产生堆内碎块。<br>一个C、C++程序编译时内存分为5大存储区：堆区、栈区、全局区、文字常量区、程序代码区。</p>
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h3><p>-m 设置用户权限<br>-p 如果路径中某些目录不存在，系统会自动创建<br>mkdir没有-d和-f选项</p>
+<h3 id="交换空间"><a href="#交换空间" class="headerlink" title="交换空间"></a>交换空间</h3><p>mkswap<br>功能说明：设置交换区(swap area)，可将磁盘分区或文件设为Linux的交换区<br>语　　法：mkswap [-cf][-v0][-v1][设备名称或文件][交换区大小]<br>参　　数：<br>     -c   建立交换区前，先检查是否有损坏的区块。<br>     -f   在SPARC电脑上建立交换区时，要加上此参数。<br>     -v0   建立旧式交换区，此为预设值。<br>     -v1   建立新式交换区。<br>     [交换区大小]   指定交换区的大小，单位为1024字节</p>
+<p>swapon<br>功能说明：激活swap<br>参 数：<br>-a 自动启动所有SWAP装置<br>-s 显示简短的装置讯息</p>
+<p>swapoff<br>功能说明：关闭系统交换分区<br>语　　法：swapoff[必要参数][选择参数]<br>参 数：<br>   必要参数<br>       -a 关闭所有交换设备<br>选择参数<br>       -h 帮助信息<br>       -V 版本信息</p>
+<p>设置swap优先级的方法<br>wappiness=0 的时候表示最大限度使用物理内存，然后才是swap空间；<br>swappiness＝100 的时候表示积极的使用swap分区，并且把内存上的数据及时的搬运到swap空间里面。</p>
+<p>dd：用指定大小的块拷贝一个文件，并在拷贝的同时进行指定的转换。<br>if=文件名：输入文件名，缺省为标准输入。即指定源文件。&lt; if=input file &gt;<br>of=文件名：输出文件名，缺省为标准输出。即指定目的文件。&lt; of=output file &gt;<br>/dev/zero：是一个输入设备，你可你用它来初始化文件。<br>/mnt/sw1：Linux操作系统下的挂载目录下的交换分区目录<br>swapon：开启交换分区<br>mkswap：设置交换分区<br>mkfs：建立 linux 文件系统在特定的分区上</p>
+<h3 id="历史命令"><a href="#历史命令" class="headerlink" title="历史命令"></a>历史命令</h3><p>— ps: Linux中的ps命令是Process Status的缩写。ps命令用来列出系统中当前运行的那些进程。<br>— accton：打开或关闭进程账号记录功能。<br>— last：显示曾经登录过的用户。<br>— lastcomm：显示已执行过的命令。</p>
+<h3 id="查看中断"><a href="#查看中断" class="headerlink" title="查看中断"></a>查看中断</h3><p>/proc/interrupts 显示使用的中断<br>/proc/ioports 当前使用的I/O端口<br>/proc/kcore 系统物理内存映像。与物理内存大小完全一样，但不实际占用这么多的内存。<br>/proc/kmsg  内核输出的消息，也被送到syslog</p>
+<h3 id="UNIX系统中进程"><a href="#UNIX系统中进程" class="headerlink" title="UNIX系统中进程"></a>UNIX系统中进程</h3><p>UNIX系统中进程由三部分组成：进程控制块，正文段和数据段。这意味着一个程序的正文与数据可以是分开的，这种分开的目的是为了<br>可共享正文<br>可共享数据<br>可重入<br>进程运行时用到的数据以及工作区，构成了一个进程的数据段。要注意的是，如果进程执行的程序是不能被共享的，那么也把它归入到数据段中。<br>为了管理好进程的共享正文段，UNIX在内存专门开辟了一个text结构区域，形成正文段表text[ ].<br>因此，划分进程为进程控制块、正文段、数据段可以实现共享正文，共享数据和可重入。</p>
+<h3 id="自旋锁spinlock"><a href="#自旋锁spinlock" class="headerlink" title="自旋锁spinlock"></a>自旋锁spinlock</h3><p>运行在多核处理器上的Linux环境中,若临界区非常短,且不允许线程上下文切换的情况下,使用下列哪种机制满足上述需求并且性能最好?<br>SpinLock<br>spinlock在多处理器多线程环境的场景中有很广泛的使用，一般要求使用spinlock的临界区尽量简短，这样获取的锁可以尽快释放，以满足其他忙等的线程。<br>Spinlock和mutex不同，spinlock不会导致线程的状态切换(用户态-&gt;内核态)，但是spinlock使用不当(如临界区执行时间过长)会导致cpu busy飙高。<br><a href="https://kb.cnblogs.com/page/105657/" target="_blank" rel="noopener">自旋锁spinlock剖析与改进</a></p>
+<h3 id="lpr"><a href="#lpr" class="headerlink" title="lpr"></a>lpr</h3><p>lprm 命令用于将一个工作由打印机贮列中移除<br>lpq 命令用于查看一个打印队列的状态，该程序可以查看打印机队列状态及其所包含的打印任务。<br>lpd 命令 是一个常驻的打印机管理程序，它会根据 /etc/printcap 的内容来管理本地或远端的打印机。<br>lpr(line printer，按行打印)实用程序用来将一个或多个文件放入打印队列等待打印。</p>
+<h3 id="linux中shell变量含义解释"><a href="#linux中shell变量含义解释" class="headerlink" title="linux中shell变量含义解释:"></a>linux中shell变量含义解释:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$# 是传给脚本的参数个数</span><br><span class="line">$0是脚本本身的名字</span><br><span class="line">$1是传递给该shell脚本的第一个参数</span><br><span class="line">$2是传递给该shell脚本的第二个参数</span><br><span class="line">$@ 是传给脚本的所有参数的列表</span><br><span class="line">$* 是以一个单字符串显示所有向脚本传递的参数，与位置变量不同，参数可超过9个</span><br><span class="line">$$ 是脚本运行的当前进程ID号</span><br><span class="line">$? 是显示最后命令的退出状态，0表示没有错误，其他表示有错误</span><br></pre></td></tr></table></figure>
+<h3 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h3><p>0 标准输入<br>1 标准输出<br>2 标准错误输出</p>
+<h3 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; 输出重定向</span><br><span class="line">&gt;&gt; 输出附加重定向</span><br><span class="line">&lt; 输入重定向</span><br><span class="line">&gt;!输出重定向到一个文件或设备 强制覆盖原来的文件</span><br></pre></td></tr></table></figure>
+<h3 id="cp拷贝命令的参数"><a href="#cp拷贝命令的参数" class="headerlink" title="cp拷贝命令的参数"></a>cp拷贝命令的参数</h3><p>-r 递归处理，将指定目录下的文件与子目录一并处理<br>-v 或 –verbose 显示执行过程<br>-f 或 –force 强行复制文件或目录， 不论目的文件或目录是否已经存在</p>
+<h3 id="布尔运算符"><a href="#布尔运算符" class="headerlink" title="布尔运算符"></a>布尔运算符</h3><p><img data-src="https://uploadfiles.nowcoder.com/images/20190822/8653996_1566440008866_D5AF491EFDBA60071C5F90CCBFDA1618" alt></p>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p>(1)PWD 和 OLDPWD<br>PWD 记录当前的目录路径，当利用 cd 命令切换当前目录时，系统自动更新 PWD 的值， OLDPWD 记录旧的工作目录，即用户所处的前一个目录。<br>(2)PATH<br>PATH 是 Linux 中一个极为重要的环境变量，它用于帮助 Shell 找到用户输入的命令。用户所输入的每个命令实际上是一个源代码文件，计算机执行这个文件里的代码以实现这个命令的功能，这些源代码文件称为可执行文件。可执行文件存在于各种各样的目录下， PATH 就记录了一系列的目录列表， Shell 为每个输入命令搜索 PATH 中的目录列表。<br>(3)HOME<br>HOME 记录当前用户的目录，由 /etc/passwd 的倒数第 2 个域决定， HOME 目录用于保存用户自己的文件。</p>
+<h3 id="文本处理"><a href="#文本处理" class="headerlink" title="文本处理"></a>文本处理</h3><p>cut ：从文本文件的每一行中截取指定内容的数据。<br>cp ：用来复制文件或目录。<br>dd ：将指定的输入文件拷贝到输出文件中，在拷贝的过程中可以进行格式转换。<br>fmt ：将所有非空白行的长度设置为几乎相同，来进行简单的文本格式化。</p>
+<h3 id="usermod"><a href="#usermod" class="headerlink" title="usermod"></a>usermod</h3><p>usermod(选项)(参数)：<br>参数若为两个，顺序一般为  usermod (选项)  目标参数  原始参数<br>-c&lt;备注&gt;：修改用户帐号的备注文字；<br>-d&lt;登入目录&gt;：修改用户登入时的目录；<br>-e&lt;有效期限&gt;：修改帐号的有效期限；<br>-f&lt;缓冲天数&gt;：修改在密码过期后多少天即关闭该帐号；<br>-g&lt;群组&gt;：修改用户所属的群组；<br>-G&lt;群组&gt;；修改用户所属的附加群组；<br>-l&lt;帐号名称&gt;：修改用户帐号名称；<br>-L：锁定用户密码，使密码无效；<br>-s：修改用户登入后所使用的shell；<br>-u：修改用户ID；<br>-U:解除密码锁定。</p>
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><ul>
+<li>select能监控的描述符个数由内核中的FD_SETSIZE限制，仅为1024，这也是select最大的缺点，因为现在的服务器并发量远远不止1024。即使能重新编译内核改变FD_SETSIZE的值，但这并不能提高select的性能。</li>
+<li>每次调用select都会线性扫描所有描述符的状态，在select结束后，用户也要线性扫描fd_set数组才知道哪些描述符准备就绪，等于说每次调用复杂度都是O（n）的，在并发量大的情况下，每次扫描都是相当耗时的，很有可能有未处理的连接等待超时。</li>
+<li>每次调用select都要在用户空间和内核空间里进行内存复制fd描述符等信息。<h3 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h3></li>
+<li>poll使用pollfd结构来存储fd，突破了select中描述符数目的限制。</li>
+<li>与select的后两点类似，poll仍然需要将pollfd数组拷贝到内核空间，之后依次扫描fd的状态，整体复杂度依然是O（n）的，在并发量大的情况下服务器性能会快速下降。<h3 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h3></li>
+<li>epoll维护的描述符数目不受到限制，而且性能不会随着描述符数目的增加而下降。</li>
+<li>服务器的特点是经常维护着大量连接，但其中某一时刻读写的操作符数量却不多。epoll先通过epoll_ctl注册一个描述符到内核中，并一直维护着而不像poll每次操作都将所有要监控的描述符传递给内核；在描述符读写就绪时，通过回掉函数将自己加入就绪队列中，之后epoll_wait返回该就绪队列。也就是说，epoll基本不做无用的操作，时间复杂度仅与活跃的客户端数有关，而不会随着描述符数目的增加而下降。</li>
+<li>epoll在传递内核与用户空间的消息时使用了内存共享，而不是内存拷贝，这也使得epoll的效率比poll和select更高。</li>
+</ul>
+<h3 id="Tar"><a href="#Tar" class="headerlink" title="Tar"></a>Tar</h3><p>-c: 建立新的备份文件<br>-t:列出备份文件的内容<br>-x:从备份文件中还原文件<br>-z:通过gzip指令处理备份文件<br>-v:显示指令执行过程<br>-f:指定压缩或解压文件</p>
+<h3 id="暂停进程"><a href="#暂停进程" class="headerlink" title="暂停进程"></a>暂停进程</h3><p>ctrl  z 就是挂起一个进程，暂停的意思<br>fg是将进程放到前台并唤醒<br>bg是将进程放到后台并唤醒<br>ctrl+h,在shell就是向左删除的作用</p>
+<h3 id="查看系统负载"><a href="#查看系统负载" class="headerlink" title="查看系统负载"></a>查看系统负载</h3><p>uptime命令主要用于获取主机运行时间和查询linux系统负载等信息<br>vmstat命令可以查看查看cpu负载<br>sar命令可以查看网络接口信息<br>free命令可以查看内存</p>
+<h3 id="网络进程"><a href="#网络进程" class="headerlink" title="网络进程"></a>网络进程</h3><p>Netd 就是Network Daemon 的缩写，表示Network守护进程. Netd负责跟一些涉及网络的配置，操作，管理，查询等相关的功能实现，比如，例如带宽控制（Bandwidth），流量统计，带宽控制，网络地址转换（NAT），个人局域网（pan），PPP链接，soft-ap，共享上网（Tether），配置路由表，interface配置管理，等等.好像Andorid用的</p>
+<p>inetd 是监视一些网络请求的 守护进程 ，其根据网络请求来调用相应的服务进程来处理连接请求。它可以为多种服务管理连接，当 inetd 接到连接时，它能够确定连接所需的程序，启动相应的进程，并把 socket 交给它 。</p>
+<p>1、 Service就是指常驻内存大一些程序，且可以提供一些系统或是网络功能。提供service的那个程序就成为daemon。Daemon和service可以视为等同，不必刻意去区分。<br>2、 Daemon可以分为两类，一类是可独立启动的，成为stand alone；另一类是通过一支super daemon来统一管理的服务。<br>3、 Stand alone类型的daemon能够自动启动，常驻内存，对请求响应较快，如httpd、vsftpd等。<br>4、 Super daemon统一管理的是用户有请求，super daemon就唤醒响应daemon，如果用户请求结束，就kill掉该daemon。优点不用常驻内存，缺点装到内存需要时间。如telnet。这个super daemon早期是inetd，后来被xinetd取代。</p>
+<h3 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h3><p>dd:删除当前行（0：返回行首）<br>ndd:删除光标行往下n行(含光标行)内容<br>dgg:删除光标当前行及以上内容<br>dG:删除光标当前行及以下内容<br>dH:删除当前页面第1行至光标行<br>p:粘贴到光标下一行<br>u:撤销一次操作<br>Ctrl + r:反撤销（一次）</p>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p>ping 命令不用说大家都知道，不论windows还是linux，对于PING命令无非是在测试网络连接的性能情况<br><img data-src="http://uploadfiles.nowcoder.com/images/20150607/871566_1433648038905_1.png" alt><br>netstat，字面理解网络状态，包括网络地址信息，网络的连接状态，网络的子网掩码等等，通过命令 netstat -ie ，效果和ifconfig一样<br><img data-src="http://uploadfiles.nowcoder.com/images/20150607/871566_1433648070672_2.png" alt><br>route是路由表信息命令主要是查看路由表相关的<br><img data-src="http://uploadfiles.nowcoder.com/images/20150607/871566_1433648104253_3.png" alt><br>tracert表示并不是很准确，在linux下应该是traceroute，字面理解路径追踪，其实就是在网络中包通过的路由器等相关的个数信息。<br><img data-src="http://uploadfiles.nowcoder.com/images/20150607/871566_1433648129480_4.png" alt></p>
+<h3 id="etc-1"><a href="#etc-1" class="headerlink" title="etc"></a>etc</h3><p>/etc/下文件目录的作用：<br>/etc/resolv.conf  是DNS配置文件。在网卡配置文件中进行配置，默认情况下 网卡配置文件DNS优先于/etc/resolv.conf。<br>/etc/hostname 在Centos 7，配置主机名，查看修改。<br>/etc/hosts  ip与域名对应关系 ，解析域名（主机名），用/etc/hosts搭建网站的测试环境 (虚拟机)。不同服务器之间相互访问。<br>/etc/fstab   file system table ：文件系统挂载表，开机的时候设备与入口对应关系 开机自动挂载列表。<br>/etc/rc.local  开机自启<br>/etc/inittab（centos 6）运行级别的配置文件<br>/etc/profile  环境变量配置文件<br>/etc/bashrc  命令别名<br>/etc/motd   文件中的内容 会在用户登录系统之后显示出来<br>/etc/issue /etc/issue.net 文件中的内容 会在用户登录系统之前显示出来</p>
+<p>/etc/group 设定用户的组名与相关信息<br>/etc/passwd 帐号信息<br>/etc/shadow  密码信息</p>
+<h3 id="Linux-目录"><a href="#Linux-目录" class="headerlink" title="Linux 目录"></a>Linux 目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/bin 二进制可执行命令</span><br><span class="line">/dev 设备特殊文件</span><br><span class="line">/etc 系统管理和配置文件</span><br><span class="line">/etc/rc.d 启动的配置文件和脚本</span><br><span class="line">/home 用户主目录的基点，比如用户user的主目录就是/home/user，可以用~user表示</span><br><span class="line">/lib 标准程序设计库，又叫动态链接共享库，作用类似windows里的.dll文件</span><br><span class="line">/sbin 超级管理命令，这里存放的是系统管理员使用的管理程序</span><br><span class="line">/tmp 公共的临时文件存储点</span><br><span class="line">/root 系统管理员的主目录</span><br><span class="line">/mnt 系统提供这个目录是让用户临时挂载其他的文件系统</span><br><span class="line">/lost+found这个目录平时是空的，系统非正常关机而留下“无家可归”的文件（windows下叫什么.chk）</span><br><span class="line">/proc 虚拟的目录，是系统内存的映射。可直接访问这个目录来获取系统信息。</span><br><span class="line">/var 某些大文件的溢出区，比方说各种服务的日志文件</span><br><span class="line">/usr 最庞大的目录，要用到的应用程序和文件几乎都在这个目录，其中包含：</span><br><span class="line">/usr/x11R6存放x window的目录</span><br><span class="line">/usr/bin众多的应用程序</span><br><span class="line">/usr/sbin超级用户的一些管理程序</span><br><span class="line">/usr/doclinux文档</span><br><span class="line">/usr/includelinux下开发和编译应用程序所需要的头文件</span><br><span class="line">/usr/lib常用的动态链接库和软件包的配置文件</span><br><span class="line">/usr/man帮助文档</span><br><span class="line">/usr/src源代码，linux内核的源代码就放在/usr/src/linux里</span><br><span class="line">/usr/local/bin本地增加的命令</span><br></pre></td></tr></table></figure>
+<h3 id="gdb"><a href="#gdb" class="headerlink" title="gdb"></a>gdb</h3><p>backtrace bt 打印当前的函数调用栈的所有信息。<br>info threads 显示当前可调试的所有线程，每个线程会有一个GDB为其分配的ID，后面操作线程的时候会用到这个ID。 前面有*的是当前调试的线程。<br>set scheduler-locking 线程调试 显示线程状态, off 不锁定任何线程<br>info break 可列出所有断点信息，info break 后也可设置要查看的 break num</p>
+<h3 id="内核线程与用户线程"><a href="#内核线程与用户线程" class="headerlink" title="内核线程与用户线程"></a>内核线程与用户线程</h3><p>1、内核线程是一直处于内核态的轻量级进程，LWT，根本不会切换到用户态。<br>2、至于内核级线程，在深入linux内核没见过这个概念，我觉得就是普通线程，实际上对于linux而言，内核不会区分线程和进程，线程跟进程一样会有用进程拥有的所有描述符，只是线程共享了页表，线性区等，不懂可以看看fork(),vfork(),clone的调用区别。或者看一下pthread库的底层实现。因此这里讲的应该是内核级线程应该指的是普通线程。<br>3、至于用户级线程，个人认为题目讲的就是协程，调度都是在用户态，不能利用多核优势。</p>
+<p>用户线程指不需要内核支持而在用户程序中实现的线程，其不依赖于操作系统核心，应用进程利用线程库提供创建、同步、调度和管理线程的函数来控制用户线程。</p>
+<h3 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h3><p>exec 使用vfork函数时，通常需要exec配合使用<br>fg(Foreground) 将进程搬到前台运行的命令<br>bg(Background) 将进程搬到后台运行的命令<br>jobs 查看当前有多少在后台运行的命令</p>
+<p>使用fork或vfork创建子进程后，子进程通常会调用exec函数来执行另外一个程序。系统调用exec用于执行一个可执行程序以代替当前进程的执行映像。exec调用没有生成新进程。一个进程一旦调用exec函数，它本身就“死亡”了，系统把代码段替换成新的程序的代码，废弃原有的数据段和堆栈段，并为新程序分配新的数据段和堆栈段，唯一保留的就是进程ID。也就是说，对系统而言，还是同一个进程，不过执行的已经是另外一个程序了。</p>
+<p>Ctrl+C： 终止并退出前台命令的执行，回到SHELL。<br>Ctrl+Z： 暂停前台命令的执行，将该进程放入后台，回到SHELL。<br>jobs： 查看当前在后台执行的命令，可查看命令进程号码。<br>&amp;： 运行命令时，在命令末尾加上&amp;可让命令在后台执行。<br>fg N： 将命令进程号码为N的命令进程放到前台执行，同%N。<br>bg N： 将命令进程号码为N的命令进程放到后台执行</p>
+<h3 id="进制登陆"><a href="#进制登陆" class="headerlink" title="进制登陆"></a>进制登陆</h3><p>touch /etc/nolgoin 禁止所有普通用户登录<br>linux系统中的/var/log/lastlog日志记录了所有用户最后登录的记录，可以用lastlog命令查看</p>
+<p>utmp 文件的绝对路径是 /var/run/utmp ，该文件通常用 who 命令来读取；<br>wtmp 文件的绝对路径是 /var/log/wtmp ，该文件通常通过 last 命令来读取。<br>这两个文件都不是普通的文本文件，所以不能用 cat ，less，more 等命令来查看。<br><strong>utmp日志文件</strong>记录有关当前登录的每个用户的信息。因此这个文件会随着用户登录和注销系统而不断变化，它只保留当时联机的用户记录，不会为用户保留永久的记录。系统中需要查询当前用户状态的程序，如 who、w、users、finger等就需要访问这个文件。该日志文件并不能包括所有精确的信息，因为某些突发错误会终止用户登录会话，而系统没有及时更新 utmp记录，因此该日志文件的记录不是百分之百值得信赖的。</p>
+<p><strong>wtmp日志文件</strong>永久记录每个用户登录、注销及系统的启动、停机的事件。因此随着系统正常运行时间的增加，该文件的大小也会越来越大，增加的速度取决于系统用户登录的次数。该日志文件可以用来查看用户的登录记录，last命令就通过访问这个文件获得这些信息，并以反序从后向前显示用户的登录记录，last也能根据用户、终端tty或时间显示相应的记录。</p>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><h4 id="产生死锁的原因主要是："><a href="#产生死锁的原因主要是：" class="headerlink" title="产生死锁的原因主要是："></a>产生死锁的原因主要是：</h4><p>（1） 因为系统资源不足。<br>（2） 进程运行推进的顺序不合适。<br>（3） 资源分配不当等。<br>如果系统资源充足，进程的资源请求都能够得到满足，死锁出现的可能性就很低，否则<br>就会因争夺有限的资源而陷入死锁。其次，进程运行推进顺序与速度不同，也可能产生死锁。</p>
+<h4 id="产生死锁的四个必要条件："><a href="#产生死锁的四个必要条件：" class="headerlink" title="产生死锁的四个必要条件："></a>产生死锁的四个必要条件：</h4><p>（1） 互斥条件：一个资源每次只能被一个进程使用。<br>（2） 请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。<br>（3） 不剥夺条件:进程已获得的资源，在末使用完之前，不能强行剥夺。<br>（4） 循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。<br>这四个条件是 死锁的必要条件 ，只要系统发生死锁，这些条件必然成立，而只要上述条件之<br>一不满足，就不会发生死锁。</p>
+<h4 id="死锁的解除与预防："><a href="#死锁的解除与预防：" class="headerlink" title="死锁的解除与预防："></a>死锁的解除与预防：</h4><p>理解了死锁的原因，尤其是产生死锁的四个必要条件，就可以最大可能地避免、预防和<br>解除死锁。所以，在系统设计、进程调度等方面注意如何不让这四个必要条件成立，如何确<br>定资源的合理分配算法，避免进程永久占据系统资源。此外，也要防止进程在处于等待状态<br>的情况下占用资源。因此，对资源的分配要给予合理的规划。</p>
+<h3 id="系统调用与库函数"><a href="#系统调用与库函数" class="headerlink" title="系统调用与库函数"></a>系统调用与库函数</h3><p>lseek()函数：移动文件的读写位置<br>read() write()读写文件<br>pread() pwrite()带偏移量的读写文件<br>都属于系统调用<br>feek() 库函数</p>
+<h3 id="page-fault"><a href="#page-fault" class="headerlink" title="page fault"></a>page fault</h3><p>page fault的情景：<br>1.用户态按需调页 </p>
+<ol start="2">
+<li>主内核页目录的同步 </li>
+<li>对exception table中的异常操作的处理<br>4.堆栈自动扩展 5.对用户态指针越界的检查</li>
+</ol>
+<p>影响一个应用程序性能的因素有很多，这次说说page fault。</p>
+<ol>
+<li>为什么会存在page fault问题？<br>计算机的物理内存（看看你的内存条）有限，一般现在都是几个GB的容量了，BTW，我的笔记本有8GB，:-)。<br>但应用程序的需求是无限的，操作系统为了解决这个矛盾，使用了虚拟内存的设计。简单的描述就是，给应用程序<br>一个与物理内存无关的虚拟地址空间，并提供一套映射机制，将虚拟地址映射到物理内存。当然应用程序是不知道<br>有这个映射机制存在的，他唯一需要做的就是尽情的使用自己的虚拟地址空间。操作系统提供的映射机制是<br>运行时动态进行虚拟地址和物理地址之间的映射的，当一个虚拟地址没有对应的物理内存时候，<br>映射机制就分配物理内存，构建映射表，满足应用程序的需求，这个过程就叫page fault。<br>与直接访问物理内存不同，page fault过程大部分是由软件完成的，消耗时间比较久，所以是影响性能的一个关键指标。<br>Linux把page fault又进一步分为minor page fault和major page fault。前面提到的分配物理内存，构建映射表过程可以看做是<br>minor page fault。major page fault是由swap机制引入的，对于swap情况，地址映射好了后，还需要从外部存储读取数据，这个<br>过程涉及到IO操作，耗时更久。</li>
+<li>如何查看应用程序的page fault指标呢？<br>1） 可以使用time命令：<br>  比如我想看看svm-train的情况（模型训练很耗资源）\time svm-train age_train_equal.txt（前面的斜杠表示不使用shell的内嵌time命令）<br>输出是：7.68user 0.02system 0:07.71elapsed 99%CPU (0avgtext+0avgdata 42768maxresident)k0inputs+6696outputs (0major+15445minor)pagefaults 0swaps<br>可以看到只有minor page fault，没有major。<br>time命令的实现是用到了Linux提供的rusage机制。Linux的wait API可以返回一个应用程序的运行过程的资源消耗情况。<br>如果你想在自己的代码中获取资源利用情况，可以使用libc的getrusage函数，这个函数也是内核的API。<br>2） proc文件系统<br>Linux系统下的/proc/PID/stat文件，也提供了相关统计数据。<br><a href="http://www.cnblogs.com/cornsea/archive/2012/12/17/2821429.html" target="_blank" rel="noopener">参考资料</a></li>
+</ol>
+<h3 id="Arp"><a href="#Arp" class="headerlink" title="Arp"></a>Arp</h3><p>地址解析协议，即ARP（Address Resolution Protocol），是根据 IP地址 获取 物理地址 的一个 TCP/IP协议 。 主机 发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。<br>ARP协议的工作原理，unicast应是单播，broadcast是广播，multicast应该是多播。</p>
+<h3 id="Samba"><a href="#Samba" class="headerlink" title="Samba"></a>Samba</h3><p>Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。SMB（Server Messages Block，信息服务块）是一种在局域网上共享文件和打印机的一种通信协议。<br>WEB服务器配置文件  http.conf<br>启动脚本配置文件   initd.conf<br>samba脚本          rc.samba<br>samba服务配置文件  smb.conf</p>
+<h3 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h3><p>FTP服务器有两个端口，其中21端口用于连接，20端口用于传输数据<br>进行FTP文件传输中，客户端首先连接到FTP服务器的21端口，进行用户的认证，认证成功后，要传输文件时，服务器会开一个端口为20来进行传输数据文件。<br>也就是说，端口20才是真正传输所用到的端口，端口21只用于FTP的登陆认证。我们平常下载文件时，会遇到下载到99%时，文件不完成，不能成功的下载。其实是因为文件下载完毕后，还要在21端口再行进行用户认证，而下载文件的时间如果过长，客户机与服务器的21端口的连接会被服务器认为是超时连接而中断掉，就是这个原因。解决方法就是设置21端口的响应时间。</p>
+<h3 id="malloc-free和new-delete的本质区别："><a href="#malloc-free和new-delete的本质区别：" class="headerlink" title="malloc/free和new/delete的本质区别："></a>malloc/free和new/delete的本质区别：</h3><p>1.malloc/free 是C/C++语言的标准库函数，new/delete是C++的运算符<br>2.new 能自动分配空间大小<br>3.对于用户自定义的对象而言，用malloc/free无法满足动态管理对象的要求<br>    对象在创建的时候会自动调用构造函数，对象在消亡之前自动执行析构函数<br>    由于malloc/free是库函数而不是运算符，不在编译器的控制范围，不能把构<br>    造函数和析构函数的任务强加于malloc/free 。一次C++需要一个能够对对象完<br>    成动态分配内存和初始化工作的运算符new，以及一个释放内存的运算符<br>    delete。简单来说就是new/delete能完成跟家详细的对内存的操作，而malloc/<br>    free不能。</p>
+<h3 id="Quota"><a href="#Quota" class="headerlink" title="Quota"></a>Quota</h3><p>Linux的一个重要工具-Quota。安装后， 这两个配置文件都是初始化数据库自动生成。<br>aquota.group与aqouta.user分别是组以及用户磁盘配额需要的配置文件</p>
+<h3 id="i-节点"><a href="#i-节点" class="headerlink" title="i 节点"></a>i 节点</h3><p>在做这道题之前首先要明白i节点是什么东西！<br>linux中，文件查找不是通过文件名称来查找的。实际上是通过i节点来实现文件的查找定位的。我们可以形象的将i节点看做是一个指针fip.<br>这个节点和文件不是一一对应的，通过ln可以建立其他的节点。</p>
+<h3 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h3><p>系统调用把应用程序的请求传输给系统内核执行<br>利用系统调用能够得到操作系统提供的多种服务<br>是操作系统提供给编程人员的接口<br>系统调用给用户屏蔽了设备访问的细节<br>系统调用保护了一些只能在内核模式执行的操作指令</p>
+<p>用户空间与系统空间所在的内存区间不一样，同样，对于这两种区间，CPU的运行状态也不一样。 在用户空间中，CPU处于”用户态”；在系统空间中，CPU处于”系统态”，系统态又可称为核心态。</p>
+<h3 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h3><p>sed是非交互式的编辑器。它不会修改文件，除非使用shell重定向来保存结果。默认情况下，所有的输出行都被打印到屏幕上。sed编辑器逐行处理文件（或输入），并将结果发送到屏幕。<br>sed命令行格式为：<br>    sed [-nefri] ‘command’ 输入文本<br>常用选项：<br>    -n∶使用安静(silent)模式。在一般 sed 的用法中，所有来自 STDIN的资料一般都会被列出到萤幕上。但如果加上 -n 参数后，则只有经过sed 特殊处理的那一行(或者动作)才会被列出来。<br>    -e∶直接在指令列模式上进行 sed 的动作编辑；<br>    -f∶直接将 sed 的动作写在一个档案内， -f filename 则可以执行 filename 内的sed 动作；<br>    -r∶sed 的动作支援的是延伸型正规表示法的语法。(预设是基础正规表示法语法)<br>    -i∶直接修改读取的档案内容，而不是由萤幕输出。<br>常用命令：<br>    a   ∶新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～<br>    c   ∶取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！<br>    d   ∶删除，因为是删除啊，所以 d 后面通常不接任何咚咚；<br>    i   ∶插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；<br>    p  ∶列印，亦即将某个选择的资料印出。通常 p 会与参数 sed -n 一起运作～<br>    s  ∶取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g！<br>    g 是行内进行全局替换</p>
+<p>/pattern: 从光标开始处向文件尾搜索pattern<br>?pattern: 从光标开始处向文件首搜索pattern<br>n: 在同一方向重复上一次搜索命令<br>N: 在反方向上重复上一次搜索命令<br>:s/p1/p2/g: 将当前行中所有p1均用p2替代<br>:n1,n2s/p1/p2/g: 将第n1至n2行中所有p1均用p2替代<br>:g/p1/s//p2/g: 将文件中所有p1均用p2替换</p>
+<p><strong>打印文件（demo.log）中包含ERP的行到标准输出</strong><br>sed -n ‘/ERP/p’ demo.log</p>
+<h3 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h3><p>linux 下 tail 用于看档案的结尾， -f参数 是follow的意思 当文件增长时,输出后续添加的数据</p>
+<h3 id="文件系统权限中的SUID"><a href="#文件系统权限中的SUID" class="headerlink" title="文件系统权限中的SUID"></a>文件系统权限中的SUID</h3><p>当一个设置了SUID 位的可执行文件被执行时，无论谁来执行这个文件，他都暂时拥有文件所有者的权限<br>可以通过chmod u+s 命令设置SUID属性<br>passwd命令就是通过SUID机制，在任何用户修改密码时，有权限访问密码存储文件</p>
+<h3 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h3><p>1.作用：ifconfig用于查看和更改网络接口的地址和参数，包括IP地址、网络掩码、广播地址，使用权限是超级用户。<br>2.格式    ifconfig -interface [options] address<br>3.主要参数如下：<br>-interface：指定的网络接口名，如eth0和eth1。<br>up：激活指定的网络接口卡。<br>down：关闭指定的网络接口。<br>broadcast address：设置接口的广播地址。<br>pointopoint：启用点对点方式。<br>address：设置指定接口设备的IP地址。<br>netmask address：设置接口的子网掩码。</p>
+<h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p>就绪指的是进程三状态之一。<br>按照进程的功能和运行的程序分类，进程可划分为两大类：<br>(1) 系统进程：可以执行内存资源分配和进程切换等管理工作；而且，该进程的运行不受用户的干预，即使是root用户也不能干预系统进程的运行。<br>(2) 用户进程：通过执行用户程序、应用程序或内核之外的系统程序而产生的进程，此类进程可以在用户的控制下运行或关闭。</p>
+<p>针对用户进程，又可以分为交互进程、批处理进程和守护进程三类。<br>(1) 交互进程：由一个shell终端启动的进程，在执行过程中，需要与用户进行交互操作，可以运行于前台，也可以运行在后台。<br>(2) 批处理进程：该进程是一个进程集合，负责按顺序启动其他的进程。<br>(3) 守护进程：守护进程是一直运行的一种进程，经常在linux系统启动时启动，在系统关闭时终止。它们独立于控制终端并且周期性的执行某种任务或等待处理某些发生的事件。例如httpd进程，一直处于运行状态，等待用户的访问。还有经常用的crond进程，这个进程类似与windows的计划任务，可以周期性的执行用户设定的某些任务。</p>
+<h3 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h3><p>内核分为进程管理子系统，内存管理子系统，io管理子系统，文件管理子系统</p>
+<h3 id="静态链接库、动态链接库"><a href="#静态链接库、动态链接库" class="headerlink" title="静态链接库、动态链接库"></a>静态链接库、动态链接库</h3><p>1静态链接库的优点 </p>
+<p> (1)代码装载速度快，执行速度略比动态链接库快； </p>
+<p> (2)只需保证在开发者的计算机中有正确的.LIB文件，在以二进制形式发布程序时不需考虑在用户的计算机上.LIB文件是否存在及版本问题，可避免DLL地狱等问题。 </p>
+<p>2动态链接库的优点 </p>
+<p> (1)更加节省内存并减少页面交换；</p>
+<p> (2) DLL文件与EXE文件独立，只要输出接口不变（即名称、参数、返回值类型和调用约定不变），更换DLL文件不会对EXE文件造成任何影响，因而极大地提高了可维护性和可扩展性；</p>
+<p> (3)不同编程语言编写的程序只要按照函数调用约定就可以调用同一个DLL函数；</p>
+<p> (4)适用于大规模的软件开发，使开发过程独立、耦合度小，便于不同开发者和开发组织之间进行开发和测试。</p>
+<p>3不足之处</p>
+<p> (1)使用静态链接生成的可执行文件体积较大，包含相同的公共代码，造成浪费；</p>
+<p> (2)使用动态链接库的应用程序不是自完备的，它依赖的DLL模块也要存在，如果使用载入时动态链接，程序启动时发现DLL不存在，系统将终止程序并给出错误信息。而使用运行时动态链接，系统不会终止，但由于DLL中的导出函数不可用，程序会加载失败；速度比静态链接慢。当某个模块更新后，如果新模块与旧的模块不兼容，那么那些需要该模块才能运行的软件，统统撕掉。这在早期Windows中很常见。</p>
+<h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>volatile是一个类型修饰符（type specifier）作用是作为指令关键字，确保本条指令不会因编译器的优化而省略，且要求每次直接读值。<br>volatile的变量是说这变量可能会被意想不到地改变，这样，编译器就不会去假设这个变量的值了。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/Linux复盘笔记/" title="Linux复盘笔记">http://xchcloud.cn/Linux复盘笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/知识复盘/" rel="prev" title="知识复盘">
+      <i class="fa fa-chevron-left"></i> 知识复盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/数据库复盘笔记/" rel="next" title="数据库复盘笔记">
+      数据库复盘笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#etc"><span class="nav-text">etc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#log"><span class="nav-text">log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计划"><span class="nav-text">计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找"><span class="nav-text">查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fork"><span class="nav-text">fork</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feof"><span class="nav-text">feof</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#declare-和-typeset"><span class="nav-text">declare 和 typeset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vi-查找"><span class="nav-text">vi 查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysqldump"><span class="nav-text">mysqldump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNIX中有如下的通信方式："><span class="nav-text">UNIX中有如下的通信方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信方式："><span class="nav-text">进程通信方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包生成静态库"><span class="nav-text">打包生成静态库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git"><span class="nav-text">Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux网络编程"><span class="nav-text">Linux网络编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存屏蔽"><span class="nav-text">内存屏蔽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看文件大小"><span class="nav-text">查看文件大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rmp"><span class="nav-text">rmp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCB、PCB、MMU"><span class="nav-text">TCB、PCB、MMU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户"><span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现文件去重并排序"><span class="nav-text">实现文件去重并排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux系统进程类型"><span class="nav-text">Linux系统进程类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出交互式的shell"><span class="nav-text">退出交互式的shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apache目录访问控制的参数"><span class="nav-text">apache目录访问控制的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见文件系统-系统函数"><span class="nav-text">常见文件系统 系统函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#man的级别："><span class="nav-text">man的级别：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP-服务器，dhcpd-conf-配置文件"><span class="nav-text">DHCP 服务器，dhcpd.conf 配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找-1"><span class="nav-text">查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多线程"><span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三剑客"><span class="nav-text">三剑客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备份"><span class="nav-text">备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬链接"><span class="nav-text">硬链接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特性"><span class="nav-text">特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WC"><span class="nav-text">WC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理模式中，会产生外零头的是"><span class="nav-text">内存管理模式中，会产生外零头的是</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNIX系统代码段和数据段分开的目的"><span class="nav-text">UNIX系统代码段和数据段分开的目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chmod"><span class="nav-text">chmod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nohup"><span class="nav-text">nohup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储区域"><span class="nav-text">存储区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir"><span class="nav-text">mkdir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交换空间"><span class="nav-text">交换空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#历史命令"><span class="nav-text">历史命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看中断"><span class="nav-text">查看中断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNIX系统中进程"><span class="nav-text">UNIX系统中进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁spinlock"><span class="nav-text">自旋锁spinlock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lpr"><span class="nav-text">lpr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux中shell变量含义解释"><span class="nav-text">linux中shell变量含义解释:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件描述符"><span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向符"><span class="nav-text">重定向符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cp拷贝命令的参数"><span class="nav-text">cp拷贝命令的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布尔运算符"><span class="nav-text">布尔运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量"><span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本处理"><span class="nav-text">文本处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#usermod"><span class="nav-text">usermod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select"><span class="nav-text">select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#poll"><span class="nav-text">poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#epoll"><span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tar"><span class="nav-text">Tar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暂停进程"><span class="nav-text">暂停进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看系统负载"><span class="nav-text">查看系统负载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络进程"><span class="nav-text">网络进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vim"><span class="nav-text">vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络"><span class="nav-text">网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#etc-1"><span class="nav-text">etc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-目录"><span class="nav-text">Linux 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gdb"><span class="nav-text">gdb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核线程与用户线程"><span class="nav-text">内核线程与用户线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程管理"><span class="nav-text">进程管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进制登陆"><span class="nav-text">进制登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁"><span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#产生死锁的原因主要是："><span class="nav-text">产生死锁的原因主要是：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产生死锁的四个必要条件："><span class="nav-text">产生死锁的四个必要条件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#死锁的解除与预防："><span class="nav-text">死锁的解除与预防：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统调用与库函数"><span class="nav-text">系统调用与库函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page-fault"><span class="nav-text">page fault</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arp"><span class="nav-text">Arp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba"><span class="nav-text">Samba</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FTP"><span class="nav-text">FTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#malloc-free和new-delete的本质区别："><span class="nav-text">malloc/free和new/delete的本质区别：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quota"><span class="nav-text">Quota</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i-节点"><span class="nav-text">i 节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统调用"><span class="nav-text">系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sed"><span class="nav-text">sed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tail"><span class="nav-text">tail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统权限中的SUID"><span class="nav-text">文件系统权限中的SUID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ifconfig"><span class="nav-text">ifconfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程"><span class="nav-text">进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核"><span class="nav-text">内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态链接库、动态链接库"><span class="nav-text">静态链接库、动态链接库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile"><span class="nav-text">volatile</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在 centos 下配置 jupyter配置文档jupyter notebook –generate-config 生成默认配置文档 修改密码：1. windows下，打开命令行，重新生成一个jupyter配置文件： jupyter notebook --generate-config　2. 修个配置文件，找到这个新生成的文件：">
+<meta name="keywords" content="python,jupyter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-jupyter-使用总结">
+<meta property="og:url" content="http://xchcloud.cn/python-jupyter-使用总结/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="在 centos 下配置 jupyter配置文档jupyter notebook –generate-config 生成默认配置文档 修改密码：1. windows下，打开命令行，重新生成一个jupyter配置文件： jupyter notebook --generate-config　2. 修个配置文件，找到这个新生成的文件：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:01:00.938Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-jupyter-使用总结">
+<meta name="twitter:description" content="在 centos 下配置 jupyter配置文档jupyter notebook –generate-config 生成默认配置文档 修改密码：1. windows下，打开命令行，重新生成一个jupyter配置文件： jupyter notebook --generate-config　2. 修个配置文件，找到这个新生成的文件：">
+
+<link rel="canonical" href="http://xchcloud.cn/python-jupyter-使用总结/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python-jupyter-使用总结 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/python-jupyter-使用总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python-jupyter-使用总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-12 09:50:22" itemprop="dateCreated datePublished" datetime="2019-04-12T09:50:22+08:00">2019-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:01:00" itemprop="dateModified" datetime="2021-09-11T17:01:00+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/python-jupyter-使用总结/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="python-jupyter-使用总结/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="在-centos-下配置-jupyter"><a href="#在-centos-下配置-jupyter" class="headerlink" title="在 centos 下配置 jupyter"></a>在 centos 下配置 jupyter</h2><h3 id="配置文档"><a href="#配置文档" class="headerlink" title="配置文档"></a>配置文档</h3><p>jupyter notebook –generate-config 生成默认配置文档</p>
+<h3 id="修改密码："><a href="#修改密码：" class="headerlink" title="修改密码："></a>修改密码：</h3><p><strong>1.</strong> windows下，打开命令行，重新生成一个jupyter配置文件：</p>
+<p><code>jupyter notebook --generate-config</code><br>　<br><strong>2.</strong> 修个配置文件，找到这个新生成的文件：<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Windows: </span><br><span class="line"></span><br><span class="line">C:\Users\USERNAME\.jupyter\jupyter_notebook_config.py</span><br><span class="line"></span><br><span class="line">linux :</span><br><span class="line">vim /root/.jupyter/jupyter_notebook_config.py</span><br><span class="line"></span><br><span class="line">搜索 NotebookApp.allow_password_change，改为：</span><br><span class="line"></span><br><span class="line">NotebookApp.allow_password_change=False ，记得去掉注释的#</span><br><span class="line"></span><br><span class="line">也不要搜索了，麻烦，直接再第一行加</span><br></pre></td></tr></table></figure></p>
+<p><strong>3.</strong> 回到命令行，运行jupyter notebook password<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">notebook password</span><br><span class="line">Enter password:             #键入密码，不显示的</span><br><span class="line">Verify password:            #再次重复键入密码</span><br><span class="line">[NotebookPasswordApp] Wrote hashed password to C:\Users\用户\.jupyter\jupyter_notebook_config.json     #密码生成的一串sha1，写入到了这个文件，等下要把这串sha1，复制到第一个生成的配置文件中</span><br></pre></td></tr></table></figure></p>
+<p><strong>4.</strong> 还差一步密码才可以生效使用，在第一个jupyter_notebook_config.py配置文件中找到<br>“c.NotebookApp.password“，等于，刚生成的那个密码sha1，效果如下：去掉前面的”#“</p>
+<p><code>c.NotebookApp.password = u&#39;sha1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;</code></p>
+<p><strong>5.</strong> 保险起见，把jupyter重启，之后，无论是更换浏览器还是Logout登陆，新密码都可以正常使用了。</p>
+<h3 id="访问是https"><a href="#访问是https" class="headerlink" title="访问是https"></a>访问是https</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">问题：Jupyter notebook 远程server打开时遇到 socket.gaierror: [Errno -2] Name or service not known</span><br><span class="line"></span><br><span class="line">这个问题主要是由于远程打开的时候，并没有allow_remote_access=True</span><br></pre></td></tr></table></figure>
+<p>反向代理设置问题</p>
+<p>修改(直接在前几行添加）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.ip=&apos;*&apos; # 允许所有ip访问</span><br></pre></td></tr></table></figure></p>
+<p><strong>踩坑：</strong> 设置了反向代理，访问什么的没问题，但是链接不到解释服务器，打不开终端，各种修改无果！修改允许所有IP访问，然后设置301重定向，近似完美解决。</p>
+<h3 id="修改Jupyter工作目录"><a href="#修改Jupyter工作目录" class="headerlink" title="修改Jupyter工作目录"></a>修改Jupyter工作目录</h3><p><code>c.NotebookApp.notebook_dir = &#39;想设置哪个就是哪个&#39;</code></p>
+<h3 id="启动命令："><a href="#启动命令：" class="headerlink" title="启动命令："></a>启动命令：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook --config /root/.jupyter/jupyter_notebook_config.py --allow-root</span><br></pre></td></tr></table></figure>
+<p>启动以后，还可以给Python环境安装包之类。如果希望Jupyter长久运行，可以使用nohup后台运行。</p>
+<h2 id="杀死占用端口程序进程"><a href="#杀死占用端口程序进程" class="headerlink" title="杀死占用端口程序进程"></a>杀死占用端口程序进程</h2><p>根据端口查看这个进程的pid<br>netstat -lnp|grep 8080   #8080请换为你的apache需要的端口<br>查看进程的详细信息<br>ps 1777    #1777就是上一步得到的pid<br>杀掉进程<br>例如： kill -9 [PID]  #-9 表示强迫进程立即停止</p>
+<p><a href="https://www.cnblogs.com/coder-lzh/p/8977232.html" target="_blank" rel="noopener">参考地址</a></p>
+<h2 id="修改jupyter的权限"><a href="#修改jupyter的权限" class="headerlink" title="修改jupyter的权限"></a>修改jupyter的权限</h2><p>当我们用命令行在浏览器中启动jupyter notebook后需要点击右上角的New创建新的python文件，此时会报错。在Linux下可以用命令行解决这个问题。首先需要找到anaconda2中jupyter文件，在anaconda2中的share文件中，对jupyter执行如下命令，来修改jupyter的权限：</p>
+<p><code>chmod +777 /root/.jupyter/practice</code></p>
+<p>之后重启jupyter即可运行,python代码</p>
+<h2 id="jupyter-快捷键"><a href="#jupyter-快捷键" class="headerlink" title="jupyter 快捷键"></a>jupyter 快捷键</h2><p><a href="https://blog.csdn.net/HeatDeath/article/details/78030902" target="_blank" rel="noopener">Jupyter Notebook 快捷键</a></p>
+<h2 id="jupyter-notebook-写代码自动补全"><a href="#jupyter-notebook-写代码自动补全" class="headerlink" title="jupyter notebook 写代码自动补全"></a>jupyter notebook 写代码自动补全</h2><p>1.安装nbextensions<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn/simple</span><br><span class="line">jupyter contrib nbextension install --user</span><br></pre></td></tr></table></figure></p>
+<p>2.安装nbextensions_configurator<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install --user jupyter_nbextensions_configurator </span><br><span class="line">jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure></p>
+<p>如果提示缺少依赖，就使用pip安装对应依赖即可。</p>
+<p>重启jupyter，在弹出的主页面里，能看到增加了一个Nbextensions标签页，在这个页面里，勾选Hinterland即启用了代码自动补全,然后重启大功告成。</p>
+<p><a href="https://blog.csdn.net/weixin_33671935/article/details/85181176?tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">Jupyter Notebook 超实用的 5 个插件</a></p>
+<h3 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h3><p>如果出现错误如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Installing collected packages: msgpack</span><br><span class="line">Could not install packages due to an EnvironmentError: [WinError 5] 拒绝访问。:</span><br><span class="line">&apos;E:\\JiangHeSong\\Anaconda35.2.0\\Lib\\site-packages\\msgpack\\_packer.cp36-win_</span><br><span class="line">amd64.pyd&apos;</span><br><span class="line">Consider using the `--user` option or check the permissions.</span><br><span class="line"> </span><br><span class="line">You are using pip version 10.0.1, however version 18.0 is available.</span><br><span class="line">You should consider upgrading via the &apos;python -m pip install --upgrade pip&apos; comm</span><br><span class="line">and.</span><br></pre></td></tr></table></figure></p>
+<p>只需要加一个–user 例如：</p>
+<p><code>pip install --user msgpack -i https://pypi.mirrors.ustc.edu.cn/simple</code></p>
+<h2 id="在Jupyter-Notebook中交互式运行C-代码"><a href="#在Jupyter-Notebook中交互式运行C-代码" class="headerlink" title="在Jupyter Notebook中交互式运行C++代码"></a>在Jupyter Notebook中交互式运行C++代码</h2><h3 id="编译安装（坑货）"><a href="#编译安装（坑货）" class="headerlink" title="编译安装（坑货）"></a>编译安装（坑货）</h3><p>参考：为什么是坑货呢？<a href="http://blog.sina.cn/dpool/blog/s/blog_541944e10102xla0.html" target="_blank" rel="noopener">Jupyternotebook添加c++核心支持的配置过程(新浪blog)</a></p>
+<p>Jupyter Notebook 支持非常多的编程语言，而且可以直接运行这些语言的代码。要让 Jupyter Notebook 能够运行特定语言的代码，需要添加对应的内核。具体支持的语言及内核可以查看该链接： <a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels" target="_blank" rel="noopener">https://github.com/jupyter/jupyter/wiki/Jupyter-kernels</a> 。</p>
+<p>cling 内核依赖于 Python3</p>
+<p>添加 C++ cling 内核</p>
+<p>克隆 cling 的 Github 官方仓库：</p>
+<p><code>git clone https://github.com/root-project/cling.git</code></p>
+<p>在进行编译操作之前，首先要确保你的机器上已经装好了 cmake 工具，即能够直接通过输入命令 cmake<br>执行程序。</p>
+<p>如果 cmake<br>已经正确安装，就可以进行以下的操作了。</p>
+<p>切换到 cling/tools/packaging/ 目录下，执行以下两条命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x cpt.py  </span><br><span class="line">./cpt.py --check-requirements &amp;&amp; ./cpt.py --create-dev-env Debug --with-workdir=./cling-build/</span><br></pre></td></tr></table></figure></p>
+<p>这个过程包含了从网络上获取源文件以及编译，是最为耗时的一个阶段，以小时计。</p>
+<p>编译完成后，需要在 python3 中安装 clingkernel。切换到 cling/tools/Jupyter/ 目录下，执行</p>
+<p><code>pip3 install kernel/</code></p>
+<p>最后一步，往 Jupyter Notebook 中添加 cling 内核，可以根据自己的需要安装特定 C++ 规范的 cling 内核，例如 cling-cpp11, cling-cpp14, cling-cpp17。</p>
+<p><code>jupyter kernelspec install kernel/cling-cpp17</code></p>
+<p>如果没有其他问题，此时就可以打开 Jupyter Notebook 感受不一样的 C++ 编程了！<br>官方代码示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Rectangle &#123;  </span><br><span class="line">    private:</span><br><span class="line">        double w;</span><br><span class="line">        double h;</span><br><span class="line"></span><br><span class="line">    public:</span><br><span class="line"></span><br><span class="line">        Rectangle(double w_, double h_) &#123;</span><br><span class="line">            w = w_;</span><br><span class="line">            h = h_;</span><br><span class="line">        &#125;</span><br><span class="line">        double area(void) &#123;</span><br><span class="line">            return w * h;</span><br><span class="line">        &#125;</span><br><span class="line">        double perimiter(void) &#123;</span><br><span class="line">            return 2 * (w + h);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Rectangle r = Rectangle(5, 4); </span><br><span class="line">r.area();</span><br></pre></td></tr></table></figure></p>
+<p>输出为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cpp</span><br><span class="line">(double) 20.000000</span><br></pre></td></tr></table></figure></p>
+<h3 id="快速安装"><a href="#快速安装" class="headerlink" title="快速安装"></a>快速安装</h3><p>一、 安装Xeus-Cling</p>
+<p>目前已支持Mac和Ubuntu，windows自测，推荐使用conda安装。</p>
+<p>1.首先创建一个conda environment并激活(如果不会在虚拟环境中打开jupyter,可在base环境中安装）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda create -n Xeus-Cling</span><br><span class="line">source activate Xeus-Cling</span><br></pre></td></tr></table></figure></p>
+<p>然后使用conda package installer安装Xeus-Cling</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge xeus-cling</span><br></pre></td></tr></table></figure>
+<p>完成！<br>二、测试C++ Kernel</p>
+<p>1.首先，激活环境并打开jupyter-notebook<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source activate Xeus-Cling</span><br><span class="line">jupyter-notebook</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装的-C-内核-11-14-17-区别"><a href="#安装的-C-内核-11-14-17-区别" class="headerlink" title="安装的 C++ 内核 11 14 17 区别"></a>安装的 C++ 内核 11 14 17 区别</h3><p><a href="https://blog.csdn.net/xiaomu_347/article/details/82563688" target="_blank" rel="noopener">c++11/14/17标准你了解多少(CSDN)</a><br><a href="https://docs.microsoft.com/en-us/previous-versions/hh567368(v=vs.140" target="_blank" rel="noopener">官方(微软、英语)</a>#featurelist)</p>
+<h2 id="Conda使用手册"><a href="#Conda使用手册" class="headerlink" title="Conda使用手册"></a>Conda使用手册</h2><p><a href="https://blog.csdn.net/chenfeidi1/article/details/80873993" target="_blank" rel="noopener">Conda使用手册(CSDN)</a></p>
+<p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/" target="_blank" rel="noopener">清华大学开源软件镜像站</a></p>
+<p><a href="https://mirrors.ustc.edu.cn/help/anaconda.html" target="_blank" rel="noopener">科大源镜像站</a></p>
+<h2 id="jupyter-云平台"><a href="#jupyter-云平台" class="headerlink" title="jupyter 云平台"></a>jupyter 云平台</h2><p><a href="https://mybinder.org" target="_blank" rel="noopener">binder</a></p>
+<p><a href="https://mybinder.org/v2/gh/QuantStack/xeus-cling/stable?filepath=notebooks/xcpp.ipynb&amp;tdsourcetag=s_pctim_aiomsg" target="_blank" rel="noopener">C++ jupyter</a></p>
+<h2 id="只下载github的某个文件夹"><a href="#只下载github的某个文件夹" class="headerlink" title="只下载github的某个文件夹"></a>只下载github的某个文件夹</h2><p>很多时候我们只想下载某个文件夹，而不是整个目录</p>
+<p>我们可以用svn，先安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt install subversion</span><br><span class="line"></span><br><span class="line">yum install subversion</span><br></pre></td></tr></table></figure></p>
+<p>比如你要下载这个<a href="https://github.com/QuantStack/xeus-cling/tree/master/notebooks，将/tree/master/换成/trunk/即可" target="_blank" rel="noopener">https://github.com/QuantStack/xeus-cling/tree/master/notebooks，将/tree/master/换成/trunk/即可</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn checkout https://github.com/QuantStack/xeus-cling/trunk/notebooks</span><br></pre></td></tr></table></figure></p>
+<h2 id="奇技淫巧"><a href="#奇技淫巧" class="headerlink" title="奇技淫巧"></a>奇技淫巧</h2><p>1、Jupyter常用的快捷键</p>
+<p>1）代码运行键</p>
+<p>如需运行一个cell（代码框）内的Python代码，可以选择Ctrl + Enter组合键，也可以选择Shift + Enter组合键。两者的区别在于前者在运行完代码后不会新增cell，而后者会新增cell或跳转到下一个cell。</p>
+<p>2）自动补齐键</p>
+<p>在代码编写过程中，如果只记得函数或变量名称的前几个字母，可以通过Tab键，实现全名称（如函数名、方法名、变量名等）的自动补齐。</p>
+<p>3）帮助查询键</p>
+<p>Python中有庞大的第三方包，而每个包中又包含很多功能性的函数，在使用这些函数时，往往会忘记函数内参数的具体用法，此时可以在函数后面按入Shift+Tab组合键，查看对应的帮助文档，而且还可以多按几次“Tab”键，返回不同风格的帮助文档。</p>
+<p>4）cell创建键</p>
+<p>在command模式下，按下字母a键，则会在当前cell的上方新增一个cell，如果按下字母b键，则会在当前cell的下方新增一个cell。</p>
+<p>5）cell删除键</p>
+<p>在command模式下，连续按两次d字母键，就可以轻松删除当前cell。或者还有另一个方法，在command模式下，按一次字母x键也可以实现cell的删除。</p>
+<p>6）注释添加/取消键</p>
+<p>如需给代码行或代码块增加注释功能，可以使用“Ctrl+/”的组合键，对于代码块的注释需要先选中，在使用组合键。如果原始代码中没有注释符，按入该组合键则增加注释，否则将取消注释。</p>
+<p>7）保存键</p>
+<p>在编写代码时，最好养成良好的习惯，那就是编写代码便保存（尽管Jupyter默认会2分钟自动保存一次，但2分钟内万一出现一些意外，岂不是糟糕啦）。代码的保存可以在command模式下，按一次字母s键。</p>
+<p>8）行号显示键</p>
+<p>在其他编程环境中也许会显示代码行号，但是在Jupyter的默认情况下是没有代码行号的，如果期望一个cell中显示所有代码对于的行编号，可以在command模式下，按一次字母l键。</p>
+<p>9）code与markdown间切换键</p>
+<p>code指的是Jupyter环境下所进行的Python代码的编写，而markdown则是用于非代码的笔记内容的编写。两者之间是可以轻松切换的，在command模式下，按一次字母m便从code切换到markdowen模式；如果从command模式中，按一次字母y就可以从markdown模式切换到code模式。</p>
+<p>2、Jupyter中的魔法函数</p>
+<p>1）%pwd</p>
+<p>该魔法函数用于显示Jupyter当前的工作空间。</p>
+<p>2）%hist</p>
+<p>该魔法函数用于显示当前Jupyter中，所有运行过的历史代码。</p>
+<p>3）%who</p>
+<p>该魔法函数用于显示当前Jupyter环境中的所有变量或名称。</p>
+<p>4）%reset</p>
+<p>该魔法函数用于删除当前Jupyter环境中的所有变量或名称。</p>
+<p>5)%time</p>
+<p>该魔法函数用于计算当前代码行的运行时长。</p>
+<p>6)%timeit</p>
+<p>该魔法函数用于计算当前代码行的平均运行时长（即在执行一个语句100000次(默认情况下)后，再给出运行最快3次的平均值。</p>
+<p>7)%%timeit</p>
+<p>该魔法函数用于计算当前cell的代码运行时长。</p>
+<p>8）%matplotlib</p>
+<p>该魔法函数用于显示绘图结果的风格，默认为%matplotlib inline，是直接将图片显示在浏览器中，如果希望图片单独生成，可以使用%matplotlib。</p>
+<p>9）%load</p>
+<p>该魔法函数用于加载本地Python文件或者网络中的Python文件，例如本地脚本文件的加载：%load xxx.py。</p>
+<p>10）%run</p>
+<p>该魔法函数用于运行本地或网络中的Python文件，例如本地脚本文件的运行：%load xxx.py。</p>
+<h2 id="其他连接"><a href="#其他连接" class="headerlink" title="其他连接"></a>其他连接</h2><p><a href="http://url.cn/5xxEBSt" target="_blank" rel="noopener">jupyter notebook系列之 自定义主题、字体、字号等(WX)</a><br><a href="http://url.cn/5SelJCe" target="_blank" rel="noopener">python开发者必备，史上最详细的 jupyter 教程(WX)</a></p>
+<p><a href="https://www.bilibili.com/read/cv1924277/" target="_blank" rel="noopener">在 jupyter 里使用 C++(B站文章)</a></p>
+<p><a href="http://url.cn/52mfLFI" target="_blank" rel="noopener">Jupyter Notebook界面也可以如此炫酷？有人把Notebook玩出了新花样</a></p>
+<p><a href="http://url.cn/5C4F90n" target="_blank" rel="noopener">十大至简规则！</a></p>
+<p><a href="http://url.cn/5aK81xZ" target="_blank" rel="noopener">15 款好用到爆炸的 Jupyter Lab 插件</a></p>
+<p><a href="http://url.cn/5ojkUbV" target="_blank" rel="noopener"> JupyterLab，极其强大的下一代 notebook</a></p>
+<p><a href="http://url.cn/5Ruo79B" target="_blank" rel="noopener">Jupyter在美团民宿的应用实践</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/python-jupyter-使用总结/" title="python-jupyter-使用总结">http://xchcloud.cn/python-jupyter-使用总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/jupyter/" rel="tag"><i class="fa fa-tag"></i> jupyter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-Django-HFNU-Small-Size网站设计/" rel="prev" title="python-Django-HFNU_Small_Size网站设计">
+      <i class="fa fa-chevron-left"></i> python-Django-HFNU_Small_Size网站设计
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Lua-查缺补漏/" rel="next" title="Lua-查缺补漏">
+      Lua-查缺补漏 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在-centos-下配置-jupyter"><span class="nav-text">在 centos 下配置 jupyter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文档"><span class="nav-text">配置文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改密码："><span class="nav-text">修改密码：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问是https"><span class="nav-text">访问是https</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改Jupyter工作目录"><span class="nav-text">修改Jupyter工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动命令："><span class="nav-text">启动命令：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杀死占用端口程序进程"><span class="nav-text">杀死占用端口程序进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改jupyter的权限"><span class="nav-text">修改jupyter的权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jupyter-快捷键"><span class="nav-text">jupyter 快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jupyter-notebook-写代码自动补全"><span class="nav-text">jupyter notebook 写代码自动补全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#出现的问题"><span class="nav-text">出现的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Jupyter-Notebook中交互式运行C-代码"><span class="nav-text">在Jupyter Notebook中交互式运行C++代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装（坑货）"><span class="nav-text">编译安装（坑货）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速安装"><span class="nav-text">快速安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装的-C-内核-11-14-17-区别"><span class="nav-text">安装的 C++ 内核 11 14 17 区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conda使用手册"><span class="nav-text">Conda使用手册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jupyter-云平台"><span class="nav-text">jupyter 云平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#只下载github的某个文件夹"><span class="nav-text">只下载github的某个文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#奇技淫巧"><span class="nav-text">奇技淫巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他连接"><span class="nav-text">其他连接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

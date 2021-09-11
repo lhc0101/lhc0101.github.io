@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用技巧linux 下配置快捷启动方式12345vim ~/.bashrcalias pycharm=&amp;quot;bash /home/bobby/Downloads/pycharm-2016.3.2/bin/pycharm.sh&amp;quot;source ~/.bashrc">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python查缺补漏">
+<meta property="og:url" content="http://xchcloud.cn/python查缺补漏/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="使用技巧linux 下配置快捷启动方式12345vim ~/.bashrcalias pycharm=&amp;quot;bash /home/bobby/Downloads/pycharm-2016.3.2/bin/pycharm.sh&amp;quot;source ~/.bashrc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:01:12.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python查缺补漏">
+<meta name="twitter:description" content="使用技巧linux 下配置快捷启动方式12345vim ~/.bashrcalias pycharm=&amp;quot;bash /home/bobby/Downloads/pycharm-2016.3.2/bin/pycharm.sh&amp;quot;source ~/.bashrc">
+
+<link rel="canonical" href="http://xchcloud.cn/python查缺补漏/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python查缺补漏 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/python查缺补漏/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python查缺补漏
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-04 15:07:41" itemprop="dateCreated datePublished" datetime="2019-06-04T15:07:41+08:00">2019-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:01:12" itemprop="dateModified" datetime="2021-09-11T17:01:12+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/python查缺补漏/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="python查缺补漏/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h2><h3 id="linux-下配置快捷启动方式"><a href="#linux-下配置快捷启动方式" class="headerlink" title="linux 下配置快捷启动方式"></a>linux 下配置快捷启动方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line"></span><br><span class="line">alias pycharm=&quot;bash /home/bobby/Downloads/pycharm-2016.3.2/bin/pycharm.sh&quot;</span><br><span class="line"></span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="加快-pip-安装速度"><a href="#加快-pip-安装速度" class="headerlink" title="加快 pip 安装速度"></a>加快 pip 安装速度</h3><p><code>pip3 install -i https://pypi.douban.com/simple django</code></p>
+<h3 id="安装包出现报错解决方法"><a href="#安装包出现报错解决方法" class="headerlink" title="安装包出现报错解决方法"></a>安装包出现报错解决方法</h3><p><a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a></p>
+<h3 id="加速-npm-镜像"><a href="#加速-npm-镜像" class="headerlink" title="加速 npm 镜像"></a>加速 npm 镜像</h3><p><a href="http://npm.taobao.org/" target="_blank" rel="noopener">淘宝镜像</a></p>
+<h2 id="2019-4-12"><a href="#2019-4-12" class="headerlink" title="2019.4.12"></a>2019.4.12</h2><h3 id="new、init"><a href="#new、init" class="headerlink" title="new、init"></a>new、init</h3><p>在 Python 3 的类中，<em>new</em> 负责对象的创建，而 <em>init</em> 负责对象的初始化；<em>new</em> 是一个类方法，而 <em>init</em> 是一个对象方法。</p>
+<p><em>new</em> 是我们通过类名进行实例化对象时自动调用的，<em>init</em> 是在每一次实例化对象之后调用的，<em>new</em> 方法创建一个实例之后返回这个实例对象，并将其传递给 <em>init</em> 方法的 self 参数。</p>
+<p><a href="https://blog.csdn.net/luoweifu/article/details/82732313" target="_blank" rel="noopener">深入理解Python中的 _ <em>new</em> _ 和 _ <em>init</em> _</a></p>
+<p>##3 metaclass()</p>
+<h4 id="内置函数-type-和-isinstance"><a href="#内置函数-type-和-isinstance" class="headerlink" title="内置函数 type() 和 isinstance()"></a>内置函数 type() 和 isinstance()</h4><ul>
+<li>type()</li>
+</ul>
+<p>（1）查看一个变量（对象）的类型；<br>（2）创建一个类（class）</p>
+<h2 id="2019-6-4"><a href="#2019-6-4" class="headerlink" title="2019.6.4"></a>2019.6.4</h2><h3 id="jquery"><a href="#jquery" class="headerlink" title="jquery"></a>jquery</h3><p>jQuery 是一个 JavaScript 库。</p>
+<p>jQuery 极大地简化了 JavaScript 编程。</p>
+<p>要爬取静态网页的html代码，可以使用 jquery去模仿写html。</p>
+<h3 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h3><p>AJAX = Asynchronous JavaScript and XML（异步的 JavaScript 和 XML）。</p>
+<p>AJAX 不是新的编程语言，而是一种使用现有标准的新方法。</p>
+<p>AJAX 最大的优点是在不重新加载整个页面的情况下，可以与服务器交换数据并更新部分网页内容。</p>
+<p>AJAX 不需要任何浏览器插件，但需要用户允许JavaScript在浏览器上执行。</p>
+<p><a href="https://www.runoob.com/ajax/ajax-tutorial.html" target="_blank" rel="noopener">菜鸟教程</a></p>
+<h3 id="Python-enumerate-函数"><a href="#Python-enumerate-函数" class="headerlink" title="Python enumerate() 函数"></a>Python enumerate() 函数</h3><p>enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。</p>
+<p>语法<br>以下是 enumerate() 方法的语法:</p>
+<p><code>enumerate(sequence, [start=0])</code></p>
+<p>参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sequence -- 一个序列、迭代器或其他支持迭代对象。</span><br><span class="line">start -- 下标起始位置。</span><br></pre></td></tr></table></figure></p>
+<p>返回值</p>
+<p><code>返回 enumerate(枚举) 对象。</code></p>
+<h3 id="Headless无头浏览器"><a href="#Headless无头浏览器" class="headerlink" title="Headless无头浏览器"></a>Headless无头浏览器</h3><p>无头浏览器即headless browser，是一种没有界面的浏览器。既然是浏览器那么浏览器该有的东西它都应该有，只是看不到界面而已。</p>
+<h4 id="Headless-Chrome"><a href="#Headless-Chrome" class="headerlink" title="Headless Chrome"></a>Headless Chrome</h4><p>截止目前最新的Chrome版本在Mac\Linux\Windows上都可以使用headless模式</p>
+<p>调用方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a、使用命令行进行调用</span><br><span class="line"></span><br><span class="line">首先需要把chrome的安装路径添加到系统路径下面，调用方式如下</span><br><span class="line"></span><br><span class="line">chrome --headless http://www.baidu.com</span><br><span class="line"></span><br><span class="line">b、通过selenuim进行调用（目前java\python等主流语言都支持selenuim）</span><br></pre></td></tr></table></figure></p>
+<h4 id="Headless-Firefox"><a href="#Headless-Firefox" class="headerlink" title="Headless Firefox"></a>Headless Firefox</h4><p>截止目前最新的Chrome版本在Mac\Linux\Windows上都可以使用headless模式</p>
+<p>调用方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a、使用命令行进行调用</span><br><span class="line">        firefox -headless http://www.baidu.com</span><br><span class="line">b、通过selenuim进行调用</span><br></pre></td></tr></table></figure></p>
+<h4 id="PhantomJS"><a href="#PhantomJS" class="headerlink" title="PhantomJS"></a>PhantomJS</h4><p>调用方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a、使用命令行进行调用首先在官方网站下载最新的phantomJS版本，并把安装目录的路径添加到系统路径下，然后在命令行打开，使用命令 phantomJS  xx.js url 运行JS脚本。PhantomJS脚本参考：</span><br><span class="line"></span><br><span class="line">b、在nodejs中使用phantomjs，需要用到phantomjs中的一个Child Process模块，介绍在这里http://phantomjs.org/api/child_process/。github已经有对</span><br><span class="line">phantomjs的node支持库，项目地址在这里https://github.com/amir20/phantomjs-node</span><br><span class="line"></span><br><span class="line">c、通过selenuim进行调用(目前已经不支持了)</span><br></pre></td></tr></table></figure>
+<h3 id="列出-Python-中可变数据类型和不可变数据类型，并简述原理"><a href="#列出-Python-中可变数据类型和不可变数据类型，并简述原理" class="headerlink" title="列出 Python 中可变数据类型和不可变数据类型，并简述原理"></a>列出 Python 中可变数据类型和不可变数据类型，并简述原理</h3><p>不可变数据类型：数值型、字符串型 string 和元组 tuple。</p>
+<p>不允许变量的值发生变化，如果改变了变量的值，相当于是新建了一个对象，而对于相同的值的对象，在内存中则只有一个对象（一个地址），如下图用 id() 方法可以打印对象的id。</p>
+<p>可变数据类型：列表 list 和字典 dict。</p>
+<p>允许变量的值发生变化，即如果对变量进行 append、+= 等这种操作后，只是改变了变量的值，而不会新建一个对象，变量引用的对象的地址也不会变化，不过对于相同的值的不同对象，在内存中则会存在不同的对象，即每个对象都有自己的地址，相当于内存中对于同值的对象保存了多份，这里不存在引用计数，是实实在在的对象。</p>
+<h3 id="常用的几种运算："><a href="#常用的几种运算：" class="headerlink" title="常用的几种运算："></a>常用的几种运算：</h3><p>算述运算：+、-、<em>、/、%、**、//<br>比较运算：==、!=、&lt;&gt;、&gt;、&lt;、&gt;=、&lt;=<br>赋值运算：=、+=、-=、</em>=、/=、%=、**=<br>逻辑运算：and、or、not<br>位运算：与、或、异或、取反、左移、右移<br>成员运算符：in、not in<br>身份运算： is、is not</p>
+<ul>
+<li>/ 和 // 的区别，/ 是除以结果有小数位，// 整除（向下取整）结果是整数</li>
+<li><strong> 符号表示取幂，a</strong>b 返回 a 的 b 次方</li>
+<li>is 和 == 的区别<br>Python 中对象包含的三个基本要素，分别是：id（身份标识）、type（数据类型）和 value（值）。</li>
+</ul>
+<p>== 是 Python 标准操作符中的比较操作符，用来比较判断两个对象的 value（值）是否相等。</p>
+<p>is 也被叫做同一性运算符，这个运算符比较判断的是对象间的唯一身份标识，也就是 id 是否相同。</p>
+<p>只有数值型和字符串型的情况下，a is b 才为 True，当 a 和 b 是 tuple、list、dict 或 set 型时，a is b 为 False。</p>
+<h3 id="怎么样才能让-if-和-else-中的语句都执行"><a href="#怎么样才能让-if-和-else-中的语句都执行" class="headerlink" title="怎么样才能让 if 和 else 中的语句都执行"></a>怎么样才能让 if 和 else 中的语句都执行</h3><p>会编程的人都知道，if-else 语句是相斥执行的，如果满足了 if 中的条件，就不能执行 else 中的内容；如果执行了 else 中的内容，一定不会满足 if 条件，所以 if 和 else 是不会同时执行的。</p>
+<p><strong>语句 pid=os.fork()，会为当前进程产生一个子进程并返回两个值，为父进程返回子进程的进程 ID，为子进程返回 0。</strong></p>
+<p>把 if 条件设定为 fork 方法返回的值是否为 0，如果设置为等于 0，那么就会出现主程序不满足 if 条件，执行 else 中代码块，子进程满足 if 条件，执行 if 中代码块的情况，这样 if 和 else 中的代码块就都会执行。</p>
+<p>通过下面这个小案例证明上述描述：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import os</span><br><span class="line">pid = os.fork()</span><br><span class="line">print(pid)</span><br><span class="line">if pid == 0:</span><br><span class="line"># os.getid()获取当前进程ID</span><br><span class="line">        print(os.getpid())</span><br><span class="line">        print(&apos;hello&apos;)</span><br><span class="line">else:</span><br><span class="line">        print(os.getpid())</span><br><span class="line">        print(&apos;goodbye&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>注意：os.fork() 方法只在 Linux、Mac、Unix 系统中才能使用。</p>
+<h3 id="递归与循环的区别"><a href="#递归与循环的区别" class="headerlink" title="递归与循环的区别"></a>递归与循环的区别</h3><p>递归与循环是两种不同的解决问题的典型思路。</p>
+<h4 id="递归算法："><a href="#递归算法：" class="headerlink" title="递归算法："></a>递归算法：</h4><p>优点：代码简洁、清晰，并且容易验证正确性。（如果你真地理解了算法的话，否则你更晕）<br>缺点：它的运行需要较多次数的函数调用，如果调用层数比较深，需要增加额外的堆栈处理，比如参数传递需要压栈等操作，会对执行效率有一定影响。但是，对于某些问题，如果不使用递归，那将是极端难看的代码。</p>
+<h4 id="循环算法："><a href="#循环算法：" class="headerlink" title="循环算法："></a>循环算法：</h4><p>优点：速度快，结构简单。<br>缺点：并不能解决所有的问题。有的问题适合使用递归而不是循环。如果使用循环并不困难的话，最好使用循环。</p>
+<h3 id="参数分类"><a href="#参数分类" class="headerlink" title="参数分类"></a>参数分类</h3><p>必备参数： 必备参数须以正确的顺序传入函数。调用时的数量必须和声明时的一样。<br>默认参数： 调用函数时，默认参数的值如果没有传入，则被认为是默认值。<br>不定长参数： 你可能需要一个函数能处理比当初声明时更多的参数。</p>
+<h3 id="可变和不可变对象当参数"><a href="#可变和不可变对象当参数" class="headerlink" title="可变和不可变对象当参数"></a>可变和不可变对象当参数</h3><p>不可变对象：字符、数值、无组均为不可变对象，该类型的变量创建后不能修改，修改相当于重新生成一个新的变量。</p>
+<p>可变对象：列表、字典为可变对象，该类型的变量创建后可以修改，只是对其内部的元素值更改，变量还是那个变量。</p>
+<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><p>Lambda 来创建匿名函数 Lambda 只是一个表达式，函数体比def简单很多。Lambda 的主体是一个表达式，而不是一个代码块，仅仅能在 Lambda 表达式中封装有限的逻辑进去。Lambda 函数拥有自己的命名空间，且不能访问自有参数列表之外或全局命名空间里的参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">函数格式：</span><br><span class="line"></span><br><span class="line">函数名 = Lambda 变量:表达式       </span><br><span class="line">举例：</span><br><span class="line">func = lambda a, b: print(a) if a&gt;b else print(b)    </span><br><span class="line">func(10, 3)</span><br><span class="line">输出：</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
+<h3 id="对缺省参数的理解？"><a href="#对缺省参数的理解？" class="headerlink" title="对缺省参数的理解？"></a>对缺省参数的理解？</h3><p>缺省参数指的是在调用函数的时候没有传入参数的情况下，调用默认的参数，在调用函数的并且赋值时，所传入的参数会替代默认参数。</p>
+<ul>
+<li><p>*args 是不定长参数，可以表示输入参数是不确定的，可以是任意多个。例如：参数为列表类型 list 时可以用该值表示。</p>
+</li>
+<li><p>**kwargs 是关键字参数，赋值的时候是以键 = 值的方式参数是可以任意多对，在定义函数的时候不确定有多少参数会传入，就可以使用这两个参数。例如：参数为字典类型 dict 时可以用该值表示。</p>
+</li>
+</ul>
+<h3 id="map-函数和-reduce-函数？"><a href="#map-函数和-reduce-函数？" class="headerlink" title="map 函数和 reduce 函数？"></a>map 函数和 reduce 函数？</h3><ul>
+<li><p>从参数方面讲:<br>map() 包含两个参数，第一个参数是一个函数，第二个是序列（列表或元祖，可迭代对象）。其中，函数（即 map 的第一个参数）可以接受一个或者多个参数。<br>reduce() 第一个参数是函数，第二个是序列（列表或元祖），但是，其函数必须接受两个参数。</p>
+</li>
+<li><p>从对传进去的数值作用来讲：<br>map() 是将传入的函数依次作用到序列的每个元素，每个元素都是独自被函数“作用”一次。<br>reduce() 是将传入的函数作用在序列的第一个元素得到结果后，把这个结果继续与下一个元素作用（累积计算）。</p>
+</li>
+</ul>
+<h3 id="回调函数，如何通信的？"><a href="#回调函数，如何通信的？" class="headerlink" title="回调函数，如何通信的？"></a>回调函数，如何通信的？</h3><p>回调函数是把函数的指针（地址）作为参数传递给另一个参数，将整个参数当做一个对象，赋值给调用的函数。</p>
+<h3 id="hasattr-、getattr-、setattr-函数使用详解？"><a href="#hasattr-、getattr-、setattr-函数使用详解？" class="headerlink" title="hasattr( )、getattr( )、setattr( ) 函数使用详解？"></a>hasattr( )、getattr( )、setattr( ) 函数使用详解？</h3><ul>
+<li><p>hasattr(object,name) 函数：<br>判断一个对象里面是否有 name 属性或者 name 方法，返回 bool 值<br>注意：name 要用引号括起来</p>
+</li>
+<li><p>getattr(object,name[,default]) 函数：<br>获取对象 object 的属性或者方法，如果存在打印出来，不存在打印默认值，默认值可选。注意：如果返回的是对象的方法，则打印的结果是：方法的内存地址，如果需要运行这个方法，可以在后面添加 ()。</p>
+</li>
+<li><p>setattr(object,name,values) 函数：<br>给对象的属性赋值，若属性不存在，先创建再赋值。</p>
+</li>
+</ul>
+<h3 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h3><p>sk.recv(bufsize[,flag]):接受套接字的数据。数据以字符串形式返回，bufsize指定最多可以接收的数量。flag提供有关消息的其他信息，通常可以忽略。</p>
+<p>sk.recvfrom(bufsize[.flag]):与recv()类似，但返回值是（data,address）。其中data是包含接收数据的字符串，address是发送数据的套接字地址。</p>
+<p>sk.getsockname():返回套接字自己的地址。通常是一个元组(ipaddr,port)</p>
+<p>sk.connect(address):连接到address处的套接字。一般，address的格式为元组（hostname,port）,如果连接出错，返回socket.error错误。</p>
+<p>sk.listen(backlog):开始监听传入连接。backlog指定在拒绝连接之前，可以挂起的最大连接数量。</p>
+<h3 id="虚数与实数"><a href="#虚数与实数" class="headerlink" title="虚数与实数"></a>虚数与实数</h3><p>1 虚数不能单独存在，它们总是和一个值为 0.0 的实数部分一起来构成一个复数。<br>2复数由实数部分和虚数部分构成<br>3表示虚数的语法： real+imagj<br>4 实数部分和虚数部分都是浮点数<br>5 虚数部分必须有后缀 j 或 J</p>
+<h3 id="Python-yield-使用浅析"><a href="#Python-yield-使用浅析" class="headerlink" title="Python yield 使用浅析"></a>Python yield 使用浅析</h3><p>带有 yield 的函数在 Python 中被称之为 generator（生成器）<br><a href="https://www.runoob.com/w3cnote/python-yield-used-analysis.html" target="_blank" rel="noopener">参考资料</a></p>
+<h3 id="python-内置函数"><a href="#python-内置函数" class="headerlink" title="python 内置函数"></a>python 内置函数</h3><p><a href="https://blog.csdn.net/weixin_39358657/article/details/89600716" target="_blank" rel="noopener">Python内置函数详解</a></p>
+<h3 id="Python的闭包函数"><a href="#Python的闭包函数" class="headerlink" title="Python的闭包函数"></a>Python的闭包函数</h3><h3 id="什么是主从同步"><a href="#什么是主从同步" class="headerlink" title="什么是主从同步"></a>什么是主从同步</h3><p>HDFS</p>
+<p>HBase</p>
+<h3 id="Xpath-与正则"><a href="#Xpath-与正则" class="headerlink" title="Xpath 与正则"></a>Xpath 与正则</h3><h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>应用实例：</p>
+<h3 id="twisted-框架-与python-框架"><a href="#twisted-框架-与python-框架" class="headerlink" title="twisted 框架 与python 框架"></a>twisted 框架 与python 框架</h3><h4 id="爬虫框架有哪些"><a href="#爬虫框架有哪些" class="headerlink" title="爬虫框架有哪些"></a>爬虫框架有哪些</h4><h3 id="python中的多进程与多线程"><a href="#python中的多进程与多线程" class="headerlink" title="python中的多进程与多线程"></a>python中的多进程与多线程</h3><h3 id="selenium-phantomjs"><a href="#selenium-phantomjs" class="headerlink" title="selenium + phantomjs"></a>selenium + phantomjs</h3><h3 id="python分批读取数据"><a href="#python分批读取数据" class="headerlink" title="python分批读取数据"></a>python分批读取数据</h3><h3 id="新式类、经典类区别"><a href="#新式类、经典类区别" class="headerlink" title="新式类、经典类区别"></a>新式类、经典类区别</h3><h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><h4 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h4><h3 id="python-中的可变类型与不可变类型"><a href="#python-中的可变类型与不可变类型" class="headerlink" title="python 中的可变类型与不可变类型"></a>python 中的可变类型与不可变类型</h3><h3 id="类方法、类实例方法、静态方法"><a href="#类方法、类实例方法、静态方法" class="headerlink" title="类方法、类实例方法、静态方法"></a>类方法、类实例方法、静态方法</h3><h3 id="python-的内存管理、内存调优手段、内存泄漏处理"><a href="#python-的内存管理、内存调优手段、内存泄漏处理" class="headerlink" title="python 的内存管理、内存调优手段、内存泄漏处理"></a>python 的内存管理、内存调优手段、内存泄漏处理</h3><h3 id="装饰器与重载"><a href="#装饰器与重载" class="headerlink" title="装饰器与重载"></a>装饰器与重载</h3><h3 id="生成器与迭代器"><a href="#生成器与迭代器" class="headerlink" title="生成器与迭代器"></a>生成器与迭代器</h3><h3 id="值传递、引用传递"><a href="#值传递、引用传递" class="headerlink" title="值传递、引用传递"></a>值传递、引用传递</h3><h3 id="缺省参数"><a href="#缺省参数" class="headerlink" title="缺省参数"></a>缺省参数</h3><h3 id="回调参数"><a href="#回调参数" class="headerlink" title="回调参数"></a>回调参数</h3><h3 id="hasattr-gatattr-setattr"><a href="#hasattr-gatattr-setattr" class="headerlink" title="hasattr() gatattr() setattr()"></a>hasattr() gatattr() setattr()</h3><h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><h3 id="yield、generator、iterator"><a href="#yield、generator、iterator" class="headerlink" title="yield、generator、iterator"></a>yield、generator、iterator</h3>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/python查缺补漏/" title="python查缺补漏">http://xchcloud.cn/python查缺补漏/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/将Ubuntu系统安装到移动硬盘/" rel="prev" title="将Ubuntu系统安装到移动硬盘">
+      <i class="fa fa-chevron-left"></i> 将Ubuntu系统安装到移动硬盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/MongoDB实战经验/" rel="next" title="MongoDB实战经验">
+      MongoDB实战经验 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用技巧"><span class="nav-text">使用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-下配置快捷启动方式"><span class="nav-text">linux 下配置快捷启动方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加快-pip-安装速度"><span class="nav-text">加快 pip 安装速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装包出现报错解决方法"><span class="nav-text">安装包出现报错解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加速-npm-镜像"><span class="nav-text">加速 npm 镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2019-4-12"><span class="nav-text">2019.4.12</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new、init"><span class="nav-text">new、init</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内置函数-type-和-isinstance"><span class="nav-text">内置函数 type() 和 isinstance()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2019-6-4"><span class="nav-text">2019.6.4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jquery"><span class="nav-text">jquery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ajax"><span class="nav-text">Ajax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-enumerate-函数"><span class="nav-text">Python enumerate() 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Headless无头浏览器"><span class="nav-text">Headless无头浏览器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Headless-Chrome"><span class="nav-text">Headless Chrome</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Headless-Firefox"><span class="nav-text">Headless Firefox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PhantomJS"><span class="nav-text">PhantomJS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列出-Python-中可变数据类型和不可变数据类型，并简述原理"><span class="nav-text">列出 Python 中可变数据类型和不可变数据类型，并简述原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的几种运算："><span class="nav-text">常用的几种运算：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么样才能让-if-和-else-中的语句都执行"><span class="nav-text">怎么样才能让 if 和 else 中的语句都执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归与循环的区别"><span class="nav-text">递归与循环的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递归算法："><span class="nav-text">递归算法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环算法："><span class="nav-text">循环算法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数分类"><span class="nav-text">参数分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变和不可变对象当参数"><span class="nav-text">可变和不可变对象当参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匿名函数"><span class="nav-text">匿名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对缺省参数的理解？"><span class="nav-text">对缺省参数的理解？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map-函数和-reduce-函数？"><span class="nav-text">map 函数和 reduce 函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回调函数，如何通信的？"><span class="nav-text">回调函数，如何通信的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hasattr-、getattr-、setattr-函数使用详解？"><span class="nav-text">hasattr( )、getattr( )、setattr( ) 函数使用详解？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络编程"><span class="nav-text">网络编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚数与实数"><span class="nav-text">虚数与实数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-yield-使用浅析"><span class="nav-text">Python yield 使用浅析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-内置函数"><span class="nav-text">python 内置函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python的闭包函数"><span class="nav-text">Python的闭包函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是主从同步"><span class="nav-text">什么是主从同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Xpath-与正则"><span class="nav-text">Xpath 与正则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#twisted-框架-与python-框架"><span class="nav-text">twisted 框架 与python 框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#爬虫框架有哪些"><span class="nav-text">爬虫框架有哪些</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python中的多进程与多线程"><span class="nav-text">python中的多进程与多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selenium-phantomjs"><span class="nav-text">selenium + phantomjs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python分批读取数据"><span class="nav-text">python分批读取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新式类、经典类区别"><span class="nav-text">新式类、经典类区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计模式"><span class="nav-text">设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单例模式"><span class="nav-text">单例模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-中的可变类型与不可变类型"><span class="nav-text">python 中的可变类型与不可变类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类方法、类实例方法、静态方法"><span class="nav-text">类方法、类实例方法、静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python-的内存管理、内存调优手段、内存泄漏处理"><span class="nav-text">python 的内存管理、内存调优手段、内存泄漏处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器与重载"><span class="nav-text">装饰器与重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器与迭代器"><span class="nav-text">生成器与迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#值传递、引用传递"><span class="nav-text">值传递、引用传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺省参数"><span class="nav-text">缺省参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回调参数"><span class="nav-text">回调参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hasattr-gatattr-setattr"><span class="nav-text">hasattr() gatattr() setattr()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield、generator、iterator"><span class="nav-text">yield、generator、iterator</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

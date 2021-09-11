@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基本命令catchError：异常处理两种写法：最终结果 jenkins 都会判断为成功。">
+<meta name="keywords" content="linux,Jenkins,devops">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins进阶笔记">
+<meta property="og:url" content="http://xchcloud.cn/jenkins进阶笔记/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="基本命令catchError：异常处理两种写法：最终结果 jenkins 都会判断为成功。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:58:53.936Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jenkins进阶笔记">
+<meta name="twitter:description" content="基本命令catchError：异常处理两种写法：最终结果 jenkins 都会判断为成功。">
+
+<link rel="canonical" href="http://xchcloud.cn/jenkins进阶笔记/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>jenkins进阶笔记 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/jenkins进阶笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jenkins进阶笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-23 17:27:08" itemprop="dateCreated datePublished" datetime="2019-12-23T17:27:08+08:00">2019-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:58:53" itemprop="dateModified" datetime="2021-09-11T16:58:53+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Jenkins/" itemprop="url" rel="index"><span itemprop="name">Jenkins</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/jenkins进阶笔记/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="jenkins进阶笔记/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><h3 id="catchError：异常处理"><a href="#catchError：异常处理" class="headerlink" title="catchError：异常处理"></a>catchError：异常处理</h3><p>两种写法：<br>最终结果 jenkins 都会判断为成功。<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">node &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        sh &apos;might fail&apos;</span><br><span class="line">    &#125; catch (err) &#123;</span><br><span class="line">        echo &quot;Caught: $&#123;err&#125;&quot;</span><br><span class="line">        currentBuild.result = &apos;FAILURE&apos;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        sh &apos;./tear-down.sh&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    step([$class: &apos;Mailer&apos;, recipients: &apos;admin@somewhere&apos;])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">script&#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        sh label: &apos;&apos;, script: &apos;&apos;&apos;</span><br><span class="line">        curl -u ftpuser:123456 ftp://172.16.9.242/artifacts/60/ -X &quot;MKD $JOB_NAME&quot; </span><br><span class="line">        &apos;&apos;&apos; </span><br><span class="line">    &#125;</span><br><span class="line">    catch (exc) &#123;</span><br><span class="line">        echo &apos;创建ftp文件夹失败，尝试能否上传成功&apos;                      </span><br><span class="line">    &#125; </span><br><span class="line">    finally &#123;</span><br><span class="line">        sh &apos;**********&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="deleteDir：删除文件-文件夹"><a href="#deleteDir：删除文件-文件夹" class="headerlink" title="deleteDir：删除文件/文件夹"></a>deleteDir：删除文件/文件夹</h3><p><code>deleteDir()</code></p>
+<h3 id="dir-选择工作区"><a href="#dir-选择工作区" class="headerlink" title="dir:选择工作区"></a>dir:选择工作区</h3><p><code>dir()</code></p>
+<h3 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h3><p><code>echo &#39;hello&#39;</code></p>
+<h3 id="error-自定义异常抛出"><a href="#error-自定义异常抛出" class="headerlink" title="error:自定义异常抛出"></a>error:自定义异常抛出</h3><p><code>error &#39;an error&#39;</code></p>
+<h3 id="fileExists：判断文件-文件夹是否存在"><a href="#fileExists：判断文件-文件夹是否存在" class="headerlink" title="fileExists：判断文件/文件夹是否存在"></a>fileExists：判断文件/文件夹是否存在</h3><p><code>fileExists &#39;./dist&#39;</code></p>
+<h3 id="isUnix-判断操作系统"><a href="#isUnix-判断操作系统" class="headerlink" title="isUnix:判断操作系统"></a>isUnix:判断操作系统</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">isUnix()</span><br><span class="line"></span><br><span class="line">false if Windows</span><br><span class="line">true if linux</span><br></pre></td></tr></table></figure>
+<h3 id="mail-邮件功能"><a href="#mail-邮件功能" class="headerlink" title="mail:邮件功能"></a>mail:邮件功能</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mail bcc: &apos;&apos;, body: &apos;这是一个测试邮件&apos;, cc: &apos;l_hc@winning.com.cn&apos;, from: &apos;l_hc@winning.com.cn&apos;, replyTo: &apos;&apos;, subject: &apos;测试&apos;, to: &apos;l_hc@winning.com.cn&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="pwd-返回文件路径"><a href="#pwd-返回文件路径" class="headerlink" title="pwd:返回文件路径"></a>pwd:返回文件路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">两种 显示当前 显示临时工作目录</span><br><span class="line">pwd tmp: true </span><br><span class="line">pwd()</span><br></pre></td></tr></table></figure>
+<h3 id="readFile"><a href="#readFile" class="headerlink" title="readFile:"></a>readFile:</h3><p><code>readFile encoding: &#39;utf-8&#39;, file: &#39;./ex1.txt&#39;</code></p>
+<h3 id="retry-出现异常时重试"><a href="#retry-出现异常时重试" class="headerlink" title="retry:出现异常时重试"></a>retry:出现异常时重试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">retry(5) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="sleep"><a href="#sleep" class="headerlink" title="sleep:"></a>sleep:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">默认秒，和省略参数：</span><br><span class="line">sleep 30</span><br><span class="line">非默认值：</span><br><span class="line">sleep time: 30, unit: &apos;NANOSECONDS&apos;</span><br><span class="line">可选择参数：</span><br><span class="line">NANOSECONDS</span><br><span class="line">MICROSECONDS</span><br><span class="line">MILLISECONDS</span><br><span class="line">SECONDS</span><br><span class="line">MINUTES</span><br><span class="line">HOURS</span><br><span class="line">DAYS</span><br></pre></td></tr></table></figure>
+<h3 id="timeout-超时停止"><a href="#timeout-超时停止" class="headerlink" title="timeout:超时停止"></a>timeout:超时停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">参数同上：</span><br><span class="line">timeout(activity: true, time: 30, unit: &apos;NANOSECONDS&apos;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="load"><a href="#load" class="headerlink" title="load"></a>load</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def pipeline</span><br><span class="line">    node(&apos;slave&apos;) &#123;</span><br><span class="line">        pipeline = load &apos;pipeline.groovy&apos;</span><br><span class="line">        pipeline.functionA()</span><br><span class="line">    &#125;</span><br><span class="line">    pipeline.functionB()</span><br></pre></td></tr></table></figure>
+<h3 id="node-脚本式-pipeline-指明运行的节点"><a href="#node-脚本式-pipeline-指明运行的节点" class="headerlink" title="node:脚本式 pipeline 指明运行的节点"></a>node:脚本式 pipeline 指明运行的节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node(&apos;master&apos;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="node-可以更换缓存位置"><a href="#node-可以更换缓存位置" class="headerlink" title="node:可以更换缓存位置"></a>node:可以更换缓存位置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">nodejs(&apos;node-v10.16.3&apos;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">nodejs(cacheLocationStrategy: executor(), nodeJSInstallationName: &apos;node-v10.16.3&apos;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">nodejs(cacheLocationStrategy: workspace(), nodeJSInstallationName: &apos;node-v10.16.3&apos;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="properties：job的设置"><a href="#properties：job的设置" class="headerlink" title="properties：job的设置"></a>properties：job的设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">properties([disableConcurrentBuilds(), buildDiscarder(logRotator(artifactDaysToKeepStr: &apos;&apos;, artifactNumToKeepStr: &apos;&apos;, daysToKeepStr: &apos;3&apos;, numToKeepStr: &apos;&apos;)), pipelineTriggers([cron(&apos;0 5 * * *&apos;)])])</span><br></pre></td></tr></table></figure>
+<h3 id="sshpublisher"><a href="#sshpublisher" class="headerlink" title="sshpublisher"></a>sshpublisher</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sshPublisher(</span><br><span class="line">    publishers: [</span><br><span class="line">        sshPublisherDesc(</span><br><span class="line">            configName: &apos;212开发服务主线&apos;, </span><br><span class="line">            transfers: [</span><br><span class="line">                sshTransfer(</span><br><span class="line">                    cleanRemote: false, </span><br><span class="line">                    excludes: &apos;&apos;, </span><br><span class="line">                    execCommand: &apos;&apos;&apos;cd /winning/app/html/$app_id \n unzip -o dist.zip \n nginx reload&apos;&apos;&apos;,</span><br><span class="line">                    execTimeout: 120000, </span><br><span class="line">                    flatten: false, </span><br><span class="line">                    makeEmptyDirs: false, </span><br><span class="line">                    noDefaultExcludes: false, </span><br><span class="line">                    patternSeparator: &apos;[, ]+&apos;, </span><br><span class="line">                    remoteDirectory: &quot;/winning/app/html/$app_id&quot;, </span><br><span class="line">                    remoteDirectorySDF: false, </span><br><span class="line">                    removePrefix: &quot;&quot;, </span><br><span class="line">                    sourceFiles: &quot;dist.zip&quot;)], </span><br><span class="line">                    usePromotionTimestamp: false, </span><br><span class="line">                    useWorkspaceInPromotion: false, </span><br><span class="line">                    verbose: false</span><br><span class="line">                    )</span><br><span class="line">                ]</span><br><span class="line">            )</span><br></pre></td></tr></table></figure>
+<h3 id="stage"><a href="#stage" class="headerlink" title="stage"></a>stage</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stage(&apos;num 1&apos;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="unstable-不稳定构建显示信息"><a href="#unstable-不稳定构建显示信息" class="headerlink" title="unstable:不稳定构建显示信息"></a>unstable:不稳定构建显示信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unstable &apos;Prints a message to the log and sets the overall build result and the stage result to UNSTABLE. The message will also be associated with the stage result and may be shown in visualizations.&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="unstash-恢复之前保存的一组文件"><a href="#unstash-恢复之前保存的一组文件" class="headerlink" title="unstash:恢复之前保存的一组文件"></a>unstash:恢复之前保存的一组文件</h3><p><code>unstash &#39;dist.zip&#39;</code></p>
+<h3 id="validateDeclarativePipeline-验证包含声明性管道的文件-返回-trun-false"><a href="#validateDeclarativePipeline-验证包含声明性管道的文件-返回-trun-false" class="headerlink" title="validateDeclarativePipeline:验证包含声明性管道的文件,返回 trun | false"></a>validateDeclarativePipeline:验证包含声明性管道的文件,返回 trun | false</h3><p>validateDeclarativePipeline ‘./dist’</p>
+<h3 id="waitUntil-重复运行"><a href="#waitUntil-重复运行" class="headerlink" title="waitUntil:重复运行"></a>waitUntil:重复运行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">重复运行它的主体，直到它返回 true。 如果返回 false，则等待一段时间并再次尝试。 (接下来的失败会减慢两次尝试之间的延迟。) </span><br><span class="line">重试的次数没有限制，但是如果主体抛出一个立即抛出的错误。</span><br><span class="line">waitUntil &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="withCredentials-使用密匙"><a href="#withCredentials-使用密匙" class="headerlink" title="withCredentials:使用密匙"></a>withCredentials:使用密匙</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">node &#123;</span><br><span class="line">  withCredentials([usernameColonPassword(credentialsId: &apos;mylogin&apos;, variable: &apos;USERPASS&apos;)]) &#123;</span><br><span class="line">    sh &apos;&apos;&apos;</span><br><span class="line">      set +x</span><br><span class="line">      curl -u &quot;$USERPASS&quot; https://private.server/ &gt; output</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">node &#123;</span><br><span class="line">  withCredentials([string(credentialsId: &apos;mytoken&apos;, variable: &apos;TOKEN&apos;)]) &#123;</span><br><span class="line">    sh &apos;&apos;&apos;</span><br><span class="line">      set +x</span><br><span class="line">      curl -H &quot;Token: $TOKEN&quot; https://some.api/</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">node &#123;</span><br><span class="line">  ws &#123;</span><br><span class="line">    withCredentials([file(credentialsId: &apos;secret&apos;, variable: &apos;FILE&apos;)]) &#123;</span><br><span class="line">      sh &apos;use $FILE&apos;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="withEnv-设置自定义环境变量"><a href="#withEnv-设置自定义环境变量" class="headerlink" title="withEnv:设置自定义环境变量"></a>withEnv:设置自定义环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">node &#123;</span><br><span class="line">  withEnv([&apos;MYTOOL_HOME=/usr/local/mytool&apos;]) &#123;</span><br><span class="line">    sh &apos;$MYTOOL_HOME/bin/start&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="withMaven"><a href="#withMaven" class="headerlink" title="withMaven:"></a>withMaven:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">withMaven(</span><br><span class="line">    jdk: &apos;jdk8&apos;, </span><br><span class="line">    maven: &apos;maven-3.6.1&apos;, </span><br><span class="line">    mavenOpts: &apos;-XX:-UseGCOverheadLimit -Xmx512M -Xms512M&apos;, </span><br><span class="line">    options: [</span><br><span class="line">        concordionPublisher(disabled: true), </span><br><span class="line">        findbugsPublisher(disabled: true), </span><br><span class="line">        dependenciesFingerprintPublisher(</span><br><span class="line">            disabled: true, </span><br><span class="line">            includeReleaseVersions: true, </span><br><span class="line">            includeScopeTest: true</span><br><span class="line">            includeScopeRuntime: false, </span><br><span class="line">            includeSnapshotVersions: false), </span><br><span class="line">        artifactsPublisher(disabled: true), </span><br><span class="line">        invokerPublisher(disabled: true), </span><br><span class="line">        jgivenPublisher(disabled: true), </span><br><span class="line">        jacocoPublisher(disabled: true), </span><br><span class="line">        junitPublisher(</span><br><span class="line">            disabled: true, </span><br><span class="line">            healthScaleFactor: 1.0, </span><br><span class="line">            ignoreAttachments: true), </span><br><span class="line">        mavenLinkerPublisher(disabled: true), </span><br><span class="line">        openTasksPublisher(disabled: true), </span><br><span class="line">        pipelineGraphPublisher(</span><br><span class="line">            disabled: true, </span><br><span class="line">            lifecycleThreshold: &apos;package&apos;), </span><br><span class="line">        spotbugsPublisher(disabled: true)</span><br><span class="line">        ]</span><br><span class="line">    ) </span><br><span class="line">    &#123;</span><br><span class="line">        // some block</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">注释：</span><br><span class="line">concordionPublisher：</span><br><span class="line">    Publish Concordion reports, if found, regarding the given pattern.</span><br><span class="line">    Test results are by default published if the Jenkins HTMLPublisher Plugin is installed.</span><br><span class="line">    发布关于给定模式的 Concordion 报告(如果找到)。 </span><br><span class="line">    如果安装了 Jenkins HTMLPublisher 插件，测试结果默认情况下是发布的。</span><br><span class="line"></span><br><span class="line">findbugsPublisher：</span><br><span class="line">    Publish FindBugs reports generated by &quot;org.codehaus.mojo:findbugs-maven-plugin:findbugs&quot;.</span><br><span class="line">    FindBugs results are by default published if the Jenkins FindBugs Plugin is installed.</span><br><span class="line">    发布由“ org.codehaus.mojo: FindBugs-maven-plugin: FindBugs”生成的 FindBugs 报告。 </span><br><span class="line">    如果安装了 Jenkins FindBugs 插件，则默认情况下会发布 FindBugs 结果。</span><br><span class="line">    Configure the thresholds for the build health. If left empty then no health report is created. If the actual number of warnings is between the provided thresholds then the build health is interpolated.</span><br><span class="line">    配置构建健康状况的阈值。 如果保持空白，则不会创建健康报告。 如果警告的实际数量介于所提供的阈值之间，那么构建健康状况就会被内插。</span><br><span class="line">    findbugsPublisher(disabled: true, healthy: &apos;60&apos;, unHealthy: &apos;50&apos;), </span><br><span class="line">    Determines which warning priorities should be considered when evaluating the build health.	</span><br><span class="line">    确定在评估构建健康状况时应考虑哪些警告优先级</span><br><span class="line"></span><br><span class="line">dependenciesFingerprintPublisher：</span><br><span class="line">    Fingerprint the Maven dependencies used by the maven project.</span><br><span class="line">    指纹化 Maven 项目使用的 Maven 依赖项。</span><br><span class="line"></span><br><span class="line">artifactsPublisher：</span><br><span class="line">    Archive and fingerprint the artifact and the attached artifacts generated by the maven project.</span><br><span class="line">    将 maven 项目生成的工件和附加工件存档并指纹识别。</span><br><span class="line"></span><br><span class="line">invokerPublisher：</span><br><span class="line">    Publish Invoker reports generated by &quot;org.apache.maven.plugins:maven-invoker-plugin:run&quot;.</span><br><span class="line">    Invoker results are by default published if the Jenkins Maven Invoker Plugin is installed.</span><br><span class="line">    发布由“org.apache.maven.plugins: maven-Invoker-plugin: run”生成的 Invoker 报告。 </span><br><span class="line">    如果安装了 Jenkins Maven Invoker Plugin，则默认情况下会发布 Invoker 结果。</span><br><span class="line"></span><br><span class="line">jgivenPublisher：</span><br><span class="line">    Publish JGiven reports, if found.</span><br><span class="line">    Test results are by default published if the Jenkins JGiven Plugin is installed.</span><br><span class="line">    发布 JGiven 报告，如果找到的话。 如果安装了 Jenkins JGiven 插件，则默认情况下会发布测试结果。</span><br><span class="line"></span><br><span class="line">jacocoPublisher：</span><br><span class="line">    Publish JaCoCo Java Code Coverage Library reports, if found.</span><br><span class="line">    Test results are by default published if the Jenkins JaCoCo Plugin is installed.</span><br><span class="line">    如果找到，则发布 JaCoCo Java 代码覆盖库报告。 </span><br><span class="line">    如果安装了 Jenkins JaCoCo Plugin，则默认情况下会发布测试结果。</span><br><span class="line"></span><br><span class="line">junitPublisher：</span><br><span class="line">    Publish JaCoCo Java Code Coverage Library reports, if found.</span><br><span class="line">    Test results are by default published if the Jenkins JaCoCo Plugin is installed.</span><br><span class="line">    如果找到，则发布 JaCoCo Java 代码覆盖库报告。 </span><br><span class="line">    如果安装了 Jenkins JaCoCo Plugin，则默认情况下会发布测试结果。</span><br><span class="line">        ignoreAttachments：</span><br><span class="line">            Skip the publishing of tests reports attachments.</span><br><span class="line">            Test result attachments are by default published if the Jenkins JUnit Attachments Plugin is installed.</span><br><span class="line">            跳过发布测试报告附件。 </span><br><span class="line">            如果安装了 Jenkins JUnit 附件插件，则默认情况下会发布测试结果附件。</span><br><span class="line">        Health report amplification factor：</span><br><span class="line">            The amplification factor to apply to test failures when computing the test result contribution to the build health score.</span><br><span class="line">            当计算测试结果对构建健康评分的贡献时，增益应用于测试失败。</span><br><span class="line">            The factor is persisted with the build results, so changes will only be reflected in new builds.</span><br><span class="line">            该因素将与构建结果保持一致，因此更改将只反映在新的构建中。</span><br><span class="line">        Retain long standard output/error：</span><br><span class="line">            If checked, any standard output or error from a test suite will be retained in the test results after the build completes. (This refers only to additional messages printed to console, not to a failure stack trace.) Such output is always kept if the test failed, but by default lengthy output from passing tests is truncated to save space. Check this option if you need to see every log message from even passing tests, but beware that Jenkins&apos;s memory consumption can substantially increase as a result, even if you never look at the test results!</span><br><span class="line">            如果勾选此选项，则在构建完成后，测试套件中的任何标准输出或错误都将保留在测试结果中。 (这只引用打印到控制台的附加消息，而不引用失败堆栈跟踪。) 如果测试失败，则始终保留这样的输出，但默认情况下，通过测试的冗长输出会被截断以节省空间。 如果您需要查看来自甚至通过测试的所有日志消息，请选中此选项，但要注意，即使您从未查看测试结果，Jenkins 的内存消耗也会因此大幅增加！</span><br><span class="line"></span><br><span class="line">mavenLinkerPublisher：</span><br><span class="line">    This publisher generates and publishes the links (url) of deployed Maven artifacts.</span><br><span class="line">    该发布者生成并发布已部署的 Maven 构件的链接(url)。</span><br><span class="line"></span><br><span class="line">openTasksPublisher：</span><br><span class="line">    Publish Open Task Scanner reports.</span><br><span class="line">    Open Task Scanner reports are by default published if the Jenkins Task Scanner Plugin is installed.</span><br><span class="line">    The default setup is to look in Java source code for &quot;FIXME&quot; comments as high priority tasks and for &quot;TODO&quot; comments as normal priority tasks.</span><br><span class="line">    发布打开的任务扫描器报告。 </span><br><span class="line">    如果安装了 Jenkins 任务扫描器插件，则默认情况下会发布打开任务扫描器报告。 </span><br><span class="line">    默认设置是在 Java 源代码中查找“ FIXME”注释作为高优先级任务，“ TODO”注释作为普通优先级任务。</span><br><span class="line"></span><br><span class="line">pipelineGraphPublisher：</span><br><span class="line">    Build a graph of pipelines based on their Maven dependencies and on the Maven artifacts they generate.</span><br><span class="line">    根据它们的 Maven 依赖项和它们生成的 Maven 构件构建一个管道图。</span><br><span class="line"></span><br><span class="line">spotbugsPublisher：</span><br><span class="line">    Publish SpotBugs reports generated by &quot;com.github.spotbugs:spotbugs-maven-plugin:spotbugs&quot;.</span><br><span class="line">    SpotBugs results are by default published if the Jenkins FindBugs Plugin is installed.</span><br><span class="line">    发布“ com.github. SpotBugs: SpotBugs-maven-plugin: SpotBugs”生成的 SpotBugs 报告。 </span><br><span class="line">    如果安装了 Jenkins FindBugs 插件，SpotBugs 的结果将默认发布。</span><br><span class="line">        Health thresholds：</span><br><span class="line">            Configure the thresholds for the build health. If left empty then no health report is created. If the actual number of warnings is between the provided thresholds then the build health is interpolated.	</span><br><span class="line">            配置构建健康状况的阈值。 如果保持空白，则不会创建健康报告。 如果警告的实际数量介于所提供的阈值之间，那么构建健康状况就会被内插。</span><br><span class="line">        Health priorities：</span><br><span class="line">            Determines which warning priorities should be considered when evaluating the build health.</span><br><span class="line">            确定在评估构建健康状况时应考虑哪些警告优先级</span><br></pre></td></tr></table></figure>
+<h3 id="writeFile：写入文件"><a href="#writeFile：写入文件" class="headerlink" title="writeFile：写入文件"></a>writeFile：写入文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writeFile encoding: &apos;utf-8&apos;, file: &apos;./dist&apos;, text: &apos;exexex&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="ws-指定工作空间-并发的话"><a href="#ws-指定工作空间-并发的话" class="headerlink" title="ws:指定工作空间/并发的话"></a>ws:指定工作空间/并发的话</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ws(&quot;$ WORKSPACE/$win_appname&quot;) &#123;</span><br><span class="line">    // some block</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="milestone"><a href="#milestone" class="headerlink" title="milestone :"></a>milestone :</h3><h3 id="stash"><a href="#stash" class="headerlink" title="stash:"></a>stash:</h3><h2 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h2><h3 id="换源"><a href="#换源" class="headerlink" title="换源"></a>换源</h3><h4 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h4><p>直接修改默认配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find / -name &quot;default.json&quot;  </span><br><span class="line">/var/lib/jenkins/updates/default.json</span><br><span class="line">[root@localhost ~]# sed -i &apos;s/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g&apos; /var/lib/jenkins/updates/default.json &amp;&amp; sed -i &apos;s/http:\/\/www.google.com/https:\/\/www.baidu.com/g&apos; /var/lib/jenkins/updates/default.json</span><br><span class="line">[root@localhost ~]# systemctl restart jenkins</span><br></pre></td></tr></table></figure></p>
+<h4 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h4><p>在插件管理里面修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">jenkins插件清华大学镜像地址：</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</span><br><span class="line"></span><br><span class="line">更换地址方法</span><br><span class="line">1.进入jenkins系统管理</span><br><span class="line">2.进入插件管理</span><br><span class="line">3.高级</span><br><span class="line">4.修改 https:/mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json 为 https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</span><br><span class="line">5.提交</span><br><span class="line">6.获取当前状态</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">有的时候更换镜像之后下载插件还是走的官方地址</span><br><span class="line">原因：配置了清华的镜像之后他还是走的jenkins官方去拉取的，是因为清华镜像的配置文件里面的插件下载地址并不是指向的清华镜像，仍然指向的是jenkins官方的地址，我的解决方案是把jenkins官方的地址通过nginx吞掉直接转发到清华镜像去。</span><br><span class="line">host配置</span><br><span class="line"></span><br><span class="line">127.0.0.1 updates.jenkins-ci.org</span><br><span class="line">1</span><br><span class="line">nginx配置</span><br><span class="line"></span><br><span class="line">rewrite ^/download/plugins/(.*)$ https://mirrors.tuna.tsinghua.edu.cn/jenkins/plugins/$1? last;</span><br><span class="line">1</span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">location /download/plugins</span><br><span class="line">&#123;</span><br><span class="line">    proxy_next_upstream http_502 http_504 error timeout invalid_header;</span><br><span class="line">    proxy_set_header Host mirrors.tuna.tsinghua.edu.cn;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; </span><br><span class="line">    rewrite /download/plugins(.*) /jenkins/plugins/$1 break;</span><br><span class="line">    proxy_pass https://mirrors.tuna.tsinghua.edu.cn;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">解决：可以通过在nginx上配置代理，将官方的插件下载地址映射到 https://mirrors.tuna.tsinghua.edu.cn/jenkins/plugins/</span><br><span class="line">这样下载插件也会从镜像网站下载</span><br></pre></td></tr></table></figure></p>
+<h2 id="案例分享"><a href="#案例分享" class="headerlink" title="案例分享"></a>案例分享</h2><h3 id="图解：利用PostMan-Newman-Jenkins实现Web-API持续集成"><a href="#图解：利用PostMan-Newman-Jenkins实现Web-API持续集成" class="headerlink" title="图解：利用PostMan+Newman+Jenkins实现Web API持续集成"></a>图解：利用PostMan+Newman+Jenkins实现Web API持续集成</h3><p><img data-src="http://tuchuang.xchcloud.cn/blog/20200303/C3quMfyQtS8l.png" alt="mark"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/jenkins进阶笔记/" title="jenkins进阶笔记">http://xchcloud.cn/jenkins进阶笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+              <a href="/tags/Jenkins/" rel="tag"><i class="fa fa-tag"></i> Jenkins</a>
+              <a href="/tags/devops/" rel="tag"><i class="fa fa-tag"></i> devops</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019年12月笔记/" rel="prev" title="2019年12月笔记">
+      <i class="fa fa-chevron-left"></i> 2019年12月笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/CI大杂烩/" rel="next" title="CI大杂烩">
+      CI大杂烩 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本命令"><span class="nav-text">基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#catchError：异常处理"><span class="nav-text">catchError：异常处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deleteDir：删除文件-文件夹"><span class="nav-text">deleteDir：删除文件/文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dir-选择工作区"><span class="nav-text">dir:选择工作区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#echo"><span class="nav-text">echo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#error-自定义异常抛出"><span class="nav-text">error:自定义异常抛出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fileExists：判断文件-文件夹是否存在"><span class="nav-text">fileExists：判断文件/文件夹是否存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isUnix-判断操作系统"><span class="nav-text">isUnix:判断操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mail-邮件功能"><span class="nav-text">mail:邮件功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pwd-返回文件路径"><span class="nav-text">pwd:返回文件路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#readFile"><span class="nav-text">readFile:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#retry-出现异常时重试"><span class="nav-text">retry:出现异常时重试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sleep"><span class="nav-text">sleep:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#timeout-超时停止"><span class="nav-text">timeout:超时停止</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#load"><span class="nav-text">load</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node-脚本式-pipeline-指明运行的节点"><span class="nav-text">node:脚本式 pipeline 指明运行的节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node-可以更换缓存位置"><span class="nav-text">node:可以更换缓存位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#properties：job的设置"><span class="nav-text">properties：job的设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sshpublisher"><span class="nav-text">sshpublisher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stage"><span class="nav-text">stage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unstable-不稳定构建显示信息"><span class="nav-text">unstable:不稳定构建显示信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unstash-恢复之前保存的一组文件"><span class="nav-text">unstash:恢复之前保存的一组文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#validateDeclarativePipeline-验证包含声明性管道的文件-返回-trun-false"><span class="nav-text">validateDeclarativePipeline:验证包含声明性管道的文件,返回 trun | false</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#waitUntil-重复运行"><span class="nav-text">waitUntil:重复运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#withCredentials-使用密匙"><span class="nav-text">withCredentials:使用密匙</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#withEnv-设置自定义环境变量"><span class="nav-text">withEnv:设置自定义环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#withMaven"><span class="nav-text">withMaven:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#writeFile：写入文件"><span class="nav-text">writeFile：写入文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ws-指定工作空间-并发的话"><span class="nav-text">ws:指定工作空间/并发的话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#milestone"><span class="nav-text">milestone :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stash"><span class="nav-text">stash:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运维"><span class="nav-text">运维</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#换源"><span class="nav-text">换源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案一"><span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案二"><span class="nav-text">方案二</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例分享"><span class="nav-text">案例分享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图解：利用PostMan-Newman-Jenkins实现Web-API持续集成"><span class="nav-text">图解：利用PostMan+Newman+Jenkins实现Web API持续集成</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

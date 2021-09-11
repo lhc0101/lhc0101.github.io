@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="SScan简介: 一款src捡洞扫描器，支持常见目录扫描、信息泄露漏洞、 后台登录页面资产发现、跳过存在CDN的IP、一些常见未授权和弱口令检测等等 原理: 一款src捡洞扫描器，因没时间挖src，毕竟挖src是个费时费力的活，自19年8月起入坑至今，依靠 BBScan[1] 扫描出的信息和漏洞，利用业余时间从扫描报告中的资产捡洞和找洞，已经3次jd月度前十。萌发出自己写扫描器挖洞的念头，自动挖一">
+<meta name="keywords" content="安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021-悬剑知识库">
+<meta property="og:url" content="http://xchcloud.cn/2021-悬剑知识库/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="SScan简介: 一款src捡洞扫描器，支持常见目录扫描、信息泄露漏洞、 后台登录页面资产发现、跳过存在CDN的IP、一些常见未授权和弱口令检测等等 原理: 一款src捡洞扫描器，因没时间挖src，毕竟挖src是个费时费力的活，自19年8月起入坑至今，依靠 BBScan[1] 扫描出的信息和漏洞，利用业余时间从扫描报告中的资产捡洞和找洞，已经3次jd月度前十。萌发出自己写扫描器挖洞的念头，自动挖一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:52:33.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2021-悬剑知识库">
+<meta name="twitter:description" content="SScan简介: 一款src捡洞扫描器，支持常见目录扫描、信息泄露漏洞、 后台登录页面资产发现、跳过存在CDN的IP、一些常见未授权和弱口令检测等等 原理: 一款src捡洞扫描器，因没时间挖src，毕竟挖src是个费时费力的活，自19年8月起入坑至今，依靠 BBScan[1] 扫描出的信息和漏洞，利用业余时间从扫描报告中的资产捡洞和找洞，已经3次jd月度前十。萌发出自己写扫描器挖洞的念头，自动挖一">
+
+<link rel="canonical" href="http://xchcloud.cn/2021-悬剑知识库/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2021-悬剑知识库 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/2021-悬剑知识库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2021-悬剑知识库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-19 09:19:14" itemprop="dateCreated datePublished" datetime="2021-01-19T09:19:14+08:00">2021-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:52:33" itemprop="dateModified" datetime="2021-09-11T16:52:33+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2021-悬剑知识库/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021-悬剑知识库/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="SScan"><a href="#SScan" class="headerlink" title="SScan"></a>SScan</h2><p>简介: 一款src捡洞扫描器，支持常见目录扫描、信息泄露漏洞、 后台登录页面资产发现、跳过存在CDN的IP、一些常见未授权和弱口令检测等等</p>
+<p>原理: 一款src捡洞扫描器，因没时间挖src，毕竟挖src是个费时费力的活，自19年8月起入坑至今，依靠 BBScan[1] 扫描出的信息和漏洞，利用业余时间从扫描报告中的资产捡洞和找洞，已经3次jd月度前十。萌发出自己写扫描器挖洞的念头，自动挖一些简单漏洞，赚点零花钱，同时提升一下开发能力，毕竟搞安全的不能不懂开发。</p>
+<p>目前 SScan[2] 的主要逻辑还是在模仿 BBScan[3]。<br><a id="more"></a><br>运行: 扫描结束后，结果报告在report目录下，并且存在漏洞时，默认会使用浏览器打开报告<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">使用及参数</span><br><span class="line">python3 SScan.py version                                查看版本</span><br><span class="line">python3 SScan.py --help                                 获取帮助</span><br><span class="line">python3 SScan.py --host example.com run                 单个目标</span><br><span class="line">python3 SScan.py --file domains.txt run                 读取一个.txt文件</span><br><span class="line">python3 SScan.py --dire /Users/yhy/Desktop/dirs/ run    读取目录下的所有.txt</span><br><span class="line">python3 SScan.py --file domains.txt  --network 24 run   network设置一个子网掩码(8 ~ 31)，</span><br><span class="line">                配合上面3个参数中任意一个。将扫描Target/MASK 网络下面的所有IP</span><br><span class="line">python3 SScan.py --host 127.0.0.1 --script unauthorized_access_redis,unauthorized_access_rsync run</span><br><span class="line">                    只使用指定脚本 </span><br><span class="line"></span><br><span class="line">您可以通过在 config/setting.py 文件中指定fofa api信息, 调用fofa搜索更多的Web服务</span><br><span class="line"></span><br><span class="line">其它参数：</span><br><span class="line">    --t             扫描线程数, 默认10。</span><br><span class="line">    --full          处理所有子目录。/x/y/z/这样的链接，/x/ /x/y/也将被扫描，默认为True</span><br><span class="line">    --crawl         爬取主页的&lt;a&gt;标签， 默认为True</span><br><span class="line">    --checkcdn      检查域名是否存在CDN，若存在则不对解析出的ip进行规则和脚本探测，默认为True</span><br><span class="line">    --browser       检测完成后，使用默认浏览器打开扫描报告，默认为True</span><br><span class="line">    --script        指定要使用的脚本，--script unauthorized_access_redis unauthorized_access_rsync, ... 脚本在scripts目录下</span><br><span class="line">    --rule          指定要扫描的规则，--rule RuleFileName1,RuleFileName2,... 规则在rules目录下</span><br><span class="line">    --script_only   只使用脚本进行扫描，不使用规则</span><br><span class="line">    --noscripts     不使用脚本扫描</span><br><span class="line">```    </span><br><span class="line">GitHub项目地址：https://github.com/yhy0/SScan</span><br><span class="line"></span><br><span class="line">## pystinger</span><br><span class="line">毒刺(pystinger)通过webshell实现内网SOCK4代理,端口映射.</span><br><span class="line"></span><br><span class="line">可直接用于metasploit-framework,viper,cobalt strike上线.</span><br><span class="line"></span><br><span class="line">主体使用python开发,当前支持php,jsp(x),aspx三种代理脚本.</span><br><span class="line"></span><br><span class="line">## WAVSEP</span><br><span class="line">描述: Web应用程序漏洞扫描程序评估项目</span><br><span class="line"></span><br><span class="line">介绍: WAVSEP是一个易受攻击的Web应用程序，旨在帮助评估Web应用程序漏洞扫描程序的功能，质量和准确性。</span><br><span class="line"></span><br><span class="line">该评估平台包含一组独特的易受攻击的网页，可用于测试Web应用程序扫描程序的各种属性。</span><br></pre></td></tr></table></figure></p>
+<p>下载地址: <a href="https://sourceforge.net/projects/wavsep/" target="_blank" rel="noopener">https://sourceforge.net/projects/wavsep/</a></p>
+<p>GitHub项目地址：<a href="https://github.com/sectooladdict/wavsep" target="_blank" rel="noopener">https://github.com/sectooladdict/wavsep</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">## AWVS</span><br><span class="line">描述: awvs是一个熟悉的web应用程序扫描框架，自动化应用程序安全测试工具，支持windows平台，主要用于扫描web应用程序上的安全问题，如SQL注入，XSS，目录遍历，命令注入等。</span><br><span class="line"></span><br><span class="line">推荐原因: 不是最新版，但是是最新的汉化破解docker版，提供给英语水平较低的工程师</span><br><span class="line"></span><br><span class="line">安装方法</span><br></pre></td></tr></table></figure></p>
+<h1 id="pull-拉取下载镜像"><a href="#pull-拉取下载镜像" class="headerlink" title="pull 拉取下载镜像"></a>pull 拉取下载镜像</h1><p>docker pull secfa/docker-awvs</p>
+<h1 id="将Docker的3443端口映射到物理机的-13443端口"><a href="#将Docker的3443端口映射到物理机的-13443端口" class="headerlink" title="将Docker的3443端口映射到物理机的 13443端口"></a>将Docker的3443端口映射到物理机的 13443端口</h1><p>docker run -it -d -p 13443:3443 secfa/docker-awvs</p>
+<h1 id="容器的相关信息"><a href="#容器的相关信息" class="headerlink" title="容器的相关信息"></a>容器的相关信息</h1><p>awvs13 username: <a href="mailto:admin@admin.com" target="_blank" rel="noopener">admin@admin.com</a><br>awvs13 password: Admin123<br>AWVS版本：13.0.200217097<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">博客地址：https://www.sqlsec.com/2020/04/awvs.html</span><br><span class="line"></span><br><span class="line">## domain_hunter</span><br><span class="line">介绍: 一个Burp Suite扩展，尝试自动查找组织的所有子域，相似域和相关域</span><br></pre></td></tr></table></figure></p>
+<p>用法<br>1.下载burp插件<br>2.将其添加到burp。如果没有错误，您将看到一个名为“ Domain Hunter”的新标签。<br>3.访问启用了burp代理的目标网站（或应用），确保burp记录了目标的http或https流量。<br>4.您可以仅切换到“domain hunter”标签，输入要搜索的域，然后单击“搜索”按钮。<br>5.或者您可以先运行“Crawl”以尝试查找更多子域和类似域。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![20210119092634](http://tuchuang.xchcloud.cn/20210119092634.png)</span><br><span class="line">![20210119092653](http://tuchuang.xchcloud.cn/20210119092653.png)</span><br><span class="line"></span><br><span class="line">## Unimap</span><br><span class="line">介绍: Unimap是一款基于Nmap实现的扫描速度提升工具，我们只需要提供一个IP地址给Unimap，即使是大量数据，Unimap也能够以非常快的速度完成网络扫描。Unimap是“Unique Nmap Scan”的缩写，该工具的当前版本支持在Linux、macOS、Windows或Android（Termux）等平台上正常运行。</span><br><span class="line"></span><br><span class="line">安装</span><br></pre></td></tr></table></figure></p>
+<p>您需要在计算机中安装Rust和Nmap，然后运行：</p>
+<p>cargo install unimap<br>该命令将从crates.io源安装Unimap。<br>也可以使用下列命令安装和配置Unimap</p>
+<ol>
+<li>git clone <a href="https://github.com/Edu4rdSHL/unimap.git" target="_blank" rel="noopener">https://github.com/Edu4rdSHL/unimap.git</a> &amp;&amp; cd unimap<h1 id="Alternatively-you-can-download-a-release-from-https-github-com-Edu4rdSHL-unimap-releases-latest"><a href="#Alternatively-you-can-download-a-release-from-https-github-com-Edu4rdSHL-unimap-releases-latest" class="headerlink" title="Alternatively you can download a release from https://github.com/Edu4rdSHL/unimap/releases/latest"></a>Alternatively you can download a release from <a href="https://github.com/Edu4rdSHL/unimap/releases/latest" target="_blank" rel="noopener">https://github.com/Edu4rdSHL/unimap/releases/latest</a></h1><h1 id="extract-it-and-continue-to-next-step"><a href="#extract-it-and-continue-to-next-step" class="headerlink" title="extract it and continue to next step."></a>extract it and continue to next step.</h1></li>
+<li>cargo build –release<h1 id="Now-the-binary-is-in-target-release-unimap"><a href="#Now-the-binary-is-in-target-release-unimap" class="headerlink" title="Now the binary is in ./target/release/unimap"></a>Now the binary is in ./target/release/unimap</h1>构建好的代码将存储在“./target/release/unimap”路径下</li>
+</ol>
+<p>使用AUR软件包。（Arch Linux）</p>
+<p>unimap可以使用AUR帮助程序从可用的AUR软件包中安装。例如，</p>
+<p>yay -S unimap<br>如果愿意，可以克隆AUR软件包，然后使用makepkg对其进行编译。例如，</p>
+<p>git clone <a href="https://aur.archlinux.org/unimap.git" target="_blank" rel="noopener">https://aur.archlinux.org/unimap.git</a> &amp;&amp; cd unimap &amp;&amp; makepkg -si<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">![20210119092822](http://tuchuang.xchcloud.cn/20210119092822.png)</span><br><span class="line"></span><br><span class="line">工具使用样例</span><br></pre></td></tr></table></figure></p>
+<p>下列命令可以执行完整的扫描任务，并将输出存储至log.csv中：</p>
+<p>unimap -f targets.txt -u log.csv<br>下列命令将执行快速扫描，并将日志文件存储至logs/目录下：</p>
+<p>unimap -f targets.txt –fast-scan -o<br>下列命令将扫描1-1000端口，并探测相应的服务和版本：</p>
+<p>sudo unimap -f targets.txt –iport 1 –lport 1000 –min-rate 1000<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">项目地址: https://github.com/Edu4rdSHL/unimap</span><br><span class="line"></span><br><span class="line">## Karkinos</span><br><span class="line">介绍:Karkinos是一款轻巧的“瑞士军刀”，用于渗透测试和/或黑客攻击CTF。目前，Karkinos提供以下功能：</span><br><span class="line"></span><br><span class="line">•编码/解码字符</span><br><span class="line">•加密/解密文本或文件</span><br><span class="line">•反向外壳处理</span><br><span class="line">•破解并生成哈希</span><br><span class="line"></span><br><span class="line">依赖关系</span><br><span class="line">•任何能够托管PHP的服务器；经过Apache Server测试</span><br><span class="line">•使用PHP 7.4.9测试</span><br><span class="line">•Python3 确保它在您的路径中为：Windows：python Linux：python3 如果不在，请在以下位置更改命令：includes/pid.php</span><br><span class="line">•pip3</span><br><span class="line">•Raspberry Pi零友好</span><br><span class="line"></span><br><span class="line">安装</span><br></pre></td></tr></table></figure></p>
+<p>git clone <a href="https://github.com/helich0pper/Karkinos.git" target="_blank" rel="noopener">https://github.com/helich0pper/Karkinos.git</a><br>cd Karkinos<br>pip3 install -r requirements.txt<br>cd wordlists &amp;&amp; tar -xf passlist.zip<br>如果未安装tar，也可以使用文件资源管理器手动将其解压缩。只要确保passlist.txt在wordlists目录中即可<br>添加 extension=php_sqlite3.dll到你的 php.ini 文件<br>如果找不到请参考docs[3]<br>使用您喜欢的Web服务器托管它，或: php -S 127.0.0.1:8888 在Karkinos目录中运行：<br>重要提示：使用端口5555将与反向外壳处理程序服务器冲突<br>如果坚持使用端口5555，修改 /bin/Server/app.py Line 88的PORT 值<br>重要提示”中 更改反向外壳处理程序服务器值：<br>如果坚持使用端口5556，则使用端口5556将与目录和文件清除服务器冲突，在中更改目录和文件清除服务器 /bin/Busting/app.py Line 111的PORT 值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">项目地址: https://github.com/helich0pper/Karkinos</span><br><span class="line"></span><br><span class="line">## Process Hacker</span><br><span class="line">介绍: 一个免费，功能强大的多功能工具，可帮助您监视系统资源，调试软件和检测恶意软件。</span><br><span class="line"></span><br><span class="line">特点</span><br><span class="line">•突出显示系统活动的详细概述。</span><br><span class="line">•图形和统计信息使您可以快速跟踪资源消耗和失控过程。</span><br><span class="line">•无法编辑或删除文件？发现哪些进程正在使用该文件。</span><br><span class="line">•查看哪些程序具有活动的网络连接，并在必要时关闭它们。</span><br><span class="line">•获取有关磁盘访问的实时信息。</span><br><span class="line">•使用内核模式，WOW64和.NET支持查看详细的堆栈跟踪。</span><br><span class="line">•超越services.msc：创建，编辑和控制服务。</span><br><span class="line">•体积小，便于携带，无需安装。</span><br><span class="line">•100％免费软件（GPL v3）</span><br><span class="line"></span><br><span class="line">项目构建</span><br></pre></td></tr></table></figure></p>
+<p>需要Visual Studio（2019或更高版本）。</p>
+<p>如果您更喜欢使用Visual Studio构建项目，请执行目录build_release.cmd中的Executebuild来编译项目或加载ProcessHacker.sln和Plugins.sln解决方案。</p>
+<p>您可以下载免费的Visual Studio Community Edition[4]来构建Process Hacker源代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">设定值:</span><br></pre></td></tr></table></figure></p>
+<p>如果您正在从USB驱动器运行Process Hacker，则可能还要在其中保存Process Hacker的设置。为此，请在与ProcessHacker.exe相同的目录中创建一个名为“ ProcessHacker.exe.settings.xml”的空白文件。您可以使用Windows资源管理器执行此操作：</p>
+<p>1.确保在工具&gt;文件夹选项&gt;视图中取消选中“隐藏已知文件类型的扩展名”。<br>2.右键单击该文件夹，然后选择“新建”&gt;“文本文档”。<br>3.将文件重命名为ProcessHacker.exe.settings.xml（删除“ .txt”扩展名）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KProcessHacker:</span><br></pre></td></tr></table></figure></p>
+<p>Process Hacker使用内核模式驱动程序KProcessHacker来协助某些功能。这包括：</p>
+<p>•捕获内核模式堆栈跟踪<br>•更有效地枚举过程句柄<br>•检索文件句柄的名称<br>•检索EtwRegistration对象的名称<br>•设置句柄属性</p>
+<p>请注意，默认情况下，KProcessHacker仅允许来自具有管理特权（SeDebugPrivilege）的进程的连接。要允许Process Hacker在未以管理员身份运行时显示所有进程的详细信息，请执行以下操作：</p>
+<p>1.在注册表编辑器中，导航到：HKEY_LOCAL_MACHINE \ SYSTEM \ CurrentControlSet \ Services \ KProcessHacker3<br>2.如果该键不存在，请在该键下创建一个名为Parameters的键。<br>3.创建一个名为SecurityLevel的DWORD值并将其设置为2。如果您没有使用正式版本，则可能需要将其设置为0。<br>4.重新启动KProcessHacker3服务（sc stop KProcessHacker3,sc start KProcessHacker3）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">项目地址: https://github.com/processhacker/processhacker</span><br><span class="line"></span><br><span class="line">## r0capture</span><br><span class="line">安卓应用层抓包通杀脚本</span><br><span class="line"></span><br><span class="line">简介</span><br><span class="line">•仅限安卓平台，测试安卓7、8、9、10 可用 ；</span><br><span class="line">•无视所有证书校验或绑定，不用考虑任何证书的事情；</span><br><span class="line">•通杀TCP/IP四层模型中的应用层中的全部协议；</span><br><span class="line">•通杀协议包括：Http,WebSocket,Ftp,Xmpp,Imap,Smtp,Protobuf等等、以及它们的SSL版本；</span><br><span class="line">•通杀所有应用层框架，包括HttpUrlConnection、Okhttp1/3/4、Retrofit/Volley等等；</span><br><span class="line"></span><br><span class="line">用法</span><br></pre></td></tr></table></figure></p>
+<p>•Spawn 模式：</p>
+<p>$ python3 r0capture.py -U -f com.qiyi.video<br>•Attach 模式，抓包内容保存成pcap文件供后续分析：</p>
+<p>$ python3 r0capture.py -U com.qiyi.video -p iqiyi.pcap<br>建议使用Attach模式，从感兴趣的地方开始抓包，并且保存成pcap文件，供后续使用Wireshark进行分析。<br><code>`</code><br>项目地址: <a href="https://github.com/r0ysue/r0capture" target="_blank" rel="noopener">https://github.com/r0ysue/r0capture</a></p>
+<h2 id="smarGate"><a href="#smarGate" class="headerlink" title="smarGate"></a>smarGate</h2><p>官方命名为“移动网关”，通过手机客户端将位于内网的服务端网络进行按需暴露，内网穿透，c++实现，无需公网IP，小巧，易用，快速，安全，最好的多链路聚合（p2p+proxy）模式，不做之一…这才是你真正想要的内网穿透工具！</p>
+<p>具备如下技术特点：</p>
+<p>•安全性<br>•手机客户端作为唯一的访问入口，按需开放，及时关闭。<br>•电脑可以接入手机热点或wifi环境下通过访问手机开放的端口穿透到内网进行访问（客户端会显示手机ip）。<br>•手机网络一般为私有网段别人无法访问。<br>•用户间隔离。<br>•扩展性<br>•基于内网网段代理，可以配合众多工具实现各种网络服务能力（telnet、ssh、http服务、内网摄像头、远程桌面等）<br>•面向极客，可访问自定义的内网服务（rpc）<br>•便利性<br>•手机客户端一点配置<br>•服务能力动态增减<br>•高性能<br>•0.1.1版本开始采用自主网络引擎，性能高，千元手机客户端能支持1千以上的并发共享访问<br>•高性能设计：</p>
+<p>•跨平台实现 socket 多路复用，支持：poll、epoll、kqueue、port、select、IOCP 等模型<br>•采用 lock-free 算法<br>•线程池设计<br>•socket 连接池<br>•多级任务队列</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/20210119093621.png" alt="20210119093621"></p>
+<p>项目地址: <a href="https://github.com/lazy-luo/smarGate" target="_blank" rel="noopener">https://github.com/lazy-luo/smarGate</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/2021-悬剑知识库/" title="2021-悬剑知识库">http://xchcloud.cn/2021-悬剑知识库/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/安全/" rel="tag"><i class="fa fa-tag"></i> 安全</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021-java-maven/" rel="prev" title="2021-java-maven">
+      <i class="fa fa-chevron-left"></i> 2021-java-maven
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/java-大数据-智慧出行/" rel="next" title="java-大数据-实时数据处理">
+      java-大数据-实时数据处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SScan"><span class="nav-text">SScan</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pull-拉取下载镜像"><span class="nav-text">pull 拉取下载镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将Docker的3443端口映射到物理机的-13443端口"><span class="nav-text">将Docker的3443端口映射到物理机的 13443端口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器的相关信息"><span class="nav-text">容器的相关信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Alternatively-you-can-download-a-release-from-https-github-com-Edu4rdSHL-unimap-releases-latest"><span class="nav-text">Alternatively you can download a release from https://github.com/Edu4rdSHL/unimap/releases/latest</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#extract-it-and-continue-to-next-step"><span class="nav-text">extract it and continue to next step.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Now-the-binary-is-in-target-release-unimap"><span class="nav-text">Now the binary is in ./target/release/unimap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#smarGate"><span class="nav-text">smarGate</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

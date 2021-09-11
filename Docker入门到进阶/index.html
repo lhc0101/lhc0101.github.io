@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Docker 入门Docker解决的是服务器应用快速构建、部署和分享的问题，他能将服务器应用像APP一样简单地部署到各种平台环境中，而不受真实环境的影响。 与Hadoop区别：解决的是分布式计算问题，他提供一套分布式存储和计算的解决方案，而且这个方案很廉价很高效。 三个核心概念：容器、镜像、Docker Hub容器：提供一个隔离的安全运行环境，是的不同应用质检不会互相干扰。 镜像：容器的静态存在方">
+<meta name="keywords" content="入门,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker初识">
+<meta property="og:url" content="http://xchcloud.cn/Docker入门到进阶/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="Docker 入门Docker解决的是服务器应用快速构建、部署和分享的问题，他能将服务器应用像APP一样简单地部署到各种平台环境中，而不受真实环境的影响。 与Hadoop区别：解决的是分布式计算问题，他提供一套分布式存储和计算的解决方案，而且这个方案很廉价很高效。 三个核心概念：容器、镜像、Docker Hub容器：提供一个隔离的安全运行环境，是的不同应用质检不会互相干扰。 镜像：容器的静态存在方">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:56:43.762Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker初识">
+<meta name="twitter:description" content="Docker 入门Docker解决的是服务器应用快速构建、部署和分享的问题，他能将服务器应用像APP一样简单地部署到各种平台环境中，而不受真实环境的影响。 与Hadoop区别：解决的是分布式计算问题，他提供一套分布式存储和计算的解决方案，而且这个方案很廉价很高效。 三个核心概念：容器、镜像、Docker Hub容器：提供一个隔离的安全运行环境，是的不同应用质检不会互相干扰。 镜像：容器的静态存在方">
+
+<link rel="canonical" href="http://xchcloud.cn/Docker入门到进阶/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker初识 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/Docker入门到进阶/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker初识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-13 17:34:52" itemprop="dateCreated datePublished" datetime="2018-07-13T17:34:52+08:00">2018-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:56:43" itemprop="dateModified" datetime="2021-09-11T16:56:43+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/Docker入门到进阶/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="Docker入门到进阶/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Docker-入门"><a href="#Docker-入门" class="headerlink" title="Docker 入门"></a>Docker 入门</h2><p>Docker解决的是服务器应用快速构建、部署和分享的问题，他能将服务器应用像APP一样简单地部署到各种平台环境中，而不受真实环境的影响。</p>
+<p>与Hadoop区别：解决的是分布式计算问题，他提供一套分布式存储和计算的解决方案，而且这个方案很廉价很高效。</p>
+<h3 id="三个核心概念：容器、镜像、Docker-Hub"><a href="#三个核心概念：容器、镜像、Docker-Hub" class="headerlink" title="三个核心概念：容器、镜像、Docker Hub"></a>三个核心概念：容器、镜像、Docker Hub</h3><p>容器：提供一个隔离的安全运行环境，是的不同应用质检不会互相干扰。</p>
+<p>镜像：容器的静态存在方式。<br><a id="more"></a><br>Docker Hub：一个公共的镜像平台，为镜像分享提供便利。用户可以根据自己的需要，在已有镜像的基础上定制自己的镜像。</p>
+<h3 id="Docker通俗介绍"><a href="#Docker通俗介绍" class="headerlink" title="Docker通俗介绍"></a>Docker通俗介绍</h3><p>Docker就像一个打包器，可以把你的应用及其环境整体打包，然后很方便地迁移到不同的平台，到处运行。</p>
+<h3 id="当一个应用拥有复杂的软件依赖关系和多种多样的硬件运行环境和多样的硬件运行环境时，有以下几个问题必须面对："><a href="#当一个应用拥有复杂的软件依赖关系和多种多样的硬件运行环境和多样的硬件运行环境时，有以下几个问题必须面对：" class="headerlink" title="当一个应用拥有复杂的软件依赖关系和多种多样的硬件运行环境和多样的硬件运行环境时，有以下几个问题必须面对："></a>当一个应用拥有复杂的软件依赖关系和多种多样的硬件运行环境和多样的硬件运行环境时，有以下几个问题必须面对：</h3><p>能否处理应用依赖的多样性和依赖库之间的不良反应？<br>能否能够适应硬件环境的多样性？<br>服务和应用之间的交互是否合理？<br>是否可以在多个平台之间快捷移动？</p>
+<h3 id="什么是Docker"><a href="#什么是Docker" class="headerlink" title="什么是Docker"></a>什么是Docker</h3><p>Docker容器引擎；该引擎可以让开发者打包他们的应用和依赖包到任何一个可一直的容器中，然后将其发布到任何流行的Linux机器上。<br>Docker Hub注册服务器：用户可以在该服务器上创建自己的镜像来存储、管理和分享镜像。利用Docker，可实现软件的一次配置、处处运行。</p>
+<h4 id="容器与虚拟机"><a href="#容器与虚拟机" class="headerlink" title="容器与虚拟机"></a>容器与虚拟机</h4><p>虚拟机不陌生，基于硬件的虚拟技术，指令级的虚拟，完全虚拟一套物理主机。<br>Docker：进程级别的隔离，让每个容器都想运行在单独的系统之上，但又能狗共享很多底层资源。轻量、快速、易于管理。</p>
+<h3 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h3><p>本文开发环境为Ubuntu 16.04 LTS 64位系统，通过apt的docker官方源安装最新的Docker CE(Community Edition)，即Docker社区版，是开发人员和小型团队的理想选择。</p>
+<p>开始安装</p>
+<p>由于apt官方库里的docker版本可能比较旧，所以先卸载可能存在的旧版本：</p>
+<pre><code>$ sudo apt-get remove docker docker-engine docker-ce docker.io</code></pre>
+
+<p>更新apt包索引：</p>
+<pre><code>$ sudo apt-get update</code></pre>
+
+<p>安装以下包以使apt可以通过HTTPS使用存储库（repository）：</p>
+<pre><code>$ sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common</code></pre>
+
+<p>添加Docker官方的GPG密钥：</p>
+<pre><code>$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - </code></pre>
+
+<p>使用下面的命令来设置stable存储库：</p>
+<pre><code>$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"</code></pre>
+
+<p>再更新一下apt包索引：</p>
+<pre><code>$ sudo apt-get update</code></pre>
+
+<p>安装最新版本的Docker CE：</p>
+<pre><code>$ sudo apt-get install -y docker-ce</code></pre>
+
+<p>在生产系统上，可能会需要应该安装一个特定版本的Docker CE，而不是总是使用最新版本：<br>列出可用的版本：</p>
+<pre><code>$ apt-cache madison docker-ce</code></pre>
+
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-f9bb3727a2acab4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>选择要安装的特定版本，第二列是版本字符串，第三列是存储库名称，它指示包来自哪个存储库，以及扩展它的稳定性级别。要安装一个特定的版本，将版本字符串附加到包名中，并通过等号(=)分隔它们：</p>
+<pre><code>$ sudo apt-get install docker-ce=18.03.1~ce-0~ubuntu</code></pre>
+验证docker
+
+查看docker服务是否启动：
+<pre><code>$ systemctl status docker</code></pre>
+
+<p>若未启动，则启动docker服务：</p>
+<pre><code>$ sudo systemctl start docker</code></pre>
+
+<p>经典的hello world：</p>
+<pre><code>$ sudo docker run hello-world</code></pre>
+
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-80e0777ddba53777.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>有以上输出则证明docker已安装成功！</p>
+<p>获取mysql官方最新docker镜像</p>
+<pre><code>$ sudo docker pull mysql/mysql-server:latest</code></pre>
+
+<p>耐心等待下载，完成后可以通过以下命令查看下载的镜像：</p>
+<pre><code>$ sudo docker images</code></pre>
+
+<h3 id="创建并启动mysql服务容器"><a href="#创建并启动mysql服务容器" class="headerlink" title="创建并启动mysql服务容器"></a>创建并启动mysql服务容器</h3><h4 id="创建一个文件夹用于挂载mysql数据库文件"><a href="#创建一个文件夹用于挂载mysql数据库文件" class="headerlink" title="创建一个文件夹用于挂载mysql数据库文件"></a>创建一个文件夹用于挂载mysql数据库文件</h4><pre><code>$ sudo mkdir /docker/mysql_data -p</code></pre>
+
+<h4 id="生成mysql容器"><a href="#生成mysql容器" class="headerlink" title="生成mysql容器"></a>生成mysql容器</h4><pre><code>$ sudo docker run --name mysql -d --restart always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /docker/mysql_data:/var/lib/mysql mysql/mysql-server</code></pre>
+
+<p>其中，–name mysql：容器指定名称为mysql；-d：后台运行容器，并返回容器ID；–restart always：在容器退出时总是重启容器；-p 3306:3306：将宿主机的3306端口（前者）映射到容器的3306端口（后者）；-e MYSQL_ROOT_PASSWORD=123456：设置mysql的root密码为123456；-v /docker/mysql_data:/var/lib/mysql：将宿主机的目录/docker/mysql_data映射到容器的目录/var/lib/mysql，用于存放容器的mysql数据库文件。</p>
+<h4 id="查看容器启动状态"><a href="#查看容器启动状态" class="headerlink" title="查看容器启动状态"></a>查看容器启动状态</h4><p>查看已经创建的容器：</p>
+<pre><code>$ sudo docker ps -a</code></pre>
+
+<p>查看已经启动的容器：</p>
+<pre><code>$ sudo docker ps -s</code></pre>
+
+<p>若容器未启动，则通过以下命令启动：</p>
+<pre><code>$ sudo docker start mysql</code></pre>
+
+
+<p>其中mysql是容器名称，也可以使用CONTAINER ID（见下图）代替，如81f7c15f9415</p>
+<h4 id="docker容器下命令行连接mysql数据库"><a href="#docker容器下命令行连接mysql数据库" class="headerlink" title="docker容器下命令行连接mysql数据库"></a>docker容器下命令行连接mysql数据库</h4><p>首先进入mysql容器的bash终端：</p>
+<pre><code>$ sudo docker exec -it mysql bash</code></pre>
+
+<p>连接mysql：</p>
+<pre><code>$ mysql -u root -p</code></pre>
+
+<p>输入步骤2.2设置的mysql root密码，之后就可以自由操作mysql了！</p>
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-53d453d8ce994e7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h4 id="通过宿主机命令行连接mysql"><a href="#通过宿主机命令行连接mysql" class="headerlink" title="通过宿主机命令行连接mysql"></a>通过宿主机命令行连接mysql</h4><p>首先在宿主机上安装mysql客户端：</p>
+<pre><code>$ sudo apt-get install -y mysql-client</code></pre>
+
+<p>尝试连接：</p>
+<pre><code>$ mysql -h 127.0.0.1 -u root -p</code></pre>
+
+<p>输入密码后显然是连接不上的：</p>
+<p>先通过步骤2.4连接到mysql，之后添加数据库test，针对此库添加用户testuser，密码是123456先通过步骤2.4连接到mysql，之后添加数据库test，针对此库添加用户testuser，密码是123456</p>
+<pre><code>CREATE DATABASE test;
+GRANT ALL PRIVILEGES ON test.* TO testuser@172.17.0.1 IDENTIFIED BY '123456';
+FLUSH PRIVILEGES;</code></pre>
+
+<p>然后就可以在宿主机上连接mysql数据库了：</p>
+<pre><code>$ mysql -h 127.0.0.1 -u testuser -p</code></pre>
+
+<h4 id="docker容器修改mysql密码"><a href="#docker容器修改mysql密码" class="headerlink" title="docker容器修改mysql密码"></a>docker容器修改mysql密码</h4><p>1.进入 mysql 容器</p>
+<p><code>docker exec -it mysql /bin/bash</code></p>
+<p>2.修改mysql容器的配置文件</p>
+<p>打开配置文件的命令<br><code>vi /etc/mysql/my.cnf</code><br>在最后一行添加如下代码( //跳过mysql的密码验证)<br><code>skip-grant-tables</code></p>
+<p>3.重启mysql容器</p>
+<p><code>docker restart mysql</code></p>
+<p>4.重新进入容器输入命令root为用户名<br><code>mysql -u root -p</code></p>
+<p>5.修改密码的命令<br><code>update mysql.user set passwrd=“新密码” where &#39;&#39;User&quot; = “username”;</code></p>
+<h3 id="加速镜像"><a href="#加速镜像" class="headerlink" title="加速镜像"></a>加速镜像</h3><p><a href="https://c.163yun.com/hub" target="_blank" rel="noopener">网易蜂巢 hub 镜像</a></p>
+<p>阿里云加速</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">（1）在阿里云申请自己的Docker镜像加速地址</span><br><span class="line"></span><br><span class="line">阿里云镜像加速申请  https://cr.console.aliyun.com/cn-qingdao/mirrors</span><br><span class="line"></span><br><span class="line">（2）配置Docker镜像加速</span><br><span class="line"></span><br><span class="line">　　1.编辑daemon.json文件，添加加速配置</span><br><span class="line"></span><br><span class="line">vim /etc/docker/daemon.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    &quot;registry-mirrors&quot;: [&quot;https://registry.docker-cn.com&quot;,&quot;https://kxv08zer.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">　　2.重载所有修改过的配置文件</span><br><span class="line"></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">　　3.重新启动Docker服务</span><br><span class="line"></span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h3 id="Docker-给运行中的容器设置端口映射的方法"><a href="#Docker-给运行中的容器设置端口映射的方法" class="headerlink" title="Docker 给运行中的容器设置端口映射的方法"></a>Docker 给运行中的容器设置端口映射的方法</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>Docker 端口映射即映射容器内应用的服务端口到本机宿主机器。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>当容器中运行一些网络应用，要让外部访问这些应用时，可以通过 -P 或 -p 参数两种方式来指定端口映射。</p>
+<h5 id="随机映射"><a href="#随机映射" class="headerlink" title="随机映射"></a>随机映射</h5><p>使用 -P 参数时，Docker 会随机映射一个端口到内部容器开放的网络端口，如下开启一个 nginx 服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d -P nginx</span><br><span class="line">e93349d539119dc48dc841e117f6388d6afa6a6065b75a5b4aedaf5fb2a051fc</span><br><span class="line">$</span><br><span class="line">$ docker ps</span><br><span class="line">CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES</span><br><span class="line">e93349d53911 nginx “nginx -g &apos;daemon …” 11 seconds ago Up 9 seconds 0.0.0.0:32769-&gt;80/tcp zen_kirch</span><br></pre></td></tr></table></figure></p>
+<p>使用 docker ps 看到，本地主机的 32769 端口被映射到了容器的 80 端口，这时我们通过本机浏览器访问 <a href="http://localhost:32769" target="_blank" rel="noopener">http://localhost:32769</a> 就会出现 nginx 欢迎页面。</p>
+<h5 id="指定端口"><a href="#指定端口" class="headerlink" title="指定端口"></a>指定端口</h5><p>使用 -p 参数时，可以指定要映射的端口，并且在一个指定的端口上只可以绑定一个容器。支持的格式有：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">IP:HostPort:ContainerPort</span><br><span class="line">IP:ContainerPort</span><br><span class="line">HostPort:ContainerPort</span><br><span class="line">下面开启一个 nginx 服务，将本机 8080 端口映射到容器的 80 端口：</span><br><span class="line"></span><br><span class="line">$ docker run -d -p 8080:80 nginx</span><br><span class="line">23e725098712d061a1382f33d6fe54da23ae37597a62f8debdd3731b5f9cc4b9</span><br><span class="line">$</span><br><span class="line">$ docker ps</span><br><span class="line">CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES</span><br><span class="line">23e725098712 nginx “nginx -g &apos;daemon …” 8 seconds ago Up 6 seconds 0.0.0.0:8080-&gt;80/tcp frosty_ptolemy</span><br></pre></td></tr></table></figure></p>
+<p>使用 docker ps 看到，本地主机的 8080 端口被映射到了容器的 80 端口，这时我们通过本机浏览器访问 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> 就会出现 nginx 欢迎页面。</p>
+<h4 id="查看映射端口"><a href="#查看映射端口" class="headerlink" title="查看映射端口"></a>查看映射端口</h4><p>使用 docker port 命令来查看当前映射的端口配置，也可以查看到绑定的地址。命令格式如下：</p>
+<p><code>$ docker port CONTAINER [PRIVATE_PORT[/PROTO]]</code><br>容器有自己的内部网络和 IP 地址，可以使用 docker inspect + 容器ID 获取容器的具体信息。</p>
+<p>DOCKER 给运行中的容器添加映射端口</p>
+<h5 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h5><p>1、获得容器IP</p>
+<p>将container_name 换成实际环境中的容器名<br><code>docker inspect container_name | grep IPAddress</code><br>2、 iptable转发端口</p>
+<p>将容器的8000端口映射到docker主机的8001端口<br>复制代码 代码如下:</p>
+<p><code>iptables -t nat -A DOCKER -p tcp --dport 8001 -j DNAT --to-destination 172.17.0.19:8000</code></p>
+<h5 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h5><p>1.提交一个运行中的容器为镜像</p>
+<p><code>docker commit containerid foo/live</code><br>2.运行镜像并添加端口</p>
+<p><code>docker run -d -p 8000:80 foo/live /bin/bash</code></p>
+<h3 id="docker容器启动后怎么修改端口映射"><a href="#docker容器启动后怎么修改端口映射" class="headerlink" title="docker容器启动后怎么修改端口映射"></a>docker容器启动后怎么修改端口映射</h3><p>docker容器启动后怎么修改端口映射？在docker run创建并运行容器的时候，可以通过-p指定端口映射规则。但是，也会遇到刚开始忘记设置端口映射或者设置错了需要修改的情况。当docker start运行容器后，并没有提供一个-p选项或设置，让你修改指定端口映射规则。</p>
+<p>通常间接的办法是，保存镜像，再创建一个新的容器，在创建时指定新的端口映射。</p>
+<h4 id="方法一：删除原有容器，重新建新容器"><a href="#方法一：删除原有容器，重新建新容器" class="headerlink" title="方法一：删除原有容器，重新建新容器"></a>方法一：删除原有容器，重新建新容器</h4><p>这个解决方案最为简单，把原来的容器删掉，重新建一个。当然这次不要忘记加上端口映射。优点是简单快捷，在测试环境使用较多。缺点是如果是数据库镜像，那重新建一个又要重新配置一次，就比较麻烦了。</p>
+<h4 id="方法二：利用docker-commit新构镜像"><a href="#方法二：利用docker-commit新构镜像" class="headerlink" title="方法二：利用docker commit新构镜像"></a>方法二：利用docker commit新构镜像</h4><p>docker commit：把一个容器的文件改动和配置信息commit到一个新的镜像。这个在测试的时候会非常有用，把容器所有的文件改动和配置信息导入成一个新的docker镜像，然后用这个新的镜像重起一个容器，这对之前的容器不会有任何影响。</p>
+<p>1、停止docker容器</p>
+<p><code>docker stop container01</code></p>
+<p>2、commit该docker容器</p>
+<p><code>docker commit container01 new_image:tag</code></p>
+<p>3、用前一步新生成的镜像重新起一个容器</p>
+<p><code>docker run --name container02 -p 80:80 new_image:tag</code></p>
+<p>这种方式的优点是不会影响统一宿主机上的其他容器，缺点是管理起来显得比较乱。</p>
+<h4 id="方法三：修改文件端口，重启docker服务"><a href="#方法三：修改文件端口，重启docker服务" class="headerlink" title="方法三：修改文件端口，重启docker服务"></a>方法三：修改文件端口，重启docker服务</h4><p>1、停止容器(<code>docker stop d00254ce3af7</code>)</p>
+<p>2、停止docker服务(<code>systemctl stop docker</code>)</p>
+<p>3、修改这个容器的hostconfig.json文件中的端口（如果config.v2.json里面也记录了端口，也要修改）</p>
+<p><code>cd /var/lib/docker/containers/d00254ce3af7* #这里是CONTAINER ID</code></p>
+<p><code>vim hostconfig.json</code><br>如果之前没有端口映射, 应该有这样的一段:<br><code>&quot;PortBindings&quot;:{}</code></p>
+<p>增加一个映射, 这样写:<br><code>&quot;PortBindings&quot;:{&quot;8080/tcp&quot;:[{&quot;HostIp&quot;:&quot;&quot;,&quot;HostPort&quot;:&quot;60000&quot;}]}</code><br>前一个数字是容器端口, 后一个是宿主机端口。将宿主机的60000端口映射到容器的8080端口<br>而修改现有端口映射更简单, 把端口号改掉就行。<br>4、启动docker服务(<code>systemctl start docker</code>)</p>
+<p>5、启动容器(<code>docker start d00254ce3af7</code>)</p>
+<h2 id="Docker-进阶"><a href="#Docker-进阶" class="headerlink" title="Docker 进阶"></a>Docker 进阶</h2><h3 id="Docker-Compose-详解"><a href="#Docker-Compose-详解" class="headerlink" title="Docker Compose 详解"></a>Docker Compose 详解</h3>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/Docker入门到进阶/" title="Docker初识">http://xchcloud.cn/Docker入门到进阶/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/入门/" rel="tag"><i class="fa fa-tag"></i> 入门</a>
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/Hexo-使用入坑教程/" rel="next" title="Hexo 使用入坑教程">
+      Hexo 使用入坑教程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-入门"><span class="nav-text">Docker 入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三个核心概念：容器、镜像、Docker-Hub"><span class="nav-text">三个核心概念：容器、镜像、Docker Hub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker通俗介绍"><span class="nav-text">Docker通俗介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当一个应用拥有复杂的软件依赖关系和多种多样的硬件运行环境和多样的硬件运行环境时，有以下几个问题必须面对："><span class="nav-text">当一个应用拥有复杂的软件依赖关系和多种多样的硬件运行环境和多样的硬件运行环境时，有以下几个问题必须面对：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是Docker"><span class="nav-text">什么是Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#容器与虚拟机"><span class="nav-text">容器与虚拟机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker的安装"><span class="nav-text">Docker的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建并启动mysql服务容器"><span class="nav-text">创建并启动mysql服务容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个文件夹用于挂载mysql数据库文件"><span class="nav-text">创建一个文件夹用于挂载mysql数据库文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成mysql容器"><span class="nav-text">生成mysql容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看容器启动状态"><span class="nav-text">查看容器启动状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker容器下命令行连接mysql数据库"><span class="nav-text">docker容器下命令行连接mysql数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过宿主机命令行连接mysql"><span class="nav-text">通过宿主机命令行连接mysql</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker容器修改mysql密码"><span class="nav-text">docker容器修改mysql密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加速镜像"><span class="nav-text">加速镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-给运行中的容器设置端口映射的方法"><span class="nav-text">Docker 给运行中的容器设置端口映射的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#随机映射"><span class="nav-text">随机映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指定端口"><span class="nav-text">指定端口</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看映射端口"><span class="nav-text">查看映射端口</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法1"><span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法2"><span class="nav-text">方法2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker容器启动后怎么修改端口映射"><span class="nav-text">docker容器启动后怎么修改端口映射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一：删除原有容器，重新建新容器"><span class="nav-text">方法一：删除原有容器，重新建新容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二：利用docker-commit新构镜像"><span class="nav-text">方法二：利用docker commit新构镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法三：修改文件端口，重启docker服务"><span class="nav-text">方法三：修改文件端口，重启docker服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-进阶"><span class="nav-text">Docker 进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-Compose-详解"><span class="nav-text">Docker Compose 详解</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="day1：感知机卡day2: 神经网络1day3: 神经网络2day4: 数据知识卡1day5: 数据知识卡2day6: 计算图卡误差反向传播法：理解的话两种方法，一种是基于数学式：另一种是基于计算图（computational graph）。 计算图计算图将计算过程用图形表示出来。这里说的图形是数据结构图，通过多个节点和边表示（连接节点的直线称为“边”）。 从左向右进行计算”是一种正方向上的传播">
+<meta name="keywords" content="python,深度学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《深度学习》读书笔记">
+<meta property="og:url" content="http://xchcloud.cn/《深度学习》读书笔记/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="day1：感知机卡day2: 神经网络1day3: 神经网络2day4: 数据知识卡1day5: 数据知识卡2day6: 计算图卡误差反向传播法：理解的话两种方法，一种是基于数学式：另一种是基于计算图（computational graph）。 计算图计算图将计算过程用图形表示出来。这里说的图形是数据结构图，通过多个节点和边表示（连接节点的直线称为“边”）。 从左向右进行计算”是一种正方向上的传播">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:34:43.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《深度学习》读书笔记">
+<meta name="twitter:description" content="day1：感知机卡day2: 神经网络1day3: 神经网络2day4: 数据知识卡1day5: 数据知识卡2day6: 计算图卡误差反向传播法：理解的话两种方法，一种是基于数学式：另一种是基于计算图（computational graph）。 计算图计算图将计算过程用图形表示出来。这里说的图形是数据结构图，通过多个节点和边表示（连接节点的直线称为“边”）。 从左向右进行计算”是一种正方向上的传播">
+
+<link rel="canonical" href="http://xchcloud.cn/《深度学习》读书笔记/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>《深度学习》读书笔记 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/《深度学习》读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《深度学习》读书笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-24 09:02:17" itemprop="dateCreated datePublished" datetime="2019-04-24T09:02:17+08:00">2019-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:34:43" itemprop="dateModified" datetime="2021-09-11T16:34:43+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/《深度学习》读书笔记/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="《深度学习》读书笔记/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="day1：感知机卡"><a href="#day1：感知机卡" class="headerlink" title="day1：感知机卡"></a>day1：感知机卡</h2><h2 id="day2-神经网络1"><a href="#day2-神经网络1" class="headerlink" title="day2: 神经网络1"></a>day2: 神经网络1</h2><h2 id="day3-神经网络2"><a href="#day3-神经网络2" class="headerlink" title="day3: 神经网络2"></a>day3: 神经网络2</h2><h2 id="day4-数据知识卡1"><a href="#day4-数据知识卡1" class="headerlink" title="day4: 数据知识卡1"></a>day4: 数据知识卡1</h2><h2 id="day5-数据知识卡2"><a href="#day5-数据知识卡2" class="headerlink" title="day5: 数据知识卡2"></a>day5: 数据知识卡2</h2><h2 id="day6-计算图卡"><a href="#day6-计算图卡" class="headerlink" title="day6: 计算图卡"></a>day6: 计算图卡</h2><p>误差反向传播法：理解的话两种方法，一种是基于数学式：另一种是基于计算图（computational graph）。</p>
+<h3 id="计算图"><a href="#计算图" class="headerlink" title="计算图"></a>计算图</h3><p>计算图将计算过程用图形表示出来。这里说的图形是数据结构图，通过多个节点和边表示（连接节点的直线称为“边”）。</p>
+<p>从左向右进行计算”是一种正方向上的传播，简称为正向传播（forward propagation）。正向传播是从计算图出发点到结束点的传播。</p>
+<p>从右向左的传播称为反向传播（backward propagation）。反向传播将在接下来的导数计算中发挥重要作用。 <a id="more"></a></p>
+<h4 id="局部计算"><a href="#局部计算" class="headerlink" title="局部计算"></a>局部计算</h4><p>“局部”这个词的意思是“与自己相关的某个小范围”。局部计算是指，无论全局发生了什么，都能只根据与自己相关的信息输出接下来的结果。</p>
+<p>废话这么多 就是局部  局部  局部 的意思嘛。</p>
+<h4 id="为何用计算图解题"><a href="#为何用计算图解题" class="headerlink" title="为何用计算图解题"></a>为何用计算图解题</h4><p>化繁为简，简化问题。</p>
+<p>PS：而反向传播将局部导数向正方向的反方向（从右到左）传递？？</p>
+<h3 id="链式法则"><a href="#链式法则" class="headerlink" title="链式法则"></a>链式法则</h3><p>传递这个局部导数的原理，是基于链式法则（chain rule）的。</p>
+<p>如果某个函数由复合函数表示，则该复合函数的导数可以用构成复合函数的各个函数的导数的乘积表示。</p>
+<h4 id="计算图的反向传播"><a href="#计算图的反向传播" class="headerlink" title="计算图的反向传播"></a>计算图的反向传播</h4><p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/063.png" alt></p>
+<p>计算图的反向传播：沿着与正方向相反的方向，乘上局部导数</p>
+<h4 id="链式法则和计算图"><a href="#链式法则和计算图" class="headerlink" title="链式法则和计算图"></a>链式法则和计算图</h4><h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><h4 id="加法节点的反向传播"><a href="#加法节点的反向传播" class="headerlink" title="加法节点的反向传播"></a>加法节点的反向传播</h4><h2 id="day7-层卡"><a href="#day7-层卡" class="headerlink" title="day7 层卡"></a>day7 层卡</h2><h2 id="day8-参数技巧卡1"><a href="#day8-参数技巧卡1" class="headerlink" title="day8 参数技巧卡1"></a>day8 参数技巧卡1</h2><h3 id="参数的更新"><a href="#参数的更新" class="headerlink" title="参数的更新"></a>参数的更新</h3><p>神经网络的学习的目的是找到使损失函数的值尽可能小的参数。这是寻找最优参数的问题，解决这个问题的过程称为最优化（optimization）。</p>
+<h4 id="SGD-随机梯度下降法（stochastic-gradient-descent）："><a href="#SGD-随机梯度下降法（stochastic-gradient-descent）：" class="headerlink" title="SGD 随机梯度下降法（stochastic gradient descent）："></a>SGD 随机梯度下降法（stochastic gradient descent）：</h4><p>为了找到最优参数，我们将参数的梯度（导数）作为了线索。使用参数的梯度，沿梯度方向更新参数，并重复这个步骤多次，从而逐渐靠近最优参数。</p>
+<h4 id="SGD-的缺点："><a href="#SGD-的缺点：" class="headerlink" title="SGD 的缺点："></a>SGD 的缺点：</h4><p>如果函数的形状非均向（anisotropic），比如呈延伸状，搜索的路径就会非常低效。因此，我们需要比单纯朝梯度方向前进的 SGD 更聪明的方法。SGD 低效的根本原因是，梯度的方向并没有指向最小值的方向。</p>
+<h4 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h4><h4 id="AdaGrad"><a href="#AdaGrad" class="headerlink" title="AdaGrad"></a>AdaGrad</h4><p>在神经网络的学习中，学习率（数学式中记为 η）的值很重要。学习率过小，会导致学习花费过多时间；反过来，学习率过大，则会导致学习发散而不能正确进行。</p>
+<p>学习率衰减（learning rate decay）：<br>即随着学习的进行，使学习率逐渐减小。实际上，一开始“多”学，然后逐渐“少”学的方法，在神经网络的学习中经常被使用。</p>
+<h4 id="Adam"><a href="#Adam" class="headerlink" title="Adam"></a>Adam</h4><p>Adam 是 2015 年提出的新方法。它的理论有些复杂，直观地讲，就是融合了 Momentum 和 AdaGrad 的方法。通过组合前面两个方法的优点，有望实现参数空间的高效搜索。此外，进行超参数的“偏置校正”也是 Adam 的特征。</p>
+<h3 id="权重的初始值"><a href="#权重的初始值" class="headerlink" title="权重的初始值"></a>权重的初始值</h3><p>在神经网络的学习中，权重的初始值特别重要。实际上，设定什么样的权重初始值，经常关系到神经网络的学习能否成功。</p>
+<p>为了防止“权重均一化”（严格地讲，是为了瓦解权重的对称结构），必须随机生成初始值。不可以将权重初始值设为 0 。</p>
+<h4 id="隐藏层的激活值的分布"><a href="#隐藏层的激活值的分布" class="headerlink" title="隐藏层的激活值的分布"></a>隐藏层的激活值的分布</h4><p>梯度消失：<br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/101.png" alt><br>各层的激活值呈偏向 0 和 1 的分布。这里使用的 sigmoid 函数是 S 型函数，随着输出不断地靠近 0（或者靠近 1），它的导数的值逐渐接近 0。因此，偏向 0 和 1 的数据分布会造成反向传播中梯度的值不断变小，最后消失。<br>层次加深的深度学习中，梯度消失的问题可能会更加严重。</p>
+<h4 id="ReLU的权重初始值"><a href="#ReLU的权重初始值" class="headerlink" title="ReLU的权重初始值"></a>ReLU的权重初始值</h4><p>Xavier 初始值是以激活函数是线性函数为前提而推导出来的。因为 sigmoid 函数和 tanh 函数左右对称，且中央附近可以视作线性函数，所以适合使用 Xavier 初始值。但当激活函数使用 ReLU 时，一般推荐使用 ReLU 专用的初始值，也就是 Kaiming He 等人推荐的初始值，也称为“He 初始值”。</p>
+<p>总结一下，当激活函数使用 ReLU 时，权重初始值使用 He 初始值，当激活函数为 sigmoid 或 tanh 等 S 型曲线函数时，初始值使用 Xavier 初始值。这是目前的最佳实践。(***)</p>
+<h4 id="基于-MNIST-数据集的权重初始值的比较"><a href="#基于-MNIST-数据集的权重初始值的比较" class="headerlink" title="基于 MNIST 数据集的权重初始值的比较"></a>基于 MNIST 数据集的权重初始值的比较</h4><p>MNIST :<br>是深度学习的经典入门demo，他是由6万张训练图片和1万张测试图片构成的，每张图片都是28*28大小（如下图），而且都是黑白色构成（这里的黑色是一个0-1的浮点数，黑色越深表示数值越靠近1），这些图片是采集的不同的人手写从0到9的数字。TensorFlow将这个数据集和相关操作封装到了库中，下面我们来一步步解读深度学习MNIST的过程。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/106.png" alt></p>
+<p>综上，在神经网络的学习中，权重初始值非常重要。很多时候权重初始值的设定关系到神经网络的学习能否成功。权重初始值的重要性容易被忽视，而任何事情的开始（初始值）总是关键的，因此在结束本节之际，再次强调一下权重初始值的重要性。</p>
+<h3 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h3><h4 id="Batch-Normalization-的算法"><a href="#Batch-Normalization-的算法" class="headerlink" title="Batch Normalization 的算法"></a>Batch Normalization 的算法</h4><p>Batch Normalization（下文简称 Batch Norm）是 2015 年提出的方法。Batch Norm 虽然是一个问世不久的新方法，但已经被很多研究人员和技术人员广泛使用。实际上，看一下机器学习竞赛的结果，就会发现很多通过使用这个方法而获得优异结果的例子。</p>
+<p>Batch Norm，顾名思义，以进行学习时的 mini-batch 为单位，按 mini-batch 进行正规化。具体而言，就是进行使数据分布的均值为 0、方差为 1 的正规化。用数学式表示的话，如下所示。</p>
+<p><img data-src="https://images.gitbook.cn/c3a3c800-e7f3-11e8-89ee-f776175382b4" alt><br><img data-src="http://private.codecogs.com/gif.latex?y_i\leftarrow\gamma\hat{x}_i+\beta\quad\quad\quad\quad\quad(6.8%29" alt>)</p>
+<p>Batch Normalization 的计算图（引用自文献 [13]）:</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/108.png" alt></p>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><p>可以使学习快速进行（可以增大学习率）。<br>不那么依赖初始值（对于初始值不用那么神经质）。<br>抑制过拟合（降低 Dropout 等的必要性）。</p>
+<h4 id="Batch-Normalization的评估"><a href="#Batch-Normalization的评估" class="headerlink" title="Batch Normalization的评估"></a>Batch Normalization的评估</h4><p>综上，通过使用 Batch Norm，可以推动学习的进行。并且，对权重初始值变得健壮（“对初始值健壮”表示不那么依赖初始值）。Batch Norm 具备了如此优良的性质，一定能应用在更多场合中。</p>
+<p>有点难吧   代码还没跑  好菜哦、、、、慢慢消化。。。。。</p>
+<h2 id="day9-参数技巧卡2"><a href="#day9-参数技巧卡2" class="headerlink" title="day9 参数技巧卡2"></a>day9 参数技巧卡2</h2><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><h4 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h4><p>过拟合指的是只能拟合训练数据，但不能很好地拟合不包含在训练数据中的其他数据的状态。机器学习的目标是提高泛化能力，即便是没有包含在训练数据里的未观测数据，也希望模型可以进行正确的识别。</p>
+<p><strong>原因:</strong><br>模型拥有大量参数、表现力强。<br>训练数据少。</p>
+<h4 id="权值衰减"><a href="#权值衰减" class="headerlink" title="权值衰减"></a>权值衰减</h4><p>权值衰减是一直以来经常被使用的一种抑制过拟合的方法。该方法通过在学习的过程中对大的权重进行惩罚，来抑制过拟合。很多过拟合原本就是因为权重参数取值过大才发生的。</p>
+<p>但是，如果网络的模型变得很复杂，只用权值衰减就难以应对了。</p>
+<h4 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h4><p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/113.png" alt></p>
+<p>Dropout 是一种在学习的过程中随机删除神经元的方法。训练时，随机选出隐藏层的神经元，然后将其删除。被删除的神经元不再进行信号的传递。训练时，每传递一次数据，就会随机选择要删除的神经元。</p>
+<p>这个集成学习与 Dropout 有密切的关系,神经网络的识别精度可以提高好几个百分点。</p>
+<p>可以将 Dropout 理解为，通过在学习过程中随机删除神经元，从而每一次都让不同的模型进行学习。并且，推理时，通过对神经元的输出乘以删除比例（比如，0.5 等），可以取得模型的平均值。也就是说，可以理解成，Dropout将集成学习的效果（模拟地）通过一个网络实现了。</p>
+<h3 id="超参数的验证"><a href="#超参数的验证" class="headerlink" title="超参数的验证"></a>超参数的验证</h3><h4 id="超参数（hyper-parameter）"><a href="#超参数（hyper-parameter）" class="headerlink" title="超参数（hyper-parameter）"></a>超参数（hyper-parameter）</h4><p>这里所说的超参数是指，比如各层的神经元数量、batch 大小、参数更新时的学习率或权值衰减等。如果这些超参数没有设置合适的值，模型的性能就会很差。</p>
+<h4 id="验证数据"><a href="#验证数据" class="headerlink" title="验证数据"></a>验证数据</h4><p>用测试数据确认超参数的值的“好坏”，就会导致超参数的值被调整为只拟合测试数据。</p>
+<p>根据不同的数据集，有的会事先分成训练数据、验证数据、测试数据三部分，有的只分成训练数据和测试数据两部分，有的则不进行分割。</p>
+<h4 id="超参数的最优化"><a href="#超参数的最优化" class="headerlink" title="超参数的最优化"></a>超参数的最优化</h4><p>进行超参数的最优化时，逐渐缩小超参数的“好值”的存在范围非常重要。所谓逐渐缩小范围，是指一开始先大致设定一个范围，从这个范围中随机选出一个超参数（采样），用这个采样到的值进行识别精度的评估；然后，多次重复该操作，观察识别精度的结果，根据这个结果缩小超参数的“好值”的范围。通过重复这一操作，就可以逐渐确定超参数的合适范围。</p>
+<h4 id="超参数的最优化的步骤"><a href="#超参数的最优化的步骤" class="headerlink" title="超参数的最优化的步骤"></a>超参数的最优化的步骤</h4><p>步骤 0</p>
+<p>设定超参数的范围。</p>
+<p>步骤 1</p>
+<p>从设定的超参数范围中随机采样。</p>
+<p>步骤 2</p>
+<p>使用步骤 1 中采样到的超参数的值进行学习，通过验证数据评估识别精度（但是要将 epoch 设置得很小）。</p>
+<p>步骤 3</p>
+<p>重复步骤 1 和步骤 2（100 次等），根据它们的识别精度的结果，缩小超参数的范围。</p>
+<h2 id="day10-CNN结构卡1"><a href="#day10-CNN结构卡1" class="headerlink" title="day10 CNN结构卡1"></a>day10 CNN结构卡1</h2><h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p><strong>CNN :</strong></p>
+<p>和之前介绍的神经网络一样，可以像乐高积木一样通过组装层来构建。不过，CNN 中新出现了卷积层（Convolution 层）和池化层（Pooling 层）。</p>
+<p><strong>全连接（fully-connected）:</strong></p>
+<p>相邻层的所有神经元之间都有连接。</p>
+<p>基于全连接层（Affine 层）的网络的例子：</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/116.png" alt></p>
+<p>CNN 的一个例子:</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/117.png" alt></p>
+<p>CNN 的层的连接顺序是“Convolution - ReLU -（Pooling）”（Pooling 层有时会被省略）。</p>
+<h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><h4 id="全连接层存在的问题"><a href="#全连接层存在的问题" class="headerlink" title="全连接层存在的问题"></a>全连接层存在的问题</h4><p>CNN 中，有时将卷积层的输入输出数据称为<strong>特征图（feature map）</strong>。其中，卷积层的输入数据称为<strong>输入特征图（input feature map）</strong>，输出数据称为<strong>输出特征图（output feature map）</strong>。</p>
+<p>全连接层存在什么问题呢？那就是数据的形状被“忽视”了。比如，输入数据是图像时，图像通常是高、长、通道方向上的 3 维形状。但是，向全连接层输入时，需要将 3 维数据拉平为 1 维数据。</p>
+<p>在 CNN 中，可以（有可能）正确理解图像等具有形状的数据。</p>
+<h4 id="卷积运算"><a href="#卷积运算" class="headerlink" title="卷积运算"></a>卷积运算</h4><p>乘积累加运算：</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/119.png" alt></p>
+<h4 id="填充"><a href="#填充" class="headerlink" title="填充"></a>填充</h4><p>“幅度为 1 的填充”是指用幅度为 1 像素的 0 填充周围(图中用虚线表示填充，并省略了填充的内容“0”):</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/121.png" alt></p>
+<p><strong>为什么使用填充：</strong></p>
+<p>因为如果每次进行卷积运算都会缩小空间，那么在某个时刻输出大小就有可能变为 1，导致无法再应用卷积运算。填充后卷积运算就可以在保持空间大小不变的情况下将数据传给下一层。</p>
+<h4 id="步幅"><a href="#步幅" class="headerlink" title="步幅"></a>步幅</h4><p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/122.png" alt></p>
+<p><strong>计算：</strong></p>
+<p>假设输入大小为 (H, W)，滤波器大小为 (FH, FW)，输出大小为 (OH, OW)，填充为 P，步幅为 S。</p>
+<p><img data-src="https://images.gitbook.cn/a19898a0-e7fb-11e8-89ee-f776175382b4" alt></p>
+<h4 id="3-维数据的卷积运算"><a href="#3-维数据的卷积运算" class="headerlink" title="3 维数据的卷积运算"></a>3 维数据的卷积运算</h4><p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/124.png" alt></p>
+<p>在 3 维数据的卷积运算中，输入数据和滤波器的通道数要设为相同的值,滤波器大小可以设定为任意值（不过，每个通道的滤波器大小要全部相同）。</p>
+<h4 id="结合方块思考"><a href="#结合方块思考" class="headerlink" title="结合方块思考"></a>结合方块思考</h4><p>通道数为 C、高度为 H、长度为 W 的数据的形状可以写成（C, H, W）。滤波器也一样，要按（channel, height, width）的顺序书写。比如，通道数为 C、滤波器高度为 FH（Filter Height）、长度为 FW（Filter Width）时，可以写成（C, FH, FW）。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/125.png" alt><br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/126.png" alt><br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/127.png" alt></p>
+<h4 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h4><p>神经网络的处理中进行了将输入数据打包的批处理。之前的全连接神经网络的实现也对应了批处理，通过批处理，能够实现处理的高效化和学习时对 mini-batch 的对应。</p>
+<p>批处理将 N 次的处理汇总成了 1 次进行。</p>
+<p>卷积运算也同样对应批处理，需要将在各层间传递的数据保存为 4 维数据。具体地讲，就是按 (batch_num, channel, height, width) 的顺序保存数据。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/128.png" alt></p>
+<h2 id="day11-CNN结构卡2"><a href="#day11-CNN结构卡2" class="headerlink" title="day11 CNN结构卡2"></a>day11 CNN结构卡2</h2><h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p>池化是缩小高、长方向上的空间的运算。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/129.png" alt></p>
+<p><strong>ps:</strong><br>除了 Max 池化之外，还有 Average 池化等。相对于 Max 池化是从目标区域中取出最大值，Average 池化则是计算目标区域的平均值。在图像识别领域，主要使用 Max 池化。</p>
+<h4 id="池化层的特征"><a href="#池化层的特征" class="headerlink" title="池化层的特征"></a>池化层的特征</h4><ul>
+<li>没有要学习的参数</li>
+</ul>
+<p>池化层和卷积层不同，没有要学习的参数。池化只是从目标区域中取最大值（或者平均值），所以不存在要学习的参数。</p>
+<ul>
+<li>通道数不发生变化</li>
+</ul>
+<p>经过池化运算，输入数据和输出数据的通道数不会发生变化。</p>
+<ul>
+<li>对微小的位置变化具有鲁棒性（健壮）</li>
+</ul>
+<p>输入数据发生微小偏差时，池化仍会返回相同的结果。因此，池化对输入数据的微小偏差具有鲁棒性。</p>
+<h3 id="卷积层和池化层的实现"><a href="#卷积层和池化层的实现" class="headerlink" title="卷积层和池化层的实现"></a>卷积层和池化层的实现</h3><h4 id="4-维数组"><a href="#4-维数组" class="headerlink" title="4 维数组"></a>4 维数组</h4><p>CNN 中各层间传递的数据是 4 维数据。所谓 4 维数据，比如数据的形状是 (10, 1, 28, 28)，则它对应 10 个高为 28、长为 28、通道为 1 的数据。</p>
+<h4 id="基于-im2col-的展开"><a href="#基于-im2col-的展开" class="headerlink" title="基于 im2col 的展开"></a>基于 im2col 的展开</h4><p>im2col 是一个函数，将输入数据展开以适合滤波器（权重）。</p>
+<p><strong>ps:</strong><br>NumPy 中存在使用 for 语句后处理变慢的缺点（NumPy 中，访问元素时最好不要用 for 语句）。</p>
+<p>卷积运算的滤波器处理的细节：将滤波器纵向展开为 1 列，并计算和 im2col 展开的数据的矩阵乘积，最后转换（reshape）为输出数据的大小:<br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/134.png" alt></p>
+<h4 id="卷积层的实现"><a href="#卷积层的实现" class="headerlink" title="卷积层的实现"></a>卷积层的实现</h4><p>im2col 这一便捷函数具有以下接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">im2col (input_data, filter_h, filter_w, stride=1, pad=0):</span><br><span class="line">input_data——由（数据量，通道，高，长）的 4 维数组构成的输入数据</span><br><span class="line">filter_h——滤波器的高</span><br><span class="line">filter_w——滤波器的长</span><br><span class="line">stride——步幅</span><br><span class="line">pad——填充</span><br></pre></td></tr></table></figure>
+<p><strong>im2col</strong> 会考虑滤波器大小、步幅、填充，将输入数据展开为 2 维数组。</p>
+<p>卷积层的初始化方法将滤波器（权重）、偏置、步幅、填充作为参数接收。滤波器是 (FN, C, FH, FW) 的 4 维形状。另外，FN、C、FH、FW 分别是 Filter Number（滤波器数量）、Channel、Filter Height、Filter Width 的缩写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reshape(FN,-1) 将参数指定为 -1，这是 reshape 的一个便利的功能。通过在 reshape 时指定为 -1，reshape 函数会自动计算 -1 维度上的元素个数，以使多维数组的元素个数前后一致。比如，(10, 3, 5, 5) 形状的数组的元素个数共有 750 个，指定 reshape(10,-1) 后，就会转换成 (10, 75) 形状的数组。</span><br></pre></td></tr></table></figure>
+<p><strong>transpose</strong> 会更改多维数组的轴的顺序。基于 NumPy 的 transpose 的轴顺序的更改：通过指定索引（编号），更改轴的顺序:<br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/135.png" alt></p>
+<h4 id="池化层的实现"><a href="#池化层的实现" class="headerlink" title="池化层的实现"></a>池化层的实现</h4><p>池化的情况下，在通道方向上是独立的。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/137.png" alt></p>
+<p>池化层的实现按下面 3 个阶段进行。</p>
+<ul>
+<li>展开输入数据。</li>
+<li>求各行的最大值。</li>
+<li>转换为合适的输出大小。</li>
+</ul>
+<h2 id="day12-CNN实现卡"><a href="#day12-CNN实现卡" class="headerlink" title="day12 CNN实现卡"></a>day12 CNN实现卡</h2><h3 id="CNN-的实现"><a href="#CNN-的实现" class="headerlink" title="CNN 的实现"></a>CNN 的实现</h3><p>组合卷积层和池化层。</p>
+<p><strong>“Convolution - ReLU - Pooling -Affine - ReLU - Affine - Softmax”的网络。</strong><br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/138.png" alt></p>
+<p>CNN 可以有效读取图像中的某种特性，在手写数字识别中，还可以实现高精度的识别。</p>
+<h3 id="CNN-的可视化"><a href="#CNN-的可视化" class="headerlink" title="CNN 的可视化"></a>CNN 的可视化</h3><h4 id="第-1-层权重的可视化"><a href="#第-1-层权重的可视化" class="headerlink" title="第 1 层权重的可视化"></a>第 1 层权重的可视化</h4><p>卷积层的滤波器会提取边缘或斑块等原始信息。而刚才实现的 CNN 会将这些原始信息传递给后面的层。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/139.png" alt></p>
+<p>学习前和学习后的第 1 层的卷积层的权重：虽然权重的元素是实数，但是在图像的显示上，统一将最小值显示为黑色（0），最大值显示为白色（255）。</p>
+<p>学习前的滤波器是随机进行初始化的，所以在黑白的浓淡上没有规律可循，但学习后的滤波器变成了有规律的图像。<strong>有规律</strong>的滤波器在它在观察<strong>边缘</strong>（颜色变化的分界线）和<strong>斑块</strong>（局部的块状区域）等。</p>
+<h4 id="基于分层结构的信息提取"><a href="#基于分层结构的信息提取" class="headerlink" title="基于分层结构的信息提取"></a>基于分层结构的信息提取</h4><p>一般物体识别（车或狗等）的 8 层 CNN。</p>
+<p><strong>ps：</strong><br>AlexNet 网络结构堆叠了多层卷积层和池化层，最后经过全连接层输出结果。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/141.png" alt></p>
+<p>第 1 层的神经元对边缘或斑块有响应，第 3 层对纹理有响应，第 5 层对物体部件有响应，最后的全连接层对物体的类别（狗或车）有响应。</p>
+<p>最开始的层对简单的边缘有响应，接下来的层对纹理有响应，再后面的层对更加复杂的物体部件有响应。也就是说，<strong>随着层次加深，神经元从简单的形状向“高级”信息变化</strong>。</p>
+<h3 id="具有代表性的-CNN"><a href="#具有代表性的-CNN" class="headerlink" title="具有代表性的 CNN"></a>具有代表性的 CNN</h3><p>CNN 元祖 LeNet；<br>AlexNet。</p>
+<h4 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h4><p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/142.png" alt></p>
+<h4 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h4><p>AlexNet 叠有多个卷积层和池化层，最后经由全连接层输出结果。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/143.png" alt></p>
+<h4 id="AlexNet-和-LeNet-差异"><a href="#AlexNet-和-LeNet-差异" class="headerlink" title="AlexNet 和 LeNet 差异"></a>AlexNet 和 LeNet 差异</h4><ul>
+<li>激活函数使用 ReLU。</li>
+<li>使用进行局部正规化的 LRN（Local Response Normalization）层。</li>
+<li>使用 Dropout（6.4.3 节）。</li>
+</ul>
+<h2 id="day13-深度学习"><a href="#day13-深度学习" class="headerlink" title="day13 深度学习"></a>day13 深度学习</h2><h3 id="加深网络"><a href="#加深网络" class="headerlink" title="加深网络"></a>加深网络</h3><h3 id="深度学习的小历史"><a href="#深度学习的小历史" class="headerlink" title="深度学习的小历史"></a>深度学习的小历史</h3><h4 id="VGG"><a href="#VGG" class="headerlink" title="VGG"></a>VGG</h4><p>VGG 是由卷积层和池化层构成的基础的 CNN。<br>它的特点在于将有权重的层（卷积层或者全连接层）叠加至 16 层（或者 19 层），具备了深度（根据层的深度，有时也称为“VGG16”或“VGG19”）。<br>VGG 中需要注意的地方是，基于 3×3 的小型滤波器的卷积层的运算是连续进行的。<br>重复进行“卷积层重叠 2 次到 4 次，再通过池化层将大小减半”的处理，最后经由全连接层输出结果。<br><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/152.png" alt></p>
+<h4 id="GoogLeNet"><a href="#GoogLeNet" class="headerlink" title="GoogLeNet"></a>GoogLeNet</h4><p>GoogLeNet 的特征是，网络不仅在纵向上有深度，在横向上也有深度（广度）。GoogLeNet 在横向上有“宽度”，这称为“Inception 结构”，<br>Inception 结构使用了多个大小不同的滤波器（和池化），最后再合并它们的结果。GoogLeNet 的特征就是将这个 Inception 结构用作一个构件（构成元素）。<br>在 GoogLeNet 中，很多地方都使用了大小为 1 × 1 的滤波器的卷积层。这个 1 × 1 的卷积运算通过在通道方向上减小大小，有助于减少参数和实现高速化处理。</p>
+<p><img data-src="http://www.ituring.com.cn/figures/2018/DeepLearning/153.png" alt></p>
+<h4 id="ResNet"><a href="#ResNet" class="headerlink" title="ResNet"></a>ResNet</h4><p>ResNet 是微软团队开发的网络。它的特征在于具有比以前的网络更深的结构。</p>
+<p>在深度学习中，过度加深层的话，很多情况下学习将不能顺利进行，导致最终性能不佳。ResNet 中，为了解决这类问题，导入了“快捷结构”（也称为“捷径”或“小路”）。</p>
+<p>不太明白。。。。。。。。。</p>
+<h3 id="深度学习的高速化"><a href="#深度学习的高速化" class="headerlink" title="深度学习的高速化"></a>深度学习的高速化</h3><p>GPU</p>
+<p>分布式</p>
+<p><strong>ps：</strong><br>计算机中表示小数时，有 32 位的单精度浮点数和 64 位的双精度浮点数等格式。根据以往的实验结果，在深度学习中，即便是 16 位的半精度浮点数（half float），也可以顺利地进行学习。</p>
+<p>NumPy 中提供了 16 位的半精度浮点数类型（不过，只有 16 位类型的存储，运算本身不用 16 位进行），即便使用 NumPy 的半精度浮点数，识别精度也不会下降。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/《深度学习》读书笔记/" title="《深度学习》读书笔记">http://xchcloud.cn/《深度学习》读书笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/深度学习/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Lua-查缺补漏/" rel="prev" title="Lua-查缺补漏">
+      <i class="fa fa-chevron-left"></i> Lua-查缺补漏
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/web协议详解与抓包实战/" rel="next" title="web协议详解与抓包实战">
+      web协议详解与抓包实战 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#day1：感知机卡"><span class="nav-text">day1：感知机卡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day2-神经网络1"><span class="nav-text">day2: 神经网络1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day3-神经网络2"><span class="nav-text">day3: 神经网络2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day4-数据知识卡1"><span class="nav-text">day4: 数据知识卡1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day5-数据知识卡2"><span class="nav-text">day5: 数据知识卡2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day6-计算图卡"><span class="nav-text">day6: 计算图卡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算图"><span class="nav-text">计算图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#局部计算"><span class="nav-text">局部计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为何用计算图解题"><span class="nav-text">为何用计算图解题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链式法则"><span class="nav-text">链式法则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算图的反向传播"><span class="nav-text">计算图的反向传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链式法则和计算图"><span class="nav-text">链式法则和计算图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播"><span class="nav-text">反向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加法节点的反向传播"><span class="nav-text">加法节点的反向传播</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day7-层卡"><span class="nav-text">day7 层卡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day8-参数技巧卡1"><span class="nav-text">day8 参数技巧卡1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数的更新"><span class="nav-text">参数的更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SGD-随机梯度下降法（stochastic-gradient-descent）："><span class="nav-text">SGD 随机梯度下降法（stochastic gradient descent）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SGD-的缺点："><span class="nav-text">SGD 的缺点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Momentum"><span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AdaGrad"><span class="nav-text">AdaGrad</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Adam"><span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权重的初始值"><span class="nav-text">权重的初始值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#隐藏层的激活值的分布"><span class="nav-text">隐藏层的激活值的分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReLU的权重初始值"><span class="nav-text">ReLU的权重初始值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于-MNIST-数据集的权重初始值的比较"><span class="nav-text">基于 MNIST 数据集的权重初始值的比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Batch-Normalization"><span class="nav-text">Batch Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Batch-Normalization-的算法"><span class="nav-text">Batch Normalization 的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点"><span class="nav-text">优点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Batch-Normalization的评估"><span class="nav-text">Batch Normalization的评估</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day9-参数技巧卡2"><span class="nav-text">day9 参数技巧卡2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则化"><span class="nav-text">正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#过拟合"><span class="nav-text">过拟合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权值衰减"><span class="nav-text">权值衰减</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dropout"><span class="nav-text">Dropout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#超参数的验证"><span class="nav-text">超参数的验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#超参数（hyper-parameter）"><span class="nav-text">超参数（hyper-parameter）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证数据"><span class="nav-text">验证数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超参数的最优化"><span class="nav-text">超参数的最优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超参数的最优化的步骤"><span class="nav-text">超参数的最优化的步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day10-CNN结构卡1"><span class="nav-text">day10 CNN结构卡1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#整体结构"><span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-text">卷积层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#全连接层存在的问题"><span class="nav-text">全连接层存在的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#卷积运算"><span class="nav-text">卷积运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#填充"><span class="nav-text">填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#步幅"><span class="nav-text">步幅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-维数据的卷积运算"><span class="nav-text">3 维数据的卷积运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结合方块思考"><span class="nav-text">结合方块思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批处理"><span class="nav-text">批处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day11-CNN结构卡2"><span class="nav-text">day11 CNN结构卡2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#池化层"><span class="nav-text">池化层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#池化层的特征"><span class="nav-text">池化层的特征</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层和池化层的实现"><span class="nav-text">卷积层和池化层的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-维数组"><span class="nav-text">4 维数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于-im2col-的展开"><span class="nav-text">基于 im2col 的展开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#卷积层的实现"><span class="nav-text">卷积层的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#池化层的实现"><span class="nav-text">池化层的实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day12-CNN实现卡"><span class="nav-text">day12 CNN实现卡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-的实现"><span class="nav-text">CNN 的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-的可视化"><span class="nav-text">CNN 的可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第-1-层权重的可视化"><span class="nav-text">第 1 层权重的可视化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于分层结构的信息提取"><span class="nav-text">基于分层结构的信息提取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具有代表性的-CNN"><span class="nav-text">具有代表性的 CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LeNet"><span class="nav-text">LeNet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AlexNet"><span class="nav-text">AlexNet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AlexNet-和-LeNet-差异"><span class="nav-text">AlexNet 和 LeNet 差异</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day13-深度学习"><span class="nav-text">day13 深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加深网络"><span class="nav-text">加深网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度学习的小历史"><span class="nav-text">深度学习的小历史</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VGG"><span class="nav-text">VGG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GoogLeNet"><span class="nav-text">GoogLeNet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ResNet"><span class="nav-text">ResNet</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度学习的高速化"><span class="nav-text">深度学习的高速化</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

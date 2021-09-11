@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在线手册网站架构从0起步系列文章总目录Ansible手册man rsync翻译(rsync命令中文手册) 常用模块注意-k 参数：不配密匙，不配账号密码，手动输入。ansible 192.168.30.101-m ping -k仅支持询问第一个 ip，多个 ip 不支持。">
+<meta name="keywords" content="运维,Linux,Ansible">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible复盘">
+<meta property="og:url" content="http://xchcloud.cn/Ansible复盘/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="在线手册网站架构从0起步系列文章总目录Ansible手册man rsync翻译(rsync命令中文手册) 常用模块注意-k 参数：不配密匙，不配账号密码，手动输入。ansible 192.168.30.101-m ping -k仅支持询问第一个 ip，多个 ip 不支持。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:56:25.177Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ansible复盘">
+<meta name="twitter:description" content="在线手册网站架构从0起步系列文章总目录Ansible手册man rsync翻译(rsync命令中文手册) 常用模块注意-k 参数：不配密匙，不配账号密码，手动输入。ansible 192.168.30.101-m ping -k仅支持询问第一个 ip，多个 ip 不支持。">
+
+<link rel="canonical" href="http://xchcloud.cn/Ansible复盘/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Ansible复盘 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/Ansible复盘/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ansible复盘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-25 08:55:26" itemprop="dateCreated datePublished" datetime="2019-10-25T08:55:26+08:00">2019-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:56:25" itemprop="dateModified" datetime="2021-09-11T16:56:25+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/运维/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/Ansible复盘/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="Ansible复盘/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="在线手册"><a href="#在线手册" class="headerlink" title="在线手册"></a>在线手册</h3><p><a href="https://www.cnblogs.com/f-ck-need-u/p/7576137.html" target="_blank" rel="noopener">网站架构从0起步系列文章总目录</a><br><a href="https://files-cdn.cnblogs.com/files/f-ck-need-u/Ansible_book.pdf" target="_blank" rel="noopener">Ansible手册</a><br><a href="https://www.cnblogs.com/f-ck-need-u/p/7221713.html" target="_blank" rel="noopener">man rsync翻译(rsync命令中文手册)</a></p>
+<h3 id="常用模块"><a href="#常用模块" class="headerlink" title="常用模块"></a>常用模块</h3><h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>-k 参数：不配密匙，不配账号密码，手动输入。<br><code>ansible 192.168.30.101-m ping -k</code><br>仅支持询问第一个 ip，多个 ip 不支持。<br><a id="more"></a><br>inventory 文件遵循 INI 文件风格，中括号中的字符为组名。可以将同一个主机同时归并到多个不同的组中；此外，当如若目标主机使用了非默认的SSH端口，还可以在主机名称之后使用冒号加端口号来标明。</p>
+<p>如果主机名称遵循相似的命名模式，还可以使用列表的方式标识各主机示例：<br>[websrvs]<br>www[01:100].example.com<br>[dbsrvs]<br>db-[a:f]example.com<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ansible命令执行过程</span><br><span class="line">1.加载自己的配置文件默认/etc/ansible/ansible.cfg</span><br><span class="line">2.加载自己对应的模块文件，如command</span><br><span class="line">3.通过ansible将模块或命令生成对应的临时py文件，并将该文件传输至远程服务器的对应执行用户$HOME/.ansible/tmp/ansible-tmp-数字/xXx.PY文件</span><br><span class="line">4.给文件+x执行</span><br><span class="line">5.执行并返回结果</span><br><span class="line">6.删除临时py文件，sleep O退出</span><br><span class="line"></span><br><span class="line">执行状态：</span><br><span class="line">绿色：执行成功并且不需要做改变的操作</span><br><span class="line">黄色：执行成功并且对目标主机做变更</span><br><span class="line">红色：执行失败</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">加入环境变量：</span><br><span class="line">echo &quot;export PATH=$PATH:/usr/git/bin&quot; &gt;&gt; /etc/profile</span><br><span class="line">source /etc/profile   //使修改的文件生效</span><br></pre></td></tr></table></figure>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Ansible配置文件/etc/ansible/ansible.cfg（一般保持默认）</span><br><span class="line">[defaults]</span><br><span class="line">#inventory =/etc/ansible/hosts#主机列表配置文件#library =/usr/share/my_modules/#库文件存放目录</span><br><span class="line">#remote_tmp =$HOME/.ansible/tmp#临时py命令文件存放在远程主机目录</span><br><span class="line">#local_tmp=$HOME/.ansible/tmp#本机的临时命令执行目录</span><br><span class="line">#forks=5#默认并发数</span><br><span class="line">#sudo_user =root#默认sudo 用户</span><br><span class="line">#ask_sudo_pass=True#每次执行ansible命令是否询问ssh密码</span><br><span class="line">#ask_pass =True</span><br><span class="line">#remote_port =22</span><br><span class="line">#host_key_checking=False#检查对应服务器的host_key，建议取消注释</span><br><span class="line">#log_path=/var/log/ansible.log#日志文件</span><br></pre></td></tr></table></figure>
+<h4 id="简单参数"><a href="#简单参数" class="headerlink" title="简单参数"></a>简单参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Ansible通过ssh实现配置管理、应用部署、任务执行等功能，建议配置ansible端能基于密钥认证的方式联系各被管理节点</span><br><span class="line">ansible &lt;host-pattern&gt;[-m module_name][-a args]</span><br><span class="line">--version显示版本</span><br><span class="line">-m module指定模块，默认为command</span><br><span class="line">-V详细过程-Vw-vwv更详细</span><br><span class="line">--list-hosts 显示主机列表，可简写-list</span><br><span class="line">-k，--ask-pass 提示输入ssh连接密码，默认Key验证-K，--ask-become-pass 提示输入sudo时的口令</span><br><span class="line">-C，--check 检查，并不执行</span><br><span class="line">-T，--timeout=TIMEOUT执行命令的超时时间，默认10s</span><br><span class="line">-u，--user=REMOTE_USER 执行远程执行的用户</span><br><span class="line">-b，--become代替旧版的sudo切换</span><br></pre></td></tr></table></figure>
+<p><code>ansible dbsrvs -u root -k-m command -a&#39;ls /root&#39;</code><br><code>ansible dbsrvs -m command -a&#39;ls /root&#39;-u wang-k -b -K</code></p>
+<h4 id="host-pattern"><a href="#host-pattern" class="headerlink" title="host-pattern"></a>host-pattern</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">ansible的Host-pattern</span><br><span class="line"></span><br><span class="line">匹配主机的列表</span><br><span class="line">All：表示所有 Inventory 中的所有主机</span><br><span class="line">ansible all -m ping</span><br><span class="line"></span><br><span class="line">*：通配符</span><br><span class="line">ansible &quot;*&quot; -m ping</span><br><span class="line">ansible 192.168.1.* -m ping</span><br><span class="line">ansible &quot;*srvs&quot; -m ping</span><br><span class="line"></span><br><span class="line">或关系</span><br><span class="line">ansible &quot;websrvs:appsrvs&quot; -m ping</span><br><span class="line">ansible &quot;192.168.1.10:192.168.1.20&quot; -m ping</span><br><span class="line"></span><br><span class="line">逻辑与</span><br><span class="line">ansible &quot;websrvs:&amp;dbsrvs&quot; -m ping 在 websrvs 组并且在 dbsrvs 组中的主机</span><br><span class="line"></span><br><span class="line">逻辑非</span><br><span class="line">ansible websrvs:ldbsrvs&apos; -m ping 在 websrvs 组，但不在 dbsrvs 组中的主机</span><br><span class="line">注意：此处为单引号</span><br><span class="line"></span><br><span class="line">综合逻辑</span><br><span class="line">ansible ‘websrvs:dbsrvs:&amp;appsrvs:lftpsrvs&apos; -m ping 正则表达式</span><br><span class="line">ansible &quot;websrvs:&amp;dbsrvs&quot; -m ping ansible&quot;~（webldb）.*\.magedu\.com&quot; -m ping</span><br></pre></td></tr></table></figure>
+<h4 id="shell-模块"><a href="#shell-模块" class="headerlink" title="shell 模块"></a>shell 模块</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ansible-doc -s shell</span><br><span class="line">- name: Execute commands in nodes.</span><br><span class="line"> action: shell</span><br><span class="line"> chdir # 在执⾏命令前，先cd到指定的⽬录下</span><br><span class="line"> free_form：# 要执行的linux指令</span><br><span class="line"> creates # ⽤于判断命令是否要执⾏。如果指定的⽂件(可以使⽤通配符)存在，则不执⾏。</span><br><span class="line"> removes # ⽤于判断命令是否要执⾏。如果指定的⽂件(可以使⽤通配符)不存在，则不执⾏。</span><br><span class="line"> executable # 不再使⽤默认的/bin/sh解析并执⾏命令，⽽是使⽤此处指定的命令解析。</span><br><span class="line"> # 例如使⽤expect解析expect脚本。必须为绝对路径。</span><br></pre></td></tr></table></figure>
+<h4 id="copy、template-模块"><a href="#copy、template-模块" class="headerlink" title="copy、template 模块"></a>copy、template 模块</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ansible-doc -s copy</span><br><span class="line">- name: Copies files to remote locations.</span><br><span class="line">action: copy</span><br><span class="line"> backup=[yes|no] # 拷贝的同时也创建⼀个包含时间戳信息的备份⽂件，默认为no</span><br><span class="line"> dest= # ⽬标路径，只能是绝对路径，如果拷贝的⽂件是⽬录，则⽬标路径必须也是⽬录</span><br><span class="line"> content # 直接以content给定的字符串或变量值作为⽂件内容保存到远程主机上，它会替代src选项</span><br><span class="line"> directory_mode # 当对⽬录做递归拷贝时，设置了directory_mode将会使得只拷贝新建⽂件，</span><br><span class="line"> # 旧⽂件不会被拷贝。默认未设置</span><br><span class="line"> follow=[yes|no] # 是否追踪到链接的源⽂件。</span><br><span class="line"> force=[yes|no] # 设置为yes(默认)时，将覆盖远程同名⽂件。设置为no时，忽略同名⽂件的拷贝。</span><br><span class="line"> group # 设置远程⽂件的所属组</span><br><span class="line"> owner # 设置远程⽂件的所有者</span><br><span class="line"> mode= # 设置远程⽂件的权限。使⽤数值表⽰时不能省略第⼀位，如0644。</span><br><span class="line"> # 也可以使⽤&apos;u+rwx&apos;或&apos;u=rw,g=r,o=r&apos;等⽅式设置。</span><br><span class="line"> src= # 拷贝本地源⽂件到远程，可使⽤绝对路径或相对路径。如果路径是⽬录，且 ⽬录后加了斜杠&quot;/&quot;，则只会拷贝⽬录中的内容到远程，如果 ⽬录后不加斜杠，则拷贝⽬录本⾝和⽬录内的内容到远程。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> ansible-doc -s template</span><br><span class="line">- name: Templates a file out to a remote server.</span><br><span class="line">action: template</span><br><span class="line"> backup # 拷贝的同时也创建⼀个包含时间戳信息的备份⽂件，默认为no</span><br><span class="line"> dest= # ⽬标路径</span><br><span class="line"> force # 设置为yes (默认)时，将覆盖远程同名⽂件。设置为no时，忽略同名⽂件的拷贝</span><br><span class="line"> group # 设置远程⽂件的所属组</span><br><span class="line"> owner # 设置远程⽂件的所有者</span><br><span class="line"> mode # 设置远程⽂件的权限。使⽤数值表⽰时不能省略第⼀位，如0644。</span><br><span class="line"> # 也可以使⽤&apos;u+rwx&apos; or &apos;u=rw,g=r,o=r&apos;等⽅式设置</span><br><span class="line"> src= # ansible控制器上Jinja2格式的模板所在位置，可以是相对或绝对路径</span><br><span class="line"> validate # 在复制到⽬标主机后但放到⽬标位置之前，执⾏此选项指定的命令。</span><br><span class="line"> # ⼀般⽤于检查配置⽂件语法，语法正确则保存到⽬标位置。</span><br><span class="line"> # 如果要引⽤⽬标⽂件名，则使⽤%s，下⾯的⽰例中的s%即表⽰⽬标机器上的/etc/nginx/nginx.conf。</span><br></pre></td></tr></table></figure>
+<h4 id="file-模块"><a href="#file-模块" class="headerlink" title="file 模块"></a>file 模块</h4><h4 id="fetch拉取⽂件模块"><a href="#fetch拉取⽂件模块" class="headerlink" title="fetch拉取⽂件模块"></a>fetch拉取⽂件模块</h4><h4 id="rsync模块synchronize"><a href="#rsync模块synchronize" class="headerlink" title="rsync模块synchronize"></a>rsync模块synchronize</h4><h4 id="包管理模块yum"><a href="#包管理模块yum" class="headerlink" title="包管理模块yum"></a>包管理模块yum</h4><h4 id="配置yum源模块yum-repository"><a href="#配置yum源模块yum-repository" class="headerlink" title="配置yum源模块yum_repository"></a>配置yum源模块yum_repository</h4><h4 id="服务管理模块service"><a href="#服务管理模块service" class="headerlink" title="服务管理模块service"></a>服务管理模块service</h4><h4 id="systemd模块"><a href="#systemd模块" class="headerlink" title="systemd模块"></a>systemd模块</h4><h4 id="⽤户管理模块user"><a href="#⽤户管理模块user" class="headerlink" title="⽤户管理模块user"></a>⽤户管理模块user</h4><h4 id="authorzied-key模块"><a href="#authorzied-key模块" class="headerlink" title="authorzied_key模块"></a>authorzied_key模块</h4><h4 id="debug模块"><a href="#debug模块" class="headerlink" title="debug模块"></a>debug模块</h4><h4 id="定时任务模块cron"><a href="#定时任务模块cron" class="headerlink" title="定时任务模块cron"></a>定时任务模块cron</h4><h4 id="归档模块archive"><a href="#归档模块archive" class="headerlink" title="归档模块archive"></a>归档模块archive</h4><h4 id="解包模块unarchive"><a href="#解包模块unarchive" class="headerlink" title="解包模块unarchive"></a>解包模块unarchive</h4><h4 id="wait-for模块"><a href="#wait-for模块" class="headerlink" title="wait_for模块"></a>wait_for模块</h4><h4 id="script模块"><a href="#script模块" class="headerlink" title="script模块"></a>script模块</h4><h3 id="Playbook"><a href="#Playbook" class="headerlink" title="Playbook"></a>Playbook</h3><h4 id="列表、字典、分行写"><a href="#列表、字典、分行写" class="headerlink" title="列表、字典、分行写"></a>列表、字典、分行写</h4><h4 id="向模块传递参数"><a href="#向模块传递参数" class="headerlink" title="向模块传递参数"></a>向模块传递参数</h4><p>3 种方式：<br>1、直接卸载模块后面<br>2、直接携程字典形式<br>3、使用内置属性 args</p>
+<h4 id="什么时候使用引号"><a href="#什么时候使用引号" class="headerlink" title="什么时候使用引号"></a>什么时候使用引号</h4><h4 id="remote-user"><a href="#remote-user" class="headerlink" title="remote_user"></a>remote_user</h4><p>remote_user实际上并不是执⾏任务的绝对⾝份，它只是ssh连接过去的⾝份，只不过没有<br>指定become的时候，它正好就⽤此⾝份来运⾏任务。</p>
+<h4 id="notify和handler"><a href="#notify和handler" class="headerlink" title="notify和handler"></a>notify和handler</h4><p>执⾏ task 任务时，如果捕捉到 changed=true，那么就会触发notify，notify下定义了待调⽤的handler。</p>
+<p>handler 的定义和 tasks 的定义完全⼀样，唯⼀需要限定的是 handler 中 task 的 name 必须和 notify 中定义的名称相同。</p>
+<p>notify 是在<strong>执⾏完⼀个 play 中所有 task 后</strong>被触发的，在⼀个 play 中也只会被触发⼀次。意味着如果⼀个 play 中有多个 task 出现了 changed=true，它也只会触发⼀次。</p>
+<h4 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h4><p>可以为 playbook 中的每个任务都打上标签，标签的主要作⽤是可以在 ansible-playbook 中设置只执⾏哪些被打上 tag 的任务或忽略被打上 tag 的任务。</p>
+<h4 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h4><p>with_items迭代列表<br>with_dict迭代字典项<br>with_fileglob迭代⽂件<br>with_nested嵌套迭代</p>
+<h4 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h4><p>逻辑或、逻辑与、取反</p>
+<p>直接引⽤布尔值的变量、可以使⽤jinja2的def ined来测试变量是否已定义，使⽤undef ined可以取反表⽰未定义。</p>
+<h3 id="CMDB"><a href="#CMDB" class="headerlink" title="CMDB"></a>CMDB</h3>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/Ansible复盘/" title="Ansible复盘">http://xchcloud.cn/Ansible复盘/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/运维/" rel="tag"><i class="fa fa-tag"></i> 运维</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Ansible/" rel="tag"><i class="fa fa-tag"></i> Ansible</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/DevOps/" rel="prev" title="DevOps">
+      <i class="fa fa-chevron-left"></i> DevOps
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019年11月笔记/" rel="next" title="2019年11月笔记">
+      2019年11月笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#在线手册"><span class="nav-text">在线手册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用模块"><span class="nav-text">常用模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意"><span class="nav-text">注意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单参数"><span class="nav-text">简单参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#host-pattern"><span class="nav-text">host-pattern</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell-模块"><span class="nav-text">shell 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#copy、template-模块"><span class="nav-text">copy、template 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-模块"><span class="nav-text">file 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fetch拉取⽂件模块"><span class="nav-text">fetch拉取⽂件模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rsync模块synchronize"><span class="nav-text">rsync模块synchronize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包管理模块yum"><span class="nav-text">包管理模块yum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置yum源模块yum-repository"><span class="nav-text">配置yum源模块yum_repository</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务管理模块service"><span class="nav-text">服务管理模块service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#systemd模块"><span class="nav-text">systemd模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#⽤户管理模块user"><span class="nav-text">⽤户管理模块user</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#authorzied-key模块"><span class="nav-text">authorzied_key模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#debug模块"><span class="nav-text">debug模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定时任务模块cron"><span class="nav-text">定时任务模块cron</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归档模块archive"><span class="nav-text">归档模块archive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解包模块unarchive"><span class="nav-text">解包模块unarchive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-for模块"><span class="nav-text">wait_for模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#script模块"><span class="nav-text">script模块</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Playbook"><span class="nav-text">Playbook</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列表、字典、分行写"><span class="nav-text">列表、字典、分行写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向模块传递参数"><span class="nav-text">向模块传递参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么时候使用引号"><span class="nav-text">什么时候使用引号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remote-user"><span class="nav-text">remote_user</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notify和handler"><span class="nav-text">notify和handler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标签"><span class="nav-text">标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代"><span class="nav-text">迭代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#条件判断"><span class="nav-text">条件判断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMDB"><span class="nav-text">CMDB</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

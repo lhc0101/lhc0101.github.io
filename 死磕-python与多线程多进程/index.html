@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="进程与线程的区别1、进程是资源分配的最小单位，线程是程序执行的最小单位（资源调度的最小单位）2、进程有自己的独立地址空间，每启动一个进程，系统就会为它分配地址空间，建立数据表来维护代码段、堆栈段和数据段，这种操作非常昂贵。而线程是共享进程中的数据的，使用相同的地址空间，因此CPU切换一个线程的花费远比进程要小很多，同时创建一个线程的开销也比进程要小很多。3、线程之间的通信更方便，同一进程下的线程共">
+<meta name="keywords" content="python,C++,多线程,多进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="死磕-python与多线程多进程">
+<meta property="og:url" content="http://xchcloud.cn/死磕-python与多线程多进程/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="进程与线程的区别1、进程是资源分配的最小单位，线程是程序执行的最小单位（资源调度的最小单位）2、进程有自己的独立地址空间，每启动一个进程，系统就会为它分配地址空间，建立数据表来维护代码段、堆栈段和数据段，这种操作非常昂贵。而线程是共享进程中的数据的，使用相同的地址空间，因此CPU切换一个线程的花费远比进程要小很多，同时创建一个线程的开销也比进程要小很多。3、线程之间的通信更方便，同一进程下的线程共">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:02:24.334Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="死磕-python与多线程多进程">
+<meta name="twitter:description" content="进程与线程的区别1、进程是资源分配的最小单位，线程是程序执行的最小单位（资源调度的最小单位）2、进程有自己的独立地址空间，每启动一个进程，系统就会为它分配地址空间，建立数据表来维护代码段、堆栈段和数据段，这种操作非常昂贵。而线程是共享进程中的数据的，使用相同的地址空间，因此CPU切换一个线程的花费远比进程要小很多，同时创建一个线程的开销也比进程要小很多。3、线程之间的通信更方便，同一进程下的线程共">
+
+<link rel="canonical" href="http://xchcloud.cn/死磕-python与多线程多进程/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>死磕-python与多线程多进程 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/死磕-python与多线程多进程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          死磕-python与多线程多进程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-03 23:56:57" itemprop="dateCreated datePublished" datetime="2019-10-03T23:56:57+08:00">2019-10-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:02:24" itemprop="dateModified" datetime="2021-09-11T17:02:24+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/多线程/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/死磕-python与多线程多进程/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="死磕-python与多线程多进程/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="进程与线程的区别"><a href="#进程与线程的区别" class="headerlink" title="进程与线程的区别"></a>进程与线程的区别</h2><p>1、<strong>进程</strong>是资源分配的最小单位，<strong>线程</strong>是程序执行的最小单位（资源调度的最小单位）<br>2、<strong>进程</strong>有自己的独立地址空间，每启动一个进程，系统就会为它分配地址空间，<strong>建立数据表</strong>来维护代码段、堆栈段和数据段，这种操作非常昂贵。<br>而<strong>线程</strong>是共享进程中的数据的，使用相同的地址空间，因此CPU切换一个线程的花费远比进程要小很多，同时创建一个线程的开销也比进程要小很多。<br>3、<strong>线程之间的通信</strong>更方便，同一进程下的线程共享全局变量、静态变量等数据，而<strong>进程之间的通信</strong>需要以通信的方式（IPC)进行。<br><a id="more"></a></p>
+<ul>
+<li>不过如何处理好同步与互斥是编写多线程程序的难点。</li>
+</ul>
+<p>4、但是<strong>多进程程序更健壮</strong>，多线程程序只要有一个线程死掉，整个进程也死掉了，而一个进程死掉并不会对另外一个进程造成影响，因为进程有自己独立的地址空间。</p>
+<p>5、线程是一个上下文的执行指令，而进程则是与运算相关的一簇资源。</p>
+<p>6、同一个进程的线程之间可以直接通信，但是进程之间的交流需要借助中间代理来实现。</p>
+<p>7、创建新的线程很容易，但是创建新的进程需要对父进程做一次复制。</p>
+<p>8、一个线程可以操作同一进程的其他线程，但是进程只能操作其子进程。</p>
+<p>9、线程启动速度快，进程启动速度慢（但是两者运行速度没有可比性）。</p>
+<h2 id="进程与线程的同步"><a href="#进程与线程的同步" class="headerlink" title="进程与线程的同步"></a>进程与线程的同步</h2><p>进程：无名管道、有名管道、信号、共享内存、消息队列、信号量<br>进程：互斥量、读写锁、自旋锁、线程信号、条件变量</p>
+<h2 id="堆与栈"><a href="#堆与栈" class="headerlink" title="堆与栈"></a>堆与栈</h2><p>堆：是大家共有的空间，分<strong>全局堆</strong>和<strong>局部堆</strong>。<strong>全局堆</strong>就是所有没有分配的空间，<strong>局部堆</strong>就是用户分配的空间。堆在操作系统对进程初始化的时候分配，运行过程中也可以向系统要额外的堆，但是记得用完了要还给操作系统，要不然就是<strong>内存泄漏</strong>。</p>
+<p>栈：是个<strong>线程独有</strong>的，保存其运行状态和局部自动变量的。栈在线程开始的时候初始化，每个线程的栈互相独立，因此，栈是　thread safe 的。操作系统在切换线程的时候会自动的切换栈，就是切换　ＳＳ／ＥＳＰ 寄存器。<strong>栈空间不需要在高级语言里面显式的分配和释放</strong>。</p>
+<h2 id="线程共享的环境"><a href="#线程共享的环境" class="headerlink" title="线程共享的环境"></a>线程共享的环境</h2><p>包括：<strong>进程代码段、进程的公有数据</strong>(利用这些共享的数据，线程很容易的实现相互之间的通讯)、<strong>进程打开的文件描述符、信号的处理器、进程的当前目录和进程用户ID与进程组ID</strong>。</p>
+<p>进程拥有这许多共性的同时，还拥有自己的个性。有了这些个性，线程才能实现并发性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">同一进程下的线程可以共享以下？BD </span><br><span class="line">A stack   B data section   C register set   D file fd </span><br><span class="line">解释： </span><br><span class="line">stack 栈 </span><br><span class="line">data section 数据段 </span><br><span class="line">register set 寄存器组  </span><br><span class="line">file fd 文件描述符</span><br></pre></td></tr></table></figure></p>
+<h2 id="进程个性："><a href="#进程个性：" class="headerlink" title="进程个性："></a>进程个性：</h2><p>1.线程ID<br>每个线程都有自己的线程ID，这个ID在本进程中是唯一的。进程用此来标识线程。<br>2.寄存器组的值<br>由于线程间是并发运行的，每个线程有自己不同的运行线索，当从一个线程切换到另一个线程上时，必须将原有的线程的寄存器集合的状态保存，以便将来该线程在被重新切换到时能得以恢复。<br>3.线程的堆栈<br>堆栈是保证线程独立运行所必须的。<br>线程函数可以调用函数，而被调用函数中又是可以层层嵌套的，所以线程必须拥有自己的函数堆栈，使得函数调用可以正常执行，不受其他线程的影<br>响。<br>4.错误返回码<br>由于同一个进程中有很多个线程在同时运行，可能某个线程进行系统调用后设置了errno值，而在该线程还没有处理这个错误，另外一个线程就在此时被调度器投入运行，这样错误值就有可能被修改。所以，不同的线程应该拥有自己的错误返回码变量。<br>5.线程的信号屏蔽码<br>由于每个线程所感兴趣的信号不同，所以线程的信号屏蔽码应该由线程自己管理。但所有的线程都共享同样的信号处理器。<br>6.线程的优先级<br>由于线程需要像进程那样能够被调度，那么就必须要有可供调度使用的参数，这个参数就是线程的优先级。</p>
+<h2 id="实现并发的方式有多种："><a href="#实现并发的方式有多种：" class="headerlink" title="实现并发的方式有多种："></a>实现并发的方式有多种：</h2><p>比如多进程、多线程、IO多路复用。</p>
+<h3 id="python-中的-GIL"><a href="#python-中的-GIL" class="headerlink" title="python 中的 GIL"></a>python 中的 GIL</h3><p>在非 python 环境中，<br>单核情况下，同时只能有一个任务执行。<br>多核时可以支持多个线程同时执行。<br>但是在 <strong>python 中，无论有多少核，同时只能执行一个线程</strong>。究其原因，这就是由于 GIL 的存在导致的。</p>
+<p>GIL的全称是Global Interpreter Lock(全局解释器锁)，来源是python设计之初的考虑，为了数据安全所做的决定。某个线程想要执行，必须先拿到 GIL，我们可以把GIL看作是“通行证”，并且在一个 python 进程中，GIL 只有一个。拿不到通行证的线程，就不允许进入CPU执行。GIL只在 cpython 中才有，因为 cpython 调用的是 c 语言的原生线程，所以他不能直接操作 cpu，只能利用GIL保证同一时间只能有一个线程拿到数据。</p>
+<p>Jython 是将 Python code 在JVM 上面跑和调用 java code的解释器。</p>
+<p>而在 pypy 和 jpython 中是没有GIL的。</p>
+<p>Python 虽然不能利用多线程实现多核任务，但可以<strong>通过多进程实现多核任务</strong>。多个Python 进程有各自独立的 GIL 锁，互不影响</p>
+<h3 id="pypy-和-Jython-和-Cpython-和-Cython"><a href="#pypy-和-Jython-和-Cpython-和-Cython" class="headerlink" title="pypy 和 Jython 和 Cpython 和 Cython"></a>pypy 和 Jython 和 Cpython 和 Cython</h3><p>python是一种编程语言。但这种语言有多种实现，而且与其他语言不同，python 并没有一个专门的机构负责实现，而是由多个社区来实现。</p>
+<p>其中使用c语言开发的叫做 python，在于别的语言开发的 python 对比时为避免歧义通常称为 CPython。</p>
+<p>同样的，使用 java 开发的叫做 JPython，使用 .net 开发的叫做 IronPython。</p>
+<p>而 PyPy 与 CPython 的不同在于，别的一些 python 实现如 CPython 是使用解释执行的方式，这样的实现方式在性能上是很凄惨的。而 PyPy 使用了 JIT(即时编译) 技术，在性能上得到了提升。</p>
+<p>由于 Python 是<strong>动态编译</strong>的语言，和 C/C++、Java 或者 Kotlin 等静态语言不同，它是在运行时一句一句代码地边编译边执行的，而 Java 是提前将高级语言编译成了 JVM 字节码，运行时直接通过 JVM 和机器打交道，所以进行密集计算时运行速度远高于动态编译语言。</p>
+<p>PyPy，它使用了 <strong>JIT（即时编译）技术</strong>，混合了动态编译和静态编译的特性，仍然是一句一句编译源代码，但是<strong>会将翻译过的代码缓存起来</strong>以降低性能损耗。相对于静态编译代码，即时编译的代码可以处理延迟绑定并增强安全性。绝大部分 Python 代码都可以在 PyPy 下运行，但是 PyPy 和 CPython 有一些是不同的。</p>
+<h4 id="CPython"><a href="#CPython" class="headerlink" title="CPython"></a>CPython</h4><p>是用 C 语言实现 Pyhon，是目前应用最广泛的解释器。最新的语言特性都是在这个上面先实现，基本包含了所有第三方库支持，<br>但是 CPython 有几个缺陷，<br>一是 (GIL) 全局锁使 Python 在多线程效能上表现不佳，<br>二是 CPython 无法支持 JIT（即时编译），导致其执行速度不及 Java 和 Javascipt 等语言。于是出现了 Pypy。</p>
+<h4 id="Pypy"><a href="#Pypy" class="headerlink" title="Pypy"></a>Pypy</h4><p>是用 Python 自身实现的解释器。针对 CPython 的缺点进行了各方面的改良，性能得到很大的提升。最重要的一点就是 Pypy 集成了 JIT。<br>但是，<strong>Pypy无法支持官方的C/Python API</strong>，导致无法使用例如Numpy，Scipy等重要的第三方库。这也是现在Pypy没有被广泛使用的原因吧。</p>
+<h4 id="Cpython"><a href="#Cpython" class="headerlink" title="Cpython"></a>Cpython</h4><p>Cython是结合了Python和C的语法的一种语言，可以简单的认为就是给Python加上了静态类型后的语法，使用者可以维持大部分的Python语法，而不需要大幅度调整主要的程式逻辑与算法。但由于会直接编译为二进制程序，所以性能较Python会有很大提升。</p>
+<p>Cython被大量运用在CPython函式库的撰写，以取得较高的执行效能。Cython将CPython代码转译成 C 或 C++ 语法后，自动包装上函式呼叫界面生成 .pyx 后缀的执行档，即可当成普通的函式库。其性能一般逊于原生的 C/C++ 函式库，但由于 CPython 语法的易用性可以缩短开发时间。Cython 也可以用于编译以 C/C++ 为 CPython 撰写的函式库。</p>
+<h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>多任务可以由多进程完成，也可以由一个进程内的多线程完成。</p>
+<p>我们前面提到了进程是由若干线程组成的，一个进程至少有一个线程。</p>
+<p>由于线程是操作系统直接支持的执行单元，因此，高级语言通常都内置多线程的支持。</p>
+<h4 id="线程常用方法"><a href="#线程常用方法" class="headerlink" title="线程常用方法"></a>线程常用方法</h4><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start()</td>
+<td>线程准备就绪，等待CPU调度</td>
+</tr>
+<tr>
+<td>setName()</td>
+<td>为线程设置名称</td>
+</tr>
+<tr>
+<td>getName()</td>
+<td>获取线程名称</td>
+</tr>
+<tr>
+<td>setDaemon(True)</td>
+<td>设置为守护线程</td>
+</tr>
+<tr>
+<td>join()</td>
+<td>逐个执行每个线程，执行完毕后继续往下执行</td>
+</tr>
+<tr>
+<td>run()</td>
+<td>线程被cpu调度后自动执行线程对象的run方法，如果想自定义线程类，直接重写run方法就行了</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Python多线程"><a href="#Python多线程" class="headerlink" title="Python多线程"></a>Python多线程</h4><p>Python的线程是真正的Posix Thread，而不是模拟出来的线程。</p>
+<p>Python的标准库提供了两个模块：thread和threading，thread是低级模块，threading是高级模块，对thread进行了封装。绝大多数情况下，我们只需要使用threading这个高级模块。</p>
+<p>启动一个线程就是把一个函数传入并创建Thread实例，然后调用start()开始执行：</p>
+<p>由于任何进程默认就会启动一个线程，我们把该线程称为主线程，主线程又可以启动新的线程，Python 的 threading 模块有个 current_thread() 函数，它永远返回当前线程的实例。主线程实例的名字叫 MainThread，子线程的名字在创建时指定，我们用 LoopThread 命名子线程。名字仅仅在打印时用来显示，完全没有其他意义，如果不起名字 Python 就自动给线程命名为Thread-1，Thread-2……</p>
+<p>多线程编程，模型复杂，容易发生冲突，必须用锁加以隔离，同时，又要小心死锁的发生。</p>
+<p>Python解释器由于设计时有GIL全局锁，导致了多线程无法利用多核。多线程的并发在Python中就是一个美丽的梦。</p>
+<h5 id="执行效率分析"><a href="#执行效率分析" class="headerlink" title="执行效率分析"></a>执行效率分析</h5><p>python针对不同类型的代码执行效率也是不同的：</p>
+<p>1、CPU密集型代码(各种循环处理、计算等等)，在这种情况下，由于计算工作多，ticks计数很快就会达到阈值，然后触发GIL的释放与再竞争（多个线程来回切换当然是需要消耗资源的），所以python下的多线程对CPU密集型代码并不友好。</p>
+<p>2、IO密集型代码(文件处理、网络爬虫等涉及文件读写的操作)，多线程能够有效提升效率(单线程下有IO操作会进行IO等待，造成不必要的时间浪费，而开启多线程能在线程A等待时，自动切换到线程B，可以不浪费CPU的资源，从而能提升程序执行效率)。所以python的多线程对IO密集型代码比较友好。</p>
+<p>注：python下想要充分利用多核CPU，就用多进程。因为每个进程有各自独立的GIL，互不干扰，这样就可以真正意义上的并行执行，在python中，多进程的执行效率优于多线程(仅仅针对多核CPU而言)。</p>
+<h5 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h5><p>多线程和多进程最大的不同在于，<strong>多进程中</strong>，同一个变量，各自有一份拷贝存在于每个进程中，互不影响，而<strong>多线程</strong>中，所有变量都由所有线程共享，所以，任何一个变量都可以被任何一个线程修改，因此，线程之间共享数据最大的危险在于多个线程同时改一个变量，把内容给改乱了。</p>
+<p>我们定义了一个共享变量 balance，初始值为 0，并且启动两个线程，先存后取，理论上结果应该为 0，但是，由于线程的调度是由操作系统决定的，当 t1、t2 交替执行时，只要循环次数足够多，balance 的结果就不一定是0了。</p>
+<p>如果我们要确保 balance计 算正确，就要给 change_it() 上一把锁，当某个线程开始执行change_it() 时，我们说，该线程因为获得了锁，因此其他线程不能同时执行 change_it()，只能等待，直到锁被释放后，获得该锁以后才能改。由于<strong>锁只有一个</strong>，无论多少线程，同一时刻最多只有一个线程持有该锁，所以，不会造成修改的冲突。创建一个锁就是通过threading.Lock() 来实现：</p>
+<p>当多个线程同时执行 lock.acquire() 时，只有<strong>一个线程能成功地获取锁</strong>，然后继续执行代码，其他线程就继续等待直到获得锁为止。</p>
+<p>获得锁的线程用完后一定要释放锁，否则那些苦苦等待锁的线程将永远等待下去，成为死线程。所以我们用try…finally来<strong>确保锁一定会被释放</strong>。</p>
+<p>锁的好处就是确保了某段关键代码只能由一个线程从头到尾完整地执行，坏处当然也很多，首先是阻止了多线程并发执行，包含锁的某段代码实际上只能以单线程模式执行，效率就大大地下降了。其次，由于可以存在多个锁，<strong>不同的线程持有不同的锁</strong>，并试图获取对方持有的锁时，可能会造成死锁，导致多个线程全部挂起，既不能执行，也无法结束，只能靠操作系统强制终止。</p>
+<p>互斥锁（mutex）</p>
+<p>递归锁</p>
+<p>信号量（BoundedSemaphore类）：<br>互斥锁同时只允许一个线程更改数据，而Semaphore是同时允许一定数量的线程更改数据 </p>
+<p>事件（Event类）<br>| 方法   | 注释                                                 |<br>|——–|——————————————————|<br>| clear  | 将flag设置为“False”                                  |<br>| set    | 将flag设置为“True”                                   |<br>| is_set | 判断是否设置了flag                                   |<br>| wait   | 会一直监听flag，如果没有检测到flag就一直处于阻塞状态 |</p>
+<p>条件（Condition类）：<br>使得线程等待，只有满足某条件时，才释放n个线程</p>
+<p>定时器（Timer类）：<br>定时器，指定n秒后执行某操作</p>
+<h5 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h5><p>线程和进程的操作是由程序触发系统接口，最后的执行者是系统，它本质上是操作系统提供的功能。而协程的操作则是程序员指定的，在python中通过yield，人为的实现并发处理。</p>
+<p>协程存在的意义：对于多线程应用，CPU通过切片的方式来切换线程间的执行，线程切换时需要耗时。协程，则只使用一个线程，分解一个线程成为多个“微线程”，在一个线程中规定某个代码块的执行顺序。</p>
+<p><strong>协程的适用场景</strong>：当程序中存在大量不需要CPU的操作时（IO）。</p>
+<p>常用第三方模块gevent和greenlet。（本质上，gevent是对greenlet的高级封装，因此一般用它就行，这是一个相当高效的模块。）</p>
+<h5 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h5><p>“from multiprocessing.dummy import Pool”这样导入的 Pool表示的是线程池。</p>
+<p>线程池(from multiprocessing.dummy import Pool)<br><strong>线程池的原理</strong><br>线程池首先会维护一个任务队列<br>生成工作使用的线程(可以是自定义个数，也可以是系统默认)<br>线程分别从队列中取出任务，并执行，一个任务执行完成需要告诉主线程完成一个任务<br>再从任务队列中取出任务，直到所有任务为空，退出线程<br><strong>为什么需要使用线程池</strong></p>
+<ul>
+<li>创建/销毁线程伴随着系统开销，过于频繁的创建/销毁线程，会很大程度上影响处理效率。<pre><code>记创建线程消耗时间T1，执行任务消耗时间T2，销毁线程消耗时间T3，如果T1+T3&gt;T2，那说明开启一个线程来执行这个任务太不划算了！在线程池缓存线程可用已有的闲置线程来执行新任务，避免了创建/销毁带来的系统开销。
+</code></pre></li>
+<li>线程并发数量过多，抢占系统资源从而导致阻塞。<br>  线程能共享系统资源，如果同时执行的线程过多，就有可能导致系统资源不足而产生阻塞的情况。</li>
+<li>对线程进行一些简单的管理。<br>  比如：延时执行、定时循环执行的策略等，运用线程池都能进行很好的实现。</li>
+</ul>
+<p><strong>使用思路</strong><br>1，将任务放在队列<br>    1）创建队列：（初始化）<br>    2）设置大小，线程池的最大容量<br>    3）真实创建的线程 列表<br>    4）空闲的线程数量</p>
+<p>2，着手开始处理任务<br>    1）创建线程<br>        2）空闲线程数量大于0，则不再创建线程<br>        3）创建线程池的数量 不能高于线程池的限制<br>        4）根据任务个数判断  创建线程的数量<br>    2）线程去队列中取任务<br>        1）取任务包（任务包是一个元祖）<br>        2）任务为空时，不再取（终止）</p>
+<h3 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h3><p>Unix/Linux操作系统提供了一个fork()系统调用，它非常特殊。普通的函数调用，调用一次，返回一次，但是fork()调用一次，返回两次，因为操作系统自动把当前进程（称为父进程）复制了一份（称为子进程），然后，分别在父进程和子进程内返回。</p>
+<p>子进程永远返回0，而父进程返回子进程的ID。这样做的理由是，一个父进程可以fork出很多子进程，所以，父进程要记下每个子进程的ID，而子进程只需要调用getppid()就可以拿到父进程的ID。</p>
+<p>进程是资源（CPU、内存等）分配的基本单位，它是程序执行时的一个实例。<strong>程序运行时</strong>系统就会创建一个进程，并为它分配资源，然后把该进程放入<strong>进程就绪队列</strong>，进程调度器选中它的时候就会为它分配 CPU 时间，程序开始真正运行。</p>
+<p>Linux系统函数fork()可以在父进程中创建一个子进程，这样的话，在一个进程接到来自客户端新的请求时就可以复制出一个子进程让其来处理，父进程只需负责监控请求的到来，然后创建子进程让其去处理，这样就能做到并发处理。</p>
+<h4 id="Python多进程"><a href="#Python多进程" class="headerlink" title="Python多进程"></a>Python多进程</h4><p>python中的多进程主要使用到 multiprocessing 这个库</p>
+<h5 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h5><p>由于进程之间数据是不共享的，所以不会出现多线程GIL带来的问题。多进程之间的通信通过Queue()或Pipe()来实现</p>
+<p><strong>Queue()</strong><br>使用方法跟threading里的queue差不多</p>
+<p><strong>Pipe()</strong><br>Pipe的本质是进程之间的数据传递，而不是数据共享，这和socket有点像。pipe()返回两个连接对象分别表示管道的两端，每端都有send()和recv()方法。如果两个进程试图在同一时间的同一端进行读取和写入那么，这可能会损坏管道中的数据。</p>
+<h5 id="数据的共享"><a href="#数据的共享" class="headerlink" title="数据的共享"></a>数据的共享</h5><p>通过Manager可实现进程间数据的共享。Manager()返回的manager对象会通过一个服务进程，来使其他进程通过代理的方式操作python对象。manager对象支持 list, dict, Namespace, Lock, RLock, Semaphore, BoundedSemaphore, Condition, Event, Barrier, Queue, Value ,Array.</p>
+<h5 id="进程锁（进程同步）"><a href="#进程锁（进程同步）" class="headerlink" title="进程锁（进程同步）"></a>进程锁（进程同步）</h5><p>数据输出的时候保证不同进程的输出内容在同一块屏幕正常显示，防止数据乱序的情况。</p>
+<h5 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h5><p>由于<strong>进程启动的开销比较大</strong>，使用多进程的时候会导致大量内存空间被消耗。为了防止这种情况发生可以使用进程池，（由于启动线程的开销比较小，所以不需要线程池这种概念，多线程只会频繁得切换cpu导致系统变慢，并不会占用过多的内存空间）</p>
+<p>进程池内部维护一个进程序列，当使用时，去进程池中获取一个进程，如果进程池序列中没有可供使用的进程，那么程序就会等待，直到进程池中有可用进程为止。在上面的程序中产生了10个进程，但是只能有5同时被放入进程池，剩下的都被暂时挂起，并不占用内存空间，等前面的五个进程执行完后，再执行剩下5个进程。</p>
+<p><strong>进程池中常用方法：</strong><br>apply() 同步执行（串行）<br>apply_async() 异步执行（并行）<br>terminate() 立刻关闭进程池<br>join() 主进程等待所有子进程执行完毕。必须在close或terminate()之后。<br>close() 等待所有进程结束后，才关闭进程池。</p>
+<h3 id="python什么时候使用多线程，什么时候使用多进程？"><a href="#python什么时候使用多线程，什么时候使用多进程？" class="headerlink" title="python什么时候使用多线程，什么时候使用多进程？"></a>python什么时候使用多线程，什么时候使用多进程？</h3><p>1.多线程使用场景：IO密集型</p>
+<p>2.多进程使用场景：CPU密集型</p>
+<p>multiprocessing开销比较大，原因就在于：<br>主进程和子进程之间通信，必须进行序列化和反序列化的操作</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p><a href="https://www.cnblogs.com/strive-man/p/8904495.html" target="_blank" rel="noopener">为什么会有这么多python？其实python并不是编程语言！</a><br><a href="https://blog.csdn.net/somezz/article/details/80963760" target="_blank" rel="noopener">Python 多线程操作</a><br><a href="https://www.jianshu.com/p/644dbb6d4cc8" target="_blank" rel="noopener">python多线程与多进程</a><br><a href="https://www.cnblogs.com/tmdhhl/p/multiprocessing.html" target="_blank" rel="noopener">multiprocessing中进程池，线程池的使用</a><br><a href="https://www.cnblogs.com/ssyfj/p/9218730.html" target="_blank" rel="noopener">python—协程理解</a><br><a href="https://www.cnblogs.com/whatisfantasy/p/6440585.html" target="_blank" rel="noopener">搞定python多线程和多进程</a><br><a href="https://www.liaoxuefeng.com/wiki/897692888725344/923056118147584" target="_blank" rel="noopener">廖雪峰——进程和线程</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/死磕-python与多线程多进程/" title="死磕-python与多线程多进程">http://xchcloud.cn/死磕-python与多线程多进程/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+              <a href="/tags/多线程/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+              <a href="/tags/多进程/" rel="tag"><i class="fa fa-tag"></i> 多进程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/数据库复盘笔记/" rel="prev" title="数据库复盘笔记">
+      <i class="fa fa-chevron-left"></i> 数据库复盘笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Zabbix-升级打怪之路/" rel="next" title="Zabbix-升级打怪之路">
+      Zabbix-升级打怪之路 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程与线程的区别"><span class="nav-text">进程与线程的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程与线程的同步"><span class="nav-text">进程与线程的同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆与栈"><span class="nav-text">堆与栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程共享的环境"><span class="nav-text">线程共享的环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程个性："><span class="nav-text">进程个性：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现并发的方式有多种："><span class="nav-text">实现并发的方式有多种：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python-中的-GIL"><span class="nav-text">python 中的 GIL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pypy-和-Jython-和-Cpython-和-Cython"><span class="nav-text">pypy 和 Jython 和 Cpython 和 Cython</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPython"><span class="nav-text">CPython</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pypy"><span class="nav-text">Pypy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cpython"><span class="nav-text">Cpython</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多线程"><span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程常用方法"><span class="nav-text">线程常用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python多线程"><span class="nav-text">Python多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#执行效率分析"><span class="nav-text">执行效率分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Lock"><span class="nav-text">Lock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#协程"><span class="nav-text">协程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池"><span class="nav-text">线程池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多进程"><span class="nav-text">多进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python多进程"><span class="nav-text">Python多进程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#进程间通信"><span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据的共享"><span class="nav-text">数据的共享</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进程锁（进程同步）"><span class="nav-text">进程锁（进程同步）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进程池"><span class="nav-text">进程池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python什么时候使用多线程，什么时候使用多进程？"><span class="nav-text">python什么时候使用多线程，什么时候使用多进程？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考链接"><span class="nav-text">参考链接</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

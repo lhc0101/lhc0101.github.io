@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="发现漏洞 基于端口服务扫描结果版本信息（速度慢） 搜索已公开的漏洞数据库（数量大） 使用弱点扫描器实现漏洞管理">
+<meta name="keywords" content="入门,kali,漏洞扫描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kali-linux漏洞扫描入门">
+<meta property="og:url" content="http://xchcloud.cn/Kali-linux漏洞扫描入门/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="发现漏洞 基于端口服务扫描结果版本信息（速度慢） 搜索已公开的漏洞数据库（数量大） 使用弱点扫描器实现漏洞管理">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:59:01.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kali-linux漏洞扫描入门">
+<meta name="twitter:description" content="发现漏洞 基于端口服务扫描结果版本信息（速度慢） 搜索已公开的漏洞数据库（数量大） 使用弱点扫描器实现漏洞管理">
+
+<link rel="canonical" href="http://xchcloud.cn/Kali-linux漏洞扫描入门/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Kali-linux漏洞扫描入门 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/Kali-linux漏洞扫描入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kali-linux漏洞扫描入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-10 21:00:54" itemprop="dateCreated datePublished" datetime="2018-10-10T21:00:54+08:00">2018-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:59:01" itemprop="dateModified" datetime="2021-09-11T16:59:01+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kali/" itemprop="url" rel="index"><span itemprop="name">kali</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/Kali-linux漏洞扫描入门/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="Kali-linux漏洞扫描入门/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="发现漏洞"><a href="#发现漏洞" class="headerlink" title="发现漏洞"></a>发现漏洞</h2><ul>
+<li>基于端口服务扫描结果版本信息（速度慢）</li>
+<li>搜索已公开的漏洞数据库（数量大）</li>
+<li>使用弱点扫描器实现漏洞管理<a id="more"></a>
+<h2 id="从信息的维度定义漏洞管理"><a href="#从信息的维度定义漏洞管理" class="headerlink" title="从信息的维度定义漏洞管理"></a>从信息的维度定义漏洞管理</h2><h3 id="信息收集："><a href="#信息收集：" class="headerlink" title="信息收集："></a>信息收集：</h3></li>
+<li>扫描发现网络IP、OS、服务、配置、漏洞</li>
+<li>能力需求：定义扫描方式内容和目标<h3 id="信息管理"><a href="#信息管理" class="headerlink" title="信息管理"></a>信息管理</h3></li>
+<li>格式化信息，并进行筛选、分组、定义优先级</li>
+<li>能力需求：资产分组、指定所有者、向所有者报告漏洞<h3 id="信息输出"><a href="#信息输出" class="headerlink" title="信息输出"></a>信息输出</h3></li>
+<li>向不同层级的人群展示足够的信息量</li>
+<li>能力需求：生成报告、导出数据、与SIEM集成</li>
+</ul>
+<h2 id="弱点扫描类型"><a href="#弱点扫描类型" class="headerlink" title="弱点扫描类型"></a>弱点扫描类型</h2><h3 id="主动扫描"><a href="#主动扫描" class="headerlink" title="主动扫描"></a>主动扫描</h3><ul>
+<li>有身份验证</li>
+<li>无身份验证<h3 id="被动扫描"><a href="#被动扫描" class="headerlink" title="被动扫描"></a>被动扫描</h3></li>
+<li>镜像端口抓包</li>
+<li>其他来源输入<h3 id="基于Agent的扫描"><a href="#基于Agent的扫描" class="headerlink" title="基于Agent的扫描"></a>基于Agent的扫描</h3></li>
+<li>支持平台有限</li>
+</ul>
+<h2 id="漏洞基本概念"><a href="#漏洞基本概念" class="headerlink" title="漏洞基本概念"></a>漏洞基本概念</h2><h3 id="CVSS（Common-Vulnerability-Scoring-System）"><a href="#CVSS（Common-Vulnerability-Scoring-System）" class="headerlink" title="CVSS（Common Vulnerability Scoring System）"></a>CVSS（Common Vulnerability Scoring System）</h3><ul>
+<li>通用漏洞评分系统——工业标准</li>
+<li>描述安全漏洞严重程度的统一评分方案</li>
+<li>V 3版本——2015年6月10日</li>
+<li>Basic Metric：基础的恒定不变的弱点权重</li>
+<li>Temporal Metric：依赖时间因素的弱点权重</li>
+<li>Enviromental Metric：利用弱点的环境要求和实施难度的权重<br>CVSS是安全内容自动化协议（SCAP）的一部分</li>
+<li>通常CVSS与CVE一同由美国国家漏洞库（NVD）发布并保持数据的更新</li>
+<li>分值范围：0 —— 10</li>
+<li>不同机构按CVSS分值定义威胁的中、高、低威胁级别</li>
+<li>CVSS体现弱点的风险，威胁级别（severity）表示弱点风险对企业的影响程度</li>
+<li>CVSS分值是工业标准，但威胁级别不是<h3 id="Vulnerability-Reference"><a href="#Vulnerability-Reference" class="headerlink" title="Vulnerability Reference"></a>Vulnerability Reference</h3><h3 id="CVE（-Common-Vulnerabilities-and-Exposures-）"><a href="#CVE（-Common-Vulnerabilities-and-Exposures-）" class="headerlink" title="CVE（ Common Vulnerabilities and Exposures ）"></a>CVE（ Common Vulnerabilities and Exposures ）</h3></li>
+<li>已公开的信息安全漏洞字典，统一的漏洞编号标准</li>
+<li>MITRE公司负责维护（非盈利机构）</li>
+<li>扫描器的大部分扫描项都对应一个CVE编号</li>
+<li>实现不同厂商之间信息交换的统一标准</li>
+<li>CVE发布流程</li>
+<li>发现漏洞</li>
+<li>CAN负责指定CVE ID</li>
+<li>发布到CVE List —— CVE-2008-4250</li>
+<li>MITRE负责对内容进行编辑维护</li>
+</ul>
+<h3 id="很多厂商维护自己的Vulnerability-Reference"><a href="#很多厂商维护自己的Vulnerability-Reference" class="headerlink" title="很多厂商维护自己的Vulnerability Reference"></a>很多厂商维护自己的Vulnerability Reference</h3><ul>
+<li>MS –微软</li>
+<li>MSKB  – 补丁</li>
+<li>其他Vulnerability Reference</li>
+<li><ul>
+<li>CERT TA08-297A</li>
+</ul>
+</li>
+<li>BID 31874</li>
+<li>IAVM 2008-A-0081</li>
+<li>OVAL OVAL6093</li>
+</ul>
+<h4 id="OVAL（Open-Vulnerability-and-Assessment-Language）"><a href="#OVAL（Open-Vulnerability-and-Assessment-Language）" class="headerlink" title="OVAL（Open Vulnerability and Assessment Language）"></a>OVAL（Open Vulnerability and Assessment Language）</h4><ul>
+<li>描述漏洞检测方法的机器可识别语言</li>
+<li>详细的描述漏洞检测的技术细节，可导入自动化检测工具中实施漏洞检测工作</li>
+<li>OVAL使用XML语言描述，包含了严密的语法逻辑<h4 id="CCE"><a href="#CCE" class="headerlink" title="CCE"></a>CCE</h4></li>
+<li>描述软件配置缺陷的一种标准化格式</li>
+<li>在信息安全风险评估中，配置缺陷的检测是一项重要内容，使用CCE可以让配置缺陷以标准的方式<br>展现出来，便于配置缺陷评估的可量化操作。<h4 id="CPE（Common-Product-Enumeration）"><a href="#CPE（Common-Product-Enumeration）" class="headerlink" title="CPE（Common Product Enumeration）"></a>CPE（Common Product Enumeration）</h4></li>
+<li>信息技术产品、系统、软件包的结构化命名规范，分类命名<h4 id="CWE（Common-Weakness-Enumeration）"><a href="#CWE（Common-Weakness-Enumeration）" class="headerlink" title="CWE（Common Weakness Enumeration）"></a>CWE（Common Weakness Enumeration）</h4></li>
+<li>常见漏洞类型的字典，描述不同类型漏洞的特征（访问控制、信息泄露、拒绝服务）<br>Security Content Automation Protocol (SCAP)</li>
+<li><ul>
+<li>SCAP 是一个集合了多种安全标准框架</li>
+</ul>
+</li>
+<li><ul>
+<li>六个元素：CVE、OVAL、CCE、CPE、 CVSS、XCCDF</li>
+</ul>
+</li>
+<li><ul>
+<li>目的是以标准的方法展示和操作安全数据</li>
+</ul>
+</li>
+<li><ul>
+<li>由NIST负责维护</li>
+</ul>
+</li>
+<li>SCAP主要解决三个问题</li>
+<li><ul>
+<li>实现高层政策法规等到底层实施的落地（如FISMA，ISO27000系列）</li>
+</ul>
+</li>
+<li><ul>
+<li>将信息安全所涉及的各个要素标准化（如统一漏洞的命名及严重性度量）</li>
+</ul>
+</li>
+<li><ul>
+<li>将复杂的系统配置核查工作自动化</li>
+</ul>
+</li>
+<li>SCAP是当前美国比较成熟的一套信息安全评估标准体系，其标准化、自动化的思想对信息安全行业产生了深远的影响。</li>
+</ul>
+<h4 id="NVD（National-Vulnerability-Database）"><a href="#NVD（National-Vulnerability-Database）" class="headerlink" title="NVD（National Vulnerability Database）"></a>NVD（National Vulnerability Database）</h4><ul>
+<li>美国政府的漏洞管理标准数据</li>
+<li>完全基于SCAP框架</li>
+<li>实现自动化漏洞管理、安全测量、合规要求</li>
+<li>包含以下库</li>
+<li>安全检查列表</li>
+<li>软件安全漏洞</li>
+<li>配置错误</li>
+<li>产品名称</li>
+<li>影响度量</li>
+<li><a href="https://nvd.nist.gov/" target="_blank" rel="noopener">https://nvd.nist.gov/</a></li>
+</ul>
+<h4 id="NMAP"><a href="#NMAP" class="headerlink" title="NMAP"></a>NMAP</h4><ul>
+<li>nmap 扫描脚本</li>
+<li><ul>
+<li>400+</li>
+</ul>
+</li>
+<li><ul>
+<li>分类</li>
+</ul>
+</li>
+<li>cat /usr/share/nmap/scripts/script.db</li>
+<li>grep vuln /usr/share/nmap/scripts/script.db| cut -d “\”” -f 2</li>
+<li>cat /usr/share/nmap/scripts/smb-check-vulns.nse</li>
+<li>smb-check-vulns.nse</li>
+<li><ul>
+<li>nmap -sU -sS –script=smb-check-vulns.nse –script-args=unsafe=1 -p U:137,T:139,445 1.1.1.1</li>
+</ul>
+</li>
+<li><ul>
+<li>MS08-067<h5 id="smb-vuln-ms10-061-nse"><a href="#smb-vuln-ms10-061-nse" class="headerlink" title="smb-vuln-ms10-061.nse"></a>smb-vuln-ms10-061.nse</h5></li>
+</ul>
+</li>
+<li>Stuxnet蠕虫利用的4个漏洞之一</li>
+<li>Print Spooler权限不当，打印请求可在系统目录可创建文件、执行任意代码</li>
+<li>LANMAN API枚举共享打印机</li>
+<li>远程共享打印机名称</li>
+<li>smb-enum-shares枚举共享</li>
+<li><ul>
+<li>身份认证参数——smbuser、smbpassword</li>
+</ul>
+</li>
+<li><ul>
+<li>nmap -p445 –script=smb-enum-shares.nse –script-args=smbuser=admin,smbpassword=pass<br>1.1.1.1</li>
+</ul>
+</li>
+<li>Windows XP,Server 2003 SP2,Vista,Server 2008, win 7<h5 id="其他资料收集"><a href="#其他资料收集" class="headerlink" title="其他资料收集"></a>其他资料收集</h5></li>
+<li>简介：NMap也就是Network Mapper，最早是Linux下的网络扫描和嗅探工具包。</li>
+<li>中文手册 <a href="http://www.nmap.com.cn/doc/manual.shtm" target="_blank" rel="noopener">链接</a></li>
+<li>英文手册 <a href="https://nmap.org/book/man.html" target="_blank" rel="noopener">链接</a></li>
+<li>优秀博客：</li>
+<li><ul>
+<li><a href="https://www.cnblogs.com/nmap/p/6232207.html" target="_blank" rel="noopener">nmap命令—–基础用法</a></li>
+</ul>
+</li>
+<li><ul>
+<li><a href="https://www.cnblogs.com/nmap/p/6232969.html" target="_blank" rel="noopener">nmap命令—–高级用法</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="OPENVAS相关"><a href="#OPENVAS相关" class="headerlink" title="OPENVAS相关"></a>OPENVAS相关</h2><p>OpenVAS 是开放式漏洞评估系统，也可以说它是一个包含着相关工具的网络扫描器。其核心部件是一个服务器，包括一套网络漏洞测试程序，可以检测远程系统和应用程序中的安全问题。</p>
+<p>用户需要一种自动测试的方法，并确保正在运行一种最恰当的最新测试。OpenVAS 包括一个中央服务器和一个图形化的前端。这个服务器准许用户运行 几种不同的网络漏洞测试（以 Nessus 攻击脚本语言编写），而且 OpenVAS 可以经常对其进行更新。OpenVAS 所有的代码都符合 GPL 规范。</p>
+<h3 id="构造图："><a href="#构造图：" class="headerlink" title="构造图："></a>构造图：</h3><p><img data-src="https://tuchuang-xchcloud-1253428588.cos.ap-chengdu.myqcloud.com/blog/openvas.png" alt="结构图"></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><h4 id="OpenVAS-Manager"><a href="#OpenVAS-Manager" class="headerlink" title="OpenVAS Manager"></a>OpenVAS Manager</h4><ul>
+<li>控制scanner和其他manager的中心组件</li>
+<li>控制中心数据库，保存用户配置及扫描结果</li>
+<li>客户端使用基于XML的无状态OMP协议与其通信</li>
+<li>集中排序筛选，使客户端获得一致展现<h4 id="OpenVAS-Scanner"><a href="#OpenVAS-Scanner" class="headerlink" title="OpenVAS Scanner"></a>OpenVAS Scanner</h4></li>
+<li>具体执行Network Vulnerability Tests （NVTs）</li>
+<li>NVTs 每天通过 Feed 更新</li>
+<li>受 Manager 控制<h4 id="OSP-Scanner"><a href="#OSP-Scanner" class="headerlink" title="OSP Scanner"></a>OSP Scanner</h4></li>
+<li>可以统一管理多个scanner</li>
+<li>将一组 scanner 作为一个对象交给manager管理<h4 id="Greenbone-Security-Assistant-GSA"><a href="#Greenbone-Security-Assistant-GSA" class="headerlink" title="Greenbone Security Assistant (GSA)"></a>Greenbone Security Assistant (GSA)</h4></li>
+<li>提供 Web service<h4 id="OpenVAS-CLI"><a href="#OpenVAS-CLI" class="headerlink" title="OpenVAS CLI"></a>OpenVAS CLI</h4></li>
+<li>omp 命令行工具，可实现批处理控制 manager<h4 id="更新很快"><a href="#更新很快" class="headerlink" title="更新很快"></a>更新很快</h4></li>
+<li>所有找得到的资料几乎都已不同程度的过时了</li>
+</ul>
+<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><p>安装</p>
+<ul>
+<li>初始化安装</li>
+<li>openvas-setup</li>
+<li>检查安装结果</li>
+<li>openvas-check-setup</li>
+<li>查看当前账号</li>
+<li>openvasmd–list-users</li>
+<li>修改账号密码</li>
+<li>openvasmd–user=admin –new-password=Passw0rd</li>
+<li>升级</li>
+<li>openvas-feed-update<br>创建证书<br>同步弱点数据库<br>创建客户端证书<br>重建数据库<br>备份数据库<br>启动服务装入插件<br>创建管理员账号<br>创建普通用户账号<br>配置服务侦听端口<br>安装验证</li>
+</ul>
+<h2 id="NESSUS"><a href="#NESSUS" class="headerlink" title="NESSUS"></a>NESSUS</h2><ul>
+<li>家庭版</li>
+<li><ul>
+<li>免费</li>
+</ul>
+</li>
+<li>专业版</li>
+<li><ul>
+<li>收费、无限的并发连接<h4 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h4></li>
+</ul>
+</li>
+<li><a href="http://www.tenable.com/products/nessus/select-your-operating-system" target="_blank" rel="noopener">http://www.tenable.com/products/nessus/select-your-operating-system</a><h4 id="2-安装"><a href="#2-安装" class="headerlink" title="2.安装"></a>2.安装</h4></li>
+<li><ul>
+<li>dpkg –i</li>
+</ul>
+</li>
+<li>安装路径：</li>
+<li><ul>
+<li>/opt/nessus<h4 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3.启动服务"></a>3.启动服务</h4></li>
+</ul>
+</li>
+<li><ul>
+<li>/etc/init.d/nessusd start<h4 id="4-管理地址"><a href="#4-管理地址" class="headerlink" title="4.管理地址"></a>4.管理地址</h4></li>
+</ul>
+</li>
+<li><a href="https://127.0.0.1:8834" target="_blank" rel="noopener">https://127.0.0.1:8834</a><h4 id="5-注册激活码"><a href="#5-注册激活码" class="headerlink" title="5.注册激活码"></a>5.注册激活码</h4></li>
+<li><a href="http://www.tenable.com/products/nessus-home" target="_blank" rel="noopener">http://www.tenable.com/products/nessus-home</a><h4 id="6-管理账号"><a href="#6-管理账号" class="headerlink" title="6.管理账号"></a>6.管理账号</h4></li>
+<li>更新插件<h4 id="7-基本配置（setting）"><a href="#7-基本配置（setting）" class="headerlink" title="7.基本配置（setting）"></a>7.基本配置（setting）</h4></li>
+<li>升级</li>
+<li>账号</li>
+<li>SMTP</li>
+<li>代理<h4 id="8-实战"><a href="#8-实战" class="headerlink" title="8.实战"></a>8.实战</h4></li>
+<li>策略</li>
+<li>扫描</li>
+<li>扫描本机</li>
+<li>扫描windows</li>
+<li>扫描linux</li>
+<li>扫描网络设备</li>
+<li>扫描web server</li>
+<li>报告</li>
+<li>调度</li>
+</ul>
+<h2 id="openvas、nessus实战笔记"><a href="#openvas、nessus实战笔记" class="headerlink" title="openvas、nessus实战笔记"></a>openvas、nessus实战笔记</h2><h3 id="好教程"><a href="#好教程" class="headerlink" title="好教程"></a>好教程</h3><p>大学霸 Kali Linux 安全渗透教程：<a href="https://wizardforcel.gitbooks.io/daxueba-kali-linux-tutorial/content/28.html" target="_blank" rel="noopener">https://wizardforcel.gitbooks.io/daxueba-kali-linux-tutorial/content/28.html</a></p>
+<h3 id="个人笔记"><a href="#个人笔记" class="headerlink" title="个人笔记"></a>个人笔记</h3><p>nessus 版本分linux和win，在linux版本中针对不同内核、不同处理器，版本也各部相同。<br>首次使用注意保存启动命令方式。（见上文）<br>创建目标主机，步骤很简单，很容易上手。<br>扫描之前创建一个靶机，用于漏洞扫描，靶机推荐 Metasploitable 操作系统，该操作系统存在大量未修补漏洞。<br>实战：<br>扫描了虚拟机的靶机和自己的两台服务器，效果明显，针对高版本服务器，漏洞的出现率非常低。</p>
+<p>openvas  一直出现404错误，原因不知。尝试了下，可以用，体验不是太好。提供ssh与不提供ssh效果明显不同。</p>
+<h5 id="用到的链接："><a href="#用到的链接：" class="headerlink" title="用到的链接："></a>用到的链接：</h5><p><a href="https://blog.csdn.net/qq_35983015/article/details/79325463" target="_blank" rel="noopener">Linux安装Nessus的详细操作</a><br><a href="https://www.cnblogs.com/yxwkf/p/5348042.html" target="_blank" rel="noopener">win下的Nessus漏洞扫描教程之配置Nessus</a></p>
+<h5 id="漏洞的处理："><a href="#漏洞的处理：" class="headerlink" title="漏洞的处理："></a>漏洞的处理：</h5><p><a href="https://www.jb51.net/article/33938.htm" target="_blank" rel="noopener">如何关闭http Methods中的Trace 提高安全意识</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/Kali-linux漏洞扫描入门/" title="Kali-linux漏洞扫描入门">http://xchcloud.cn/Kali-linux漏洞扫描入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/入门/" rel="tag"><i class="fa fa-tag"></i> 入门</a>
+              <a href="/tags/kali/" rel="tag"><i class="fa fa-tag"></i> kali</a>
+              <a href="/tags/漏洞扫描/" rel="tag"><i class="fa fa-tag"></i> 漏洞扫描</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/java-web-会话及其会话技术/" rel="prev" title="java-web-会话及其会话技术">
+      <i class="fa fa-chevron-left"></i> java-web-会话及其会话技术
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/算法学习笔记-入门级/" rel="next" title="算法学习笔记-入门级">
+      算法学习笔记-入门级 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发现漏洞"><span class="nav-text">发现漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从信息的维度定义漏洞管理"><span class="nav-text">从信息的维度定义漏洞管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息收集："><span class="nav-text">信息收集：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信息管理"><span class="nav-text">信息管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信息输出"><span class="nav-text">信息输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弱点扫描类型"><span class="nav-text">弱点扫描类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主动扫描"><span class="nav-text">主动扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#被动扫描"><span class="nav-text">被动扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于Agent的扫描"><span class="nav-text">基于Agent的扫描</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漏洞基本概念"><span class="nav-text">漏洞基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CVSS（Common-Vulnerability-Scoring-System）"><span class="nav-text">CVSS（Common Vulnerability Scoring System）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vulnerability-Reference"><span class="nav-text">Vulnerability Reference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CVE（-Common-Vulnerabilities-and-Exposures-）"><span class="nav-text">CVE（ Common Vulnerabilities and Exposures ）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#很多厂商维护自己的Vulnerability-Reference"><span class="nav-text">很多厂商维护自己的Vulnerability Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OVAL（Open-Vulnerability-and-Assessment-Language）"><span class="nav-text">OVAL（Open Vulnerability and Assessment Language）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CCE"><span class="nav-text">CCE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CPE（Common-Product-Enumeration）"><span class="nav-text">CPE（Common Product Enumeration）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CWE（Common-Weakness-Enumeration）"><span class="nav-text">CWE（Common Weakness Enumeration）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NVD（National-Vulnerability-Database）"><span class="nav-text">NVD（National Vulnerability Database）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NMAP"><span class="nav-text">NMAP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#smb-vuln-ms10-061-nse"><span class="nav-text">smb-vuln-ms10-061.nse</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他资料收集"><span class="nav-text">其他资料收集</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OPENVAS相关"><span class="nav-text">OPENVAS相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造图："><span class="nav-text">构造图：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenVAS-Manager"><span class="nav-text">OpenVAS Manager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenVAS-Scanner"><span class="nav-text">OpenVAS Scanner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSP-Scanner"><span class="nav-text">OSP Scanner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Greenbone-Security-Assistant-GSA"><span class="nav-text">Greenbone Security Assistant (GSA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenVAS-CLI"><span class="nav-text">OpenVAS CLI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新很快"><span class="nav-text">更新很快</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用步骤"><span class="nav-text">使用步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NESSUS"><span class="nav-text">NESSUS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-下载"><span class="nav-text">1.下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-安装"><span class="nav-text">2.安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-启动服务"><span class="nav-text">3.启动服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-管理地址"><span class="nav-text">4.管理地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-注册激活码"><span class="nav-text">5.注册激活码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-管理账号"><span class="nav-text">6.管理账号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-基本配置（setting）"><span class="nav-text">7.基本配置（setting）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-实战"><span class="nav-text">8.实战</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openvas、nessus实战笔记"><span class="nav-text">openvas、nessus实战笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#好教程"><span class="nav-text">好教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人笔记"><span class="nav-text">个人笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#用到的链接："><span class="nav-text">用到的链接：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#漏洞的处理："><span class="nav-text">漏洞的处理：</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

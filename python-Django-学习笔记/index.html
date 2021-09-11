@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1、Python 的虚拟环境工具 virtualenv 的安装与使用前言：Linux 环境下默认存在 python2.7 环境，但是新版本的 Django 所依赖的环境为 python3 ，python2.7 不能卸载它支持着系统的基础运行程序， 二者环境的并存可能导致python出现奇奇怪怪的问题。 附：Linux 下 python3 pip3 的安装方法：">
+<meta name="keywords" content="python,Django,入门">
+<meta property="og:type" content="article">
+<meta property="og:title" content="puthon-Django-学习笔记">
+<meta property="og:url" content="http://xchcloud.cn/python-Django-学习笔记/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="1、Python 的虚拟环境工具 virtualenv 的安装与使用前言：Linux 环境下默认存在 python2.7 环境，但是新版本的 Django 所依赖的环境为 python3 ，python2.7 不能卸载它支持着系统的基础运行程序， 二者环境的并存可能导致python出现奇奇怪怪的问题。 附：Linux 下 python3 pip3 的安装方法：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:00:34.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="puthon-Django-学习笔记">
+<meta name="twitter:description" content="1、Python 的虚拟环境工具 virtualenv 的安装与使用前言：Linux 环境下默认存在 python2.7 环境，但是新版本的 Django 所依赖的环境为 python3 ，python2.7 不能卸载它支持着系统的基础运行程序， 二者环境的并存可能导致python出现奇奇怪怪的问题。 附：Linux 下 python3 pip3 的安装方法：">
+
+<link rel="canonical" href="http://xchcloud.cn/python-Django-学习笔记/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>puthon-Django-学习笔记 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/python-Django-学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          puthon-Django-学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-10 14:32:01" itemprop="dateCreated datePublished" datetime="2018-11-10T14:32:01+08:00">2018-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:00:34" itemprop="dateModified" datetime="2021-09-11T17:00:34+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/python-Django-学习笔记/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="python-Django-学习笔记/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1、Python-的虚拟环境工具-virtualenv-的安装与使用"><a href="#1、Python-的虚拟环境工具-virtualenv-的安装与使用" class="headerlink" title="1、Python 的虚拟环境工具 virtualenv 的安装与使用"></a>1、Python 的虚拟环境工具 virtualenv 的安装与使用</h3><h4 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h4><p>Linux 环境下默认存在 python2.7 环境，但是新版本的 Django 所依赖的环境为 python3 ，python2.7 不能卸载它支持着系统的基础运行程序， 二者环境的并存可能导致python出现奇奇怪怪的问题。</p>
+<h4 id="附："><a href="#附：" class="headerlink" title="附："></a>附：</h4><p>Linux 下 python3 pip3 的安装方法：<br><a id="more"></a></p>
+<h5 id="Centos"><a href="#Centos" class="headerlink" title="Centos"></a>Centos</h5><ul>
+<li><p>安装EPEL和IUS软件源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum install https://centos7.iuscommunity.org/ius-release.rpm -y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Python3.6</p>
+</li>
+</ul>
+<p><code>yum install python36u -y</code></p>
+<ul>
+<li>创建python3连接符</li>
+</ul>
+<p><code>ln -s /bin/python3.6 /bin/python3</code></p>
+<ul>
+<li>安装pip3</li>
+</ul>
+<p><code>yum install python36u-pip -y</code></p>
+<ul>
+<li>创建pip3链接符</li>
+</ul>
+<p><code>ln -s /bin/pip3.6 /bin/pip3</code></p>
+<h5 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h5><p>在ubuntu 16.04版本中，系统默认安装 了python 2.7和3.5版本，因为系统本身用到python的程序，删除默认的版本又担心系统有问题，那有没有办法同时在安装和使用python 3.6版本呢？下文将一起安装python 3.6并修改原系统的python3命令以使用新安装的版本。</p>
+<p>1、配置软件仓库，因为python 3.6 新版没有发布到ubuntu的正式仓库中，咱们通过第3方仓库来做。在命令行中输入：</p>
+<p><code>sudo add-apt-repository ppa:jonathonf/python-3.6</code></p>
+<p>2、检查系统软件包并安装 python 3.6<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python3.6</span><br></pre></td></tr></table></figure></p>
+<p>3、查看python版本信息（现在在你的系统中已经有3个python版本了）<br>4、通过上图我们看到，新安装的3.6版本需要输入 python3.6才能使用，那能不能配置我只输入python3时就默认使用3.6版本呢，当然可以，执行以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1</span><br><span class="line"></span><br><span class="line">sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2</span><br><span class="line"></span><br><span class="line">sudo update-alternatives --config python3</span><br></pre></td></tr></table></figure></p>
+<p>5、最后，咱们确认一下</p>
+<p><code>python3 -V</code></p>
+<h4 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h4><h5 id="什么是virtualenv？"><a href="#什么是virtualenv？" class="headerlink" title="什么是virtualenv？"></a>什么是virtualenv？</h5><p>virtualenv可以创建独立Python开发环境，比如当前的全局开发环境是python3.6，现在我们有一个项目需要使用django1.3，另一个项目需要使用django1.9，这个时候就可以使用virtualenv创建各自的python开发环境了。</p>
+<h5 id="virtualenv的优点"><a href="#virtualenv的优点" class="headerlink" title="virtualenv的优点"></a>virtualenv的优点</h5><p>使不同的应用开发环境独立环境升级不影响其他的应用，也不会影响全局的python开发环境它可以防止系统中出现包管理混乱和版本的冲突。</p>
+<p>1、基本使用</p>
+<ul>
+<li>通过pip安装virtualenv：<br><code>pip install virtualenv</code></li>
+<li>测试安装:<br><code>virtualenv --version</code></li>
+<li>为一个工程项目搭建一个虚拟环境:<br><code>cd my_project</code><br><code>virtualenv my_project_env</code></li>
+<li><ul>
+<li>另外，如果存在多个python解释器，可以选择指定一个Python解释器（比如<code>python2.7</code>），没有指定则由系统默认的解释器来搭建： </li>
+</ul>
+</li>
+</ul>
+<p><code>virtualenv -p /usr/bin/python2.7 my_project_env</code><br>    将会在当前的目录中创建一个名my_project_env的文件夹，这是一个独立的python运行环境，包含了Python可执行文件， 以及 pip 库的一份拷贝，这样就能安装其他包了，不过已经安装到系统Python环境中的所有第三方包都不会复制过来，这样，我们就得到了一个不带任何第三方包的“干净”的Python运行环境来。</p>
+<ul>
+<li>要开始使用虚拟环境，其需要被激活：<br><code>source my_project_env/bin/activate</code></li>
+<li>停用虚拟环境：<br><code>deactivate</code></li>
+<li>停用后将回到系统默认的Python解释器</li>
+</ul>
+<p>virtualenv 设置好新的虚拟环境之后，打开 Windows 资源管理器，看一下 virtualenv 为我们创建了什么。在家目录中，会看到一个名为 \env_mysite 的文件夹（或者为虚拟环境起的其他名称）。打开那个文件夹，会看到下述结构：<br>\Include<br>\Lib<br>\Scripts<br>\src<br><img data-src="https://tuchuang-xchcloud-1253428588.cos.ap-chengdu.myqcloud.com/blog/Image%201.png" alt="示例图"><br>virtualenv 创建了一个完整的 Python 安装，它与其他软件是隔离开的，因此开发项目时不会影响系统中的其<br>他软件。</p>
+<h3 id="Django-admin"><a href="#Django-admin" class="headerlink" title="Django admin"></a>Django admin</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Type &apos;django-admin help &lt;subcommand&gt;&apos; for help on a specific subcommand.</span><br><span class="line"></span><br><span class="line">Available subcommands:</span><br><span class="line"></span><br><span class="line">[django]</span><br><span class="line">    check ：校验项目完整性</span><br><span class="line">    compilemessages </span><br><span class="line">    createcachetable</span><br><span class="line">    dbshell</span><br><span class="line">    diffsettings</span><br><span class="line">    dumpdata : 把数据库数据导出到文件</span><br><span class="line">    flush</span><br><span class="line">    inspectdb</span><br><span class="line">    loaddata ： 把文件数据导入到数据库</span><br><span class="line">    makemessages</span><br><span class="line">    makemigrations：创建模型变更的迁移文件</span><br><span class="line">    migrate ：执行上一个命令创建的迁移文件</span><br><span class="line">    runserver ： 运行 django 项目</span><br><span class="line">    sendtestemail</span><br><span class="line">    shell ： 进入 Django 项目的 python shell</span><br><span class="line">    showmigrations </span><br><span class="line">    sqlflush</span><br><span class="line">    sqlmigrate</span><br><span class="line">    sqlsequencereset</span><br><span class="line">    squashmigrations</span><br><span class="line">    startapp ： 启用一个 Django 应用</span><br><span class="line">    startproject ： 启动一个 django</span><br><span class="line">    test ： 跑一些单元测试用例的</span><br><span class="line">    testserver </span><br><span class="line">Note that only Django core commands are listed as settings are not properly configured (error: Requested setting INSTALLED_APPS, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call sett</span><br><span class="line">ings.configure() before accessing settings.).</span><br></pre></td></tr></table></figure>
+<h3 id="我的第一个-Django-项目："><a href="#我的第一个-Django-项目：" class="headerlink" title="我的第一个 Django 项目："></a>我的第一个 Django 项目：</h3><ul>
+<li>1、运行虚拟环境<br>env_mysite\scripts\activate</li>
+<li>2、安装 Django<br>pip install django==1.11.7</li>
+<li>3、打开 django-admin 所在目录<br>cd C:\Users\Lenovo\env_mysite\Scripts</li>
+<li><p>4、创建属于你的第一个 Django 项目<br>django-admin startproject mysite</p>
+<h4 id="startproject-为我们创建的文件介绍"><a href="#startproject-为我们创建的文件介绍" class="headerlink" title="startproject 为我们创建的文件介绍"></a>startproject 为我们创建的文件介绍</h4><p>mysite/<br>manage.py<br>mysite/<br><strong>init</strong>.py<br>settings.py<br>urls.py<br>wsgi.py<br><img data-src="https://tuchuang-xchcloud-1253428588.cos.ap-chengdu.myqcloud.com/blog/startproject1.png" alt="startproject1"><br><img data-src="https://tuchuang-xchcloud-1253428588.cos.ap-chengdu.myqcloud.com/blog/startproject2.png" alt="startproject2"></p>
+</li>
+<li><p>外层的 mysite/ 根目录是项目的容器。这个目录的名称对 Django 没有什么作用，你可以根据喜好重命名。</p>
+</li>
+<li>manage.py 是一个命令行实用脚本，可以通过不同的方式与 Django 项目交互。这个文件的详细说明参见 Django Project 网站。</li>
+<li>内部的 mysite/ 目录是项目的 Python 包。导入这里面的内容时要使用目录的名称（如 mysite.urls）。</li>
+<li>mysite/init.py 是一个空文件，目的是让 Python 把这个目录识别为 Python 包。（如果你刚接触Python，关于包的说明请阅读 Python 官方文档。）</li>
+<li>mysite/settings.py 是 Django 项目的设置/配置。</li>
+<li>mysite/urls.py 是 Django 项目的 URL 声明，即 Django 驱动的网站的“目录”。</li>
+<li>mysite/wsgi.py 是兼容 WSGI 的 Web 服务器的入口点，用于伺服项目。</li>
+</ul>
+<h4 id="编写视图以及映射"><a href="#编写视图以及映射" class="headerlink" title="编写视图以及映射"></a>编写视图以及映射</h4><h5 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h5><pre><code>
+from django.http import HttpResponse
+def hello(request):
+    return HttpResponse("Hello world")
+</code></pre>
+
+<ul>
+<li>首先，从 django.http 模块中导入 HttpResponse 类。导入这个类是因为后面的代码要使用。</li>
+<li>然后，定义一个名为 hello 的函数，这是视图函数。视图函数至少有一个参数，按约定，名为 request。这是一个对象，包含触发这个视图的 Web 请求的信息，是django.http.HttpRequest 类的实例。<h5 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h5><pre><code>
+from django.conf.urls import include, url
+from django.contrib import admin
+from app.views import hello
+urlpatterns = [
+  url(r'^admin/', include(admin.site.urls)),
+  url(r'^hello/$', hello),
+]
+</code></pre></li>
+<li>第一行从 django.conf.urls 模块中导入两个函数：include，用于导入另一个 URL 配置模块；url，使用正则表达式模式匹配浏览器中的 URL，把它映射到 Django 项目中的某个模块上。</li>
+<li>第二行从 django.contrib 模块中导入 admin 函数。这个函数传给 include 函数，加载 Django 管理后台的 URL。</li>
+<li>第三行是 urlpatterns，即 url() 实例列表。<br><img data-src="https://tuchuang-xchcloud-1253428588.cos.ap-chengdu.myqcloud.com/blog/app.views.png" alt><h6 id="根目录映射"><a href="#根目录映射" class="headerlink" title="根目录映射"></a>根目录映射</h6>准备为网站根地址实现视图时，使用的 URL 模式是 ˆ$，即匹配空字符串。<br><pre><code><br>from django.conf.urls import include, url<br>from django.contrib import admin<br>from app.views import hello, current_datetime<br>urlpatterns = [<br>  url(r’^admin/‘, include(admin.site.urls)),<br>  url(r’^hello/$’, hello),<br>  url(r’^time/$’, current_datetime),<br>  url(r’^$’, hello),<br>]<br></code></pre><br><img data-src="https://tuchuang-xchcloud-1253428588.cos.ap-chengdu.myqcloud.com/blog/Image%203.png" alt></li>
+</ul>
+<h6 id="Django-处理请求的过程"><a href="#Django-处理请求的过程" class="headerlink" title="Django 处理请求的过程"></a>Django 处理请求的过程</h6><ol>
+<li>请求 /hello/。</li>
+<li>Django 查看 ROOT_URLCONF 设置，找到根 URL 配置。</li>
+<li>Django 比较 URL 配置中的各个 URL 模式，找到与 /hello/ 匹配的那个。</li>
+<li>如果找到匹配的模式，调用对应的视图函数。</li>
+<li>视图函数返回一个 HttpResponse 对象。</li>
+<li><p>Django 把 HttpResponse 对象转换成正确的 HTTP 响应，得到网页。</p>
+<h6 id="动态URL"><a href="#动态URL" class="headerlink" title="动态URL"></a>动态URL</h6><pre><code>
+def hours_ahead(request, offset):
+ try:
+     offset = int(offset)
+ except ValueError:
+     raise Http404()
+ dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
+ html = "In %s hour(s), it will be %s." % (offset, dt)
+ return HttpResponse(html)
+
+url(r'^time/plus/(\d{1,2})/$', hours_ahead),
+</code></pre>
+</li>
+</ol>
+<ul>
+<li>request 是一个 HttpRequest 对象，这与 hello 和 current_datetime 两个视图一样。我要再次强调，每个视图的第一个参数都是 HttpRequest 对象。</li>
+<li>offset 是 URL 模式中那对圆括号捕获的字符串。如果请求的 URL 是 /time/plus/3/，那么偏移量是字符串 ‘3’；如果请求的 URL 是 /time/plus/21/，那么偏移量是字符串 ‘21’。注意，捕获的值始终是Unicode 对象，而不是整数，即便捕获的字符串中只有数字（如 ‘21’）也不是。</li>
+</ul>
+<h3 id="模型层"><a href="#模型层" class="headerlink" title="模型层"></a>模型层</h3><h4 id="模型层是什么"><a href="#模型层是什么" class="headerlink" title="模型层是什么"></a>模型层是什么</h4><p>位于 Django 视图层和数据库之间</p>
+<p>python 对象和数据库表之间转换</p>
+<h4 id="为什么需要模型层"><a href="#为什么需要模型层" class="headerlink" title="为什么需要模型层"></a>为什么需要模型层</h4><p>屏蔽不同数数据库之间的差异</p>
+<p>开发者更加专注于业务逻辑的开发</p>
+<p>提供很多便捷的工具帮助开发</p>
+<h4 id="模型层配置"><a href="#模型层配置" class="headerlink" title="模型层配置"></a>模型层配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">setting：</span><br><span class="line"></span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    &apos;default&apos;: &#123;</span><br><span class="line">        &apos;ENGINE&apos;: &apos;django.db.backends.sqlite3&apos;,</span><br><span class="line">        &apos;NAME&apos;: os.path.join(BASE_DIR, &apos;db.sqlite3&apos;),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Django-shell"><a href="#Django-shell" class="headerlink" title="Django shell"></a>Django shell</h3><h4 id="为什么使用-Django-shell"><a href="#为什么使用-Django-shell" class="headerlink" title="为什么使用 Django shell"></a>为什么使用 Django shell</h4><p>临时性操作使用 Django Shell 更加方便</p>
+<p>小范围 Debug 更简单，不需要运行整个项目来测试</p>
+<h4 id="Django-shell-的使用"><a href="#Django-shell-的使用" class="headerlink" title="Django shell 的使用"></a>Django shell 的使用</h4><p>python manage.py shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">In [1]: from app.models import Article</span><br><span class="line"></span><br><span class="line">In [2]: a = Article()</span><br><span class="line"></span><br><span class="line">In [3]: a.title = &apos;Test Django Shell&apos;</span><br><span class="line"></span><br><span class="line">In [4]: a.brief_content = &apos;Text Django Shell, New Article, main content.&apos;</span><br><span class="line"></span><br><span class="line">In [5]: print(a)</span><br><span class="line">Article object (None)</span><br><span class="line"></span><br><span class="line">In [6]: a.save()</span><br><span class="line"></span><br><span class="line">In [7]: articles = Article.objects.all()</span><br><span class="line"></span><br><span class="line">In [12]: article = articles[0]</span><br><span class="line"></span><br><span class="line">In [13]: print(article.title)</span><br><span class="line">Test Django Shell</span><br></pre></td></tr></table></figure>
+<h4 id="Django-Admin-模块"><a href="#Django-Admin-模块" class="headerlink" title="Django Admin 模块"></a>Django Admin 模块</h4><h5 id="Django-Admin-模块是什么"><a href="#Django-Admin-模块是什么" class="headerlink" title="Django Admin 模块是什么"></a>Django Admin 模块是什么</h5><p>自带的标配后台管理工具</p>
+<p>读取定义的模型元数据，提供强大的管理使用界面</p>
+<h5 id="为什么需要-Django-Admin-模块"><a href="#为什么需要-Django-Admin-模块" class="headerlink" title="为什么需要 Django Admin 模块"></a>为什么需要 Django Admin 模块</h5><p>简化 Django shell 的操作步骤</p>
+<p>管理页面时基础设施中重要的部分</p>
+<p>认证用户、显示管理模型、校验输入模型等功能类似</p>
+<h5 id="Django-Admin-模块的使用"><a href="#Django-Admin-模块的使用" class="headerlink" title="Django Admin 模块的使用"></a>Django Admin 模块的使用</h5><p>创建管理员用户</p>
+<p>登录页面进行管理</p>
+<h5 id="差缺补漏：-str-self"><a href="#差缺补漏：-str-self" class="headerlink" title="差缺补漏：_ str _ (self)"></a>差缺补漏：_ <em>str</em> _ (self)</h5><p>在python中方法名如果是<strong>xxxx</strong>()的，那么就有特殊的功能，因此叫做“魔法”方法<br>当使用print输出对象的时候，只要自己定义了<strong>str</strong>(self)方法，那么就会打印从在这个方法中return的数据<br><strong>str</strong>方法需要返回一个字符串，当做这个对象的描写</p>
+<h4 id="新增超级管理员"><a href="#新增超级管理员" class="headerlink" title="新增超级管理员"></a>新增超级管理员</h4><p>python manage.py createsuperuser</p>
+<h4 id="设计数据返回函数"><a href="#设计数据返回函数" class="headerlink" title="设计数据返回函数"></a>设计数据返回函数</h4><h4 id="Django-视图与模板"><a href="#Django-视图与模板" class="headerlink" title="Django 视图与模板"></a>Django 视图与模板</h4><h5 id="使用-Bootstrap-实现静态网站页面"><a href="#使用-Bootstrap-实现静态网站页面" class="headerlink" title="使用 Bootstrap 实现静态网站页面"></a>使用 Bootstrap 实现静态网站页面</h5><h6 id="页面布局设计"><a href="#页面布局设计" class="headerlink" title="页面布局设计"></a>页面布局设计</h6><p>网站首页：</p>
+<p>文章详情页设计：</p>
+<h6 id="Bootstrap以及Bootstrap的栅格系统"><a href="#Bootstrap以及Bootstrap的栅格系统" class="headerlink" title="Bootstrap以及Bootstrap的栅格系统"></a>Bootstrap以及Bootstrap的栅格系统</h6><p>来自美国Twitter的前端框架<br>提供非常多的控件并附带源码</p>
+<h6 id="实现静态页面"><a href="#实现静态页面" class="headerlink" title="实现静态页面"></a>实现静态页面</h6><h5 id="初识-Django-的模板系统"><a href="#初识-Django-的模板系统" class="headerlink" title="初识 Django 的模板系统"></a>初识 Django 的模板系统</h5><ul>
+<li>模板系统简介：</li>
+</ul>
+<p>视图文件不适合编码 HTML<br>页面设计改变需要修改python代码<br>页面逻辑和网页视图应该分开设计<br>模板系统的变现形式是文本<br>分离文档的表现形式和表现内容<br>模板系统定义了特哟的标签占位符</p>
+<ul>
+<li>基本语法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">◆变量标签：&#123;&#123;变量&#125;</span><br><span class="line">&lt;html&gt;&lt;body&gt;&#123;&#123;now&#125;&#125;&lt;/body&gt;&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">◆for循环标签：&#123;%for xin list%），&#123;%endfor%&#125;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">&#123;% for item in list %&#125;</span><br><span class="line">&lt;li&gt;&#123;&#123;item &#125;&#125;&lt;/li&gt;</span><br><span class="line">&#123;% endfor%&#125;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">◆if-else分支标签：&#123;%if%&#125;，&#123;%else%），&#123;%endif%&#125;</span><br><span class="line"></span><br><span class="line">&#123;% if true &#125;</span><br><span class="line">&lt;p&gt;it is a true part.&lt;/p&gt;</span><br><span class="line">&#123;% else%&#125;</span><br><span class="line">&lt;p&gt;it is a false part.&lt;/p&gt;</span><br><span class="line">&#123;% endif%&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="使用模板那系统渲染网站页面"><a href="#使用模板那系统渲染网站页面" class="headerlink" title="使用模板那系统渲染网站页面"></a>使用模板那系统渲染网站页面</h5><h5 id="实现文章详情页面跳转"><a href="#实现文章详情页面跳转" class="headerlink" title="实现文章详情页面跳转"></a>实现文章详情页面跳转</h5><h6 id="设计文章详情页的URL"><a href="#设计文章详情页的URL" class="headerlink" title="设计文章详情页的URL"></a>设计文章详情页的URL</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/blog/detail=&gt;不能指定某一篇博客</span><br><span class="line">·/blog/detail/1=&gt;博客唯一ID为1的文章</span><br><span class="line">·/blog/detail/2=&gt;博客唯一ID为2的文章</span><br><span class="line">·/blog/detail/3=&gt;博客唯一ID为3的文章</span><br><span class="line">·/blog/detail/..</span><br></pre></td></tr></table></figure>
+<h6 id="实现首页的跳转"><a href="#实现首页的跳转" class="headerlink" title="实现首页的跳转"></a>实现首页的跳转</h6><p>就是完善视图函数</p>
+<h5 id="实现上下篇文章跳转"><a href="#实现上下篇文章跳转" class="headerlink" title="实现上下篇文章跳转"></a>实现上下篇文章跳转</h5><p>文章下面添加两个按钮 上一篇 下一篇</p>
+<h5 id="实现分页功能"><a href="#实现分页功能" class="headerlink" title="实现分页功能"></a>实现分页功能</h5>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/python-Django-学习笔记/" title="puthon-Django-学习笔记">http://xchcloud.cn/python-Django-学习笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
+              <a href="/tags/入门/" rel="tag"><i class="fa fa-tag"></i> 入门</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/简易导航/" rel="prev" title="简易导航">
+      <i class="fa fa-chevron-left"></i> 简易导航
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-爬虫/" rel="next" title="python-爬虫">
+      python-爬虫 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、Python-的虚拟环境工具-virtualenv-的安装与使用"><span class="nav-text">1、Python 的虚拟环境工具 virtualenv 的安装与使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言："><span class="nav-text">前言：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#附："><span class="nav-text">附：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Centos"><span class="nav-text">Centos</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Ubuntu"><span class="nav-text">Ubuntu</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正题"><span class="nav-text">正题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是virtualenv？"><span class="nav-text">什么是virtualenv？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#virtualenv的优点"><span class="nav-text">virtualenv的优点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-admin"><span class="nav-text">Django admin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我的第一个-Django-项目："><span class="nav-text">我的第一个 Django 项目：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#startproject-为我们创建的文件介绍"><span class="nav-text">startproject 为我们创建的文件介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写视图以及映射"><span class="nav-text">编写视图以及映射</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#视图"><span class="nav-text">视图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#映射"><span class="nav-text">映射</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#根目录映射"><span class="nav-text">根目录映射</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Django-处理请求的过程"><span class="nav-text">Django 处理请求的过程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#动态URL"><span class="nav-text">动态URL</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型层"><span class="nav-text">模型层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型层是什么"><span class="nav-text">模型层是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么需要模型层"><span class="nav-text">为什么需要模型层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型层配置"><span class="nav-text">模型层配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-shell"><span class="nav-text">Django shell</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么使用-Django-shell"><span class="nav-text">为什么使用 Django shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Django-shell-的使用"><span class="nav-text">Django shell 的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Django-Admin-模块"><span class="nav-text">Django Admin 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Django-Admin-模块是什么"><span class="nav-text">Django Admin 模块是什么</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么需要-Django-Admin-模块"><span class="nav-text">为什么需要 Django Admin 模块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Django-Admin-模块的使用"><span class="nav-text">Django Admin 模块的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#差缺补漏：-str-self"><span class="nav-text">差缺补漏：_ str _ (self)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新增超级管理员"><span class="nav-text">新增超级管理员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计数据返回函数"><span class="nav-text">设计数据返回函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Django-视图与模板"><span class="nav-text">Django 视图与模板</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-Bootstrap-实现静态网站页面"><span class="nav-text">使用 Bootstrap 实现静态网站页面</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#页面布局设计"><span class="nav-text">页面布局设计</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Bootstrap以及Bootstrap的栅格系统"><span class="nav-text">Bootstrap以及Bootstrap的栅格系统</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实现静态页面"><span class="nav-text">实现静态页面</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初识-Django-的模板系统"><span class="nav-text">初识 Django 的模板系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用模板那系统渲染网站页面"><span class="nav-text">使用模板那系统渲染网站页面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现文章详情页面跳转"><span class="nav-text">实现文章详情页面跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#设计文章详情页的URL"><span class="nav-text">设计文章详情页的URL</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实现首页的跳转"><span class="nav-text">实现首页的跳转</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现上下篇文章跳转"><span class="nav-text">实现上下篇文章跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现分页功能"><span class="nav-text">实现分页功能</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

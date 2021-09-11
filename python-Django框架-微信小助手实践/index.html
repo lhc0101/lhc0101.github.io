@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="小程序基础全局入口 —— app.js全局配置 —— app.json全局样式 —— app.wxss 全局配置（页面导航）pages 列表配置页面">
+<meta name="keywords" content="python,Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-Django框架-微信小助手实践">
+<meta property="og:url" content="http://xchcloud.cn/python-Django框架-微信小助手实践/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="小程序基础全局入口 —— app.js全局配置 —— app.json全局样式 —— app.wxss 全局配置（页面导航）pages 列表配置页面">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:00:43.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-Django框架-微信小助手实践">
+<meta name="twitter:description" content="小程序基础全局入口 —— app.js全局配置 —— app.json全局样式 —— app.wxss 全局配置（页面导航）pages 列表配置页面">
+
+<link rel="canonical" href="http://xchcloud.cn/python-Django框架-微信小助手实践/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python-Django框架-微信小助手实践 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/python-Django框架-微信小助手实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python-Django框架-微信小助手实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-31 16:23:33" itemprop="dateCreated datePublished" datetime="2019-03-31T16:23:33+08:00">2019-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:00:43" itemprop="dateModified" datetime="2021-09-11T17:00:43+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/python-Django框架-微信小助手实践/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="python-Django框架-微信小助手实践/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="小程序基础"><a href="#小程序基础" class="headerlink" title="小程序基础"></a>小程序基础</h2><p>全局入口 —— app.js<br>全局配置 —— app.json<br>全局样式 —— app.wxss</p>
+<h3 id="全局配置（页面导航）"><a href="#全局配置（页面导航）" class="headerlink" title="全局配置（页面导航）"></a>全局配置（页面导航）</h3><h4 id="pages-列表配置"><a href="#pages-列表配置" class="headerlink" title="pages 列表配置"></a>pages 列表配置</h4><p>页面<br><a id="more"></a></p>
+<h4 id="window-属性配置"><a href="#window-属性配置" class="headerlink" title="window 属性配置"></a>window 属性配置</h4><p>导航条背景/文字/等颜色</p>
+<h4 id="tabbar-配置"><a href="#tabbar-配置" class="headerlink" title="tabbar 配置"></a>tabbar 配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> &quot;tabBar&quot;: &#123;</span><br><span class="line">  &quot;list&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;pagePath&quot;: &quot;pages/index/index&quot;,</span><br><span class="line">      &quot;text&quot;: &quot;首页&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;pagePath&quot;: &quot;pages/logs/logs&quot;,</span><br><span class="line">      &quot;text&quot;: &quot;日志&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;pagePath&quot;: &quot;pages/demogrid/demogrid&quot;,</span><br><span class="line">      &quot;text&quot;: &quot;九宫格&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="小程序的页面设置"><a href="#小程序的页面设置" class="headerlink" title="小程序的页面设置"></a>小程序的页面设置</h3><p>json</p>
+<h4 id="开启下拉刷新"><a href="#开启下拉刷新" class="headerlink" title="开启下拉刷新"></a>开启下拉刷新</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;enablePullDownRefresh&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="小程序的注册逻辑层"><a href="#小程序的注册逻辑层" class="headerlink" title="小程序的注册逻辑层"></a>小程序的注册逻辑层</h3><p>app.js</p>
+<h4 id="小程序的注册逻辑"><a href="#小程序的注册逻辑" class="headerlink" title="小程序的注册逻辑"></a>小程序的注册逻辑</h4><p>App函数<br>注册全局唯一的小程序<br>只能调用一次<br>接收一个对象作为函数参数</p>
+<h4 id="页面注册逻辑"><a href="#页面注册逻辑" class="headerlink" title="页面注册逻辑"></a>页面注册逻辑</h4><p>Page函数<br>注册一个页面<br>接受一个对象作为函数参数</p>
+<h5 id="页面数据"><a href="#页面数据" class="headerlink" title="页面数据"></a>页面数据</h5><p>data属性</p>
+<p>使用全局数据<br>获取全局唯一的 App 实例<br>通过唯一实例获取全局数据</p>
+<h5 id="页面生命周期"><a href="#页面生命周期" class="headerlink" title="页面生命周期"></a>页面生命周期</h5><p><img data-src="http://tuchuang.xchcloud.cn/%E9%A1%B5%E9%9D%A2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png" alt="页面生命周期"></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/%E9%A1%B5%E9%9D%A2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F2.png" alt="页面生命周期"></p>
+<h3 id="小程序的视图层"><a href="#小程序的视图层" class="headerlink" title="小程序的视图层"></a>小程序的视图层</h3><h4 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">语法 &#123;&#123;&#125;&#125;</span><br><span class="line">  &lt;view&gt;&#123;&#123; message &#125;&#125;&lt;/view&gt;</span><br><span class="line">  message: &quot;Hello World, Hello Django&quot;,</span><br></pre></td></tr></table></figure>
+<h4 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h4><p>语法：wx:for</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;view wx:for=&quot;&#123;&#123;array&#125;&#125;&quot;&gt;</span><br><span class="line">  No.&#123;&#123;index&#125;&#125; item, message: &#123;&#123;item.message&#125;&#125;</span><br><span class="line"> &lt;/view&gt;</span><br><span class="line">    array: [</span><br><span class="line">     &#123;</span><br><span class="line">       message: &quot;Hello World&quot;,</span><br><span class="line">     &#125;,</span><br><span class="line">     &#123;</span><br><span class="line">       message: &quot;Hello Django&quot;,</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br></pre></td></tr></table></figure>
+<h4 id="条件渲染"><a href="#条件渲染" class="headerlink" title="条件渲染"></a>条件渲染</h4><p>语法：wx:if wx:else wx:elif</p>
+<h4 id="绑定事件"><a href="#绑定事件" class="headerlink" title="绑定事件"></a>绑定事件</h4><p><img data-src="http://tuchuang.xchcloud.cn/%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A.png" alt></p>
+<p>绑定事件的写法以key、value的形式<br>key以bind或者catch开头，然后跟上事件的类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;view bindtap=&apos;tapName&apos;&gt;TapTap&lt;/view&gt;</span><br><span class="line"></span><br><span class="line">  tapName: function(event)&#123;</span><br><span class="line">  console.log(&apos; in tabName function&apos;)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
+<h4 id="小程序框架"><a href="#小程序框架" class="headerlink" title="小程序框架"></a>小程序框架</h4><p><img data-src="http://tuchuang.xchcloud.cn/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6.png" alt></p>
+<h3 id="小程序提供的能力和常用的API"><a href="#小程序提供的能力和常用的API" class="headerlink" title="小程序提供的能力和常用的API"></a>小程序提供的能力和常用的API</h3><h4 id="微信API"><a href="#微信API" class="headerlink" title="微信API"></a>微信API</h4><h5 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h5><h6 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h6><p><img data-src="http://tuchuang.xchcloud.cn/Http%E8%AF%B7%E6%B1%82.png" alt><br>Http请求异步特性：<br>不管是什么情况，先返回过程后返回结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;button bindtap=&apos;testNetwork&apos;&gt;Test Network&lt;/button&gt;</span><br><span class="line">testNetwork: function(event)&#123;</span><br><span class="line">  var data = &apos;undefined&apos;</span><br><span class="line">  wx.request(&#123;</span><br><span class="line">    url: &apos;http://www.imooc.com&apos;,</span><br><span class="line">    method: &apos;GET&apos;,</span><br><span class="line">    header: &#123;&#125;,</span><br><span class="line">    success: function(res)&#123;</span><br><span class="line">      console.log(&apos;in success&apos;)</span><br><span class="line">      data = res.data</span><br><span class="line">    &#125;,</span><br><span class="line">    fail: function(res)&#123;</span><br><span class="line">      console.log(&apos;request failed.&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  console.log(&apos;data: &apos;, data)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h6 id="文件上传、下载"><a href="#文件上传、下载" class="headerlink" title="文件上传、下载"></a>文件上传、下载</h6><p><img data-src="http://tuchuang.xchcloud.cn/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6.png" alt></p>
+<h6 id="Task（网络任务对象）"><a href="#Task（网络任务对象）" class="headerlink" title="*Task（网络任务对象）"></a>*Task（网络任务对象）</h6><p>中断任务<br>触发回调函数<br>关闭连接</p>
+<h5 id="本地存储"><a href="#本地存储" class="headerlink" title="本地存储"></a>本地存储</h5><p>将数据存储在本地缓存中指定的key中，数据存储生命周期跟小程序本身一致。<br>◆wx.setStorage<br>◆wx.getStorage<br>◆wx.removeStorage<br>◆wx.clearStorage（前三个操作指定的缓存，最后一个删除所有缓存）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  &lt;button bindtap=&apos;testStorage&apos;&gt;Test Storage&lt;/button&gt;</span><br><span class="line">testStorage: function()&#123;</span><br><span class="line">    wx.setStorage(&#123;</span><br><span class="line">      key: &apos;test&apos;,</span><br><span class="line">      data: &apos;data&apos;,</span><br><span class="line">    &#125;)</span><br><span class="line">    wx.getStorage(&#123;//异步</span><br><span class="line">      key: &apos;test&apos;,</span><br><span class="line">      success: function(res) &#123;</span><br><span class="line">        var data = res.data</span><br><span class="line">        console.log(&apos;data from storage 1: &apos;, data)</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">    var data = wx.getStorageSync(&apos;test&apos;)//同步</span><br><span class="line"></span><br><span class="line">    console.log(&apos;data from storage 2: &apos;, data)</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h4><h5 id="提供一个全局的问价管理系统，来实现对文件的增删改查"><a href="#提供一个全局的问价管理系统，来实现对文件的增删改查" class="headerlink" title="提供一个全局的问价管理系统，来实现对文件的增删改查"></a>提供一个全局的问价管理系统，来实现对文件的增删改查</h5><p>var fs=wx. getFileSystemManager()</p>
+<p>◆fs.saveFile<br>◆fs.removeSavedFile<br>◆fs.writeFile<br>◆fs.appendFile<br>◆fs.readFile</p>
+<h5 id="文件夹操作"><a href="#文件夹操作" class="headerlink" title="文件夹操作"></a>文件夹操作</h5><p>◆fs.mkdir<br>◆fs.rmdir<br>◆fs.isDirectory<br>◆fs.isFile</p>
+<h4 id="开放能力"><a href="#开放能力" class="headerlink" title="开放能力"></a>开放能力</h4><p>◆用户数据<br>◆推送消息<br>◆运营数据</p>
+<h5 id="用户数据"><a href="#用户数据" class="headerlink" title="用户数据"></a>用户数据</h5><p>◆头像、昵称等公开信息—wx.getUserlnfo）<br>◆openid等敏感数据</p>
+<h5 id="基础组件"><a href="#基础组件" class="headerlink" title="基础组件"></a>基础组件</h5><p>开源</p>
+<h2 id="Django视图层"><a href="#Django视图层" class="headerlink" title="Django视图层"></a>Django视图层</h2><p>Django Response对象<br>◆状态码——Response对象的status属性<br>◆应答内容——Response对象的content属性<br>◆延伸的Response子类——（JsonResponse、FileResponse）</p>
+<h2 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h2><h3 id="有状态服务"><a href="#有状态服务" class="headerlink" title="有状态服务"></a>有状态服务</h3><h4 id="什么是状态"><a href="#什么是状态" class="headerlink" title="什么是状态"></a>什么是状态</h4><p>无状态服务:就是没有特殊状态的服务,各个请求对于服务器来说统一无差别处理,请求自身携带了所有服务端所需要的所有参数(服务端自身不存储跟请求相关的任何数据,不包括数据库存储信息)</p>
+<p>有状态服务:与之相反,有状态服务在服务端保留之前请求的信息,用以处理当前请求,比如session等</p>
+<p>小程序状态：小程序与后台通信需要通过微信后台来进行转发。</p>
+<h2 id="小程序的状态管理"><a href="#小程序的状态管理" class="headerlink" title="小程序的状态管理"></a>小程序的状态管理</h2><p>在 utils 包中添加 Cookie.js 工具包，然后在里面有三个函数，取出、存储、取出。</p>
+<p>const key = ‘cookie’</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function getSessionIDFromResponse(res)&#123;</span><br><span class="line">  var cookie = res.header[&apos;Set-Cookie&apos;]</span><br><span class="line">  console.log(&apos;get cookie from response: &apos; + cookie)</span><br><span class="line">  return cookie</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function setCookieToStorage(cookie) &#123;</span><br><span class="line">  try&#123;</span><br><span class="line">    wx.setStorageSync(key, cookie)</span><br><span class="line">  &#125;catch(e)&#123;</span><br><span class="line">    console.log(e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function getCookieFromStorage() &#123;</span><br><span class="line">  var value = wx.getStorageSync(key)</span><br><span class="line">  return value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Django 的 Session 中间件</p>
+<p>启用 Session 中间件：setting中的 MIDDLEWARE。</p>
+<p>使用 Session 的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def test_session(request):</span><br><span class="line">    request.session[&apos;message&apos;] = &apos;Test Django Session OK!&apos;</span><br><span class="line">    response = wrap_json_response(code=ReturnCode.SUCCESS)</span><br><span class="line">    return JsonResponse(data=response, safe=False)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def test_session2(request):</span><br><span class="line">    print(&apos;session content: &apos;, request.session.items())</span><br><span class="line">    response = wrap_json_response(code=ReturnCode.SUCCESS)</span><br><span class="line">    return JsonResponse(data=response, safe=False)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">onReadCookies: function ()&#123;</span><br><span class="line">  wx.request(&#123;</span><br><span class="line">    url: app.globalData.serverUrl + app.globalData.apiVersion + &apos;/auth/test&apos;,</span><br><span class="line">    success: function(res)&#123;</span><br><span class="line">      var cookie = cookieUtil.getSessionIDFromResponse(res)</span><br><span class="line">      console.log(cookie)</span><br><span class="line">      cookieUtil.setCookieToStorage(cookie)</span><br><span class="line"></span><br><span class="line">      var newCookie = cookieUtil.getCookieFromStorage()</span><br><span class="line"></span><br><span class="line">      var header = &#123;&#125;</span><br><span class="line">      header.Cookie = newCookie</span><br><span class="line"></span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: app.globalData.serverUrl + app.globalData.apiVersion + &apos;/auth/test2&apos;,</span><br><span class="line">        header: header,</span><br><span class="line">        success: function(res)&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p><img data-src="http://tuchuang.xchcloud.cn/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86.jpg" alt="小程序中的状态管理"></p>
+<h3 id="小程序登录功能"><a href="#小程序登录功能" class="headerlink" title="小程序登录功能"></a>小程序登录功能</h3><p><img data-src="http://tuchuang.xchcloud.cn/%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7openid.png" alt></p>
+<p><strong>使用哪种用户体系呢</strong></p>
+<p>自建用户体系：<br>邮箱、电话等标记用户；填写、去重等复杂的交互逻辑。</p>
+<p>沿用微信用户体系：<br>openid——微信用户的唯一识别标志。</p>
+<p><strong>用户模型与用户视图：</strong><br>用户的唯一标识；<br>用户的基本信息。<br>获取用户的 OpenID</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class User(models.Model):</span><br><span class="line">    # openid</span><br><span class="line">    open_id = models.CharField(max_length=32, unique=True)</span><br><span class="line">    # 昵称</span><br><span class="line">    nickname = models.CharField(max_length=256)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class UserView(View,CommonResponseMixin):</span><br><span class="line">    def get(self, request):</span><br><span class="line">        pass</span><br><span class="line">    def post(self, request):</span><br><span class="line">        pass</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 路径：</span><br><span class="line">path(&apos;user&apos;, views.UserView.as_view())</span><br><span class="line"></span><br><span class="line"># 为什么是 as.view()</span><br></pre></td></tr></table></figure>
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><p>调用微信的 wx.login 获取临时的 code，不需要任何的参数，直接定义成功的回调函数，然后就是赋值，定义请求函数，包含请求链接、请求方式、请求内容，以及确定 GET POST 请求方式是否需要请求头，可以定义一个回调函数番薯输出登录成功。<br>定义cookies：获取、存储、获取</p>
+<p><strong>问题：</strong><br>code 是啥？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">authorize: function () &#123;</span><br><span class="line">  wx.login(&#123;</span><br><span class="line">    success: function(res)&#123;</span><br><span class="line">      var code = res.code</span><br><span class="line">      var appId = app.globalData.appId</span><br><span class="line">      var nickname = app.globalData.userInfo.nickName</span><br><span class="line">      wx.request(&#123;</span><br><span class="line">        url: app.globalData.serverUrl + app.globalData.apiVersion + &apos;/auth/authorize&apos;,</span><br><span class="line">        method: &apos;POST&apos;,</span><br><span class="line">        data: &#123;                     //数据内容</span><br><span class="line">          code: code,</span><br><span class="line">          appId: appId,</span><br><span class="line">          nickname: nickname</span><br><span class="line">        &#125;,</span><br><span class="line">        header: &#123;                  //请求头</span><br><span class="line">          &apos;content-type&apos;: &apos;application/json&apos;</span><br><span class="line">        &#125;,</span><br><span class="line">        success: function(res)&#123;  //回调函数</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title: &apos;授权成功&apos;</span><br><span class="line">          &#125;)</span><br><span class="line">          var cookie = cookieUtil.getSessionIDFromResponse(res)</span><br><span class="line">          cookieUtil.setCookieToStorage(cookie)</span><br><span class="line">          console.log(cookie)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p><strong>出现的错误：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ModuleNotFoundError: No module named &apos;Crypto&apos;</span><br><span class="line">解决方法：</span><br><span class="line"></span><br><span class="line">pip install pycryptodome</span><br><span class="line">当然有可能会出现这种情况：看到报错后是这么安装的：pip install crypto</span><br><span class="line"></span><br><span class="line">但是运行还是报错：ModuleNotFoundError: No module named &apos;Crypto&apos;；</span><br><span class="line">此时需要去环境中将安装的包crypto的名字改成Crypto,首字母大写；</span><br><span class="line">然后再次运行，出现这个错误：ModuleNotFoundError: No module named &apos;Crypto.Cipher&apos;</span><br><span class="line">此时进入到安装的文件夹下，发现没有此文件：</span><br><span class="line">需要卸载刚才安装的包：pip uninstall crypto</span><br><span class="line">然后重新安装：pip install pycryptodome，即可！</span><br><span class="line"></span><br><span class="line">&quot;errcode&quot;:40029：</span><br><span class="line">解决方法:</span><br><span class="line"></span><br><span class="line">微信开发者工具里开发项目需要填写appID，后台请求openid也需要appID，</span><br><span class="line">确认appID是否一致，确认appsecret是否一致，临时登录凭证code ，appID和appsecret必须相互对应。</span><br><span class="line"></span><br><span class="line">errcode&quot;:40125：</span><br><span class="line">解决方法：</span><br><span class="line"></span><br><span class="line">1.代码中设置的微信APPsecret和微信开放平台不一致，需要您自己对照微信开放平台和代码中的appsecret， 检查修正。 </span><br><span class="line">2.由于秘钥无效导致的，秘钥如果长时间不登录，会自动重置。</span><br></pre></td></tr></table></figure>
+<h3 id="完善用户的个人信息"><a href="#完善用户的个人信息" class="headerlink" title="完善用户的个人信息"></a>完善用户的个人信息</h3><h4 id="用户模型的变更"><a href="#用户模型的变更" class="headerlink" title="用户模型的变更"></a>用户模型的变更</h4><h4 id="修改个人信息的功能开发"><a href="#修改个人信息的功能开发" class="headerlink" title="修改个人信息的功能开发"></a>修改个人信息的功能开发</h4><h3 id="复杂多变的用户状态管理"><a href="#复杂多变的用户状态管理" class="headerlink" title="复杂多变的用户状态管理"></a>复杂多变的用户状态管理</h3><h4 id="有状态的应用服务"><a href="#有状态的应用服务" class="headerlink" title="有状态的应用服务"></a>有状态的应用服务</h4><h4 id="Index-首页的实现"><a href="#Index-首页的实现" class="headerlink" title="Index 首页的实现"></a>Index 首页的实现</h4><h2 id="深入-Django-模型层"><a href="#深入-Django-模型层" class="headerlink" title="深入 Django 模型层"></a>深入 Django 模型层</h2><h3 id="跨DB迁移——模型层使用至数据库迁移"><a href="#跨DB迁移——模型层使用至数据库迁移" class="headerlink" title="跨DB迁移——模型层使用至数据库迁移"></a>跨DB迁移——模型层使用至数据库迁移</h3><h4 id="迁移的必要性"><a href="#迁移的必要性" class="headerlink" title="迁移的必要性"></a>迁移的必要性</h4><p>sqlite3在项目开发初期便利</p>
+<p>sqlite3是文件数据库，性能跟不上</p>
+<p>mysql是工业界非常常用的数据库</p>
+<h4 id="迁移的过程"><a href="#迁移的过程" class="headerlink" title="迁移的过程"></a>迁移的过程</h4><h5 id="数据备份"><a href="#数据备份" class="headerlink" title="数据备份"></a>数据备份</h5><p>python manage.py dumpdate authorization &gt; authorization_data.json</p>
+<h5 id="表结构同步配置"><a href="#表结构同步配置" class="headerlink" title="表结构同步配置"></a>表结构同步配置</h5><p>创建Mysql数据库并更新配置</p>
+<p>创建slave数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    &apos;default&apos;: &#123;</span><br><span class="line">        &apos;ENGINE&apos;: &apos;django.db.backends.sqlite3&apos;,</span><br><span class="line">        &apos;NAME&apos;: os.path.join(BASE_DIR, &apos;db.sqlite3&apos;),</span><br><span class="line">    &#125;,</span><br><span class="line">    &apos;slave&apos;: &#123;</span><br><span class="line">        &apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,</span><br><span class="line">        &apos;NAME&apos;: &apos;backend&apos;,</span><br><span class="line">        &apos;USER&apos;: &apos;root&apos;,</span><br><span class="line">        &apos;PASSWORD&apos;: &apos;&apos;,</span><br><span class="line">        &apos;HOST&apos;: &apos;127.0.0.1&apos;,</span><br><span class="line">        &apos;PORT&apos;: &apos;3306&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 可以同时支持多个数据库，但是仅仅只有default默认数据库挂掉以后启动第二个</span><br><span class="line">&apos;&apos;&apos;</span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    &apos;default&apos;: &#123;</span><br><span class="line">        &apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,</span><br><span class="line">        &apos;NAME&apos;: &apos;backend&apos;,</span><br><span class="line">        &apos;USER&apos;: &apos;root&apos;,</span><br><span class="line">        &apos;PASSWORD&apos;: &apos;&apos;,</span><br><span class="line">        &apos;HOST&apos;: &apos;127.0.0.1&apos;,</span><br><span class="line">        &apos;PORT&apos;: &apos;3306&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>表结构的同步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manager.py migrate --run-syncdb --database slave</span><br></pre></td></tr></table></figure>
+<h5 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h5><p>python manager.py loaddata authorization_data.json</p>
+<h3 id="数据库索引——模型层使用之索引"><a href="#数据库索引——模型层使用之索引" class="headerlink" title="数据库索引——模型层使用之索引"></a>数据库索引——模型层使用之索引</h3><h4 id="索引的概述"><a href="#索引的概述" class="headerlink" title="索引的概述"></a>索引的概述</h4><p>索引是对数据库表中一列或多列的值进行排序的一种结构，使用索引可快速访问数据库表中的特定信息。如果想按特定职员的姓来查找他或她，则与在表中搜索所有的行相比，索引有助于更快地获取信息。<br>索引的一个主要目的就是加快检索表中数据，亦即能协助信息搜索者尽快的找到符合限制条件的记录ID的辅助数据结构。</p>
+<p>优点：<br>加快检索数据的速度<br>降低插入、删除、更新的速度</p>
+<h4 id="应该被索引的字段"><a href="#应该被索引的字段" class="headerlink" title="应该被索引的字段"></a>应该被索引的字段</h4><p>需要排序操作的字段(order_by)</p>
+<p>需要比较操作的字段(&gt; &lt;&gt;)</p>
+<p>需要过滤操作的字段(fluter)</p>
+<h4 id="添加索引的两种方法"><a href="#添加索引的两种方法" class="headerlink" title="添加索引的两种方法"></a>添加索引的两种方法</h4><h5 id="属性中定义"><a href="#属性中定义" class="headerlink" title="属性中定义"></a>属性中定义</h5><p>nickname = models.CharField(max_length=256,db_index=True)</p>
+<h5 id="模型的Meta添加索引"><a href="#模型的Meta添加索引" class="headerlink" title="模型的Meta添加索引"></a>模型的Meta添加索引</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Meta: </span><br><span class="line">    indexes = [</span><br><span class="line">        models.Index(fields=[&apos;nickname&apos;]),</span><br><span class="line">        models.Index(fields=[&apos;open_id&apos;, &apos;nickname&apos;])</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">组合索引是什么？组合索引建立的原则。b树和b+树的区别。</span><br><span class="line"></span><br><span class="line">一次查询只能用到一个索引，所以 首先枪毙 a，b各建索引方案</span><br><span class="line"></span><br><span class="line">a还是b？ 谁的区分度更高（同值的最少），建谁！</span><br><span class="line"></span><br><span class="line">当然，联合索引也是个不错的方案，ab，还是ba，则同上，区分度高者，在前</span><br><span class="line"></span><br><span class="line">索引用于快速找出在某个列中有一特定值的行。不使用索引，MySQL必须从第1条记录开始然后读完整个表直到找出相关的行，还需要考虑每次读入数据页的IO开销。而如果采取索引，则可以根据索引指向的页以及记录在页中的位置，迅速地读取目标页进而获取目标记录。</span><br><span class="line"></span><br><span class="line">大多数情况下都（默认）采用B树来构建索引。只是空间列类型的索引使用R-树，并且MEMORY表还支持hash索引。B树是平衡多叉树，每个节点存放多少个值取决于值所占的空间，这与每一张数据页存放多少条记录与记录信息量有关同理。节点中的值是以非降序进行排列的，节点中的值总是小于等于指向它的结点中的值。</span><br><span class="line"></span><br><span class="line">MySQL使用B树构造索引的情况下，是由叶子指向具体的页和记录的。并且一个叶子有一个指针指向下一个叶子。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">Django模型类的Meta是一个内部类，它用于定义一些Django模型类的行为特性。而可用的选项大致包含以下几类</span><br><span class="line"></span><br><span class="line">abstract</span><br><span class="line">这个属性是定义当前的模型是不是一个抽象类。所谓抽象类是不会对应数据库表的。一般我们用它来归纳一些公共属性字段，然后继承它的子类可以继承这些字段。</span><br><span class="line"></span><br><span class="line">Options.abstract</span><br><span class="line">如果abstract = True 这个model就是一个抽象类</span><br><span class="line"></span><br><span class="line">app_label</span><br><span class="line">这个选型只在一种情况下使用，就是你的模型不在默认的应用程序包下的models.py文件中，这时候需要指定你这个模型是哪个应用程序的。</span><br><span class="line"></span><br><span class="line">Options.app_label</span><br><span class="line">如果一个model定义在默认的models.py，例如如果你的app的models在myapp.models子模块下，你必须定义app_label让Django知道它属于哪一个app</span><br><span class="line">app_label = &apos;myapp&apos;</span><br><span class="line"></span><br><span class="line">db_table</span><br><span class="line">db_table是指定自定义数据库表明的。Django有一套默认的按照一定规则生成数据模型对应的数据库表明。</span><br><span class="line">Options.db_table</span><br><span class="line">定义该model在数据库中的表名称</span><br><span class="line">　　db_table = &apos;Students&apos;</span><br><span class="line">如果你想使用自定义的表名，可以通过以下该属性</span><br><span class="line">　　table_name = &apos;my_owner_table&apos;</span><br><span class="line"></span><br><span class="line">db_teblespace</span><br><span class="line">Options.db_teblespace</span><br><span class="line">定义这个model所使用的数据库表空间。如果在项目的settin中定义那么它会使用这个值</span><br><span class="line"></span><br><span class="line">get_latest_by</span><br><span class="line">Options.get_latest_by</span><br><span class="line">在model中指定一个DateField或者DateTimeField。这个设置让你在使用model的Manager上的lastest方法时，默认使用指定字段来排序</span><br><span class="line"></span><br><span class="line">managed</span><br><span class="line">Options.managed</span><br><span class="line">默认值为True，这意味着Django可以使用syncdb和reset命令来创建或移除对应的数据库。默认值为True,如果你不希望这么做，可以把manage的值设置为False</span><br><span class="line"></span><br><span class="line">order_with_respect_to</span><br><span class="line">这个选项一般用于多对多的关系中，它指向一个关联对象，就是说关联对象找到这个对象后它是经过排序的。指定这个属性后你会得到一个get_xxx_order()和set_xxx_order()的方法，通过它们你可以设置或者回去排序的对象</span><br><span class="line"></span><br><span class="line">ordering</span><br><span class="line">这个字段是告诉Django模型对象返回的记录结果集是按照哪个字段排序的。这是一个字符串的元组或列表，没有一个字符串都是一个字段和用一个可选的表明降序的&apos;-&apos;构成。当字段名前面没有&apos;-&apos;时，将默认使用升序排列。使用&apos;?&apos;将会随机排列</span><br><span class="line"></span><br><span class="line">ordering=[&apos;order_date&apos;] # 按订单升序排列</span><br><span class="line">ordering=[&apos;-order_date&apos;] # 按订单降序排列，-表示降序</span><br><span class="line">ordering=[&apos;?order_date&apos;] # 随机排序，？表示随机</span><br><span class="line">ordering=[&apos;-pub_date&apos;,&apos;author&apos;] # 以pub_date为降序，在以author升序排列</span><br><span class="line">permissions</span><br><span class="line">permissions主要是为了在Django Admin管理模块下使用的，如果你设置了这个属性可以让指定的方法权限描述更清晰可读。Django自动为每个设置了admin的对象创建添加，删除和修改的权限。</span><br><span class="line">permissions = ((&apos;can_deliver_pizzas&apos;,&apos;Can deliver pizzas&apos;))</span><br><span class="line"></span><br><span class="line">proxy</span><br><span class="line">这是为了实现代理模型使用的，如果proxy = True,表示model是其父的代理 model </span><br><span class="line"></span><br><span class="line">unique_together</span><br><span class="line">unique_together这个选项用于：当你需要通过两个字段保持唯一性时使用。比如假设你希望，一个Person的FirstName和LastName两者的组合必须是唯一的，那么需要这样设置：</span><br><span class="line">unique_together = ((&quot;first_name&quot;, &quot;last_name&quot;),)</span><br><span class="line">一个ManyToManyField不能包含在unique_together中。如果你需要验证关联到ManyToManyField字段的唯一验证，尝试使用signal(信号)或者明确指定through属性。</span><br><span class="line"></span><br><span class="line">verbose_name</span><br><span class="line">verbose_name的意思很简单，就是给你的模型类起一个更可读的名字一般定义为中文，我们：</span><br><span class="line">verbose_name = &quot;学校&quot;</span><br><span class="line"></span><br><span class="line">verbose_name_plural</span><br><span class="line">这个选项是指定，模型的复数形式是什么，比如：</span><br><span class="line">verbose_name_plural = &quot;学校&quot;</span><br><span class="line">如果不指定Django会自动在模型名称后加一个’s’</span><br></pre></td></tr></table></figure>
+<h4 id="关系映射实战"><a href="#关系映射实战" class="headerlink" title="关系映射实战"></a>关系映射实战</h4><h5 id="有没有用到关系映射实战"><a href="#有没有用到关系映射实战" class="headerlink" title="有没有用到关系映射实战"></a>有没有用到关系映射实战</h5><h5 id="用到哪种关系映射"><a href="#用到哪种关系映射" class="headerlink" title="用到哪种关系映射"></a>用到哪种关系映射</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">from django.db import models</span><br><span class="line"></span><br><span class="line">class Wife(models.Model):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">class Husband(models.Model):</span><br><span class="line">    wife = models.OneToOneField(Wife,on_delete=models.CASCADE)</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">class Mother(models.Model):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">class Father(models.Model):</span><br><span class="line">    Wife = models.OneToOneField(Mother, on_delete=models.DO_NOTHING)</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">class YoungerBrother(models.Model):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">class ElderBrother(models.Model):</span><br><span class="line">    father_id = models.ForeignKey(Father,on_delete=models.DO_NOTHING)</span><br><span class="line">    younger_brother = models.ManyToManyField(YoungerBrother)</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<h3 id="增删改查——模型层使用之数据库操作"><a href="#增删改查——模型层使用之数据库操作" class="headerlink" title="增删改查——模型层使用之数据库操作"></a>增删改查——模型层使用之数据库操作</h3><h3 id="模型层关系映射——模型层使用之关系映射"><a href="#模型层关系映射——模型层使用之关系映射" class="headerlink" title="模型层关系映射——模型层使用之关系映射"></a>模型层关系映射——模型层使用之关系映射</h3><h4 id="三种关系映射"><a href="#三种关系映射" class="headerlink" title="三种关系映射"></a>三种关系映射</h4><p>一对一的关系：OneToOneField</p>
+<p>一对多的关系：ForeignKey</p>
+<p>多对多的关系：ManyToManyfield</p>
+<h3 id="Django-MTV-中的M-Model"><a href="#Django-MTV-中的M-Model" class="headerlink" title="Django MTV 中的M: Model"></a>Django MTV 中的M: Model</h3><h3 id="Django-ORM-框架"><a href="#Django-ORM-框架" class="headerlink" title="Django ORM 框架"></a>Django ORM 框架</h3><p><img data-src="http://tuchuang.xchcloud.cn/ORM%20%E6%A8%A1%E5%9E%8B.jpg" alt="ORM"><br>优点：屏蔽数据库差异；提供迁移工具；简化开发流程.</p>
+<h2 id="Django-后台"><a href="#Django-后台" class="headerlink" title="Django 后台"></a>Django 后台</h2><h3 id="Django-日志模块"><a href="#Django-日志模块" class="headerlink" title="Django 日志模块"></a>Django 日志模块</h3><p>产生日志-&gt;渲染日志-&gt;匹配过滤-&gt;持久化</p>
+<p>Request 信息<br>Setting 配置<br>Trabook 信息</p>
+<p>日志模块配置</p>
+<h4 id="格式器-formattar"><a href="#格式器-formattar" class="headerlink" title="格式器 formattar"></a>格式器 formattar</h4><p><img data-src="http://tuchuang.xchcloud.cn/%E6%A0%BC%E5%BC%8F%E5%99%A8.png" alt="格式器"></p>
+<p>eg<br><img data-src="http://tuchuang.xchcloud.cn/%E6%A0%BC%E5%BC%8F%E5%99%A8eg.png" alt="eg"></p>
+<p>配置日志格式（位置、时间）</p>
+<p>沿用python 语言里卖弄的格式属性</p>
+<h4 id="过滤器-filter"><a href="#过滤器-filter" class="headerlink" title="过滤器 filter"></a>过滤器 filter</h4><p>日志有用打印，无用抛弃。</p>
+<h4 id="处理器-handler"><a href="#处理器-handler" class="headerlink" title="处理器 handler"></a>处理器 handler</h4><p>对日志进行处理，比如：写进文件、打印屏幕等<br>常用处理器（文件处理器、终端处理器）</p>
+<h4 id="日志实例-logger"><a href="#日志实例-logger" class="headerlink" title="日志实例 logger"></a>日志实例 logger</h4><p>在python代码里面打印日志的入口点<br>日志级别（DEBUG、INFO、WARNING、ERROR、CRITICAL）</p>
+<h3 id="Django-admin-模块"><a href="#Django-admin-模块" class="headerlink" title="Django admin 模块"></a>Django admin 模块</h3><h4 id="为什么Django提供admin模块"><a href="#为什么Django提供admin模块" class="headerlink" title="为什么Django提供admin模块"></a>为什么Django提供admin模块</h4><p>管理界面是基础设施非常重要的一部分<br>添加、编辑和删除网站内容<br>功能类似但开发繁琐</p>
+<p>认证用户-&gt;权限验证-&gt;页面展示-&gt;数据管理</p>
+<h4 id="admin模块是什么"><a href="#admin模块是什么" class="headerlink" title="admin模块是什么"></a>admin模块是什么</h4><p>Django的自动管理界面<br>管理Django用户权限、模型数据、信息发布<br>拓展性强，基于此定制很多功能</p>
+<h4 id="admin模块怎么使用"><a href="#admin模块怎么使用" class="headerlink" title="admin模块怎么使用"></a>admin模块怎么使用</h4><p>创建超级管理员用户<br>python manage.py createsuperuser</p>
+<p>确认添加admin模块和路由说明<br>创建超级管理员<br>注册模型到admin模块</p>
+<p>内容列表字段：重写str函数<br>不显示不可编辑字段：fields列表或exclude列表<br>重写save model函数实现保存逻辑</p>
+<h3 id="Django-缓存模块"><a href="#Django-缓存模块" class="headerlink" title="Django 缓存模块"></a>Django 缓存模块</h3><h4 id="缓存概述"><a href="#缓存概述" class="headerlink" title="缓存概述"></a>缓存概述</h4><p>缓存是（高速）缓存的简称，英语：Cache<br>根本目的是为了加快数据访问速度，提高性能<br>协调两者数据传输速度的差异</p>
+<p>缓存的置换策略<br>LFU、FIFO、LRU等算法<br>settings.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">CACHES = &#123;</span><br><span class="line">    &apos;default&apos;: &#123;</span><br><span class="line">        # 1. MemCache</span><br><span class="line">        # &apos;BACKEND&apos;: &apos;django.core.cache.backends.memcached.MemcachedCache&apos;,</span><br><span class="line">        # &apos;LOCATION&apos;: &apos;127.0.0.1:11211&apos;,</span><br><span class="line"></span><br><span class="line">        # 2. DB Cache</span><br><span class="line">        # &apos;BACKEND&apos;: &apos;django.core.cache.backends.db.DatabaseCache&apos;,</span><br><span class="line">        # &apos;LOCATION&apos;: &apos;my_cache_table&apos;,</span><br><span class="line"></span><br><span class="line">        # 3. Filesystem Cache</span><br><span class="line">        # &apos;BACKEND&apos;: &apos;django.core.cache.backends.filebased.FileBasedCache&apos;,</span><br><span class="line">        # &apos;LOCATION&apos;: &apos;/var/tmp/django_cache&apos;,</span><br><span class="line"></span><br><span class="line">        # 4. Local Mem Cache</span><br><span class="line">        &apos;BACKEND&apos;: &apos;django.core.cache.backends.locmem.LocMemCache&apos;,</span><br><span class="line">        &apos;LOCATION&apos;: &apos;backend-cache&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>伪代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if data is in the cache:</span><br><span class="line">  return data</span><br><span class="line">else:</span><br><span class="line">  generate the data</span><br><span class="line">  save the data in the cache(set timeout)</span><br><span class="line">  return the generated data</span><br></pre></td></tr></table></figure></p>
+<h4 id="Django缓存模块"><a href="#Django缓存模块" class="headerlink" title="Django缓存模块"></a>Django缓存模块</h4><h3 id="Django-后台服务部署"><a href="#Django-后台服务部署" class="headerlink" title="Django 后台服务部署"></a>Django 后台服务部署</h3><p>略</p>
+<h3 id="Django-crontab-定时服务"><a href="#Django-crontab-定时服务" class="headerlink" title="Django crontab 定时服务"></a>Django crontab 定时服务</h3><h4 id="Linux下的crontab命令"><a href="#Linux下的crontab命令" class="headerlink" title="Linux下的crontab命令"></a>Linux下的crontab命令</h4><p>用于提交和管理用户的周期性任务<br>crond进程每分钟定时检查<br>时间间隔<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">eg：</span><br><span class="line">minutes hours day month week command</span><br><span class="line">*/5 * * * * echo &apos;Hi&apos; &gt;/dev/nul：每隔五分钟执行一次</span><br><span class="line">0 12 * * * do something：每天12点整执行一次</span><br><span class="line">0 12 * * 1-5 do something：周一到周五每天12点整执行一次</span><br></pre></td></tr></table></figure></p>
+<h4 id="django-crontab插件的使用"><a href="#django-crontab插件的使用" class="headerlink" title="django-crontab插件的使用"></a>django-crontab插件的使用</h4><p>pip 安装 </p>
+<p>seetings.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    &apos;django.contrib.admin&apos;,</span><br><span class="line">    &apos;django.contrib.auth&apos;,</span><br><span class="line">    &apos;django.contrib.contenttypes&apos;,</span><br><span class="line">    &apos;django.contrib.sessions&apos;,</span><br><span class="line">    &apos;django.contrib.messages&apos;,</span><br><span class="line">    &apos;django.contrib.staticfiles&apos;,</span><br><span class="line"></span><br><span class="line">    # 新应用</span><br><span class="line">    &apos;apis.apps.ApisConfig&apos;,</span><br><span class="line">    &apos;authorization.apps.AuthorizationConfig&apos;,</span><br><span class="line"></span><br><span class="line">    # 第三方应用</span><br><span class="line">    &apos;django_crontab&apos;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">CRONJOBS = [</span><br><span class="line">    (&apos;*/1 * * * *&apos;, &apos;cron.jobs.demo&apos;)</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python manage.py crontab add</span><br><span class="line">python manage.py crontab show/remove/run</span><br><span class="line">crontab -l</span><br><span class="line">tail -f service.log</span><br></pre></td></tr></table></figure>
+<p>说明：配置-&gt;crontab add（提交）-&gt; Django crontab插件 -定时任务-&gt; Linux crond服务 -负责执行-&gt;</p>
+<h3 id="Django-中间件"><a href="#Django-中间件" class="headerlink" title="Django 中间件"></a>Django 中间件</h3><h4 id="什么是Django中间件"><a href="#什么是Django中间件" class="headerlink" title="什么是Django中间件"></a>什么是Django中间件</h4><p>Django中间件是一个类<br>请求前后在合适的时机执行相应方法<br>配置MIDDLEWARE CLASSES属性</p>
+<p>SecurityMiddleware：安全中间件<br>GzipMiddleware:Gzip压缩中间件<br>SessionMiddleware：状态服务Session中间件<br>CsrfViewMiddleware：防止跨站伪造请求的中间件<br>AuthorizationMiddleware:Django自带的认证体系中间件<br>MessageMiddleware：消息中间件</p>
+<h4 id="Django-中间件的执行逻辑"><a href="#Django-中间件的执行逻辑" class="headerlink" title="Django 中间件的执行逻辑"></a>Django 中间件的执行逻辑</h4><p>每个请求都会两次经过配置的中间件<br>多个中间件之间存在执行顺序</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%89%A7%E8%A1%8C%E9%80%BB%E8%BE%91.png" alt="中间件执行逻辑"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    &apos;django.middleware.security.SecurityMiddleware&apos;,</span><br><span class="line">    &apos;django.contrib.sessions.middleware.SessionMiddleware&apos;,</span><br><span class="line">    &apos;django.middleware.common.CommonMiddleware&apos;,</span><br><span class="line">    # &apos;django.middleware.csrf.CsrfViewMiddleware&apos;,</span><br><span class="line">    &apos;ops.middlewaredemo.TestMiddleware&apos;,</span><br><span class="line">    &apos;django.contrib.auth.middleware.AuthenticationMiddleware&apos;,</span><br><span class="line">    &apos;django.contrib.messages.middleware.MessageMiddleware&apos;,</span><br><span class="line">    &apos;django.middleware.clickjacking.XFrameOptionsMiddleware&apos;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h4 id="实现自定义中间件"><a href="#实现自定义中间件" class="headerlink" title="实现自定义中间件"></a>实现自定义中间件</h4><p>在每个请求前后打印log<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import logging</span><br><span class="line">logger = logging.getLogger(&apos;django&apos;)</span><br><span class="line">class TestMiddleware:</span><br><span class="line">    def __init__(self, get_response):</span><br><span class="line">        self.get_response = get_response</span><br><span class="line">        logger.info(&quot;Build TestMiddleware&quot;)</span><br><span class="line">    def __call__(self, request):</span><br><span class="line">        logger.info(&quot;TestMiddleware before request.&quot;)</span><br><span class="line">        response = self.get_response(request)</span><br><span class="line">        logger.info(&quot;TestMiddleware after request.&quot;)</span><br><span class="line">        return response</span><br></pre></td></tr></table></figure></p>
+<h3 id="邮件模块"><a href="#邮件模块" class="headerlink" title="邮件模块"></a>邮件模块</h3><h4 id="QQ邮箱SMTP服务与授权码"><a href="#QQ邮箱SMTP服务与授权码" class="headerlink" title="QQ邮箱SMTP服务与授权码"></a>QQ邮箱SMTP服务与授权码</h4><p>简单邮件传输协议（Simple Mail Transfer Protocol）<br>SMTP服务使用TCP端口25<br>使用QQ邮箱SMTP服务需要授权码</p>
+<h4 id="配置并使用标准库发送邮件"><a href="#配置并使用标准库发送邮件" class="headerlink" title="配置并使用标准库发送邮件"></a>配置并使用标准库发送邮件</h4><p>seetings.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># Email config</span><br><span class="line"># QQ邮箱 SMTP 服务器地址</span><br><span class="line">EMAIL_HOST = &apos;smtp.qq.com&apos;</span><br><span class="line"># 端口</span><br><span class="line">EMAIL_PORT = 465</span><br><span class="line"># 发送邮件的邮箱</span><br><span class="line">EMAIL_HOST_USER = &apos;******@qq.com&apos;</span><br><span class="line"># 在邮箱中设置的客户端授权密码</span><br><span class="line">EMAIL_HOST_PASSWORD = &apos;anzthepddgaldafi&apos;</span><br><span class="line"># 开启TLS</span><br><span class="line">EMAIL_USE_TLS = True</span><br><span class="line"># 收件人看到的发件人</span><br><span class="line">EMAIL_FROM = &apos;******@qq.com&apos;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">def send_mail():</span><br><span class="line">    msg = MIMEText(&quot;邮件通道测试&quot;, &quot;plain&quot;, &quot;utf-8&quot;)</span><br><span class="line">    msg[&apos;FROM&apos;] = &quot;Mail Test&quot;</span><br><span class="line">    msg[&apos;Subject&apos;] = &quot;【Mail Test】&quot;</span><br><span class="line">    receivers = [&apos;************@qq.com&apos;]</span><br><span class="line">    server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT)</span><br><span class="line">    server.set_debuglevel(1)</span><br><span class="line">    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)</span><br><span class="line">    server.sendmail(settings.EMAIL_FROM, receivers, msg.as_string())</span><br><span class="line">    server.close()</span><br><span class="line">```   </span><br><span class="line"></span><br><span class="line">### 基于邮件通知的服务监控和告警系统</span><br><span class="line"></span><br><span class="line">配置专用日志格式器记录耗时</span><br><span class="line">编写请求耗时统计功能的中间件</span><br><span class="line">配置定时任务统计指标并通过邮件发送</span><br><span class="line"></span><br><span class="line">![邮件告警](http://tuchuang.xchcloud.cn/%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6.png)</span><br><span class="line"></span><br><span class="line">## 运维提升专题之部署篇</span><br><span class="line"></span><br><span class="line">![高可用](http://tuchuang.xchcloud.cn/%E9%AB%98%E5%8F%AF%E7%94%A8.png)</span><br><span class="line"></span><br><span class="line">### Django依赖服务的高可用</span><br><span class="line"></span><br><span class="line">#### 依赖服务高可用的问题</span><br><span class="line"></span><br><span class="line">#### 解决依赖服务单点故障的方法</span><br><span class="line"></span><br><span class="line">### Nginx必知必会</span><br><span class="line"></span><br><span class="line">#### Nginx概述</span><br><span class="line"></span><br><span class="line">网站服务器、反向代理器、负载均衡器</span><br><span class="line"></span><br><span class="line">#### Nginx 安装与基本命令</span><br><span class="line"></span><br><span class="line">默认配置目录：/etc/nginx</span><br><span class="line"></span><br><span class="line">sudo nginx -s stop</span><br><span class="line">sudo nginx -s quit</span><br><span class="line">sudo nginx -s reload(重新加载配置文件)</span><br><span class="line">sudo nginx -s reopen(重新打开日志文件)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### Nginx 关键配置模块</span><br><span class="line"></span><br><span class="line">events 配置域：网络连接相关配置（I/O模型等）</span><br><span class="line">server 配置域：相关服务节点配置</span><br><span class="line">location 配置域：资源路由配置</span><br><span class="line"></span><br><span class="line">http 配置域：Nginx作为网页服务器时的配置（#mail）</span><br><span class="line">upstream 配置域：反向代理配置域</span><br><span class="line"></span><br><span class="line">异步事件处理模型VS多线程客户机处理模型</span><br><span class="line">模块化设计、丰富模块库</span><br><span class="line">俄罗斯开发者开发的服务器</span><br><span class="line">异步事件处理模型：更高并发</span><br><span class="line">模块化设计、丰富的模块库</span><br><span class="line"></span><br><span class="line">### uWSGl必知必会</span><br><span class="line"></span><br><span class="line">全称：Web Server Gateway Interface</span><br><span class="line">Web Server 和Web Application 通信的规范</span><br><span class="line"></span><br><span class="line">![WSGI](http://tuchuang.xchcloud.cn/WSGI.png)</span><br><span class="line"></span><br><span class="line">实现了WSGl协议</span><br><span class="line">Web服务器</span><br><span class="line">接收客户端请求通过协议传达给Django应用</span><br><span class="line"></span><br><span class="line">pip install uwsgi</span><br><span class="line"></span><br><span class="line">chdir:WSGI应用目录</span><br><span class="line">module:WSGI应用的模块名字</span><br><span class="line">processes:uWSGl 进程数</span><br><span class="line">（http-）socket：套接字路径、地址</span><br><span class="line">max-requests：最大并发请求数</span><br><span class="line">vacuum：清理环境配置（Boolean）</span><br><span class="line"></span><br><span class="line">启动方法：</span><br><span class="line"></span><br><span class="line">uwsgi --chdir xxxx --socket:80 --max-requests 5000 --processes 4 --module xxx.wsgi</span><br><span class="line"></span><br><span class="line">配置文件启动</span><br><span class="line"></span><br><span class="line">停止：</span><br><span class="line"></span><br><span class="line">uwsgi --stop pid/uwsgi-8000.pid</span><br><span class="line"></span><br><span class="line">### Django uWSGI部署</span><br><span class="line"></span><br><span class="line">Django runserver 可以直接对外服务，但只是用于测试</span><br><span class="line">uWSGI可以很好的进行多线程调度、进程监控</span><br><span class="line">uWSGl 提供完善的请求日志处理</span><br><span class="line"></span><br><span class="line">uwsgi --http :8000 --module django_deployment.wsgi</span><br><span class="line"></span><br><span class="line">uwsgi --ini django-uwsgi.ini</span><br><span class="line"></span><br><span class="line">django-uwsgi.ini：</span><br></pre></td></tr></table></figure>
+<p>[uwsgi]</p>
+<p>chdir       = /home/ubuntu/jarvis/deployment/django_deployment<br>module      = django_deployment.wsgi<br>http-socket = :8000<br>master      = True<br>processes   = 4<br>threads     = 1<br>vacuum      = true</p>
+<h1 id="backend-run-uwsgi"><a href="#backend-run-uwsgi" class="headerlink" title="backend run uwsgi"></a>backend run uwsgi</h1><p>daemonize   = %(chdir)/log/uwsgi-8000.log<br>log-maxsize = 1024000000<br>pidfile     = %(chdir)/pid/uwsgi-8000.pid<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Django Nginx+uWSGl部署</span><br><span class="line"></span><br><span class="line">知名服务器，Nginx提供更加安全的服务保障</span><br><span class="line">提供反向代理、负载均衡等丰富功能</span><br><span class="line">对于静态文件的处理能力更强</span><br><span class="line"></span><br><span class="line">uWSGl 启动Django应用服务</span><br><span class="line">修改Nginx配置文件，完成反向代理配置</span><br><span class="line">收集静态文件，完成静态文件寻址配置</span><br><span class="line"></span><br><span class="line">Nginx：软连接</span><br><span class="line">ln -s sites-available/nginx-uwsgi.conf nginx.conf</span><br><span class="line"></span><br><span class="line">ll nginx.conf</span><br><span class="line"></span><br><span class="line">静态文件处理：</span><br><span class="line"></span><br><span class="line">python manage.py collectstatic</span><br><span class="line"></span><br><span class="line">nginx.conf location 指定地址</span><br><span class="line"></span><br><span class="line">### Django HTTPS部署</span><br><span class="line"></span><br><span class="line">HTTPS协议使用443端口</span><br><span class="line">HTTPS协议加密报文传输内容</span><br><span class="line">HTTPS协议耗费CPU计算资源和时间</span><br><span class="line"></span><br><span class="line">部署方案：</span><br><span class="line"></span><br><span class="line">![](http://tuchuang.xchcloud.cn/Https%20%E9%83%A8%E7%BD%B2.png)</span><br></pre></td></tr></table></figure></p>
+<pre><code>server {
+        listen 80;
+        server_name .dongcia.com;
+        return     301 https://dongcia.com$request_uri;
+}
+
+server {
+        listen 443 ssl;
+        server_name .dongcia.com;
+        charset utf-8;
+        ssl_certificate     /etc/nginx/ssl/dongcia.com.crt;
+        ssl_certificate_key /etc/nginx/ssl/dongcia.com.key;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+
+        access_log /var/log/nginx/nginx-uwsgi.log;
+
+        location / {
+               proxy_pass http://uwsgi;
+        }
+
+        location /static {
+               alias /home/ubuntu/jarvis/deployment/django_deployment/static;
+        }
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 使用Nginx进行高可用服务部署</span><br><span class="line"></span><br><span class="line">#### 为什么需要部署高可用服务？</span><br><span class="line"></span><br><span class="line">![](http://tuchuang.xchcloud.cn/%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8E%9F%E5%9B%A0.png)</span><br><span class="line"></span><br><span class="line">#### 反向代理</span><br><span class="line"></span><br><span class="line">![](http://tuchuang.xchcloud.cn/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png)</span><br><span class="line"></span><br><span class="line">![](http://tuchuang.xchcloud.cn/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%862.png)</span><br><span class="line"></span><br><span class="line">#### 负载均衡</span><br><span class="line"></span><br><span class="line">![](http://tuchuang.xchcloud.cn/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1.png)</span><br><span class="line">权重：</span><br></pre></td></tr></table></figure>
+<p>upstream uwsgi {</p>
+<pre><code>        # server 127.0.0.1:8000;
+        server 127.0.0.1:8001 weight=3;
+        server 127.0.0.1:8002 weight=1;
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 注意</span><br><span class="line"></span><br><span class="line">不要使用root权限启动uWSGI服务</span><br><span class="line"></span><br><span class="line">关闭uWSGl外网访问</span><br></pre></td></tr></table></figure>
+<p>[uwsgi]</p>
+<p>chdir       = /home/ubuntu/jarvis/deployment/django_deployment<br>module      = django_deployment.wsgi<br>http-socket = 127.0.0.1:8001<br>master      = True<br>processes   = 1<br>threads     = 1<br>vacuum      = true</p>
+<h1 id="backend-run-uwsgi-1"><a href="#backend-run-uwsgi-1" class="headerlink" title="backend run uwsgi"></a>backend run uwsgi</h1><p>daemonize   = %(chdir)/log/uwsgi-8001.log<br>log-maxsize = 1024000000<br>pidfile     = %(chdir)/pid/uwsgi-8001.pid<br><code>`</code></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/python-Django框架-微信小助手实践/" title="python-Django框架-微信小助手实践">http://xchcloud.cn/python-Django框架-微信小助手实践/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/Django/" rel="tag"><i class="fa fa-tag"></i> Django</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019年3月学习笔记/" rel="prev" title="2019年3月学习笔记">
+      <i class="fa fa-chevron-left"></i> 2019年3月学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-Flask框架-鱼书网站实践/" rel="next" title="python-Flask框架-鱼书网站实践">
+      python-Flask框架-鱼书网站实践 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序基础"><span class="nav-text">小程序基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局配置（页面导航）"><span class="nav-text">全局配置（页面导航）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pages-列表配置"><span class="nav-text">pages 列表配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#window-属性配置"><span class="nav-text">window 属性配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tabbar-配置"><span class="nav-text">tabbar 配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序的页面设置"><span class="nav-text">小程序的页面设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开启下拉刷新"><span class="nav-text">开启下拉刷新</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序的注册逻辑层"><span class="nav-text">小程序的注册逻辑层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小程序的注册逻辑"><span class="nav-text">小程序的注册逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面注册逻辑"><span class="nav-text">页面注册逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#页面数据"><span class="nav-text">页面数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#页面生命周期"><span class="nav-text">页面生命周期</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序的视图层"><span class="nav-text">小程序的视图层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据绑定"><span class="nav-text">数据绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表渲染"><span class="nav-text">列表渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#条件渲染"><span class="nav-text">条件渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绑定事件"><span class="nav-text">绑定事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小程序框架"><span class="nav-text">小程序框架</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序提供的能力和常用的API"><span class="nav-text">小程序提供的能力和常用的API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#微信API"><span class="nav-text">微信API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网络请求"><span class="nav-text">网络请求</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#HTTP请求"><span class="nav-text">HTTP请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#文件上传、下载"><span class="nav-text">文件上传、下载</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Task（网络任务对象）"><span class="nav-text">*Task（网络任务对象）</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#本地存储"><span class="nav-text">本地存储</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统"><span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#提供一个全局的问价管理系统，来实现对文件的增删改查"><span class="nav-text">提供一个全局的问价管理系统，来实现对文件的增删改查</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件夹操作"><span class="nav-text">文件夹操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开放能力"><span class="nav-text">开放能力</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#用户数据"><span class="nav-text">用户数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基础组件"><span class="nav-text">基础组件</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Django视图层"><span class="nav-text">Django视图层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话管理"><span class="nav-text">会话管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有状态服务"><span class="nav-text">有状态服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是状态"><span class="nav-text">什么是状态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序的状态管理"><span class="nav-text">小程序的状态管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序登录功能"><span class="nav-text">小程序登录功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#步骤"><span class="nav-text">步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完善用户的个人信息"><span class="nav-text">完善用户的个人信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户模型的变更"><span class="nav-text">用户模型的变更</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改个人信息的功能开发"><span class="nav-text">修改个人信息的功能开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂多变的用户状态管理"><span class="nav-text">复杂多变的用户状态管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有状态的应用服务"><span class="nav-text">有状态的应用服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Index-首页的实现"><span class="nav-text">Index 首页的实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入-Django-模型层"><span class="nav-text">深入 Django 模型层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#跨DB迁移——模型层使用至数据库迁移"><span class="nav-text">跨DB迁移——模型层使用至数据库迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#迁移的必要性"><span class="nav-text">迁移的必要性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迁移的过程"><span class="nav-text">迁移的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数据备份"><span class="nav-text">数据备份</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#表结构同步配置"><span class="nav-text">表结构同步配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据迁移"><span class="nav-text">数据迁移</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库索引——模型层使用之索引"><span class="nav-text">数据库索引——模型层使用之索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引的概述"><span class="nav-text">索引的概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应该被索引的字段"><span class="nav-text">应该被索引的字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加索引的两种方法"><span class="nav-text">添加索引的两种方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#属性中定义"><span class="nav-text">属性中定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型的Meta添加索引"><span class="nav-text">模型的Meta添加索引</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系映射实战"><span class="nav-text">关系映射实战</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#有没有用到关系映射实战"><span class="nav-text">有没有用到关系映射实战</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用到哪种关系映射"><span class="nav-text">用到哪种关系映射</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增删改查——模型层使用之数据库操作"><span class="nav-text">增删改查——模型层使用之数据库操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型层关系映射——模型层使用之关系映射"><span class="nav-text">模型层关系映射——模型层使用之关系映射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#三种关系映射"><span class="nav-text">三种关系映射</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-MTV-中的M-Model"><span class="nav-text">Django MTV 中的M: Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-ORM-框架"><span class="nav-text">Django ORM 框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Django-后台"><span class="nav-text">Django 后台</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-日志模块"><span class="nav-text">Django 日志模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#格式器-formattar"><span class="nav-text">格式器 formattar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤器-filter"><span class="nav-text">过滤器 filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理器-handler"><span class="nav-text">处理器 handler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日志实例-logger"><span class="nav-text">日志实例 logger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-admin-模块"><span class="nav-text">Django admin 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么Django提供admin模块"><span class="nav-text">为什么Django提供admin模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#admin模块是什么"><span class="nav-text">admin模块是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#admin模块怎么使用"><span class="nav-text">admin模块怎么使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-缓存模块"><span class="nav-text">Django 缓存模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存概述"><span class="nav-text">缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Django缓存模块"><span class="nav-text">Django缓存模块</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-后台服务部署"><span class="nav-text">Django 后台服务部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-crontab-定时服务"><span class="nav-text">Django crontab 定时服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux下的crontab命令"><span class="nav-text">Linux下的crontab命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#django-crontab插件的使用"><span class="nav-text">django-crontab插件的使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-中间件"><span class="nav-text">Django 中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Django中间件"><span class="nav-text">什么是Django中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Django-中间件的执行逻辑"><span class="nav-text">Django 中间件的执行逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现自定义中间件"><span class="nav-text">实现自定义中间件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件模块"><span class="nav-text">邮件模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#QQ邮箱SMTP服务与授权码"><span class="nav-text">QQ邮箱SMTP服务与授权码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置并使用标准库发送邮件"><span class="nav-text">配置并使用标准库发送邮件</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#backend-run-uwsgi"><span class="nav-text">backend run uwsgi</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#backend-run-uwsgi-1"><span class="nav-text">backend run uwsgi</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

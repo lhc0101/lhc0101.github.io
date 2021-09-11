@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="安装什么的简单的就不说了，基本操作了~ 基本的 Git 工作流程如下： 在工作目录中修改某些文件。 对修改后的文件进行快照，然后保存到暂存区域。 提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。">
+<meta name="keywords" content="入门,Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="版本控制-git入门">
+<meta property="og:url" content="http://xchcloud.cn/版本控制-git入门/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="安装什么的简单的就不说了，基本操作了~ 基本的 Git 工作流程如下： 在工作目录中修改某些文件。 对修改后的文件进行快照，然后保存到暂存区域。 提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:53:22.269Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="版本控制-git入门">
+<meta name="twitter:description" content="安装什么的简单的就不说了，基本操作了~ 基本的 Git 工作流程如下： 在工作目录中修改某些文件。 对修改后的文件进行快照，然后保存到暂存区域。 提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。">
+
+<link rel="canonical" href="http://xchcloud.cn/版本控制-git入门/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>版本控制-git入门 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/版本控制-git入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          版本控制-git入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-20 10:28:31" itemprop="dateCreated datePublished" datetime="2018-07-20T10:28:31+08:00">2018-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:53:22" itemprop="dateModified" datetime="2021-09-11T16:53:22+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/版本控制-git入门/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="版本控制-git入门/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>安装什么的简单的就不说了，基本操作了~</p>
+<h2 id="基本的-Git-工作流程如下："><a href="#基本的-Git-工作流程如下：" class="headerlink" title="基本的 Git 工作流程如下："></a>基本的 Git 工作流程如下：</h2><ol>
+<li>在工作目录中修改某些文件。</li>
+<li>对修改后的文件进行快照，然后保存到暂存区域。</li>
+<li>提交更新，将保存在暂存区域的文件快照永久转储到 Git 目录中。<a id="more"></a>
+<h2 id="Git基本命令："><a href="#Git基本命令：" class="headerlink" title="Git基本命令："></a>Git基本命令：</h2><img data-src="https://upload-images.jianshu.io/upload_images/6407592-e84d0d76a7979a61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git mingling"></li>
+</ol>
+<h2 id="Git具体命令（初识下）"><a href="#Git具体命令（初识下）" class="headerlink" title="Git具体命令（初识下）"></a>Git具体命令（初识下）</h2><h3 id="mkdir-python"><a href="#mkdir-python" class="headerlink" title="mkdir python"></a>mkdir python</h3><p>（创建文件夹test）</p>
+<h3 id="cd-python"><a href="#cd-python" class="headerlink" title="cd python"></a>cd python</h3><p>（切换到test目录）</p>
+<h3 id="touch-ex1-py"><a href="#touch-ex1-py" class="headerlink" title="touch ex1.py"></a>touch ex1.py</h3><p>（新建a.md文件）</p>
+<h3 id="Git-init"><a href="#Git-init" class="headerlink" title="Git init"></a>Git init</h3><p> (初始化Git仓库)</p>
+<h3 id="Git-status"><a href="#Git-status" class="headerlink" title="Git status"></a>Git status</h3><p>（查看状态，这个命令可以算是使用最频繁的一个命令了，没事就输入下这个命令，来查看你当前 git 仓库的一些状态）<br>图片如下：<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-e6a592e8b3612300.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ststus"></p>
+<blockquote>
+<p>默认就直接在 master 分支，关于分支的概念后面会提，这时最主要的是提示 ex1.py 文件</p>
+<blockquote>
+<p>Untracked files ，就是说 ex1.py 这个文件还没有被跟踪，还没有提交在 git 仓库里呢，而且提<br>示你可以使用 git add 去操作你想要提交的文件。</p>
+</blockquote>
+</blockquote>
+<h3 id="Git-add"><a href="#Git-add" class="headerlink" title="Git add"></a>Git add</h3><p>（提交到Git仓库里面）<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-f0914c41f810156b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="add"><br>此时提示以下文件 Changes to be committed ， 意思就是 ex1.py 文件等待被提交，当然可以使用 git rm –cached 这个命令去移除这个缓存。</p>
+<h3 id="Git-commit"><a href="#Git-commit" class="headerlink" title="Git commit"></a>Git commit</h3><p>（接着输入 git commit -m ‘first commit’ ，commit 是提交的意思，- m 代表是提交信息，执行了以上命令代表我们已经正式进行了第一次提交。这个时候再输入 git status ，会提示 nothing to commit。）<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-a6765c314155026e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="commit"></p>
+<h3 id="Git-log"><a href="#Git-log" class="headerlink" title="Git log"></a>Git log</h3><p>（git log 命令可以查看所有产生的 commit 记录，所以可以看到已经产生了一条 commit 记录，而提交时候的附带信息叫 ‘first commit’ 。）<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-43ef9f8c336cba8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="log"></p>
+<h3 id="Git-branch"><a href="#Git-branch" class="headerlink" title="Git branch"></a>Git branch</h3><p>（branch 即分支的意思）</p>
+<blockquote>
+<p>分支的概念很重要，尤其是团队协作的时候，假设两个人都在做同一个项目，这个时候分支就是保证两人能协同合作的最大利器了。</p>
+<blockquote>
+<p>举个例子，A, B俩人都在做同一个项目，但是不同的模块，这个时候A新建了一个分支叫a， B新建了一个分支叫b，这样A、B做的所有代码改动都各自在各自的分支，互不影响，等到俩人都把各自的模块都做完了，最后再统一把分支合并起来。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>执行 git init 初始化git仓库之后会默认生成一个主分支 master ，也是你所在的默认分支，也基本是实际开发正式环境下的分支，一般情况下 master 分支不会轻易直接在上面操作的</p>
+<blockquote>
+<p>如果我们想在此基础上新建一个分支呢，很简单，执行 git branch a 就新建了一个名字叫 a 的分支，这时候分支 a 跟分支 master 是一模一样的容，我们再输入 git branch 查看的当前分支情况：<img data-src="https://upload-images.jianshu.io/upload_images/6407592-0b43dbf4334463b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="branch"></p>
+<blockquote>
+<p>但是可以看到 master 分支前有个 * 号，即虽然新建了一个 a 的分支，但是当前所在的分支还是在 master 上，如果我们想在 a 分支上进行开发，首先要先切换到 a 分支上才行，所以下一步要切换分支<pre><code>git checkout python1 </code></pre><img data-src="https://upload-images.jianshu.io/upload_images/6407592-e81e65bb95d7e41c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="checkout"></p>
+<blockquote>
+<p>快捷操作方式<pre><code>git checkout -b python2</code></pre>（这个命令的意思就是新建一个python2分支，并且自动切换到python2分支。）<img data-src="https://upload-images.jianshu.io/upload_images/6407592-f05a8936d2eff2c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="checkout2"></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><p>（合并分支）<br>需要先做两步，第一步是切换到 master 分支，如果你已经在了就不用切换了，第二步执行 git merge python1 ，意思就是把 python1 分支的代码合并过来，不出意外，这个时候a分支的代码就顺利合并到 master 分支来了。意外的情况就是发生了冲突，不方便合并！</p>
+<h3 id="git-branch-d"><a href="#git-branch-d" class="headerlink" title="git branch -d"></a>git branch -d</h3><p>（删除分支）</p>
+<h3 id="git-branch-D"><a href="#git-branch-D" class="headerlink" title="git branch -D"></a>git branch -D</h3><p>（强制删除分支，原因是该分支没有和master分支进行合并）</p>
+<h3 id="Git-tag"><a href="#Git-tag" class="headerlink" title="Git tag"></a>Git tag</h3><p>（添加标签/版本号的意思）</p>
+<p>新建一个标签很简单，比如 git tag v1.0 就代表我在当前代码状态下新建了一个v1.0的标签，输入 git tag 可以查看历史 tag 记录。</p>
+<p>想要切换到某个 tag 怎么办？也很简单，执行 git checkout v1.0 ，这样就顺利的切换到 v1.0 tag的代码状态了。</p>
+<h2 id="SSH爬坑"><a href="#SSH爬坑" class="headerlink" title="SSH爬坑"></a>SSH爬坑</h2><h3 id="1-SSH简介"><a href="#1-SSH简介" class="headerlink" title="1. SSH简介"></a>1. SSH简介</h3><p>简单点说，SSH是一种网络协议，用于计算机之间的加密登录。目前是每一台 Linux 电脑的标准配置。而大多数 Git 服务器都会选择使用 SSH 公钥来进行授权，所以想要在 GitHub 提交代码的第一步就是要先添加 SSH key 配置。</p>
+<h3 id="生成SSH-key"><a href="#生成SSH-key" class="headerlink" title="生成SSH key"></a>生成SSH key</h3><p>Linux 与 Mac 都是默认安装了 SSH ，而 Windows 系统安装了 Git Bash 应该也是带了 SSH的。大家可以在终端（win下在 Git Bash 里）输入 ssh 如果出现以下提示证明你本机已经安装 SSH。</p>
+<p><pre><code> ssh-keygen -t rsa </code></pre><br>就是指定 rsa 算法生成密钥，接着连续三个回车键（不需要输入密码），然后就会生成两个文件 id_rsa 和 id_rsa.pub ，而 id_rsa 是密钥,id_rsa.pub 就是公钥。</p>
+<p>PS：输入密码的话要做好备份，防止密码遗忘~<br>如果密码忘记就要删除重建了！</p>
+<h3 id="3-GitHub-上添加-SSH-key"><a href="#3-GitHub-上添加-SSH-key" class="headerlink" title="3. GitHub 上添加 SSH key"></a>3. GitHub 上添加 SSH key</h3><p>在 GitHub 上的设置页面，点击最左侧 SSH and GPG keys ,然后点击右上角的 New SSH key 按钮,在 Key 那栏把 id_rsa.pub(使用 EditPlus 或者 Sublime 等打开复制就行了) 公钥文件里的内容复制粘贴进去就可以了，Title 那栏不需要填写，点击 Add SSH key 按钮就ok了。</p>
+<p>SSH key 添加成功之后，输入 ssh -T <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a> 进行测试，如果出现以下提示证明添加成功了。</p>
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-4abdc9d433b4dd1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="成功"></p>
+<h4 id="错误一："><a href="#错误一：" class="headerlink" title="错误一："></a>错误一：</h4><p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-ec459b9039c5b46b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误"></p>
+<p>改了密钥的存放位置，此时，你需要分别执行下面两条命令：</p>
+<p><pre><code><br>ssh-agent bash<br>ssh-add 这里填写你密钥的存放位置</code></pre><br>如果你给公钥设置了密码，那么执行 ssh-add xxx 之后会提示你输入密码。</p>
+<h4 id="错误二："><a href="#错误二：" class="headerlink" title="错误二："></a>错误二：</h4><p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-b64518d140e86afa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误2"><br>宿主的 GITHUB.com（52.74.223.119）的真实性是无法成立的。RSA密钥指纹是Sa256:NTBG6KXUPJWGL7E1IGOCSFPROXTXDCARLVIKW6E5SY8。</p>
+<p>重新生成了密匙，选择yes，然后显示<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-686b81ca1868dbee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="解决"></p>
+<h2 id="请把-gitattributes-加到你的-Git-仓库中"><a href="#请把-gitattributes-加到你的-Git-仓库中" class="headerlink" title="请把 .gitattributes 加到你的 Git 仓库中"></a>请把 .gitattributes 加到你的 Git 仓库中</h2><p><img data-src="http://tuchuang.xchcloud.cn/blog/20200302/mMtdC1uHNYl8.png?imageslim" alt="mark"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/版本控制-git入门/" title="版本控制-git入门">http://xchcloud.cn/版本控制-git入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/入门/" rel="tag"><i class="fa fa-tag"></i> 入门</a>
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-入门篇/" rel="prev" title="python 入门篇">
+      <i class="fa fa-chevron-left"></i> python 入门篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/就想记录下这一天/" rel="next" title="就想记录下这一天">
+      就想记录下这一天 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的-Git-工作流程如下："><span class="nav-text">基本的 Git 工作流程如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git基本命令："><span class="nav-text">Git基本命令：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git具体命令（初识下）"><span class="nav-text">Git具体命令（初识下）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir-python"><span class="nav-text">mkdir python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cd-python"><span class="nav-text">cd python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#touch-ex1-py"><span class="nav-text">touch ex1.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-init"><span class="nav-text">Git init</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-status"><span class="nav-text">Git status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-add"><span class="nav-text">Git add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-commit"><span class="nav-text">Git commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-log"><span class="nav-text">Git log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-branch"><span class="nav-text">Git branch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge"><span class="nav-text">git merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-branch-d"><span class="nav-text">git branch -d</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-branch-D"><span class="nav-text">git branch -D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-tag"><span class="nav-text">Git tag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH爬坑"><span class="nav-text">SSH爬坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-SSH简介"><span class="nav-text">1. SSH简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成SSH-key"><span class="nav-text">生成SSH key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-GitHub-上添加-SSH-key"><span class="nav-text">3. GitHub 上添加 SSH key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#错误一："><span class="nav-text">错误一：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误二："><span class="nav-text">错误二：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请把-gitattributes-加到你的-Git-仓库中"><span class="nav-text">请把 .gitattributes 加到你的 Git 仓库中</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

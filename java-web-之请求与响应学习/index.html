@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HttpServletResponse是一个接口，它的父接口是ServletResponse，在开发中通常使用HttpServletResponse响应信息分为三部分：响应行、响应头、响应正文（响应体） 1.1发送状态码的相关方法：1.设置状态码setStatus（int sc）：参数就是状态码。setstatus（int sc，String sm）：第一个参数表示状态码，第二个参数就状态码的描述">
+<meta name="keywords" content="java web,请求与相应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-web 之请求与响应学习">
+<meta property="og:url" content="http://xchcloud.cn/java-web-之请求与响应学习/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="HttpServletResponse是一个接口，它的父接口是ServletResponse，在开发中通常使用HttpServletResponse响应信息分为三部分：响应行、响应头、响应正文（响应体） 1.1发送状态码的相关方法：1.设置状态码setStatus（int sc）：参数就是状态码。setstatus（int sc，String sm）：第一个参数表示状态码，第二个参数就状态码的描述">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:58:15.008Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java-web 之请求与响应学习">
+<meta name="twitter:description" content="HttpServletResponse是一个接口，它的父接口是ServletResponse，在开发中通常使用HttpServletResponse响应信息分为三部分：响应行、响应头、响应正文（响应体） 1.1发送状态码的相关方法：1.设置状态码setStatus（int sc）：参数就是状态码。setstatus（int sc，String sm）：第一个参数表示状态码，第二个参数就状态码的描述">
+
+<link rel="canonical" href="http://xchcloud.cn/java-web-之请求与响应学习/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java-web 之请求与响应学习 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/java-web-之请求与响应学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java-web 之请求与响应学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-07 08:59:29" itemprop="dateCreated datePublished" datetime="2018-10-07T08:59:29+08:00">2018-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:58:15" itemprop="dateModified" datetime="2021-09-11T16:58:15+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-web/" itemprop="url" rel="index"><span itemprop="name">java web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/java-web-之请求与响应学习/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="java-web-之请求与响应学习/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>HttpServletResponse是一个接口，它的父接口是ServletResponse，在开发中通常使用HttpServletResponse响应信息分为三部分：响应行、响应头、响应正文（响应体）</p>
+<h3 id="1-1发送状态码的相关方法："><a href="#1-1发送状态码的相关方法：" class="headerlink" title="1.1发送状态码的相关方法："></a>1.1发送状态码的相关方法：</h3><h4 id="1-设置状态码"><a href="#1-设置状态码" class="headerlink" title="1.设置状态码"></a>1.设置状态码</h4><p>setStatus（int sc）：参数就是状态码。<br>setstatus（int sc，String sm）：第一个参数表示状态码，第二个参数就状态码的描述。</p>
+<h5 id="常见的状态码：200响应成功"><a href="#常见的状态码：200响应成功" class="headerlink" title="常见的状态码：200响应成功"></a>常见的状态码：200响应成功</h5><p>302重定向<br>404请求资源找不到<br>500服务器代码出异常。<br><a id="more"></a></p>
+<h4 id="2-错误信息方法："><a href="#2-错误信息方法：" class="headerlink" title="2.错误信息方法："></a>2.错误信息方法：</h4><p>sendError（int sc）：参数状态码<br>sendError（int sc，String sm）：第一个参数表示状态码，第二个参数就状态码的描述。</p>
+<h3 id="1-2发送响应消息头相关的方法："><a href="#1-2发送响应消息头相关的方法：" class="headerlink" title="1.2发送响应消息头相关的方法："></a>1.2发送响应消息头相关的方法：</h3><p>响应消息头的数据格式：key-value的形式，有的是一个key，一个value，有的是一个key，多个value</p>
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-cf4c076bfe44fa8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h4 id="1-设置响应消息头："><a href="#1-设置响应消息头：" class="headerlink" title="1.设置响应消息头："></a>1.设置响应消息头：</h4><ul>
+<li>一个key，一个value<br>setHeader（String key，String value）；<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-8a6590eda81f6db6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<ul>
+<li>一个key，对应多个value<br>addHeader（String key，String value）；<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-75c981fefcc29aff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<h4 id="2-设置响应数据的长度：setContentLength（int-src）方法"><a href="#2-设置响应数据的长度：setContentLength（int-src）方法" class="headerlink" title="2.设置响应数据的长度：setContentLength（int src）方法"></a>2.设置响应数据的长度：setContentLength（int src）方法</h4><h4 id="3-设置处理乱码的方法："><a href="#3-设置处理乱码的方法：" class="headerlink" title="3.设置处理乱码的方法："></a>3.设置处理乱码的方法：</h4><ul>
+<li>setCharacterEncoding（String a）；参数就是一个码表格式，比如：“utf-81</li>
+<li>setContentType（String a）；参数代表响应数据的类型和码表格式，比如：“text/html；charset=utf-8”</li>
+</ul>
+<p>结论：在处理字符流和字节流输出中文乱码时，都采用response.setContentType（<br>注意：常见的编码格式：<br>GBKGB18030GB2312都是支持中文的编码格式，当然支持其它一些字符。<br>UTF-8：万能码表格式，支持所有的字符。<br>ISO-8859-1：不支持中文。</p>
+<h3 id="1-3-HttpServletRequest请求对象"><a href="#1-3-HttpServletRequest请求对象" class="headerlink" title="1.3.HttpServletRequest请求对象"></a>1.3.HttpServletRequest请求对象</h3><p>HttpServletRequest它是一个接口，它的父接口ServletRequest，在开发中，常用的是带协议的请求对象。<br>请求消息：请求行，请求头，请求参数。</p>
+<h4 id="1-获取请求行消息的相关方法："><a href="#1-获取请求行消息的相关方法：" class="headerlink" title="1.获取请求行消息的相关方法："></a>1.获取请求行消息的相关方法：</h4><p>常用的请求行方法：</p>
+<ul>
+<li>1.获取请求提交的方式：getMethod（）；&gt;&gt;&gt;2.获取请求的协议：getProtocol（）；</li>
+<li>3.获取项目名称：getcontextPath（）；</li>
+<li>4.获取servlet路径：getServletPath（）；</li>
+<li>5.获取请求路径：getRequsetuRI（），getRequestURL（）<h4 id="2-获取请求消息头相关的方法"><a href="#2-获取请求消息头相关的方法" class="headerlink" title="2.获取请求消息头相关的方法"></a>2.获取请求消息头相关的方法</h4></li>
+<li>1.根据消息头，获取值：String value=getHeader（消息头的名称）； </li>
+<li>2.获取所有的消息头：Enumeration er=getHeaderNames（）；根据Referer请求消息头，做一个防盗链的案例：<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-5625075462ed9fa7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="防盗链"></li>
+<li><ul>
+<li>难点：怎么判断这个发起的下载请求是从别的网站上发起的？<br>解决方法：根据Referer请求头对应的值，是否包含了服务器的名称如果包含，就说明是从本网站下载的，否则就不是。<h4 id="3-获取请求参数相关的方法："><a href="#3-获取请求参数相关的方法：" class="headerlink" title="3.获取请求参数相关的方法："></a>3.获取请求参数相关的方法：</h4></li>
+</ul>
+</li>
+<li>1.根据name属性值，获取用户输入的值：string value=getParameter（name属性对应的值）；</li>
+<li>2.根据name属性值，获取用户选择的值：String[]vaules=getParameterValues（name属性对应的值）；</li>
+<li>3.没有参数，获取所有值：Map&lt;String，String[]&gt;map=getParameterMap（）；<h4 id="4-解请求参数的中文乱码问题："><a href="#4-解请求参数的中文乱码问题：" class="headerlink" title="4.解请求参数的中文乱码问题："></a>4.解请求参数的中文乱码问题：</h4>中文乱码处理分两种情况：</li>
+<li>第一种情况：处理get方式提交的中文乱码<br>使用的String的构造方法解决的中文乱码：new String（字节数组，编码格式）；<br>代码：<br>String nevalue=new String（value.getBytes（”IS08859-1”），”utf-8”）；</li>
+<li>第二种情况：处理post请求的中文乱码问题：<br>post提交，会把参数首先提交到request对象的缓冲区中，缓冲区默认编码是IS08859-1，不支持中文处理方法：把request缓冲区的编码给设置成支持中文的码表格式。<br>代码：<br>request.setCharacterEncoding（”utf-8”）；</li>
+</ul>
+<h4 id="5-通过Requset对象传递数据"><a href="#5-通过Requset对象传递数据" class="headerlink" title="5.通过Requset对象传递数据"></a>5.通过Requset对象传递数据</h4><p>什么域对象：在一定的范围内，可以存值和取值。<br>request域对象：在一次请求中，可以存值和取值。</p>
+<ul>
+<li>存值：setAttribute（String key，Object obj）；&gt;&gt;&gt;取值：Object obj=getAttribyte（String key）；</li>
+<li>移除：removeAttribute（String key）；<h3 id="1-4-RequestDispatcher接口"><a href="#1-4-RequestDispatcher接口" class="headerlink" title="1.4 RequestDispatcher接口"></a>1.4 RequestDispatcher接口</h3>在开发中访问到一个web资源后，需要服务器跳转到另一个资源去处理请求，可以通过sendRedirect重定向方法来实现，也可以RequestDispatcher转发对象的forward方法来实现。<br>得到转发对象：<br>RequestDispatcher forwardobj=request.getRequestDispatcher（”另一个资源的路径”）；<br>常用方法：</li>
+<li>1.实现请求转发：forwardObj.forward（request，response）；</li>
+<li><p>2.实现请求包含：forwardobj.include（request，response）；</p>
+</li>
+<li><p>1.请求转发：<br>特点：发送了一次请求，响应一次，和request域对象配合使用，可以实现值得传递。<br>转发路径：转发动作是在服务器内部实现的，所以转发路径不要携带项目名称。</p>
+</li>
+<li><ul>
+<li>2.请求重定向：<br>特点：发送了两次请求，响应了两次，不能喝request域对象配合使用。<br>重定向路径：重定向动作在浏览器端执行的，所以路径需要携带项目名称。<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-742a0aaaf9100a4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+</li>
+<li><p>2.请求包含：<br>特点：发送一次请求，请求包含是由服务器完成。<br>请求包含路径：在服务器内部完成的，路径不需要携带项目名称。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/java-web-之请求与响应学习/" title="java-web 之请求与响应学习">http://xchcloud.cn/java-web-之请求与响应学习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/java-web/" rel="tag"><i class="fa fa-tag"></i> java web</a>
+              <a href="/tags/请求与相应/" rel="tag"><i class="fa fa-tag"></i> 请求与相应</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/安卓从入门到放弃/" rel="prev" title="安卓从入门到放弃">
+      <i class="fa fa-chevron-left"></i> 安卓从入门到放弃
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/前端学习笔记/" rel="next" title="前端学习笔记">
+      前端学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1发送状态码的相关方法："><span class="nav-text">1.1发送状态码的相关方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-设置状态码"><span class="nav-text">1.设置状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常见的状态码：200响应成功"><span class="nav-text">常见的状态码：200响应成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-错误信息方法："><span class="nav-text">2.错误信息方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2发送响应消息头相关的方法："><span class="nav-text">1.2发送响应消息头相关的方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-设置响应消息头："><span class="nav-text">1.设置响应消息头：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-设置响应数据的长度：setContentLength（int-src）方法"><span class="nav-text">2.设置响应数据的长度：setContentLength（int src）方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-设置处理乱码的方法："><span class="nav-text">3.设置处理乱码的方法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-HttpServletRequest请求对象"><span class="nav-text">1.3.HttpServletRequest请求对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-获取请求行消息的相关方法："><span class="nav-text">1.获取请求行消息的相关方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-获取请求消息头相关的方法"><span class="nav-text">2.获取请求消息头相关的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-获取请求参数相关的方法："><span class="nav-text">3.获取请求参数相关的方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-解请求参数的中文乱码问题："><span class="nav-text">4.解请求参数的中文乱码问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-通过Requset对象传递数据"><span class="nav-text">5.通过Requset对象传递数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-RequestDispatcher接口"><span class="nav-text">1.4 RequestDispatcher接口</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

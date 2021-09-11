@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="笔记大杂烩对于表数据量少，插入，更新操作多的表，添加索引可能会使查询速度变慢。索引并适合表频繁的update，insert，delete操作，这样会频繁的修改索引，造成性能低下索引类似于指针访问，又类似数组的下标访问，所以可以快速定位，避免全局扫描 自然联接是关系的横向结合，是将两个关系拼接成一个更宽的新关系，要求两个关系含有一个或多个共有的属性，生成的新关系中包含满足联接条件的元组。 元组（tu">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库复盘笔记">
+<meta property="og:url" content="http://xchcloud.cn/数据库复盘笔记/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="笔记大杂烩对于表数据量少，插入，更新操作多的表，添加索引可能会使查询速度变慢。索引并适合表频繁的update，insert，delete操作，这样会频繁的修改索引，造成性能低下索引类似于指针访问，又类似数组的下标访问，所以可以快速定位，避免全局扫描 自然联接是关系的横向结合，是将两个关系拼接成一个更宽的新关系，要求两个关系含有一个或多个共有的属性，生成的新关系中包含满足联接条件的元组。 元组（tu">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:54:46.207Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库复盘笔记">
+<meta name="twitter:description" content="笔记大杂烩对于表数据量少，插入，更新操作多的表，添加索引可能会使查询速度变慢。索引并适合表频繁的update，insert，delete操作，这样会频繁的修改索引，造成性能低下索引类似于指针访问，又类似数组的下标访问，所以可以快速定位，避免全局扫描 自然联接是关系的横向结合，是将两个关系拼接成一个更宽的新关系，要求两个关系含有一个或多个共有的属性，生成的新关系中包含满足联接条件的元组。 元组（tu">
+
+<link rel="canonical" href="http://xchcloud.cn/数据库复盘笔记/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据库复盘笔记 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/数据库复盘笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库复盘笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-03 18:39:09" itemprop="dateCreated datePublished" datetime="2019-10-03T18:39:09+08:00">2019-10-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:54:46" itemprop="dateModified" datetime="2021-09-11T16:54:46+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/数据库复盘笔记/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="数据库复盘笔记/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="笔记大杂烩"><a href="#笔记大杂烩" class="headerlink" title="笔记大杂烩"></a>笔记大杂烩</h2><p>对于表数据量少，插入，更新操作多的表，添加索引可能会使查询速度变慢。索引并适合表频繁的update，insert，delete操作，这样会频繁的修改索引，造成性能低下<br>索引类似于指针访问，又类似数组的下标访问，所以可以快速定位，避免全局扫描</p>
+<p>自然联接是关系的横向结合，是将两个关系拼接成一个更宽的新关系，要求两个关系含有一个或多个共有的属性，生成的新关系中包含满足联接条件的元组。</p>
+<p>元组（tuple）是关系数据库中的基本概念，关系是一张表，表中的每行（即数据库中的每条记录）就是一个元组，每列就是一个属性。 在二维表里，元组也称为行。<br>表中的一行也称为一条记录。</p>
+<p>自然连接(Natural join)是一种特殊的等值连接，它要求两个关系中进行比较的分量必须是相同的属性组，并且在结果中把重复的属性列去掉。而等值连接并不去掉重复的属性列<br><a id="more"></a><br>共享锁【S锁】<br>又称读锁，若事务T对数据对象A加上S锁，则事务T可以读A但不能修改A，其他事务只能再对A加S锁，而不能加X锁，直到T释放A上的S锁。这保证了其他事务可以读A，但在T释放A上的S 锁之前不能对A做任何修改。</p>
+<p>排他锁【X锁】<br>又称写锁。若事务T对数据对象A加上X锁，事务T可以读A也可以修改A，其他事务不能再对A加任何锁，直到T释放A上的锁。这保证了其他事务在T释放A上的锁之前不能再读取和修改A。</p>
+<p>数据库系统在三级模式之间提供了两级映像：模式/内模式的映像、外模式/模式的映像。这两级映射保证了数据库中的数据具有较高的物理独立性和逻辑独立性。<br>•模式/内模式的映像：实现概念模式到内模式之间的相互转换。<br>•外模式/模式的映像：实现外模式到概念模式之间的相互转换。<br>数据的独立性是指数据与程序独立，将数据的定义从程序中分离出去，由DBMS负责数据的存储，从而简化应用程序，大大减少应用程序编制的工作量。数据的独立性是由DBMS的二级映像功能来保证的。数据的独立性包括数据的物理独立性和数据的逻辑独立性。<br>数据的物理独立性是指当数据库的内模式发生改变时，数据的的逻辑结构不变。由于应用程序处理的只是数据的逻辑结构，这样物理独立性可以保证，当数据的物理结构改变了，应用程序不用改变。但是，为了保证应用程序能够正确执行，需要修改概念模式/内模式之间的映像。<br>数据的逻辑独立性是指用户的应用程序与数据库结构是相互独立的。数据的逻辑结构发生变化后，用户程序也可以不修改。但是，为了保证应用程序能够正确执行，需要修改外模式/概念模式之间的映像。</p>
+<p>把对关系SC的属性GRADE的修改权授予用户ZHAO的T-SQL语句是 <code>GRANT UPDATE (GRADE) ON SC TO ZHAO</code></p>
+<p>数据库恢复的基础是利用转储的冗余数据。这些转储的冗余数据包括： 日志文件、数据库后备副本</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><h3 id="数据库存储引擎说下吧："><a href="#数据库存储引擎说下吧：" class="headerlink" title="数据库存储引擎说下吧："></a>数据库存储引擎说下吧：</h3><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/5bnS3ql5YD1N.png" alt="mark"></p>
+<h3 id="on-与-where-有什么区别？having呢？"><a href="#on-与-where-有什么区别？having呢？" class="headerlink" title="on 与 where 有什么区别？having呢？"></a>on 与 where 有什么区别？having呢？</h3><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/h44NjtO1KMnI.png" alt="mark"></p>
+<h3 id="group-by-只是做一个聚合嘛？"><a href="#group-by-只是做一个聚合嘛？" class="headerlink" title="group by 只是做一个聚合嘛？"></a>group by 只是做一个聚合嘛？</h3><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/4PREKy7CqVJn.png" alt="mark"><br><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/7LHTUMwKoU3w.png" alt="mark"></p>
+<h3 id="like-通配符，能匹配所有嘛，有不可的嘛？"><a href="#like-通配符，能匹配所有嘛，有不可的嘛？" class="headerlink" title="like 通配符，能匹配所有嘛，有不可的嘛？"></a>like 通配符，能匹配所有嘛，有不可的嘛？</h3><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/qBfPK9GnIMdc.png" alt="mark"></p>
+<h3 id="inner-join、left-join、right-join、full-join有什么区别？"><a href="#inner-join、left-join、right-join、full-join有什么区别？" class="headerlink" title="inner join、left join、right join、full join有什么区别？"></a>inner join、left join、right join、full join有什么区别？</h3><p><img data-src="https://www.runoob.com/wp-content/uploads/2019/01/sql-join.png" alt></p>
+<p>注释：INNER JOIN 与 JOIN 是相同的。</p>
+<p><img data-src="https://www.runoob.com/wp-content/uploads/2013/09/img_innerjoin.gif" alt></p>
+<p><img data-src="https://www.runoob.com/wp-content/uploads/2013/09/img_leftjoin.gif" alt><br><img data-src="https://www.runoob.com/wp-content/uploads/2013/09/img_rightjoin.gif" alt><br><img data-src="https://www.runoob.com/wp-content/uploads/2013/09/img_fulljoin.gif" alt></p>
+<h3 id="Union-联合什么玩意？"><a href="#Union-联合什么玩意？" class="headerlink" title="Union 联合什么玩意？"></a>Union 联合什么玩意？</h3><p>UNION 操作符用于合并两个或多个 SELECT 语句的结果集。<br>请注意，UNION 内部的每个 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 SELECT 语句中的列的顺序必须相同。</p>
+<p>就是从两个表里面抽格式一样的数据拼在一起。</p>
+<h3 id="having-是个什么鬼，到底怎么用的？"><a href="#having-是个什么鬼，到底怎么用的？" class="headerlink" title="having 是个什么鬼，到底怎么用的？"></a>having 是个什么鬼，到底怎么用的？</h3><p>在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用。<br>HAVING 子句可以让我们筛选分组后的各组数据。</p>
+<h3 id="怎么用的？"><a href="#怎么用的？" class="headerlink" title="怎么用的？"></a>怎么用的？</h3><p>在表中，一个列可能会包含多个重复值，有时您也许希望仅仅列出不同（distinct）的值。<br>DISTINCT 关键词用于返回唯一不同的值。</p>
+<h3 id="ORDER-BY-与-LIMIT"><a href="#ORDER-BY-与-LIMIT" class="headerlink" title="ORDER BY  与 LIMIT"></a>ORDER BY  与 LIMIT</h3><p>是不是去重是关键？</p>
+<p>ORDER BY 关键字用于对结果集按照一个列或者多个列进行排序。<br>ORDER BY 关键字默认按照升序对记录进行排序。如果需要按照降序对记录进行排序，您可以使用 DESC 关键字。<br>使用 ORDER BY 可以将查询结果根据列名排序，默认时升序，使用DESC改成降序，DESC只对前面一个列名起作用。</p>
+<p>ORDER BY 排列时，不写明ASC DESC的时候，默认是ASC。</p>
+<p>limit关键字用来在查询结果集中，选择指定的行返回，常常用来实现翻页功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from table limit 10;	// limit n;		返回查询结果的前n条数据</span><br><span class="line">select * from table limit 0,10;	//limit offset, n;	返回从offset + 1开始的n条数据</span><br><span class="line">select top 10 * from table order by id;</span><br></pre></td></tr></table></figure></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/Jyj542PYGyfj.png" alt="mark"><br><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/WwnTXOUyNVNz.png" alt="mark"></p>
+<h3 id="SQL中的rank-，dense-rank-，row-number"><a href="#SQL中的rank-，dense-rank-，row-number" class="headerlink" title="SQL中的rank()，dense_rank()，row_number()"></a>SQL中的rank()，dense_rank()，row_number()</h3><p>rank函数用于返回结果集的分区内每行的排名，行的排名是相关行之前的排名数加一。<br>简单来说rank函数就是对查询出来的记录进行排名，与row_number函数不同的是，rank函数考虑到了over子句中排序字段值相同的情况，如果使用rank函数来生成序号，over子句中排序字段值相同的序号是一样的，后面字段值不相同的序号将跳过相同的排名号排下一个，也就是相关行之前的排名数加一，可以理解为根据当前的记录数生成序号，后面的记录依此类推。</p>
+<p>dense_rank函数的功能与rank函数类似，dense_rank函数在生成序号时是连续的，而rank函数生成的序号有可能不连续。dense_rank函数出现相同排名时，将不跳过相同排名号，rank值紧接上一次的rank值。在各个分组内，rank()是跳跃排序，有两个第一名时接下来就是第三名，dense_rank()是连续排序，有两个第一名时仍然跟着第二名。</p>
+<p>row_number的用途非常广泛，排序最好用它，它会为查询出来的每一行记录生成一个序号，依次排序且不会重复，注意使用row_number函数时必须要用over子句选择对某一列进行排序才能生成序号。</p>
+<p>–rank() 跳跃排序，如果有两个第一级别时，接下来是第三级别<br><code>select name,course,rank() over(partition by course order by score desc) rank from student;</code></p>
+<p>–dense_rank() 连续排序，如果有两个第一级别时，接下来是第二级别<br><code>select name,course,dense_rank() over(partition by course order by score desc) rank from student;</code></p>
+<p>–row_number() 顺序排序<br><code>select name,course,row_number() over(partition by course order by score desc) rank from student;</code></p>
+<h3 id="数据库中的-符号是个什么鬼？"><a href="#数据库中的-符号是个什么鬼？" class="headerlink" title="数据库中的@符号是个什么鬼？"></a>数据库中的@符号是个什么鬼？</h3><h3 id="”-“-是个什么符号？"><a href="#”-“-是个什么符号？" class="headerlink" title="||” “|| 是个什么符号？"></a>||” “|| 是个什么符号？</h3><h3 id="什么叫子查询方法，还有其他方法嘛？"><a href="#什么叫子查询方法，还有其他方法嘛？" class="headerlink" title="什么叫子查询方法，还有其他方法嘛？"></a>什么叫子查询方法，还有其他方法嘛？</h3><h3 id="insert-or-ignore-into-什么鬼？"><a href="#insert-or-ignore-into-什么鬼？" class="headerlink" title="insert or ignore into 什么鬼？"></a>insert or ignore into 什么鬼？</h3><h3 id="创建一张新表，从老表中抽取数据怎么整？"><a href="#创建一张新表，从老表中抽取数据怎么整？" class="headerlink" title="创建一张新表，从老表中抽取数据怎么整？"></a>创建一张新表，从老表中抽取数据怎么整？</h3><h3 id="怎么创建索引？唯一索引？普通索引？强制索引"><a href="#怎么创建索引？唯一索引？普通索引？强制索引" class="headerlink" title="怎么创建索引？唯一索引？普通索引？强制索引?"></a>怎么创建索引？唯一索引？普通索引？强制索引?</h3><p>本题要用两条语句完成，先用 CREATE<br>UNIQUE INDEX … ON … 对first_name创建唯一索引值，再用 CREATE INDEX … ON …<br>对last_name创建普通索引值</p>
+<p>SQLite中，使用 INDEXED BY 语句进行强制索引查询.<br>MySQL中，使用 FORCE INDEX 语句进行强制索引查询.</p>
+<h3 id="创建视图？包含的列重命名？"><a href="#创建视图？包含的列重命名？" class="headerlink" title="创建视图？包含的列重命名？"></a>创建视图？包含的列重命名？</h3><p>视图（View）只不过是通过相关的名称存储在数据库中的一个 SQLite 语句。视图（View）实际上是一个以预定义的 SQLite 查询形式存在的表的组合。</p>
+<p>视图（View）可以包含一个表的所有行或从一个或多个表选定行。视图（View）可以从一个或多个表创建，这取决于要创建视图的 SQLite 查询。</p>
+<p>视图（View）是一种虚表，允许用户实现以下几点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用户或用户组查找结构数据的方式更自然或直观。</span><br><span class="line"></span><br><span class="line">限制数据访问，用户只能看到有限的数据，而不是完整的表。</span><br><span class="line"></span><br><span class="line">汇总各种表中的数据，用于生成报告。</span><br></pre></td></tr></table></figure></p>
+<p>SQLite 视图是只读的，因此可能无法在视图上执行 DELETE、INSERT 或 UPDATE 语句。但是可以在视图上创建一个触发器，当尝试 DELETE、INSERT 或 UPDATE 视图时触发，需要做的动作在触发器内容中定义。</p>
+<h3 id="表更新"><a href="#表更新" class="headerlink" title="表更新"></a>表更新</h3><p>用 ALTER TABLE … ADD …<br>语句可以向已存在的表插入新字段，并且能够与创建表时一样，在字段名和数据类型后加入NOT NULL、DEFAULT等限定，可参考：</p>
+<p>以及哪个replace的作用：</p>
+<h3 id="触发器更新"><a href="#触发器更新" class="headerlink" title="触发器更新"></a>触发器更新</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">构造触发器时注意以下几点：</span><br><span class="line">1、用 CREATE TRIGGER 语句构造触发器，用 BEFORE或AFTER 来指定在执行后面的SQL语句之前或之后来触发TRIGGER</span><br><span class="line">2、触发器执行的内容写出 BEGIN与END 之间</span><br><span class="line">3、可以使用 NEW与OLD 关键字访问触发后或触发前的employees_test表单记录</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.create trigger ：创建触发器</span><br><span class="line">2.触发器要说明是在after 还是before事务发生时触发</span><br><span class="line">3.要指明是insert 、delete、update操作</span><br><span class="line">4.on 表名</span><br><span class="line">5.begin和end之间写触发的动作</span><br><span class="line">6.new 关键字表示更新后的表的字段 ，old表示更新前的表的字段</span><br></pre></td></tr></table></figure>
+<h3 id="修改表名"><a href="#修改表名" class="headerlink" title="修改表名"></a>修改表名</h3><p> 两种方式<br>1、传统<br>alter table 表名 change 原列名 新列名  类型； –修改表的列属性名<br>alter table 表名 modify 列名 类型 ；  –修改表的类类型<br>alter table 表名 drop 列名；  –删除表的某一列<br>alter table 表名 add  列名 类型；–添加某一列<br>alter table 表名 rename 新表名； –修改表名</p>
+<p>2、先备份再删除</p>
+<h3 id="创建外键约束"><a href="#创建外键约束" class="headerlink" title="创建外键约束"></a>创建外键约束</h3><p>划重点  1、先删后增   2、直接命令执行</p>
+<h4 id="外键约束是个什么鬼呢？"><a href="#外键约束是个什么鬼呢？" class="headerlink" title="外键约束是个什么鬼呢？"></a>外键约束是个什么鬼呢？</h4><p>保证了数据的一致性合完整性</p>
+<h4 id="约束分类有哪几种？有几种分类方式？"><a href="#约束分类有哪几种？有几种分类方式？" class="headerlink" title="约束分类有哪几种？有几种分类方式？"></a>约束分类有哪几种？有几种分类方式？</h4><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/INRAwamvIpDc.png" alt="mark"></p>
+<h4 id="创建外键约束条件有哪些？"><a href="#创建外键约束条件有哪些？" class="headerlink" title="创建外键约束条件有哪些？"></a>创建外键约束条件有哪些？</h4><p><img data-src="http://tuchuang.xchcloud.cn/blog/20201118/gpT0oSmAVb8D.png" alt="mark"></p>
+<h2 id="表清空"><a href="#表清空" class="headerlink" title="表清空"></a>表清空</h2><p>清空表和截断表</p>
+<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h3 id="性能监控"><a href="#性能监控" class="headerlink" title="性能监控"></a>性能监控</h3><p>1、show profiles</p>
+<p>set profiling=1</p>
+<p>show profile</p>
+<p>2、链接器</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/数据库复盘笔记/" title="数据库复盘笔记">http://xchcloud.cn/数据库复盘笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Linux复盘笔记/" rel="prev" title="Linux复盘笔记">
+      <i class="fa fa-chevron-left"></i> Linux复盘笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/死磕-python与多线程多进程/" rel="next" title="死磕-python与多线程多进程">
+      死磕-python与多线程多进程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记大杂烩"><span class="nav-text">笔记大杂烩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-text">思考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库存储引擎说下吧："><span class="nav-text">数据库存储引擎说下吧：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#on-与-where-有什么区别？having呢？"><span class="nav-text">on 与 where 有什么区别？having呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#group-by-只是做一个聚合嘛？"><span class="nav-text">group by 只是做一个聚合嘛？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#like-通配符，能匹配所有嘛，有不可的嘛？"><span class="nav-text">like 通配符，能匹配所有嘛，有不可的嘛？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inner-join、left-join、right-join、full-join有什么区别？"><span class="nav-text">inner join、left join、right join、full join有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Union-联合什么玩意？"><span class="nav-text">Union 联合什么玩意？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#having-是个什么鬼，到底怎么用的？"><span class="nav-text">having 是个什么鬼，到底怎么用的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么用的？"><span class="nav-text">怎么用的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ORDER-BY-与-LIMIT"><span class="nav-text">ORDER BY  与 LIMIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL中的rank-，dense-rank-，row-number"><span class="nav-text">SQL中的rank()，dense_rank()，row_number()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库中的-符号是个什么鬼？"><span class="nav-text">数据库中的@符号是个什么鬼？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#”-“-是个什么符号？"><span class="nav-text">||” “|| 是个什么符号？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么叫子查询方法，还有其他方法嘛？"><span class="nav-text">什么叫子查询方法，还有其他方法嘛？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#insert-or-ignore-into-什么鬼？"><span class="nav-text">insert or ignore into 什么鬼？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一张新表，从老表中抽取数据怎么整？"><span class="nav-text">创建一张新表，从老表中抽取数据怎么整？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么创建索引？唯一索引？普通索引？强制索引"><span class="nav-text">怎么创建索引？唯一索引？普通索引？强制索引?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建视图？包含的列重命名？"><span class="nav-text">创建视图？包含的列重命名？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表更新"><span class="nav-text">表更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发器更新"><span class="nav-text">触发器更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改表名"><span class="nav-text">修改表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建外键约束"><span class="nav-text">创建外键约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#外键约束是个什么鬼呢？"><span class="nav-text">外键约束是个什么鬼呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#约束分类有哪几种？有几种分类方式？"><span class="nav-text">约束分类有哪几种？有几种分类方式？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建外键约束条件有哪些？"><span class="nav-text">创建外键约束条件有哪些？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表清空"><span class="nav-text">表清空</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能调优"><span class="nav-text">性能调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#性能监控"><span class="nav-text">性能监控</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

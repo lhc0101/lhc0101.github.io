@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Flask Fish 鱼书项目确定访问的 url 路径问题 无非就是 url 使用时是否在地址最后加上 斜杠 。">
+<meta name="keywords" content="python,Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-Flask框架-鱼书网站实践">
+<meta property="og:url" content="http://xchcloud.cn/python-Flask框架-鱼书网站实践/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="Flask Fish 鱼书项目确定访问的 url 路径问题 无非就是 url 使用时是否在地址最后加上 斜杠 。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:00:57.158Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-Flask框架-鱼书网站实践">
+<meta name="twitter:description" content="Flask Fish 鱼书项目确定访问的 url 路径问题 无非就是 url 使用时是否在地址最后加上 斜杠 。">
+
+<link rel="canonical" href="http://xchcloud.cn/python-Flask框架-鱼书网站实践/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>python-Flask框架-鱼书网站实践 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/python-Flask框架-鱼书网站实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python-Flask框架-鱼书网站实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-31 16:23:56" itemprop="dateCreated datePublished" datetime="2019-03-31T16:23:56+08:00">2019-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:00:57" itemprop="dateModified" datetime="2021-09-11T17:00:57+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/python-Flask框架-鱼书网站实践/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="python-Flask框架-鱼书网站实践/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Flask-Fish-鱼书项目"><a href="#Flask-Fish-鱼书项目" class="headerlink" title="Flask Fish 鱼书项目"></a>Flask Fish 鱼书项目</h2><h3 id="确定访问的-url-路径问题"><a href="#确定访问的-url-路径问题" class="headerlink" title="确定访问的 url 路径问题"></a>确定访问的 url 路径问题</h3><p> 无非就是 url 使用时是否在地址最后加上 斜杠 。<br><a id="more"></a></p>
+<h3 id="监听代码修改，热启动"><a href="#监听代码修改，热启动" class="headerlink" title="监听代码修改，热启动"></a>监听代码修改，热启动</h3><p>开启Flask 调试模式</p>
+<p><code>python fisher.py</code></p>
+<h3 id="注册路由："><a href="#注册路由：" class="headerlink" title="注册路由："></a>注册路由：</h3><p>1、用装饰器来注册路由。</p>
+<p>2、app.add_url_rule</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#@app.route（&quot;/hel1o&apos;）</span><br><span class="line">def hel1o（）：</span><br><span class="line">#基于类的视图（即插视图）return&apos;Hel1o，QiYue&apos;</span><br><span class="line">app.add_url_rule（&quot;/hello&apos;，view_func=hel1o）</span><br><span class="line">app.run（debug=True）</span><br></pre></td></tr></table></figure>
+<h3 id="配置-pycharm-全局访问路径、端口"><a href="#配置-pycharm-全局访问路径、端口" class="headerlink" title="配置 pycharm 全局访问路径、端口"></a>配置 pycharm 全局访问路径、端口</h3><p><code>app.run(host=&#39;0.0.0.0&#39;, debug=True,port=81)</code></p>
+<h3 id="部署的话该怎么处理"><a href="#部署的话该怎么处理" class="headerlink" title="部署的话该怎么处理"></a>部署的话该怎么处理</h3><p>debug 简单修改的不是太好，调试模式下使用的是默认的Flask自带的服务器，性能不太好，以及后端出现错误的话，网页端会显示出来。</p>
+<p>方法：</p>
+<p>加一个 config.py 的配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fish.py</span><br><span class="line"></span><br><span class="line">from flask import Flask author=&apos;七月</span><br><span class="line">o a@p=Flask（_name__）</span><br><span class="line">app.config.from_object（&apos;config&apos;）</span><br><span class="line">@app.route（&quot;/hello&apos;s def hello（）：#基于类的视图（即插视图）return&apos;Hello，QiYue&apos;</span><br><span class="line">#字典dict子类</span><br><span class="line">#app.add_urlrule（&quot;/hello&apos;，view_func=hel1o）</span><br><span class="line">app.run（host=&apos;0.0.e.e&apos;，debug=app.config[&apos;DEBUG&apos;]，port=81）</span><br><span class="line"></span><br><span class="line">config.py</span><br><span class="line"></span><br><span class="line">__author_=&apos;七月&apos;</span><br><span class="line">DEBUG = True</span><br></pre></td></tr></table></figure></p>
+<p>注意 config.py 无论是在配置里面还是在应用里面导入，都需要将参数全部大写。</p>
+<h3 id="真正理解-if-name-‘main‘"><a href="#真正理解-if-name-‘main‘" class="headerlink" title="真正理解 if name == ‘main‘:"></a>真正理解 if <strong>name</strong> == ‘<strong>main</strong>‘:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    app.run(host=&apos;0.0.0.0&apos;, debug=True)</span><br></pre></td></tr></table></figure>
+<p>在实际生产环境中需要 nginx+uwsgi 来搭配使用作为服务器。</p>
+<p>作用：不会在实际生产环境中同时启用 nignx 和 flask 自带的服务器。</p>
+<h3 id="搜索功能的实现"><a href="#搜索功能的实现" class="headerlink" title="搜索功能的实现"></a>搜索功能的实现</h3><h4 id="区分数字："><a href="#区分数字：" class="headerlink" title="区分数字："></a>区分数字：</h4><p>按照数字进行搜索</p>
+<h4 id="区别书名："><a href="#区别书名：" class="headerlink" title="区别书名："></a>区别书名：</h4><p>识别传入的是书名，对书名进行搜索<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def is_isbn_or_key(word):</span><br><span class="line">    isbn_or_key = &apos;key&apos;</span><br><span class="line">    if len(word) == 13 and word.isdigit():</span><br><span class="line">        isbn_or_key = &apos;isbn&apos;</span><br><span class="line">        short_q = word.replace(&apos;-&apos;, &apos;&apos;)</span><br><span class="line">    if &apos;-&apos; in word and len(short_q) == 10 and short_q.isdigit:</span><br><span class="line">        # 条件判断的原则，提高代码的运行效率</span><br><span class="line">        # 先把很大概率出现假的                      条件放在前面</span><br><span class="line">        # 把查询数据库这种非常耗时的消耗放在后面</span><br><span class="line">        isbn_or_key = &apos;isbn&apos;</span><br><span class="line">    return isbn_or_key</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用-API"><a href="#使用-API" class="headerlink" title="使用 API"></a>使用 API</h4><p>如何调用 api ：<br>如何设计 api ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class YuShuBook:</span><br><span class="line">    isbn_url = &apos;http://t.yushu.im/v2/book/isbn/&#123;&#125;&apos;</span><br><span class="line">    keyword_ur1 = &apos;http://t.yushu.im/v2/book/search?q=&#123;&#125;&amp;count=&#123;&#125;&amp;start=&#123;&#125;&apos;</span><br><span class="line"></span><br><span class="line">    # &#123;&#125; 代表动态数据</span><br><span class="line">    @classmethod</span><br><span class="line">    def search_by_isbn(cls, isbn):</span><br><span class="line">        url = cls.isbn_url.format(isbn)</span><br><span class="line">        #    url = self.isbn_url  # 链式查找</span><br><span class="line">        result = HTTP.get(url)</span><br><span class="line">        return result</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def search_by_keyword(cls, keyword, page=1):</span><br><span class="line">        print(1)</span><br><span class="line">        url = cls.keyword_ur1.format(keyword, current_app.config[&apos;PER_PAGE&apos;], cls.calculate_start(page))</span><br><span class="line">        result = HTTP.get(url)</span><br><span class="line">        return result</span><br><span class="line"></span><br><span class="line">    @staticmethod</span><br><span class="line">    def calculate_start(page):</span><br><span class="line">        return (page - 1) * current_app.config[&apos;PER_PAGE&apos;]</span><br></pre></td></tr></table></figure></p>
+<h5 id="三元表达式"><a href="#三元表达式" class="headerlink" title="三元表达式"></a>三元表达式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">在Python中的三元表达式的写法和大部分的语言是不同的</span><br><span class="line"></span><br><span class="line">现在有 x, y，如果 x大于y的话返回x否则返回y</span><br><span class="line"></span><br><span class="line">绝大部分语言中的写法：</span><br><span class="line">条件判断 ? 条件为真时返回的结果 : 条件为假时返回的结果</span><br><span class="line"></span><br><span class="line">x &gt; y ? x : y</span><br><span class="line">1</span><br><span class="line">Python中的写法</span><br><span class="line">先看一个伪代码：条件为真时返回的结果 if 条件判断 else 条件为假时的返回结果</span><br><span class="line"></span><br><span class="line">x =1</span><br><span class="line">y =2</span><br><span class="line">r = x if x &gt; y else y</span><br><span class="line">---------------------</span><br><span class="line">输出：</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">判断调用 API 返回的值为 error</span><br><span class="line"></span><br><span class="line">class HTTP:</span><br><span class="line">    def get(url, return_json=True):</span><br><span class="line">        r = requests.get(url)</span><br><span class="line">        # restful</span><br><span class="line">        # json</span><br><span class="line">        if r.status_code != 200:</span><br><span class="line">            return &#123;&#125; if return_json else &apos;&apos;</span><br><span class="line">        return r.json() if return_json else r.text</span><br><span class="line">        # if r.status_code ==200:</span><br><span class="line">        #     if return_json:</span><br><span class="line">        #         return r.json()</span><br><span class="line">        #     else:</span><br><span class="line">        #         return r.text</span><br><span class="line">        # else:</span><br><span class="line">        #     if return_json:</span><br><span class="line">        #         return &#123;&#125;</span><br><span class="line">        #     else:</span><br><span class="line">        #         return &apos;&apos;</span><br></pre></td></tr></table></figure>
+<p>建议在 多个 if  else 中的代码单独提取为一个函数，以及增加 return ，提前减少分支。</p>
+<h3 id="staticmethod-与-classmethod"><a href="#staticmethod-与-classmethod" class="headerlink" title="staticmethod 与 classmethod"></a>staticmethod 与 classmethod</h3><p><a href="https://blog.csdn.net/ibelieve8013/article/details/83037996" target="_blank" rel="noopener">python的staticmethod,classmethod和装饰器以及闭包的爱恨情仇</a></p>
+<p>笔记：</p>
+<h4 id="类的实例化："><a href="#类的实例化：" class="headerlink" title="类的实例化："></a>类的实例化：</h4><p>类是指：描述一种事物的定义，是个抽象的概念<br>实例指：该种事物的一个具体的个体，是具体的东西<br>打个比方：<br>“人”是一个类。“张三”是人类的一个具体例子<br>在编程时也是同样的道理，你先自己定义一个“类”，当你需要用时，用“类”的定义来创造一个具体的例子。<br>用类的定义来创建一个实例，就叫做类的实例化。</p>
+<h4 id="两个方法之间的去别："><a href="#两个方法之间的去别：" class="headerlink" title="两个方法之间的去别："></a>两个方法之间的去别：</h4><p>@staticmethod不需要表示自身对象的self和自身类的cls参数，就跟使用函数一样。<br>@classmethod也不需要self参数，但第一个参数需要是表示自身类的cls参数。<br>如果在@staticmethod中要调用到这个类的一些属性方法，只能直接类名.属性名或类名.方法名。<br>而@classmethod因为持有cls参数，可以来调用类的属性，类的方法，实例化对象等，避免硬编码。</p>
+<h4 id="什么是硬编码"><a href="#什么是硬编码" class="headerlink" title="什么是硬编码"></a>什么是硬编码</h4><p>什么叫“硬编码”？“硬”，顾名思义，就是死板，一次性的意思。其定义也就是“将可变变量用一个固定数值表示”，这种方式在编码的过程中会导致变量很难修改。因此通常采用的方式都是软编码的方式，也即通过一个标记取代变量名称，而这个标记的值是可以不断变化的。但标记名称却是不变的，从而实现了“以不变应万变“。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">eg: int a=2,b=2; 　　</span><br><span class="line">    硬编码：if(a==2) return false; 　　</span><br><span class="line">    非硬编码 if(a==b) return true; 　　（就是把数值写成常量而不是变量 ）</span><br><span class="line"> 一个简单的版本：如求圆的面积 的问题 PI（3.14） 　　</span><br><span class="line"> 那么3.14*r*r 就是硬编码，而PI*r*r 就不是硬编码。</span><br></pre></td></tr></table></figure></p>
+<h4 id="复习装饰器、闭包"><a href="#复习装饰器、闭包" class="headerlink" title="复习装饰器、闭包"></a>复习装饰器、闭包</h4><p>装饰器：</p>
+<p>优点像 JAVA 继承，就是在使用某个函数的时候，感觉这个函数功能不能满足自己的使用，同时不能在原函数上进行修改，于是乎装饰器诞生。</p>
+<p>闭包：</p>
+<p>在一个外函数中定义了一个内函数，内函数里运用了外函数的临时变量，并且外函数的返回值是内函数的引用。这样就构成了一个闭包。<br><a href="https://www.cnblogs.com/Lin-Yi/p/7305364.html" target="_blank" rel="noopener">参考链接：博客园</a></p>
+<h3 id="object-的继承问题"><a href="#object-的继承问题" class="headerlink" title="object 的继承问题"></a>object 的继承问题</h3><p><a href="https://www.zhihu.com/question/19754936/answer/202650790" target="_blank" rel="noopener">知乎：Python 为什么要继承 object 类？</a></p>
+<p>笔记：class Http(object): 这个 object 有时候可以继承也可不继承，有什么区别？<br>答：python3没有区别，python2有区别。</p>
+<p>python 2 : 经典类和新式类</p>
+<p>python 3 : 默认新式类</p>
+<h3 id="链式查找是个啥？？？？"><a href="#链式查找是个啥？？？？" class="headerlink" title="链式查找是个啥？？？？"></a>链式查找是个啥？？？？</h3><p>方法链（method chaining）是面向对象的编程语言中的一种常见语法，可以让开发者在只引用对象一次的情况下，对同一个对象进行多次方法调用。</p>
+<p><a href="https://www.jb51.net/article/79858.htm" target="_blank" rel="noopener">Python中方法链的使用方法</a></p>
+<p>定制类里用到了</p>
+<p>参考教程：<br><a href="https://blog.csdn.net/carmelcarmen/article/details/78634532" target="_blank" rel="noopener">Python简化类例五：实现链式写法</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">eg：</span><br><span class="line"></span><br><span class="line">#Python简化类例五：实现链式写法</span><br><span class="line">def ClassTest5():</span><br><span class="line">    &apos;&apos;&apos;链式写法只要是类语言都可以实写&apos;&apos;&apos;</span><br><span class="line">    def p() :pass</span><br><span class="line">    p.x=0</span><br><span class="line">    p.y=0</span><br><span class="line">    def o():pass</span><br><span class="line"> </span><br><span class="line">    def printPos():</span><br><span class="line">        print(&quot;当前坐标是(%d, %d)&quot;%(p.x,p.y))</span><br><span class="line"> </span><br><span class="line">    def moveLeft():</span><br><span class="line">        p.x-=1</span><br><span class="line">        printPos()</span><br><span class="line">        return o</span><br><span class="line">    o.moveLeft=moveLeft;del moveLeft</span><br><span class="line"> </span><br><span class="line">    def moveTop():</span><br><span class="line">        p.y+=1</span><br><span class="line">        printPos()</span><br><span class="line">        return o</span><br><span class="line">    o.moveTop=moveTop;del moveTop</span><br><span class="line"> </span><br><span class="line">    def moveRight():</span><br><span class="line">        p.x+=1</span><br><span class="line">        printPos()</span><br><span class="line">        return o</span><br><span class="line">    o.moveRight=moveRight;del moveRight</span><br><span class="line"> </span><br><span class="line">    def moveBottom():</span><br><span class="line">        p.y-=1</span><br><span class="line">        printPos()</span><br><span class="line">        return o</span><br><span class="line">    o.moveBottom=moveBottom;del moveBottom</span><br><span class="line">    return o</span><br><span class="line"> </span><br><span class="line">t5=ClassTest5()</span><br><span class="line">t5.moveTop().moveLeft().moveBottom().moveRight()</span><br><span class="line"></span><br><span class="line"># coding=utf-8</span><br><span class="line">class Bar(object):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Foo(object):</span><br><span class="line">    &quot;&quot;&quot;类的描述文本&quot;&quot;&quot;</span><br><span class="line">    def __init__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def __getattr__(self, item):</span><br><span class="line">        print(item,end=&quot; &quot;)</span><br><span class="line">        #注意：返回的是对象自身</span><br><span class="line">        return self</span><br><span class="line"></span><br><span class="line">    #重写str()方法</span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &quot;&quot;</span><br><span class="line"></span><br><span class="line">print(Foo().think.different.itcast)</span><br></pre></td></tr></table></figure></p>
+<h4 id="定制类"><a href="#定制类" class="headerlink" title="定制类"></a>定制类</h4><p>看到类似<strong>slots</strong>这种形如<strong>xxx</strong>的变量或者函数名就要注意，这些在Python中是有特殊用途的。</p>
+<p><strong>slots</strong>我们已经知道怎么用了，<br>_ <em>len</em> _()方法我们也知道是为了能让class作用于len()函数。</p>
+<p>除此之外，Python的class中还有许多这样有特殊用途的函数，可以帮助我们定制类。</p>
+<p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014319098638265527beb24f7840aa97de564ccc7f20f6000" target="_blank" rel="noopener">廖雪峰官方教程-面向对象高级编程</a></p>
+<h4 id="python-中-self-到底是个什么玩意"><a href="#python-中-self-到底是个什么玩意" class="headerlink" title="python 中 self 到底是个什么玩意"></a>python 中 self 到底是个什么玩意</h4><p><a href="https://www.cnblogs.com/jessonluo/p/4717140.html" target="_blank" rel="noopener">一篇文章让你彻底搞清楚Python中self的含义</a></p>
+<p><a href="https://blog.csdn.net/bing900713/article/details/60884931" target="_blank" rel="noopener">python中self参数的作用</a></p>
+<p>笔记：self代表类的实例，而非类。<br>self在定义时需要定义，但是在调用时会自动传入。<br>self的名字并不是规定死的，但是最好还是按照约定是用self<br>self总是指调用时的类的实例。</p>
+<p>类中函数定义需要加self，类外函数定义不需要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">eg:</span><br><span class="line"></span><br><span class="line">class Foo(object):  </span><br><span class="line">#类中方法加入了self参数   </span><br><span class="line">    def say_someThing(self,str):  </span><br><span class="line">        print(str)</span><br><span class="line"></span><br><span class="line">#类外方法不需要加入self参数   </span><br><span class="line">def say_hello():  </span><br><span class="line">    print（&apos;hello&apos;）  </span><br><span class="line"></span><br><span class="line">#类外函数使用</span><br><span class="line">say_hello()</span><br><span class="line"></span><br><span class="line">#类内函数使用，不需要加入self相关参数 </span><br><span class="line">foo=Foo()</span><br><span class="line">foo.say_someThing(&quot;hi&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="import-http-爬坑"><a href="#import-http-爬坑" class="headerlink" title="import http 爬坑"></a>import http 爬坑</h4><p>http.client使用奇怪问题：<br>ImportError: No module named ‘http.client’; ‘http’ is not a package。</p>
+<p>解决：你的代码文件应该叫http.py了吧，这样引用变成引用自己了。改个名吧！！！！！</p>
+<p>No module named ‘urllib2’：</p>
+<p>Python 3.3之后，urllib2改为urllib.response</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7 代码：</span><br><span class="line"></span><br><span class="line">import urllib2  </span><br><span class="line">response = urllib2.urlopen(&apos;http://www.baidu.com/&apos;)  </span><br><span class="line">html = response.read()  </span><br><span class="line">print html   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Python 3.3+ 代码应该为：</span><br><span class="line"></span><br><span class="line">import urllib.request</span><br><span class="line">response=urllib.request.urlopen(&apos;http://www.baidu.com&apos;)</span><br><span class="line">html=response.read()</span><br><span class="line">print(html)</span><br></pre></td></tr></table></figure>
+<h4 id="dict-是什么"><a href="#dict-是什么" class="headerlink" title="dict 是什么"></a>dict 是什么</h4><p>可变的字典:</p>
+<p>不可变的字典：<br>两种方法：<br>1、自己继承dict 的数据结构<br>2、直接用 flask 提供的方法</p>
+<p>不可变字典转换为普通字典：<br>a = request.args.to_dict()</p>
+<p>字典是无序的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dict()</span><br><span class="line">作用：dict() 函数用于创建一个字典。返回一个字典。</span><br><span class="line"></span><br><span class="line">语法：</span><br><span class="line"></span><br><span class="line">class dict(**kwarg)</span><br><span class="line">class dict(mapping, **kwarg)</span><br><span class="line">class dict(iterable, **kwarg)</span><br><span class="line">参数说明：</span><br><span class="line"></span><br><span class="line">**kwargs -- 关键字</span><br><span class="line">mapping -- 元素的容器。</span><br><span class="line">iterable -- 可迭代对象</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">eg:</span><br><span class="line">&gt;&gt;&gt;dict()                        # 创建空字典</span><br><span class="line">&#123;&#125;</span><br><span class="line">&gt;&gt;&gt; dict(a=&apos;a&apos;, b=&apos;b&apos;, t=&apos;t&apos;)     # 传入关键字</span><br><span class="line">&#123;&apos;a&apos;: &apos;a&apos;, &apos;b&apos;: &apos;b&apos;, &apos;t&apos;: &apos;t&apos;&#125;</span><br><span class="line">&gt;&gt;&gt; dict(zip([&apos;one&apos;, &apos;two&apos;, &apos;three&apos;], [1, 2, 3]))   # 映射函数方式来构造字典</span><br><span class="line">&#123;&apos;three&apos;: 3, &apos;two&apos;: 2, &apos;one&apos;: 1&#125; </span><br><span class="line">&gt;&gt;&gt; dict([(&apos;one&apos;, 1), (&apos;two&apos;, 2), (&apos;three&apos;, 3)])    # 可迭代对象方式来构造字典</span><br><span class="line">&#123;&apos;three&apos;: 3, &apos;two&apos;: 2, &apos;one&apos;: 1&#125;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h5><p>dict的作用是建立一组 key 和一组 value 的映射关系，dict的key是不能重复的。</p>
+<p>有的时候，我们只想要 dict 的 key，不关心 key 对应的 value，目的就是保证这个集合的元素不会重复，这时，set就派上用场了。</p>
+<p>set 持有一系列元素，这一点和 list 很像，但是set的元素没有重复，而且是无序的，这点和 dict 的 key很像。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">创建 set 的方式是调用 set() 并传入一个 list，list的元素将作为set的元素：</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; s = set([&apos;A&apos;, &apos;B&apos;, &apos;C&apos;])</span><br><span class="line">可以查看 set 的内容：</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print s</span><br><span class="line">set([&apos;A&apos;, &apos;C&apos;, &apos;B&apos;])</span><br><span class="line">请注意，上述打印的形式类似 list， 但它不是 list，仔细看还可以发现，打印的顺序和原始 list 的顺序有可能是不同的，因为set内部存储的元素是无序的。</span><br></pre></td></tr></table></figure></p>
+<p>注意：set 里面含有中括号。</p>
+<h3 id="深入了解flask路由、蓝图"><a href="#深入了解flask路由、蓝图" class="headerlink" title="深入了解flask路由、蓝图"></a>深入了解flask路由、蓝图</h3><p>了解路由的设计，路由的分配，404、301</p>
+<p>老师原话：每一个url都会对应一个视图函数，但是不仅仅是这样。每一个url还会对应一个endpoint端点，用于反向构建URL。</p>
+<p><a href="https://www.cnblogs.com/thomson-fred/p/10106303.html" target="_blank" rel="noopener">Flask路由与蓝图Blueprint</a></p>
+<p><a href="https://www.cnblogs.com/donghaoblogs/p/10605278.html" target="_blank" rel="noopener">Flask源码复习之路由</a></p>
+<h3 id="Request-对象的使用"><a href="#Request-对象的使用" class="headerlink" title="Request 对象的使用"></a>Request 对象的使用</h3><p><a href="http://docs.python-requests.org/zh_CN/latest/user/quickstart.html" target="_blank" rel="noopener">官方教程 - 初级</a></p>
+<p><a href="http://docs.python-requests.org/zh_CN/latest/user/advanced.html#advanced" target="_blank" rel="noopener">官方教程 - 高级</a></p>
+<h3 id="验证器"><a href="#验证器" class="headerlink" title="验证器"></a>验证器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 内置的验证器</span><br><span class="line">class SearchForm(Form):</span><br><span class="line">    q = StringField(validators=[DataRequired(),Length(min=1,max=30)])#最大值，最小值，消息</span><br><span class="line">    page = IntegerField(validators=[NumberRange(min=1,max=99)],default=1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@web.route(&apos;/book/search&apos;)</span><br><span class="line">def search():</span><br><span class="line">    form = SearchForm(request.args)</span><br><span class="line">    if form.validate():</span><br><span class="line">        q = form.q.data.strip()</span><br><span class="line">        print(q)</span><br><span class="line">        page = form.page.data</span><br><span class="line">        print(page)</span><br><span class="line">        isbn_or_key = is_isbn_or_key(q)</span><br><span class="line">        print(&apos;isbn_or_key&apos;)</span><br><span class="line">        if isbn_or_key == &apos;isbn&apos;:</span><br><span class="line">            result = YuShuBook.search_by_isbn(q)</span><br><span class="line">        else:</span><br><span class="line">            result = YuShuBook.search_by_keyword(q,page)</span><br><span class="line">        return jsonify(result)</span><br><span class="line">    else:</span><br><span class="line">        return jsonify(form.errors)</span><br></pre></td></tr></table></figure>
+<h4 id="validators-是个啥，为什么里面可以传多个函数"><a href="#validators-是个啥，为什么里面可以传多个函数" class="headerlink" title="validators 是个啥，为什么里面可以传多个函数"></a>validators 是个啥，为什么里面可以传多个函数</h4><p>validator.py是一个数据验证工具，确保数据符合一定的规则。一个validation是一个字典，对于字典中的每一个键，包含一个规则列表。</p>
+<p><a href="http://github.com/mansam/validator.py" target="_blank" rel="noopener">Github地址</a></p>
+<p><a href="https://www.jianshu.com/p/eee56214af9c" target="_blank" rel="noopener">简书教程:Python数据验证库（二）validator</a></p>
+<h3 id="创建数据表的方式"><a href="#创建数据表的方式" class="headerlink" title="创建数据表的方式"></a>创建数据表的方式</h3><p>1、Model First<br>利用建模工具</p>
+<p>2、Database Firs：<br>手动创建，传统方式</p>
+<p>3、Code First</p>
+<p>sqlalchemy、WTFORMS 适用于各个 python 的框架</p>
+<p>Flask_SQLALchemy 适用于Flask，可以提供更方便的API<br>Flask_WTFORMS<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">eg:</span><br><span class="line"></span><br><span class="line">db = SQLAlchemy()</span><br><span class="line">class Book(db.Model):</span><br><span class="line">    id = Column(Integer, primary_key=True, autoincrement=True)</span><br><span class="line">    # 第一个参数指明传入的类型，传两个关键字属性，一个主键，一个自增长</span><br><span class="line">    title = Column(String(50), nullable=False)</span><br><span class="line">    # 第二个参数关键字参数，意思是不可以为空</span><br><span class="line">    author = Column(String(30), default=&apos;佚名&apos;)</span><br><span class="line">    isbn = Column(String(15))</span><br><span class="line">    price = Column(String(20))</span><br><span class="line">    binding = Column(String(20))  # 是否为精装</span><br><span class="line">    publisher = Column(String(50))</span><br><span class="line">    pages = Column(Integer)  # 页数</span><br><span class="line">    isbn = Column(String(15), nullable=False, unique=True)</span><br><span class="line">    # unique 唯一的 不是重复的</span><br><span class="line">    summary = Column(String(1000))  # 简介</span><br><span class="line">    image = Column(String(50))</span><br></pre></td></tr></table></figure></p>
+<h3 id="Flask-核心机制"><a href="#Flask-核心机制" class="headerlink" title="Flask 核心机制"></a>Flask 核心机制</h3><h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask，current_app，request，Request app=Flask（name_）</span><br><span class="line">#应用上下文对象Flask</span><br><span class="line">#请求上下文对象Request</span><br><span class="line">#Flask AppContext</span><br><span class="line">#Request RequestContext</span><br><span class="line">#离线应用、单元测试</span><br><span class="line">ctx=app.app kontext（）</span><br><span class="line">ctx.push（）I a=current_app d=current_app.config[&apos;DEBUG&apos;]</span><br><span class="line">ctx.pop（）</span><br></pre></td></tr></table></figure>
+<p>栈：后进先出<br>队列：先进先出</p>
+<p>Flask 的核心就是玩队列的感觉。</p>
+<p>先实例化，每一次调用函数都是可以理解为出栈、入栈。每一次 flask 会自动检查你这次的动作所需的参数，在栈里面是不是为空，如果是空的，那就自动执行入栈，用完再出栈。</p>
+<h5 id="什么是上下文"><a href="#什么是上下文" class="headerlink" title="什么是上下文"></a>什么是上下文</h5><p><a href="http://python.jobbole.com/87317/" target="_blank" rel="noopener">python黑魔法—上下文管理器（contextor）</a></p>
+<p>笔记：</p>
+<h5 id="什么是句柄"><a href="#什么是句柄" class="headerlink" title="什么是句柄"></a>什么是句柄</h5><p><a href="https://blog.csdn.net/liquanhai/article/details/5849172" target="_blank" rel="noopener">什么是句柄？为什么会有句柄？HANDLE</a></p>
+<p>笔记：</p>
+<h5 id="with-语句是怎么用的。它的意义是什么"><a href="#with-语句是怎么用的。它的意义是什么" class="headerlink" title="with 语句是怎么用的。它的意义是什么"></a>with 语句是怎么用的。它的意义是什么</h5><p><a href="https://www.cnblogs.com/Xjng/p/3927794.html" target="_blank" rel="noopener">博客园：with 关键字学习</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">eg:简化代码</span><br><span class="line"></span><br><span class="line">with app.app_context()：</span><br><span class="line">a = current_app</span><br><span class="line">d = current_app.config[&apos;DEBUG&apos;]</span><br><span class="line">#实现了上下文协议的对象使用with</span><br><span class="line">#上下文管理器</span><br><span class="line"># __enter__ __exit__</span><br><span class="line">#上下文表达式必须要返回一个上下文管理器</span><br><span class="line">#t with</span><br></pre></td></tr></table></figure>
+<h6 id="with-语句时用于对try-except-finally-的优化"><a href="#with-语句时用于对try-except-finally-的优化" class="headerlink" title="with 语句时用于对try except finally 的优化"></a>with 语句时用于对try except finally 的优化</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">f=open(&apos;file_name&apos;,&apos;r&apos;)</span><br><span class="line">try:</span><br><span class="line">    r=f.read()</span><br><span class="line">except:</span><br><span class="line">    pass</span><br><span class="line">finally:</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
+<p>用with的实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&apos;file_name&apos;,&apos;r&apos;) as f:</span><br><span class="line">    r=f.read()</span><br></pre></td></tr></table></figure></p>
+<p>这条语句就好简洁很多，当with里面的语句产生异常的话，也会正常关闭文件</p>
+<h6 id="自己定义可以给with调用的上下文管理器"><a href="#自己定义可以给with调用的上下文管理器" class="headerlink" title="自己定义可以给with调用的上下文管理器"></a>自己定义可以给with调用的上下文管理器</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class MyResource: </span><br><span class="line">    def __enter__(self): </span><br><span class="line">        print(&apos; connect to resource&apos;)</span><br><span class="line">        return self </span><br><span class="line">    def __exit__(self, exc_type, exc_value, tb): </span><br><span class="line">        print(&apos; close resource connection&apos;)</span><br><span class="line">    def query(self): </span><br><span class="line">        print(&apos; query data&apos;)</span><br><span class="line">with MyResource() as resource: </span><br><span class="line">resource. query()</span><br></pre></td></tr></table></figure>
+<p>笔记：懒人代码，让你少写几个关闭（收尾）代码。</p>
+<h4 id="遇到问题，学习再源码中找方法"><a href="#遇到问题，学习再源码中找方法" class="headerlink" title="遇到问题，学习再源码中找方法"></a>遇到问题，学习再源码中找方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def create_app(): </span><br><span class="line">    app=Flask(_name)</span><br><span class="line">    app. config. from_object(&apos; app. secure&apos;)</span><br><span class="line">    app. config. from_object(&apos; app. setting&apos;)</span><br><span class="line">    register_blueprint(app)</span><br><span class="line"></span><br><span class="line">    db. init_app(app)</span><br><span class="line">    with app.app_context(): </span><br><span class="line">        db. create_all()</span><br><span class="line">    return app</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db. init_app(app)</span><br><span class="line">db. create_a11(app=app) </span><br><span class="line">return app</span><br></pre></td></tr></table></figure>
+<h3 id="Flask-中的多线程和线程隔离技术"><a href="#Flask-中的多线程和线程隔离技术" class="headerlink" title="Flask 中的多线程和线程隔离技术"></a>Flask 中的多线程和线程隔离技术</h3><p>使用线程隔离的意义在于：使当前线程能够正确引用到他自己所创建的对象，而不是引用到其他线程所创建的对象</p>
+<h4 id="pthon-的多线程"><a href="#pthon-的多线程" class="headerlink" title="pthon 的多线程"></a>pthon 的多线程</h4><h4 id="python-的-GIL"><a href="#python-的-GIL" class="headerlink" title="python 的 GIL"></a>python 的 GIL</h4><h4 id="Local-使用字典的方式实现的线程的隔离"><a href="#Local-使用字典的方式实现的线程的隔离" class="headerlink" title="Local 使用字典的方式实现的线程的隔离"></a>Local 使用字典的方式实现的线程的隔离</h4><h4 id="什么是封装"><a href="#什么是封装" class="headerlink" title="什么是封装"></a>什么是封装</h4><h4 id="LocalStack-的用法"><a href="#LocalStack-的用法" class="headerlink" title="LocalStack 的用法"></a>LocalStack 的用法</h4><h5 id="push、pop、top"><a href="#push、pop、top" class="headerlink" title="push、pop、top"></a>push、pop、top</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">s=LocalStack（）</span><br><span class="line">s.push（1）</span><br><span class="line">print（s.top）</span><br><span class="line">print（s.top）</span><br><span class="line">print（s.pop（））</span><br><span class="line">print（s.top）</span><br><span class="line">s.push（1）</span><br><span class="line">s.push（2）</span><br><span class="line">#栈后进先出</span><br><span class="line">print（s.top）I</span><br><span class="line">print（s.top）</span><br><span class="line">print（s.pop（））</span><br><span class="line">print（s.top）</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line"></span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">None</span><br><span class="line">2</span><br><span class="line">2</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<h4 id="栈与数组"><a href="#栈与数组" class="headerlink" title="栈与数组"></a>栈与数组</h4><h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><h4 id="getattr-与-setattr-方法"><a href="#getattr-与-setattr-方法" class="headerlink" title="getattr 与 setattr 方法"></a>getattr 与 setattr 方法</h4><h4 id="线程隔离对象与被线程隔离对象"><a href="#线程隔离对象与被线程隔离对象" class="headerlink" title="线程隔离对象与被线程隔离对象"></a>线程隔离对象与被线程隔离对象</h4><h3 id="书籍详情页面的构建"><a href="#书籍详情页面的构建" class="headerlink" title="书籍详情页面的构建"></a>书籍详情页面的构建</h3><h4 id="ViewModel-的基本概念、以及数据处理"><a href="#ViewModel-的基本概念、以及数据处理" class="headerlink" title="ViewModel 的基本概念、以及数据处理"></a>ViewModel 的基本概念、以及数据处理</h4><h4 id="伪面向对象：面向过程"><a href="#伪面向对象：面向过程" class="headerlink" title="伪面向对象：面向过程"></a>伪面向对象：面向过程</h4><h5 id="什么是面向过程"><a href="#什么是面向过程" class="headerlink" title="什么是面向过程"></a>什么是面向过程</h5><h4 id="重构鱼书核心对象"><a href="#重构鱼书核心对象" class="headerlink" title="重构鱼书核心对象"></a>重构鱼书核心对象</h4><h4 id="从json序列化看代码解释权反转"><a href="#从json序列化看代码解释权反转" class="headerlink" title="从json序列化看代码解释权反转"></a>从json序列化看代码解释权反转</h4><h4 id="单页面与网站区别"><a href="#单页面与网站区别" class="headerlink" title="单页面与网站区别"></a>单页面与网站区别</h4><h3 id="静态文件、模板、消息闪现与Jinja2"><a href="#静态文件、模板、消息闪现与Jinja2" class="headerlink" title="静态文件、模板、消息闪现与Jinja2"></a>静态文件、模板、消息闪现与Jinja2</h3><h4 id="Flask-静态文件访问原理"><a href="#Flask-静态文件访问原理" class="headerlink" title="Flask 静态文件访问原理"></a>Flask 静态文件访问原理</h4><h4 id="模板文件的位置与修改方案"><a href="#模板文件的位置与修改方案" class="headerlink" title="模板文件的位置与修改方案"></a>模板文件的位置与修改方案</h4><h4 id="jianjia2"><a href="#jianjia2" class="headerlink" title="jianjia2"></a>jianjia2</h4><h4 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h4><h4 id="模板继承"><a href="#模板继承" class="headerlink" title="模板继承"></a>模板继承</h4><h4 id="过滤器与管道命令"><a href="#过滤器与管道命令" class="headerlink" title="过滤器与管道命令"></a>过滤器与管道命令</h4><h4 id="反向构建-URL"><a href="#反向构建-URL" class="headerlink" title="反向构建 URL"></a>反向构建 URL</h4><h4 id="消息闪现、SecretyKey与变量作用域"><a href="#消息闪现、SecretyKey与变量作用域" class="headerlink" title="消息闪现、SecretyKey与变量作用域"></a>消息闪现、SecretyKey与变量作用域</h4><h4 id="显示搜索结果页面、与页面结构解析"><a href="#显示搜索结果页面、与页面结构解析" class="headerlink" title="显示搜索结果页面、与页面结构解析"></a>显示搜索结果页面、与页面结构解析</h4>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/python-Flask框架-鱼书网站实践/" title="python-Flask框架-鱼书网站实践">http://xchcloud.cn/python-Flask框架-鱼书网站实践/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/Flask/" rel="tag"><i class="fa fa-tag"></i> Flask</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-Django框架-微信小助手实践/" rel="prev" title="python-Django框架-微信小助手实践">
+      <i class="fa fa-chevron-left"></i> python-Django框架-微信小助手实践
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/算法学习计划/" rel="next" title="算法学习计划">
+      算法学习计划 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flask-Fish-鱼书项目"><span class="nav-text">Flask Fish 鱼书项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#确定访问的-url-路径问题"><span class="nav-text">确定访问的 url 路径问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听代码修改，热启动"><span class="nav-text">监听代码修改，热启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册路由："><span class="nav-text">注册路由：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-pycharm-全局访问路径、端口"><span class="nav-text">配置 pycharm 全局访问路径、端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署的话该怎么处理"><span class="nav-text">部署的话该怎么处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#真正理解-if-name-‘main‘"><span class="nav-text">真正理解 if name == ‘main‘:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索功能的实现"><span class="nav-text">搜索功能的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#区分数字："><span class="nav-text">区分数字：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区别书名："><span class="nav-text">区别书名：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-API"><span class="nav-text">使用 API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#三元表达式"><span class="nav-text">三元表达式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#staticmethod-与-classmethod"><span class="nav-text">staticmethod 与 classmethod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类的实例化："><span class="nav-text">类的实例化：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两个方法之间的去别："><span class="nav-text">两个方法之间的去别：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是硬编码"><span class="nav-text">什么是硬编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复习装饰器、闭包"><span class="nav-text">复习装饰器、闭包</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#object-的继承问题"><span class="nav-text">object 的继承问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链式查找是个啥？？？？"><span class="nav-text">链式查找是个啥？？？？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定制类"><span class="nav-text">定制类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-中-self-到底是个什么玩意"><span class="nav-text">python 中 self 到底是个什么玩意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#import-http-爬坑"><span class="nav-text">import http 爬坑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dict-是什么"><span class="nav-text">dict 是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Set"><span class="nav-text">Set</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深入了解flask路由、蓝图"><span class="nav-text">深入了解flask路由、蓝图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-对象的使用"><span class="nav-text">Request 对象的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证器"><span class="nav-text">验证器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#validators-是个啥，为什么里面可以传多个函数"><span class="nav-text">validators 是个啥，为什么里面可以传多个函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建数据表的方式"><span class="nav-text">创建数据表的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flask-核心机制"><span class="nav-text">Flask 核心机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#上下文"><span class="nav-text">上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是上下文"><span class="nav-text">什么是上下文</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是句柄"><span class="nav-text">什么是句柄</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#with-语句是怎么用的。它的意义是什么"><span class="nav-text">with 语句是怎么用的。它的意义是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#with-语句时用于对try-except-finally-的优化"><span class="nav-text">with 语句时用于对try except finally 的优化</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#自己定义可以给with调用的上下文管理器"><span class="nav-text">自己定义可以给with调用的上下文管理器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遇到问题，学习再源码中找方法"><span class="nav-text">遇到问题，学习再源码中找方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flask-中的多线程和线程隔离技术"><span class="nav-text">Flask 中的多线程和线程隔离技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pthon-的多线程"><span class="nav-text">pthon 的多线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-的-GIL"><span class="nav-text">python 的 GIL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Local-使用字典的方式实现的线程的隔离"><span class="nav-text">Local 使用字典的方式实现的线程的隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是封装"><span class="nav-text">什么是封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LocalStack-的用法"><span class="nav-text">LocalStack 的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#push、pop、top"><span class="nav-text">push、pop、top</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栈与数组"><span class="nav-text">栈与数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造函数"><span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getattr-与-setattr-方法"><span class="nav-text">getattr 与 setattr 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程隔离对象与被线程隔离对象"><span class="nav-text">线程隔离对象与被线程隔离对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#书籍详情页面的构建"><span class="nav-text">书籍详情页面的构建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ViewModel-的基本概念、以及数据处理"><span class="nav-text">ViewModel 的基本概念、以及数据处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪面向对象：面向过程"><span class="nav-text">伪面向对象：面向过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是面向过程"><span class="nav-text">什么是面向过程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重构鱼书核心对象"><span class="nav-text">重构鱼书核心对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从json序列化看代码解释权反转"><span class="nav-text">从json序列化看代码解释权反转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单页面与网站区别"><span class="nav-text">单页面与网站区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态文件、模板、消息闪现与Jinja2"><span class="nav-text">静态文件、模板、消息闪现与Jinja2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Flask-静态文件访问原理"><span class="nav-text">Flask 静态文件访问原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板文件的位置与修改方案"><span class="nav-text">模板文件的位置与修改方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jianjia2"><span class="nav-text">jianjia2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程控制语句"><span class="nav-text">流程控制语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板继承"><span class="nav-text">模板继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤器与管道命令"><span class="nav-text">过滤器与管道命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向构建-URL"><span class="nav-text">反向构建 URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息闪现、SecretyKey与变量作用域"><span class="nav-text">消息闪现、SecretyKey与变量作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示搜索结果页面、与页面结构解析"><span class="nav-text">显示搜索结果页面、与页面结构解析</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Servlet的入门1.Servlet的接口和实现类：Servlet它是一个接口，在javax.servlet 包下面。 五个方法： destory（）：执行这个方法，销毁了servlet对象 init（ServletConfig config）：在web服务器创建servlet对象以后，执行这个初始化方法。 service（ServletRequest req，ServletResponse r">
+<meta name="keywords" content="java web,入门,Servlet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-web-Servlet">
+<meta property="og:url" content="http://xchcloud.cn/java-web-Servlet/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="Servlet的入门1.Servlet的接口和实现类：Servlet它是一个接口，在javax.servlet 包下面。 五个方法： destory（）：执行这个方法，销毁了servlet对象 init（ServletConfig config）：在web服务器创建servlet对象以后，执行这个初始化方法。 service（ServletRequest req，ServletResponse r">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:58:22.169Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java-web-Servlet">
+<meta name="twitter:description" content="Servlet的入门1.Servlet的接口和实现类：Servlet它是一个接口，在javax.servlet 包下面。 五个方法： destory（）：执行这个方法，销毁了servlet对象 init（ServletConfig config）：在web服务器创建servlet对象以后，执行这个初始化方法。 service（ServletRequest req，ServletResponse r">
+
+<link rel="canonical" href="http://xchcloud.cn/java-web-Servlet/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java-web-Servlet | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/java-web-Servlet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java-web-Servlet
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-28 22:24:38" itemprop="dateCreated datePublished" datetime="2018-09-28T22:24:38+08:00">2018-09-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:58:22" itemprop="dateModified" datetime="2021-09-11T16:58:22+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-web/" itemprop="url" rel="index"><span itemprop="name">java web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/java-web-Servlet/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="java-web-Servlet/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Servlet的入门"><a href="#Servlet的入门" class="headerlink" title="Servlet的入门"></a>Servlet的入门</h2><h3 id="1-Servlet的接口和实现类："><a href="#1-Servlet的接口和实现类：" class="headerlink" title="1.Servlet的接口和实现类："></a>1.Servlet的接口和实现类：</h3><p>Servlet它是一个接口，在javax.servlet 包下面。</p>
+<h4 id="五个方法："><a href="#五个方法：" class="headerlink" title="五个方法："></a>五个方法：</h4><ul>
+<li>destory（）：执行这个方法，销毁了servlet对象</li>
+<li>init（ServletConfig config）：在web服务器创建servlet对象以后，执行这个初始化方法。</li>
+<li>service（ServletRequest req，ServletResponse res）：服务方法，用来接收客户端发送的请求，并且响应数据到</li>
+<li>getServletConfig（）：现在不讲</li>
+<li>getServletInfo（）：servlet的信息，比如作者、版本和版权，这个方法在开发中不用。<br>Genericservlet，它是一个类，实现了Servlet接口<br>Httpservlet，它是一个类，实现了Servlet接口，同时继承了GenerciServlet<a id="more"></a>
+<h4 id="创建servlet三种方式"><a href="#创建servlet三种方式" class="headerlink" title="创建servlet三种方式"></a>创建servlet三种方式</h4></li>
+</ul>
+<ul>
+<li>直接实现Servlet接口。</li>
+<li>继承HttpServlet类。</li>
+<li>一般在开发中，创建servlet，通常去继承这个HttpServlet.<br>比如：class MyServlet extends HttpServlet{重写咱们所需要的方法}</li>
+</ul>
+<h4 id="Servlet的生命周期："><a href="#Servlet的生命周期：" class="headerlink" title="Servlet的生命周期："></a>Servlet的生命周期：</h4><p>生命周期：自然界人从出生到最终走向西方极乐世界，这个周期过程就是生命周期，其实servlet的生命周期和人的一样，从servlet对象被创建，经过使用servlet对象，到最终servlet对象被销毁，整个过程就是servlet的生命周期。</p>
+<h5 id="与生命周期相关的三个方法："><a href="#与生命周期相关的三个方法：" class="headerlink" title="与生命周期相关的三个方法："></a>与生命周期相关的三个方法：</h5><ul>
+<li>init（ServletConfig config）初始化方法：首次访问这个Servlet，servlet对象会被创建，执行初始化方法。</li>
+<li>service（ServletRequest req，ServletResponse res）服务方法：每次访问servlet时，服务方法都会被执行。</li>
+<li>destroy（）销毁方法：在服务器正常关闭时。会执行销毁方法，执行一次。</li>
+</ul>
+<h5 id="Servlet应用-HttpServlet"><a href="#Servlet应用-HttpServlet" class="headerlink" title="Servlet应用-HttpServlet"></a>Servlet应用-HttpServlet</h5><ul>
+<li>在开发中，通常浏览器访问web服务器端的资源，是带有协议的访问，比如说http协议、https协议等，所以说在创建servlet时。需要使用带有协议的servlet，那么咱们程序员在创建servlet时，通常用继承HttpServlet的方式来实现。</li>
+<li><ul>
+<li>1.查看HttpServlet源码得到的结论：<br>在HttpServlet里面重写service方法时，因为在service方法里面，最终调用doGet或者doPost方法，所以说在重写服务方法时，一般情况下不会重写service方法，而是直接重写doGet和doPost方法在客户端发送get请求，在服务器端就用doGet方法接收、在客户端发送Post请求，在服务器端就用doPost方法来接收</li>
+</ul>
+</li>
+<li>在开发中，注意的细节：</li>
+<li><ul>
+<li>1.在使用对象时，使用带有协议的请求和响应对象HttpServletRequset和HttpServletResponse</li>
+</ul>
+</li>
+<li><ul>
+<li>2.在开发时，继承HttpServlet是，直接重写doGet和doPost方法，而不是重写service方法了</li>
+</ul>
+</li>
+</ul>
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-26fed837b1400026.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="servlet1"></p>
+<h5 id="实现Servlet的虚拟路径映射"><a href="#实现Servlet的虚拟路径映射" class="headerlink" title="实现Servlet的虚拟路径映射"></a>实现Servlet的虚拟路径映射</h5><ul>
+<li><p>1.Servlet的多重映射：一个Servlet，可以对应多个访问路径。比如：一个servlet对应的访问路径：/testo2或者/testo3</p>
+</li>
+<li><p>2.Servlet的映射路径可以使用通配符servlet的映射路径有三种方式：、<br>完全目录匹配：比如/hello<br>目录匹配：比如/abc/<em>或者/</em><br>扩展名匹配：<em>.do，</em>.action 注意/*.do这种写法是错误的。<br>优先级：完全目录匹配&gt;目录匹配&gt;扩展名匹配</p>
+</li>
+<li>3.缺省Servlet什么是缺省Servlet：它的映射路径“/”，代表这是一个缺省的servlet.<br>缺省的servelt作用：处理请求的资源找不到的问题（404代表请求的资源找不到）</li>
+</ul>
+<h5 id="ServletConfig接口"><a href="#ServletConfig接口" class="headerlink" title="ServletConfig接口"></a>ServletConfig接口</h5><p>什么是servletConfig：它是servlet的配置对象，作用就是获取与servlet的初始化参数。<br>它的子类是GenericServlet和HttpServlet.<br>它被实列化通过web服务器实现的。<br>得到servletconfig对象：getServletConfig（）</p>
+<h6 id="ServletConfig常用的方法："><a href="#ServletConfig常用的方法：" class="headerlink" title="ServletConfig常用的方法："></a>ServletConfig常用的方法：</h6><ul>
+<li>1.获取servlet的初始化参数的值：getInitParameter（String name）</li>
+<li>2.获取servlet初始化参数的名称：getInitParameterNames（）</li>
+<li>3.得到servletContext对象：getServletContext（）</li>
+<li>4.获取servlet的名称：getservletName（）</li>
+</ul>
+<h5 id="ServletContext接口"><a href="#ServletContext接口" class="headerlink" title="ServletContext接口"></a>ServletContext接口</h5><p>ServletContext对象是在web服务器启动时就创建了，是web服务器创建的servletcontext对象，每一个web项目只有一个ServletContext对象。<br>ServletContext对象的作用：获取web应用程序的初始化参数，在web应用程序能共享数据，获取web项目下的资源文件。<br>得到ServletContext对象：</p>
+<ul>
+<li>1.通过ServletConfig对象：config.getservletContext（）</li>
+<li>2.直接得到：getservletContext（）；<h6 id="获取web应用程序的初始化参数（web应用程序就是web项目）"><a href="#获取web应用程序的初始化参数（web应用程序就是web项目）" class="headerlink" title="获取web应用程序的初始化参数（web应用程序就是web项目）"></a>获取web应用程序的初始化参数（web应用程序就是web项目）</h6></li>
+<li>1.获取全局初始化参数的值：getInitParameter（String name）：</li>
+<li>2.获取全局初始化参数的名称：getInitParameterNames（）</li>
+<li>3.获取Web下面的资源文件</li>
+<li><ul>
+<li>通过Servletcontext对象能够获取Web项目下面文件的字节输入流，或者文件的绝对路径。</li>
+</ul>
+</li>
+<li><ul>
+<li>路径问题：</li>
+</ul>
+</li>
+<li><ul>
+<li>普通java项目：直接使用jdk编译java文件，所以说文件的路径是相对于工作空间。<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-9a03c6c21bded0aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="javaputong wenjai duqu lujing"></li>
+</ul>
+</li>
+<li><ul>
+<li>web项目：运行在tomcat服务器上面的，所有说文件的路径是相对于tomcat服务器。<br>服务器端是没有src这个目录，写路径不能写src，必须相对于tomcat服务器端的路经。<br>1.获取文件的自己输入流：路径是相对于tomcat服务器的路径<br>Inputstream in =getResourceAsStream（String path）<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-cdfa95c0d25f777d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>2.获取文件的绝对路径：路径是相对于服务器端的路径<br>String realPath=getRealPath（path）<br><img data-src="https://upload-images.jianshu.io/upload_images/6407592-58d9228ba65e475e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+</li>
+</ul>
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-89b7d454ac735081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img data-src="https://upload-images.jianshu.io/upload_images/6407592-166d7cb470544263.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/java-web-Servlet/" title="java-web-Servlet">http://xchcloud.cn/java-web-Servlet/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/java-web/" rel="tag"><i class="fa fa-tag"></i> java web</a>
+              <a href="/tags/入门/" rel="tag"><i class="fa fa-tag"></i> 入门</a>
+              <a href="/tags/Servlet/" rel="tag"><i class="fa fa-tag"></i> Servlet</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/网络协议深入浅出/" rel="prev" title="网络协议深入浅出">
+      <i class="fa fa-chevron-left"></i> 网络协议深入浅出
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/安卓从入门到放弃/" rel="next" title="安卓从入门到放弃">
+      安卓从入门到放弃 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet的入门"><span class="nav-text">Servlet的入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Servlet的接口和实现类："><span class="nav-text">1.Servlet的接口和实现类：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#五个方法："><span class="nav-text">五个方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建servlet三种方式"><span class="nav-text">创建servlet三种方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Servlet的生命周期："><span class="nav-text">Servlet的生命周期：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#与生命周期相关的三个方法："><span class="nav-text">与生命周期相关的三个方法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Servlet应用-HttpServlet"><span class="nav-text">Servlet应用-HttpServlet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现Servlet的虚拟路径映射"><span class="nav-text">实现Servlet的虚拟路径映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ServletConfig接口"><span class="nav-text">ServletConfig接口</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ServletConfig常用的方法："><span class="nav-text">ServletConfig常用的方法：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ServletContext接口"><span class="nav-text">ServletContext接口</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#获取web应用程序的初始化参数（web应用程序就是web项目）"><span class="nav-text">获取web应用程序的初始化参数（web应用程序就是web项目）</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

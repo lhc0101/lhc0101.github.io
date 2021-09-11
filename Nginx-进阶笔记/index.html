@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="目录结构源码结构12345678910111213141516171819202122232425262728[root@localhost nginx-1.2.0]# ls -Fauto/  CHANGES  CHANGES.ru  conf/  configure*  contrib/  html/  LICENSE  man/  README  src/&amp;lt;!-- more --&amp;gt;">
+<meta name="keywords" content="Linux,Nginx,中间件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx-进阶笔记">
+<meta property="og:url" content="http://xchcloud.cn/Nginx-进阶笔记/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="目录结构源码结构12345678910111213141516171819202122232425262728[root@localhost nginx-1.2.0]# ls -Fauto/  CHANGES  CHANGES.ru  conf/  configure*  contrib/  html/  LICENSE  man/  README  src/&amp;lt;!-- more --&amp;gt;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T09:00:01.976Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx-进阶笔记">
+<meta name="twitter:description" content="目录结构源码结构12345678910111213141516171819202122232425262728[root@localhost nginx-1.2.0]# ls -Fauto/  CHANGES  CHANGES.ru  conf/  configure*  contrib/  html/  LICENSE  man/  README  src/&amp;lt;!-- more --&amp;gt;">
+
+<link rel="canonical" href="http://xchcloud.cn/Nginx-进阶笔记/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Nginx-进阶笔记 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/Nginx-进阶笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nginx-进阶笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-26 10:24:40" itemprop="dateCreated datePublished" datetime="2020-02-26T10:24:40+08:00">2020-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 17:00:01" itemprop="dateModified" datetime="2021-09-11T17:00:01+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nginx/" itemprop="url" rel="index"><span itemprop="name">Nginx</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/Nginx-进阶笔记/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="Nginx-进阶笔记/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost nginx-1.2.0]# ls -F</span><br><span class="line">auto/  CHANGES  CHANGES.ru  conf/  configure*  contrib/  html/  LICENSE  man/  README  src/</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line">auto/：包含了很多会在执行configure进行编译配置时调用的检测代码。</span><br><span class="line">CHANGES：Nginx的版本更新细节记录。英文版。</span><br><span class="line">CHANGES.ru：Nginx的版本更新细节记录。俄文版。</span><br><span class="line">conf/：Nginx提供的一些默认配置文件。</span><br><span class="line">configure*：根据系统环境设定Nginx编译选项的执行脚本。</span><br><span class="line">contrib/：网友贡献的一些有用脚本。</span><br><span class="line">    ps:  cp -r contrib/vim/* ~/.vim/     可以使vim支持nginx配置语言的语法。</span><br><span class="line">html/：提供了两个默认html页面，比如index.html的Welcome to nginx!。</span><br><span class="line">LICENSE：声明的Nginx源码许可协议。</span><br><span class="line">man/：Nginx的Man手册，本文文件，可直接用vi或记事本打开。</span><br><span class="line">README：读我文件，内容很简单，通告一下官网地址。</span><br><span class="line">src/：Nginx源码，分门别类，比如实现事件的event等，很清晰。</span><br><span class="line">执行configure脚本后将生成Makefile文件和objs目录，这是根据当前系统环境生成的相关编译配置。Nginx并没有使用Autoconf1和Automake2等这样的自动化工具来做这个工作，而都是手动编码实现的。比如当Nginx判断当前Linux系统是否支持epoll时，它采用的方法就是编写一款小应用程序，并在其中调用epoll_create()函数，然后再根据它是否可被正常编译执行来做这个判断。具体可参考文件nginx-1.2.0/auto/os/linux和nginx-1.2.0/auto/feature内相关代码。  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">编译参数问题：</span><br><span class="line"></span><br><span class="line">./configure --help | more   查看有哪些参数</span><br><span class="line">参数类型：</span><br><span class="line">第一类：目录</span><br><span class="line">第二类：使用哪些模块(with 默认编译不带该模块)、不使用哪些模块(without 默认编译带该模块)</span><br><span class="line">第三类：优化参数、debug日志、第三方模块</span><br><span class="line"></span><br><span class="line">中间文件 ：objs 目录</span><br><span class="line">ngx_modules.c : 被编译进的模块会在一个文件中，并且存为一个数组。</span><br></pre></td></tr></table></figure>
+<h3 id="应用结构"><a href="#应用结构" class="headerlink" title="应用结构"></a>应用结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[root@www ~]# tree /application/nginx/</span><br><span class="line">/application/nginx/</span><br><span class="line">|-- client_body_temp</span><br><span class="line">|-- conf                    　　　　　　　　　　　　　　#这是Nginx所有配置文件的目录，极其重要</span><br><span class="line">|   |-- fastcgi.conf         　　　　　　 　　　       #fastcgi相关参数的配置文件</span><br><span class="line">|   |-- fastcgi.conf.default     　　  　　　　　　　　#fastcgi.conf的原始备份</span><br><span class="line">|   |-- fastcgi_params          　　　　　　　　　     #fastcgi的参数文件</span><br><span class="line">|   |-- fastcgi_params.default</span><br><span class="line">|   |-- koi-utf</span><br><span class="line">|   |-- koi-win</span><br><span class="line">|   |-- mime.types          　　　　　　　　　　　　    #媒体类型，</span><br><span class="line">|   |-- mime.types.default</span><br><span class="line">|   |-- nginx.conf         　　　　　　　　　　　　     #这是Nginx默认的主配置文件</span><br><span class="line">|   |-- nginx.conf.default</span><br><span class="line">|   |-- scgi_params         　　　　　　　　　　　      #scgi相关参数文件，一般用不到</span><br><span class="line">|   |-- scgi_params.default</span><br><span class="line">|   |-- uwsgi_params               　　　　　　        #uwsgi相关参数文件，一般用不到</span><br><span class="line">|   |-- uwsgi_params.default</span><br><span class="line">|   `-- win-utf</span><br><span class="line">|-- fastcgi_temp               　　　　　　　　        #fastcgi临时数据目录</span><br><span class="line">|-- html     　　　　　　　　　　　　　　　　　　        #这是编译安装时Nginx的默认站点目录，类似</span><br><span class="line">                    Apache的默认站点htdocs目录</span><br><span class="line">|   |--50x.html                                       #错误页面优雅替代显示文件，例如：出现502错误时会调用此页面</span><br><span class="line">                                                      #error_page   500502503504  /50x.html；</span><br><span class="line">|   `-- index.html                                    #默认的首页文件，首页文件名字是在nginx.conf中事先定义好的。</span><br><span class="line">|-- logs                                              #这是Nginx默认的日志路径，包括错误日志及访问日志</span><br><span class="line">|   |-- access.log                                    #这是Nginx的默认访问日志文件，使用tail -f access.log，可以实时观看网站用户访问情况信息</span><br><span class="line">|   |-- error.log                                     #这是Nginx的错误日志文件，如果Nginx出现启动故障等问题，一定要看看这个错误日志</span><br><span class="line">|   `-- nginx.pid                                     #Nginx的pid文件，Nginx进程启动后，会把所有进程的ID号写到此文件</span><br><span class="line">|-- proxy_temp                                        #临时目录</span><br><span class="line">|-- sbin                                              #这是Nginx命令的目录，如Nginx的启动命令nginx</span><br><span class="line">|   `-- nginx                                         #Nginx的启动命令nginx</span><br><span class="line">|-- scgi_temp                                         #临时目录</span><br><span class="line">`-- uwsgi_temp                                        #临时目录</span><br><span class="line">9 directories，21 files</span><br></pre></td></tr></table></figure>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><p>nginx -s reload<br>帮助：-? -h<br>使用指定的配置文件：-c<br>指定配置指令：-g<br>指定运行目录: -p<br>发送信号：-s</p>
+<ul>
+<li>立即停止：stop</li>
+<li>优雅的停止：quit</li>
+<li>重载配置：reload</li>
+<li>重新开始记录日志文件: reopen</li>
+</ul>
+<p>测试配置文件是否有语法错误：-t -T<br>打印nginx的版本信息、编译信息等：-v -V</p>
+<h3 id="nginx-的新版本热部署"><a href="#nginx-的新版本热部署" class="headerlink" title="nginx 的新版本热部署"></a>nginx 的新版本热部署</h3><p>先 cp nginx 新版本的二进制文件 ：cp nginx nginx.old<br>USR2 信号：kill -USR2 $pid : 新老nginx进程都在运行<br>WINCH 信号：kill -WINCH $pid ：老版本的work进程已经关闭，但是master进程还在运行，这样方便快速回退。</p>
+<h3 id="nginx-日志切割"><a href="#nginx-日志切割" class="headerlink" title="nginx 日志切割"></a>nginx 日志切割</h3><p>首先将日志cp一份；<br>然后 nginx -s reopen 重新生成一份新的日志。当然 向 pid 发送 USR1 信号是一样的</p>
+<p>写一个脚本放在 crontab 中，方便定时运行。</p>
+<h2 id="nginx-配置文件说明"><a href="#nginx-配置文件说明" class="headerlink" title="nginx 配置文件说明"></a>nginx 配置文件说明</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">user nginx nginx;    　　　　　　　　    #定义Nginx运行的用户和用户组</span><br><span class="line">worker_processes 1;    　　　　　　　　#nginx进程数，建议设置为等于CPU总核心数。</span><br><span class="line">error_log /var/log/nginx/error.log info;　　    #全局错误日志定义类型，[ debug | info | notice | warn | error | crit ]</span><br><span class="line">pid /var/run/nginx.pid;    　　　　　　　　　　　　#进程文件</span><br><span class="line">worker_rlimit_nofile 1024;    　　    #一个nginx进程打开的最多文件描述符数目，理论值应该是最多打开文件数（系统的值ulimit -n）与nginx进程数相除，但是nginx分配请求并不均匀，所以#建议与ulimit -n的值保持一致</span><br><span class="line"></span><br><span class="line">events</span><br><span class="line">&#123;</span><br><span class="line">use epoll;    　　    #参考事件模型，use [ kqueue | rtsig | epoll | /dev/poll | select | poll ]; epoll模型是Linux 2.6以上版本内核中的高性能网络I/O模型，</span><br><span class="line">　　　　　　　　　　　　　　　　如果跑在FreeBS　　#D上面，就用kqueue模型。</span><br><span class="line"></span><br><span class="line">worker_connections 65535;　　　　    #单个进程最大连接数（最大连接数=连接数*进程数）</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http    　　　　　　　　　　　　　　　　    #HTTP区块开始</span><br><span class="line">&#123;</span><br><span class="line">include mime.types;    　　　　　　　　　　　　　　　　　　#Nginx支持的媒体类型库文件</span><br><span class="line">default_type application/octet-stream; 　　　　　　#默认媒体类型</span><br><span class="line">#charset utf-8; 　　　　　　　　　　　　　　　　　　　　#默认编码</span><br><span class="line">server_names_hash_bucket_size 128; 　　　　　　　　#服务器名字的hash表大小</span><br><span class="line">client_header_buffer_size 32k;    　　　　　　　　　　 #上传文件大小限制</span><br><span class="line">large_client_header_buffers 4 64k;    　　　　　　　　 #设定请求缓</span><br><span class="line">client_max_body_size 8m;    　　　　　　　　　　　　　　    #设定请求缓</span><br><span class="line">sendfile on; 　　　　　　#开启高效文件传输模式，sendfile指令指定nginx是否调用sendfile函数来输出文件，对于普通应用设为 on，如果用来进行下载等应用磁盘IO重负载应用，可设置为o　　#ff，以平衡磁盘与网络I/O处理速度，降低系统的负载。注意：如果图片显示不正常把这个改成off。</span><br><span class="line">autoindex on; 　　　　　　　　　　　　　　    #开启目录列表访问，合适下载服务器，默认关闭。</span><br><span class="line">tcp_nopush on; 　　　　　　　　　　　　　　#防止网络阻塞</span><br><span class="line">tcp_nodelay on; 　　　　　　　　　　　　　#防止网络阻塞</span><br><span class="line">keepalive_timeout 120;    　　　　　　　　 #连接超时，单位是秒</span><br><span class="line"></span><br><span class="line">#FastCGI相关参数是为了改善网站的性能：减少资源占用，提高访问速度。</span><br><span class="line">fastcgi_connect_timeout 300;</span><br><span class="line">fastcgi_send_timeout 300;</span><br><span class="line">fastcgi_read_timeout 300;</span><br><span class="line">fastcgi_buffer_size 64k;</span><br><span class="line">fastcgi_buffers 4 64k;</span><br><span class="line">fastcgi_busy_buffers_size 128k;</span><br><span class="line">fastcgi_temp_file_write_size 128k;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#gzip模块设置</span><br><span class="line">gzip on;    　　　　　　　　　　　　　　　　　　                  #开启gzip压缩输出</span><br><span class="line">gzip_min_length 1k; 　　　　　　　　　　　　                     #最小压缩文件大小，小于就不压缩了</span><br><span class="line">gzip_buffers 4 16k; 　　　　　　　　　　                         #压缩缓冲区</span><br><span class="line">gzip_http_version 1.0; 　　　　　　　　　　                      #压缩版本（默认1.1，前端如果是squid2.5请使用1.0）</span><br><span class="line">gzip_comp_level 2;    　　　　　　　　　　　　                    #压缩等级</span><br><span class="line">gzip_types text/x-javascript text/css application/xml;　　　　  #压缩类型，默认就已经包含text/html，所以下面就不用再写了，写上去也不会有问题，但是会有一个warn。</span><br><span class="line">gzip_vary on;</span><br><span class="line">#limit_zone crawler $binary_remote_addr 10m;　　                #开启限制IP连接数的时候需要使用</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#虚拟主机的配置</span><br><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">listen 80;    　　　　　　　　　　　　　　　　　　　　　#监听端口</span><br><span class="line"></span><br><span class="line">server_name localhost;    　　　　　　　　　　　　　　#提供服务的域名主机名</span><br><span class="line">location / &#123;　　　　　　　　　　　　　　　　　　　　#第一个location区块开始</span><br><span class="line">root html； 　　　　　　　　　　　　　　　　　　　　 #站点的根目录，相当于Nginx的安装目录</span><br><span class="line">index index.html index.htm index.jsp;　　    　　#默认的首页文件，多个用空格分开</span><br><span class="line">&#125; 　　　　　　　　　　　　　　　　　　　　　　　　 #第一个location区块结果</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#图片缓存时间设置</span><br><span class="line">location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$</span><br><span class="line">&#123;</span><br><span class="line">expires 10d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#JS和CSS缓存时间设置</span><br><span class="line">location ~ .*\.(js|css)?$</span><br><span class="line">&#123;</span><br><span class="line">expires 1h;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#日志格式设定</span><br><span class="line">log_format access &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;log_       #access这种格式可以自定义作为标识。</span><br><span class="line">&apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;                  # remote_addr 代表远端地址，time_local 当时时间，status 状态码，内置变量以及第三方模块提供的变量</span><br><span class="line">&apos;&quot;$http_user_agent&quot; $http_x_forwarded_for&apos;;</span><br><span class="line"></span><br><span class="line">access_log /var/log/nginx/access_$(data+%F -d -1day).log access;　　　　#定义本虚拟主机的访问日志，采用access的这种格式</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">location / &#123;    　　　　　　　　　　　　　　　　　　　　　　    #对 &quot;/&quot; 启用反向代理</span><br><span class="line">proxy_pass http://127.0.0.1:88;</span><br><span class="line">proxy_redirect off;</span><br><span class="line">proxy_set_header X-Real-IP $remote_addr; 　　　　　　 #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP,做限制什么的不然就限制代理服务地址了。</span><br><span class="line">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line"></span><br><span class="line">#以下是一些反向代理的配置，可选</span><br><span class="line">proxy_set_header Host $host;                        # </span><br><span class="line">client_max_body_size 10m; 　　　　　　　　　　　　    #允许客户端请求的最大单文件字节数</span><br><span class="line">client_body_buffer_size 128k; 　　　　　　　　    #缓冲区代理缓冲用户端请求的最大字节数，</span><br><span class="line">proxy_connect_timeout 90;　　　　　　　　　　　　#nginx跟后端服务器连接超时时间(代理连接超时)</span><br><span class="line">proxy_send_timeout 90; 　　　　　　　　　　　　    #后端服务器数据回传时间(代理发送超时)</span><br><span class="line">proxy_read_timeout 90;　　　　　　　　　　　　#连接成功后，后端服务器响应时间(代理接收超时)</span><br><span class="line">proxy_buffer_size 4k; 　　　　　　　　　　　　    #设置代理服务器（nginx）保存用户头信息的缓冲区大小</span><br><span class="line">proxy_buffers 4 32k; 　　　　　　　　　　　　    #proxy_buffers缓冲区，网页平均在32k以下的设置</span><br><span class="line">proxy_busy_buffers_size 64k; 　　　　　　　　    #高负荷下缓冲大小（proxy_buffers*2）</span><br><span class="line">proxy_temp_file_write_size 64k;    　　　　　　　　    #设定缓存文件夹大小，大于这个值，将从upstream服务器传</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#设定查看Nginx状态的地址</span><br><span class="line">location /NginxStatus &#123;</span><br><span class="line">stub_status on;</span><br><span class="line">access_log on;</span><br><span class="line">auth_basic &quot;NginxStatus&quot;;</span><br><span class="line">auth_basic_user_file conf/htpasswd;    　　　　　　#htpasswd文件的内容可以用apache提供的htpasswd工具来产生。</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#本地动静分离反向代理配置</span><br><span class="line">#所有jsp的页面均交由tomcat或resin处理</span><br><span class="line">location ~ .(jsp|jspx|do)?$ &#123;</span><br><span class="line">proxy_set_header Host $host;</span><br><span class="line">proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">proxy_pass http://127.0.0.1:8080;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#所有静态文件由nginx直接读取不经过tomcat或resin</span><br><span class="line">location ~ .*.(htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma)$</span><br><span class="line">&#123; expires 15d; &#125;</span><br><span class="line">location ~ .*.(js|css)?$</span><br><span class="line">&#123; expires 1h; &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nginx-配置静态资源服务器"><a href="#nginx-配置静态资源服务器" class="headerlink" title="nginx 配置静态资源服务器"></a>nginx 配置静态资源服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">location /&#123;</span><br><span class="line">    autoindex on;    #访问的url以 / 结尾时，显示当前文件夹下的文件结构</span><br><span class="line">    set $limit_rate 1k        #限制访问的使用度,每秒传输1k</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="配置反向代理"><a href="#配置反向代理" class="headerlink" title="配置反向代理"></a>配置反向代理</h3><p>listen 127.0.0.1:8080 仅支持本地访问，通过反向代理来访问该资源。</p>
+<p>upstream local {<br>    server 127.0.0.1:8080<br>}</p>
+<h3 id="配置缓存服务器"><a href="#配置缓存服务器" class="headerlink" title="配置缓存服务器"></a>配置缓存服务器</h3><p>upstream local {<br>    server 127.0.0.1:8080<br>}<br><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/yhOQSTSsGUV0.png?imageslim" alt="mark"><br>ps: key 目的时对应不同的用户有着不同的资源。<br>proxy_cache_path /tmp/nginx cache levels=1:2 keys_zone=my_cache:10m max_size=10g inactive=60m use_temp_path=off;</p>
+<h3 id="用GoAccess实现可视化并实时监控access日志"><a href="#用GoAccess实现可视化并实时监控access日志" class="headerlink" title="用GoAccess实现可视化并实时监控access日志"></a>用GoAccess实现可视化并实时监控access日志</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1、GoAccess下载地址：https://goaccess.io/download</span><br><span class="line"></span><br><span class="line">2、yum方式安装GoAccess所需软件包：</span><br><span class="line"># yum install GeoIP-devel ncurses ncurses-devel wget epel-release</span><br><span class="line"></span><br><span class="line">3、编译安装GoAccess：</span><br><span class="line"># wget https://tar.goaccess.io/goaccess-1.3.tar.gz</span><br><span class="line"># tar -xf goaccess-1.3.tar.gz -C /usr/src</span><br><span class="line"># cd /usr/src/goaccess-1.3</span><br><span class="line"># ./configure --prefix=/usr/local/goaccess --enable-utf8 --enable-geoip</span><br><span class="line"># make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">4、配置环境变量：</span><br><span class="line"># vim /etc/profile.d/goaccess.sh</span><br><span class="line">export PATH=/usr/local/goaccess/bin:$PATH</span><br><span class="line"># . /etc/profile.d/goaccess.sh</span><br><span class="line"># goaccess -V</span><br><span class="line"></span><br><span class="line">5、修改nginx.conf配置文件：</span><br><span class="line"># vim /etc/nginx/nginx.conf，确认如下配置默认已启用：</span><br><span class="line">log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">                      &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                      &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line">access_log  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">6、修改goaccess.conf配置文件：</span><br><span class="line"># cd /usr/local/goaccess/etc/goaccess/</span><br><span class="line"># cp goaccess.conf&#123;,.bak&#125;</span><br><span class="line"># vim goaccess.conf</span><br></pre></td></tr></table></figure>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/dgv60SA2iib1.png?imageslim" alt="mark"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> 7、控制台运行GoAccess：</span><br><span class="line"># goaccess /var/log/nginx/access.log</span><br><span class="line"></span><br><span class="line">8、后台实时生成数据到GoAccess界面，并将分析结果保存为HTML：</span><br><span class="line"># goaccess -p /usr/local/goaccess/etc/goaccess/goaccess.conf</span><br><span class="line"></span><br><span class="line">或# goaccess /var/log/nginx/access.log --time-format=&apos;%H:%M:%S&apos; --date-format=&apos;%d/%b/%Y&apos; --log-format=COMBINED -o /usr/share/nginx/html/goaccess.html --addr=192.168.0.121 --real-time-html --daemonize</span><br><span class="line"># ps -ef | grep goaccess</span><br><span class="line"># ss -tunlp | grep 7890</span><br><span class="line">备注：如果需要输出实时HTML，需要打开防火墙7890端口</span><br><span class="line"></span><br><span class="line">9、浏览器访问http://ip/goaccess.html</span><br><span class="line"></span><br><span class="line">10、使用ab命令进行压测，模拟访问，观察页面数值是否实时变化：</span><br><span class="line"># yum -y install httpd-tools</span><br><span class="line"># ab -n 500000 -c 20 http://ip/</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://goaccess.io/man" target="_blank" rel="noopener">官方帮助文档</a><br><a href="https://blog.51cto.com/qiuyue/2455429" target="_blank" rel="noopener">参考博客</a></p>
+<h2 id="SSL相关"><a href="#SSL相关" class="headerlink" title="SSL相关"></a>SSL相关</h2><p><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/SpzgAgfGTUwR.png?imageslim" alt="mark"><br><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/ctNN6Ulq1n6D.png?imageslim" alt="mark"></p>
+<p>对称加密算法和非对称加密区别：</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/boqitVgPhYei.png?imageslim" alt="mark"><br><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/qEmXvU4aom5T.png?imageslim" alt="mark"></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/RaGlhx7fW9eG.png?imageslim" alt="mark"></p>
+<p>证书链：<br>根证书-二级证书-主证书<br><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/q7wmBrfdhsds.png?imageslim" alt="mark"></p>
+<p>上证书：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install python2-certbot-nginx</span><br><span class="line">certhot --nginx --nginx-server-root=/usr/local/openresty/nginx/conf/ -d 域名</span><br><span class="line"></span><br><span class="line">ps：根据提示，输入相关资料后，即可在/etc/letsencrypt/archive目录下得到证书文件。</span><br><span class="line">或者：也可以直接使用以下命令直接生成。注意xxx需要替换为自己的东西。</span><br></pre></td></tr></table></figure></p>
+<h3 id="certbot-自动化脚本"><a href="#certbot-自动化脚本" class="headerlink" title="certbot 自动化脚本"></a>certbot 自动化脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line"></span><br><span class="line">  certbot [SUBCOMMAND] [options] [-d DOMAIN] [-d DOMAIN] ...</span><br><span class="line"></span><br><span class="line">Certbot可以获取并安装HTTPS/TLS/SSL证书。默认情况下</span><br><span class="line">它将尝试使用Web服务器来获取和安装</span><br><span class="line">证书。最常见的子命令和标志是：</span><br><span class="line"></span><br><span class="line">obtain, install, and renew certificates:</span><br><span class="line">    (default) run   在当前Web服务器中获取并安装证书</span><br><span class="line">    certonly        获取或续订证书，但不要安装它</span><br><span class="line">    renew           更新所有以前获得的证书</span><br><span class="line">expiry</span><br><span class="line">    enhance         为现有配置添加安全增强</span><br><span class="line">   -d DOMAINS       要获取证书的域的逗号分隔列表</span><br><span class="line"></span><br><span class="line">  (未安装certbot apache插件)</span><br><span class="line">  --standalone      运行独立的Web服务器进行身份验证</span><br><span class="line">  --nginx           使用Nginx插件进行身份验证和安装</span><br><span class="line">  --webroot         将文件放在服务器的webroot文件夹中进行身份验证</span><br><span class="line">  --manual          以交互方式获取证书，或使用shell脚本</span><br><span class="line">hooks</span><br><span class="line"></span><br><span class="line">   -n               非交互运行</span><br><span class="line">  --test-cert       从登台服务器获取测试证书</span><br><span class="line">  --dry-run         在不保存任何证书的情况下测试“renew”或“certonly”</span><br><span class="line">to disk</span><br><span class="line"></span><br><span class="line">manage certificates:管理证书</span><br><span class="line">    certificates    显示有关您从Certbot获得的证书的信息</span><br><span class="line">    revoke          Revoke a certificate (supply --cert-path or --cert-name)吊销证书（提供--证书路径或--证书名称）</span><br><span class="line">    delete          Delete a certificate</span><br><span class="line"></span><br><span class="line">manage your account:</span><br><span class="line">    register        Create an ACME account 创建ACME帐户</span><br><span class="line">    unregister      Deactivate an ACME account</span><br><span class="line">    update_account  Update an ACME account</span><br><span class="line">  --agree-tos       Agree to the ACME server&apos;s Subscriber Agreement 同意ACME服务器的订户协议</span><br><span class="line">   -m EMAIL         Email address for important account notifications 重要帐户通知的电子邮件地址</span><br><span class="line"></span><br><span class="line">More detailed help:</span><br><span class="line"></span><br><span class="line">  -h, --help [TOPIC]    print this message, or detailed help on a topic;打印此消息或有关某个主题的详细帮助</span><br><span class="line">                        the available TOPICS are: 可用的主题有</span><br><span class="line"></span><br><span class="line">   all, automation, commands, paths, security, testing, or any of the</span><br><span class="line">   subcommands or plugins (certonly, renew, install, register, nginx,</span><br><span class="line">   apache, standalone, webroot, etc.)</span><br><span class="line">  -h all                print a detailed help page including all topics</span><br><span class="line">  --version             print the version number</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span><br></pre></td></tr></table></figure>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/7nEpTPJi8OuV.png?imageslim" alt="mark"><br><img data-src="http://tuchuang.xchcloud.cn/blog/20200226/qGlXkXJ8XgRg.png?imageslim" alt="mark"><br>ssl_session_catch ；            #1M 大约4000个连接<br>ssl_session_timeout 1440m;      #断开链接后大概多久内免再次握手<br>ssl_protocols :                 #nginx 支持哪些版本的安全协议<br>ssl_prefer_server_ciphers       #决定使用哪些协议<br>ssl_ciphers:                    #有哪些协议</p>
+<h2 id="nginx请求处理流程"><a href="#nginx请求处理流程" class="headerlink" title="nginx请求处理流程"></a>nginx请求处理流程</h2><p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/YzeYBNlT1DRH.png?imageslim" alt="mark"></p>
+<h2 id="nginx-进程结构-管理"><a href="#nginx-进程结构-管理" class="headerlink" title="nginx 进程结构/管理"></a>nginx 进程结构/管理</h2><p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/G1kkY70mTvsL.png?imageslim" alt="mark"></p>
+<p>就是向 master 主进程发送信号</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/WLFQRax26PzN.png?imageslim" alt="mark"></p>
+<h3 id="reload流程"><a href="#reload流程" class="headerlink" title="reload流程"></a>reload流程</h3><p>1、向 master 进程发送HUP信号（reload）<br>2、master进程校验配置语法是否正确<br>3、master进程打开新的监听端口<br>4、master进程用新配置启动新的worker子进程<br>5、master进程向老worker子进程发送QUIT信号 （极端情况老进程处理时间太长，会有个模块让它强制退出）<br>6、老worker进程关闭监听句柄，处理完当前连接后结束进程</p>
+<h3 id="热升级流程"><a href="#热升级流程" class="headerlink" title="热升级流程"></a>热升级流程</h3><p>1、将旧的nginx文件换为新的nginx文件（注意备份）<br>2、向master进程发送USR2信号<br>3、master进程修改pid文件名，加后缀.oldbin<br>4、master进程用新的nginx文件启动新的master进程<br>5、向老master进程发送QUIT信号，关闭老master进程<br>6、回滚：向老master发送HUP,向新master发送QUIT</p>
+<p>老 master 进程到底退出没？</p>
+<h3 id="优雅的关闭work进程"><a href="#优雅的关闭work进程" class="headerlink" title="优雅的关闭work进程"></a>优雅的关闭work进程</h3><p>1、设置定时器（worker_shutdown_timeout）<br>2、关闭监听句柄（保证不会处理新的连接）<br>3、关闭空闲连接（为了保证资源的利用最大化，会保留空闲连接）<br>4、在循环中等待全部连接关闭（每当发现有连接处理完毕则关闭一个，但是当达到一个定时器时间会立即关闭所有）<br>5、退出进程</p>
+<h2 id="网络收发与nginx的链路关系"><a href="#网络收发与nginx的链路关系" class="headerlink" title="网络收发与nginx的链路关系"></a>网络收发与nginx的链路关系</h2><p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/JrAk2ua7wy82.png?imageslim" alt="mark"><br><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/yH1pVqXn6BG1.png?imageslim" alt="mark"></p>
+<h3 id="nginx-事件循环"><a href="#nginx-事件循环" class="headerlink" title="nginx 事件循环"></a>nginx 事件循环</h3><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><h3 id="nginx-请求切换"><a href="#nginx-请求切换" class="headerlink" title="nginx 请求切换"></a>nginx 请求切换</h3><h3 id="同步-amp-异步、阻塞-amp-非阻塞之间的区别"><a href="#同步-amp-异步、阻塞-amp-非阻塞之间的区别" class="headerlink" title="同步&amp;异步、阻塞&amp;非阻塞之间的区别"></a>同步&amp;异步、阻塞&amp;非阻塞之间的区别</h3><p>阻塞调用</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/a5icu0QOBVP8.png?imageslim" alt="mark"></p>
+<p>非阻塞调用</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/6tPMQxSFE6R0.png?imageslim" alt="mark"></p>
+<p>底层调用？</p>
+<p>非阻塞调用之下的同步与异步</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/o7ObnXIWYyyn.png?imageslim" alt="mark"></p>
+<h2 id="nginx-模块"><a href="#nginx-模块" class="headerlink" title="nginx 模块"></a>nginx 模块</h2><p>提供哪些配置项<br>模块何时被使用<br>提供哪些变量</p>
+<p>查看 nginx 临时文件目录中的 nginx_***_module.c 文件<br>.c module 的源代码中都有一个 ngc_command_t 唯一的结构体，是个数组，包含所有的指令名。</p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/zo4DlUG3XSlc.png?imageslim" alt="mark"></p>
+<p><img data-src="http://tuchuang.xchcloud.cn/blog/20200227/rWpq0eyYG19m.png?imageslim" alt="mark"></p>
+<h3 id="流量复制"><a href="#流量复制" class="headerlink" title="流量复制"></a>流量复制</h3><p><a href="https://www.cnblogs.com/cjsblog/p/12163207.html" target="_blank" rel="noopener">Nginx流量复制</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/Nginx-进阶笔记/" title="Nginx-进阶笔记">http://xchcloud.cn/Nginx-进阶笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/Nginx/" rel="tag"><i class="fa fa-tag"></i> Nginx</a>
+              <a href="/tags/中间件/" rel="tag"><i class="fa fa-tag"></i> 中间件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux-shell-复盘/" rel="prev" title="linux-shell-复盘">
+      <i class="fa fa-chevron-left"></i> linux-shell-复盘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python各版本安装/" rel="next" title="python各版本安装">
+      python各版本安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-text">目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源码结构"><span class="nav-text">源码结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用结构"><span class="nav-text">应用结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-text">命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-的新版本热部署"><span class="nav-text">nginx 的新版本热部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-日志切割"><span class="nav-text">nginx 日志切割</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-配置文件说明"><span class="nav-text">nginx 配置文件说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-配置静态资源服务器"><span class="nav-text">nginx 配置静态资源服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置反向代理"><span class="nav-text">配置反向代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置缓存服务器"><span class="nav-text">配置缓存服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用GoAccess实现可视化并实时监控access日志"><span class="nav-text">用GoAccess实现可视化并实时监控access日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL相关"><span class="nav-text">SSL相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#certbot-自动化脚本"><span class="nav-text">certbot 自动化脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx请求处理流程"><span class="nav-text">nginx请求处理流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-进程结构-管理"><span class="nav-text">nginx 进程结构/管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reload流程"><span class="nav-text">reload流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#热升级流程"><span class="nav-text">热升级流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优雅的关闭work进程"><span class="nav-text">优雅的关闭work进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络收发与nginx的链路关系"><span class="nav-text">网络收发与nginx的链路关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-事件循环"><span class="nav-text">nginx 事件循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll"><span class="nav-text">epoll</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-请求切换"><span class="nav-text">nginx 请求切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步-amp-异步、阻塞-amp-非阻塞之间的区别"><span class="nav-text">同步&amp;异步、阻塞&amp;非阻塞之间的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx-模块"><span class="nav-text">nginx 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流量复制"><span class="nav-text">流量复制</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

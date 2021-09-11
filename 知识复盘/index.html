@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xchcloud.cn","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"changyan":{"text":"Load Disqus","order":-1}},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="计算机网络网桥（Bridge)：也称为桥接器，是连接两个局域网的存储转发设备，用它可以使完全具有相同或相似体系结构网络系统的连接，这样不但能扩展网络的距离或范围，而且可提高网络的性能、可靠性和安全性。网桥工作在OSI参考模型的数据链路层（第二层），将两个LAN连起来，根据MAC地址来转发帧。 交换机:是主导网络系统的集线设备，大部分交换机是在OSI参考模型的数据链路层（第二层）操作。 值得注意的是">
+<meta name="keywords" content="数据结构,计算机网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识复盘">
+<meta property="og:url" content="http://xchcloud.cn/知识复盘/index.html">
+<meta property="og:site_name" content="chaoz的杂货铺">
+<meta property="og:description" content="计算机网络网桥（Bridge)：也称为桥接器，是连接两个局域网的存储转发设备，用它可以使完全具有相同或相似体系结构网络系统的连接，这样不但能扩展网络的距离或范围，而且可提高网络的性能、可靠性和安全性。网桥工作在OSI参考模型的数据链路层（第二层），将两个LAN连起来，根据MAC地址来转发帧。 交换机:是主导网络系统的集线设备，大部分交换机是在OSI参考模型的数据链路层（第二层）操作。 值得注意的是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-09-11T08:56:00.701Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知识复盘">
+<meta name="twitter:description" content="计算机网络网桥（Bridge)：也称为桥接器，是连接两个局域网的存储转发设备，用它可以使完全具有相同或相似体系结构网络系统的连接，这样不但能扩展网络的距离或范围，而且可提高网络的性能、可靠性和安全性。网桥工作在OSI参考模型的数据链路层（第二层），将两个LAN连起来，根据MAC地址来转发帧。 交换机:是主导网络系统的集线设备，大部分交换机是在OSI参考模型的数据链路层（第二层）操作。 值得注意的是">
+
+<link rel="canonical" href="http://xchcloud.cn/知识复盘/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>知识复盘 | chaoz的杂货铺</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chaoz的杂货铺</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">生命有息、学无止境、折腾不止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://xchcloud.cn/知识复盘/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="超超">
+      <meta itemprop="description" content="那天早上雾散了，不止早上、不止雾。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaoz的杂货铺">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          知识复盘
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-26 09:23:05" itemprop="dateCreated datePublished" datetime="2019-09-26T09:23:05+08:00">2019-09-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 16:56:00" itemprop="dateModified" datetime="2021-09-11T16:56:00+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/笔记/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/知识复盘/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="知识复盘/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><h3 id="网桥（Bridge-："><a href="#网桥（Bridge-：" class="headerlink" title="网桥（Bridge)："></a><strong>网桥（Bridge)：</strong></h3><p>也称为桥接器，是连接两个局域网的存储转发设备，用它可以使完全具有相同或相似体系结构网络系统的连接，这样不但能扩展网络的距离或范围，而且可提高网络的性能、可靠性和安全性。网桥工作在OSI参考模型的数据链路层（第二层），将两个LAN连起来，根据MAC地址来转发帧。</p>
+<h3 id="交换机"><a href="#交换机" class="headerlink" title="交换机:"></a><strong>交换机:</strong></h3><p>是主导网络系统的集线设备，大部分交换机是在OSI参考模型的数据链路层（第二层）操作。</p>
+<p>值得注意的是，网桥与交换机的区别在于市场，而不在与技术。交换机对网络进行分段的方式与网桥相同，交换机就是一个多端口的网桥。确切地说，高端口密度的网桥就称为局域网交换机。<br><a id="more"></a><br><strong>透明网桥</strong>是通过自学习的方式转发帧；<br><strong>网桥</strong>是数据链路层的。</p>
+<p><a href="https://blog.csdn.net/letterTiger/article/details/79520375" target="_blank" rel="noopener">浏览器的同源策略与跨域</a></p>
+<h3 id="DHCP-动态获取-IP-地址的客户机从启动到绑定-IP，其间要经过那些状态："><a href="#DHCP-动态获取-IP-地址的客户机从启动到绑定-IP，其间要经过那些状态：" class="headerlink" title="DHCP 动态获取 IP 地址的客户机从启动到绑定 IP，其间要经过那些状态："></a><strong>DHCP 动态获取 IP 地址的客户机从启动到绑定 IP，其间要经过那些状态：</strong></h3><p>1、DHCP Client以广播的方式发出DHCP Discover报文。</p>
+<p>2、所有的DHCP Server都能够接收到DHCP Client发送的DHCP Discover报文，所有的DHCP Server都会给出响应，向DHCP Client发送一个DHCP Offer报文。（初始状态）</p>
+<p>3、DHCP Client收到来自很多DHCP Server的DHCP Offer报文，但只处理最早来到的DHCP Offer报文。（选择状态）</p>
+<p>4、然后DHCP Client会发出一个广播的DHCP Request报文，在选项字段中会加入选中的DHCP Server的IP地址和需要的IP地址。DHCP Server收到DHCP Request报文后，判断选项字段中的IP地址是否与自己的地址相同。如果不相同，DHCP Server不做任何处理只清除相应IP地址分配记录；如果相同，DHCP Server就会向DHCP Client响应一个DHCP ACK报文，并在选项字段中增加IP地址的使用租期信息。（请求状态）</p>
+<p>5、DHCP Client接收到DHCP ACK报文后，检查DHCP Server分配的IP地址是否能够使用。如果可以使用，则DHCP Client成功获得IP地址并根据IP地址使用租期自动启动续延过程。（绑定状态）</p>
+<h3 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a><strong>IP地址分类</strong></h3><p>A类网络的IP地址范围为1.0.0.1－127.255.255.254； </p>
+<p>B类网络的IP地址范围为：128.1.0.1－191.255.255.254；</p>
+<p>C类网络的IP地址范围为：192.0.1.1－223.255.255.254。</p>
+<p>子网划分：</p>
+<p><img data-src="http://uploadfiles.nowcoder.com/files/20140920/105_1411203651704_5.png" alt></p>
+<h3 id="物理层的特性"><a href="#物理层的特性" class="headerlink" title="物理层的特性"></a><strong>物理层的特性</strong></h3><p>有机械特性、电气特性、规程特性和功能特性</p>
+<p><img data-src="https://uploadfiles.nowcoder.com/files/20170517/5479900_1494994277743_705728-20160424234824085-667046040.png" alt></p>
+<p>ARP：IP转MAC，服务器向客户机广播；<br>RARP：MAC转IP，客户机向服务器请求；</p>
+<p>SMTP用来发送邮件，没有接收。<br>POP3用来接收邮件，下层协议使用了TCP。</p>
+<p><strong>单模传输</strong>距离远，不会发生色散，质量可靠，通常使用激光作为光源，贵<br><strong>多模传输</strong>带宽大，使用便宜的led，近距离传输</p>
+<h3 id="CSMA-CD"><a href="#CSMA-CD" class="headerlink" title="CSMA/CD"></a><strong>CSMA/CD</strong></h3><p>其原理可总结为：先听后发，边发边听，冲突停发，随机延迟后重发。<br>采用该协议要求设备在发送帧的同时要对信道进行侦听，以确定是否会发生信道冲突，若在发送数据过程中检测到冲突，则需要进行冲突处理。整个协议的处理规程如下：<br>1 监听当前信道上是否有数据再发送，如果信道空闲，直接发送数据，如果信道忙，则按照一定的退避算法进行延时监听。<br>2 当信道允许发送数据时，发送数据。<br>3 数据发送过程中，边发送边监听，如果发送过程中检测到冲突，则停止发送数据，并发送阻塞信息，强化冲突，并转入1。</p>
+<h3 id="CSMA-CA"><a href="#CSMA-CA" class="headerlink" title="CSMA/CA"></a><strong>CSMA/CA</strong></h3><p>采用该协议要求设备要主动避免冲突而非被动侦测的方式来解决冲突问题。避免冲突的方法主要有两个：<br>一是监听到信道空闲时，并不是立即发送，而是等待一段时间再发送数据。<br>二是先发送一个很小的信道侦测帧RTS，如果收到最近的接入点返回的CTS，就认为信道是空闲的，然后再发送数据。<br>协议的主要流程如下：<br>1 首先检测信道是否有使用，如果检测出信道空闲，则等待一段随机时间后，才送出数据。<br>2 接收端如果正确收到此帧，则经过一段时间间隔后，向发送端发送确认帧ACK。<br>3 发送端收到ACK帧，确定数据正确传输，在经历一段时间间隔后，再发送数据。</p>
+<h3 id="在物理层连接时，如果协议相同而数据传输率不同的话"><a href="#在物理层连接时，如果协议相同而数据传输率不同的话" class="headerlink" title="在物理层连接时，如果协议相同而数据传输率不同的话"></a><strong>在物理层连接时，如果协议相同而数据传输率不同的话</strong></h3><p>有两种情况：<br>①发送方速率高于接收方，由于接收方来不及接收将导致溢出，数据丢失。<br>②接收方速率高于发送方，这时不会有数据丢失的情况，但通信是一个双方交互的过程，无论如何都会产生①所描述的数据丢失的情形。</p>
+<p>从体系结构上看，</p>
+<h3 id="路由器可以分"><a href="#路由器可以分" class="headerlink" title="路由器可以分"></a><strong>路由器可以分</strong></h3><p>为：<br>第一代单总线单CPU结构路由器、<br>第二代单总线主从CPU结构路由器、<br>第三代单总线对称式多CPU结构路由器、<br>第四代多总线多CPU结构路由器、<br>第五代共享内存式结构路由器、<br>第六代交叉开关体系结构路由器和基于机群系统的路由器等多类。</p>
+<h3 id="OSI（Open-System-Interconnect）"><a href="#OSI（Open-System-Interconnect）" class="headerlink" title="OSI（Open System Interconnect）"></a><strong>OSI（Open System Interconnect）</strong></h3><p>，即开放式系统互联。 一般都叫OSI参考模型，是ISO（国际标准化组织）组织在1985年研究的网络互联模型。该体系结构标准定义了网络互连的七层框架（物理层、数据链路层、网络层、传输层、会话层、表示层和应用层），即ISO开放系统互连参考模型。在这一框架下进一步详细规定了每一层的功能，以实现开放系统环境中的互连性、互操作性和应用的可移植性。</p>
+<h3 id="三次握手和四次挥手"><a href="#三次握手和四次挥手" class="headerlink" title="三次握手和四次挥手"></a><strong>三次握手和四次挥手</strong></h3><h3 id="OSI，TCP-IP，五层协议的体系结构，以及各层协议"><a href="#OSI，TCP-IP，五层协议的体系结构，以及各层协议" class="headerlink" title="OSI，TCP/IP，五层协议的体系结构，以及各层协议"></a>OSI，TCP/IP，五层协议的体系结构，以及各层协议</h3><p><img data-src="https://uploadfiles.nowcoder.com/images/20180410/4039680_1523328907031_09DD8C2662B96CE14928333F055C5580" alt><br><img data-src="https://uploadfiles.nowcoder.com/images/20180410/4039680_1523328974264_E4E1F3318AF5F32719A15808E8D8458B" alt></p>
+<h3 id="了解交换机、路由器、网关的概念，并知道各自的用途"><a href="#了解交换机、路由器、网关的概念，并知道各自的用途" class="headerlink" title="了解交换机、路由器、网关的概念，并知道各自的用途"></a>了解交换机、路由器、网关的概念，并知道各自的用途</h3><p>(1) 中继器</p>
+<p>中继器工作在物理层，用来连接两个速率相同且数据链路层协议也相同的网段，连接起来的几个网段仍然是一个局域网。</p>
+<p>中继器功能是消除数字信号在基带传输中由于经过一长段电缆而造成的失真和衰减，使信号的波形和强度达到所需的要求，其原理是信号再生。</p>
+<p>中继器既不能隔离冲突域，也不能隔离广播域。</p>
+<p>(2) 集线器</p>
+<p>集线器也工作在物理层，相当于一个多接口的中继器，可以将多个节点连接成一个共享式局域网，但任何时刻只能有一个节点通过公共信道发送数据。</p>
+<p>中继器既不能隔离冲突域，也不能隔离广播域。</p>
+<p>(3) 网桥</p>
+<p>两个或多个以太网通过网桥连接起来后，就成为一个覆盖范围更大的以太网，而原来的每个以太网就可称为一个网段。</p>
+<p>网桥工作在数据链路层的MAC子层，可以互联不同的物理层、不同的MAC子层以及不同速率的以太网，使以太网各网段成为隔离开的碰撞域。</p>
+<p>网桥具有过滤帧以及存储转发帧的功能，可以隔离冲突域，但不能隔离广播域。</p>
+<p>(4) 交换机</p>
+<p>交换机工作在数据链路层，相当于一个多端口的网桥，是交换式局域网的核心设备。</p>
+<p>交换机允许端口之间建立多个并发的连接，允许多对计算机同时通信，实现多个节点之间的并发传输。因此，交换机的每个端口节点所占用的带宽不会因为端口节点数目的增加而减少，且整个交换机的总带宽会随着端口节点的增加而增加。</p>
+<p>交换机一般以全双工方式工作，有的局域网交换机采用存储转发方式进行转发，有的交换机采用直通交换方式(即在收到帧的同时立即按帧的目的MAC地址决定帧的转发端口，而不必进行先缓存再进行处理)。</p>
+<p>利用交换机可以实现虚拟局域网(VLAN)，VLAN可以隔离冲突域，也可以隔离广播域。</p>
+<p>(5) 路由器</p>
+<p>路由器是一种具有多个输入输出端口的专用计算机，其任务是连接不同的网络(连接异构网络)并完成路由转发。</p>
+<p>路由器是网络层设备，它实现了网络模型的下三层，即物理层、数据链路层和网络层。路由器隔离了广播域。</p>
+<p>路由器主要完成两个功能：分组转发和路由计算。前者处理通过路由器的数据流，关键操作是转发表查询、转发以及相关的队列管理和任务调度等；后者通过和其他路由器进行基于路由协议的交互，完成路由表的计算。</p>
+<p>(6) 网关</p>
+<p>在传统TCP/IP术语中，网关(gateway)与路由器(router)没有区别。</p>
+<p>在现代网络术语中，网关与路由器的定义不同。网关能在不同协议间移动数据，而路由器是在不同网络间移动数据，相当于传统所说的IP网关。网关是连接两个网络的设备，对于语音网关来说，他可以连接PSTN网络和以太网，这就相当于VOIP，把不同电话中的模拟信号通过网关而转换成数字信号，而且加入协议再去传输。在到了接收端的时候再通过网关还原成模拟的电话信号，最后才能在电话机上听到。</p>
+<h4 id="网桥在虚拟机的作用："><a href="#网桥在虚拟机的作用：" class="headerlink" title="网桥在虚拟机的作用："></a><strong>网桥在虚拟机的作用：</strong></h4><h3 id="在浏览器中输入www-baidu-com后执行的全部过程"><a href="#在浏览器中输入www-baidu-com后执行的全部过程" class="headerlink" title="在浏览器中输入www.baidu.com后执行的全部过程"></a>在浏览器中输入<a href="http://www.baidu.com后执行的全部过程" target="_blank" rel="noopener">www.baidu.com后执行的全部过程</a></h3><p>事件顺序<br>(1) 浏览器获取输入的域名<a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a><br>(2) 浏览器向DNS请求解析<a href="http://www.baidu.com的IP地址" target="_blank" rel="noopener">www.baidu.com的IP地址</a><br>(3) 域名系统DNS解析出百度服务器的IP地址<br>(4) 浏览器与该服务器建立TCP连接(默认端口号80)<br>(5) 浏览器发出HTTP请求，请求百度首页<br>(6) 服务器通过HTTP响应把首页文件发送给浏览器<br>(7) TCP连接释放<br>(8) 浏览器将首页文件进行解析，并将Web页显示给用户。<br>涉及到的协议<br>(1) 应用层：HTTP(WWW访问协议)，DNS(域名解析服务)<br>(2) 传输层：TCP(为HTTP提供可靠的数据传输)，UDP(DNS使用UDP传输)<br>(3) 网络层：IP(IP数据数据包传输和路由选择)，ICMP(提供网络传输过程中的差错检测)，ARP(将本机的默认网关IP地址映射成物理MAC地址)</p>
+<h3 id="描述RARP协议"><a href="#描述RARP协议" class="headerlink" title="描述RARP协议"></a>描述RARP协议</h3><p>RARP工作原理：<br>1.）将源设备和目标设备的MAC地址字段都设为发送者的MAC地址和IP地址，发送主机发送一个本地的RARP广播，能够到达网络上的所有设备，在此广播包中，声明自己的MAC地址并且请求任何收到此请求的RARP服务器分配一个IP地址；<br>2.）本地网段上的RARP服务器收到此请求后，检查其RARP列表，查找该MAC地址对应的IP地址；<br>3）如果存在，RARP服务器就给源主机发送一个响应数据包并将此IP地址提供给对方主机使用；如果不存在，RARP服务器对此不做任何的响应；<br>4） 源主机收到从RARP服务器的响应信息，就利用得到的IP地址进行通讯；如果一直没有收到RARP服务器的响应信息，表示初始化失败。</p>
+<h3 id="IP数据报"><a href="#IP数据报" class="headerlink" title="IP数据报"></a>IP数据报</h3><p>标识 (Identification)：占 16位。<br>IP软件在存储器中维持一个计数器，每产生一个数据报，计数器就加 1，并将此值赋给标识字段。但这个“标识”并不是序号，因为 IP是无连接的服务，数据报不存在按序接收的问题。当数据报由于长度超过网络的 MTU 而必须分片时，这个标识字段的值就被复制到所有的数据报的标识字段中。相同的标识字段的值使分片后的各数据报片最后能正确地重装成为原来的数据报。<br>标志 (Flag)：占3 位，但目前只有2位有意义。<br>标志字段中的最低位记为 MF (More Fragment)。<br>MF=1即表示后面“还有分片”的数据报。MF=0表示这已是若干数据报片<br>中的最后一个。<br>标志字段中间的一位记为 DF(Don’t Fragment)，<br>意思是“不能分片”。只有当 DF=0时才允许分片。<br>片偏移：占 13位。**<br>较长的分组在分片后，某片在原分组中的相对位置。也就是说，相对用户数据字段的起点，该片从何处开始。片偏移以 8个字节为偏移单位。这就是说，每个分片的长度一定是 8字节 (64位)的整数倍。<br>没有找到分段位置的字段</p>
+<h3 id="PPP协议、HDLC协议"><a href="#PPP协议、HDLC协议" class="headerlink" title="PPP协议、HDLC协议"></a>PPP协议、HDLC协议</h3><p>PPP协议是面向字节的协议，应用在直接连接两个结点的链路上</p>
+<p>HDLC（High-level Data Link Control，高级数据链路控制）面向比特的链路层协议；该协议不依赖于任何一种字符编码集；数据报文透明传输；全双工通信；采用CRC校验；传输可靠性高；</p>
+<h3 id="传播方式"><a href="#传播方式" class="headerlink" title="传播方式"></a>传播方式</h3><p>任播是IPV6加入的新技术<br>IPV4中，数据包传播方式包括<br>广播<br>单播<br>组播</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="时间复杂度为O-nlog2n-的排序算法有"><a href="#时间复杂度为O-nlog2n-的排序算法有" class="headerlink" title="时间复杂度为O(nlog2n)的排序算法有"></a>时间复杂度为O(nlog2n)的排序算法有</h3><p>快速排序<br>堆排序<br>折半插入排序</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>喜欢这篇文章？打赏一下作者吧！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="超超 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="超超 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>超超
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://xchcloud.cn/知识复盘/" title="知识复盘">http://xchcloud.cn/知识复盘/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/数据结构/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+              <a href="/tags/计算机网络/" rel="tag"><i class="fa fa-tag"></i> 计算机网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/C-查缺补漏/" rel="prev" title="C++查缺补漏">
+      <i class="fa fa-chevron-left"></i> C++查缺补漏
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Linux复盘笔记/" rel="next" title="Linux复盘笔记">
+      Linux复盘笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机网络"><span class="nav-text">计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网桥（Bridge-："><span class="nav-text">网桥（Bridge)：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交换机"><span class="nav-text">交换机:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP-动态获取-IP-地址的客户机从启动到绑定-IP，其间要经过那些状态："><span class="nav-text">DHCP 动态获取 IP 地址的客户机从启动到绑定 IP，其间要经过那些状态：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP地址分类"><span class="nav-text">IP地址分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理层的特性"><span class="nav-text">物理层的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSMA-CD"><span class="nav-text">CSMA/CD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSMA-CA"><span class="nav-text">CSMA/CA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在物理层连接时，如果协议相同而数据传输率不同的话"><span class="nav-text">在物理层连接时，如果协议相同而数据传输率不同的话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由器可以分"><span class="nav-text">路由器可以分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI（Open-System-Interconnect）"><span class="nav-text">OSI（Open System Interconnect）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三次握手和四次挥手"><span class="nav-text">三次握手和四次挥手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSI，TCP-IP，五层协议的体系结构，以及各层协议"><span class="nav-text">OSI，TCP/IP，五层协议的体系结构，以及各层协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#了解交换机、路由器、网关的概念，并知道各自的用途"><span class="nav-text">了解交换机、路由器、网关的概念，并知道各自的用途</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网桥在虚拟机的作用："><span class="nav-text">网桥在虚拟机的作用：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在浏览器中输入www-baidu-com后执行的全部过程"><span class="nav-text">在浏览器中输入www.baidu.com后执行的全部过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#描述RARP协议"><span class="nav-text">描述RARP协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP数据报"><span class="nav-text">IP数据报</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PPP协议、HDLC协议"><span class="nav-text">PPP协议、HDLC协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传播方式"><span class="nav-text">传播方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度为O-nlog2n-的排序算法有"><span class="nav-text">时间复杂度为O(nlog2n)的排序算法有</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="超超"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">超超</p>
+  <div class="site-description" itemprop="description">那天早上雾散了，不止早上、不止雾。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">118</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lhc0101" title="Github → https://github.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/lhc0101" title="Gitee → https://gitee.com/lhc0101" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" title="E-mail → http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=qJmcmp_akJ6ZmZHo2dmGy8fF" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://Li-rr.github.io" title="https://Li-rr.github.io" rel="noopener" target="_blank">LRR</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">超超</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">592k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:58</span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyvEvEbk0';
+    var conf = '36cf39268529f13ea45698266acf4f47';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>
