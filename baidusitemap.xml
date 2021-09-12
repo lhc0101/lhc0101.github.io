@@ -1,559 +1,559 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://xchcloud.cn/Hexo-%E4%BD%BF%E7%94%A8%E5%85%A5%E5%9D%91%E6%95%99%E7%A8%8B/</loc>
-    <lastmod>2021-09-11</lastmod>
+    <loc>https://xchcloud.cn/Hexo-%E4%BD%BF%E7%94%A8%E5%85%A5%E5%9D%91%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2021-09-12</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7%E5%88%86%E5%89%B2%E6%A0%87%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/hugo-blog%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Zabbix-%E5%8D%87%E7%BA%A7%E6%89%93%E6%80%AA%E4%B9%8B%E8%B7%AF/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E7%94%B5%E4%BF%A1%E8%BF%90%E8%90%A5%E5%95%86%E6%B5%81%E9%87%8F%E7%BB%8F%E8%90%A5%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%AD%BB%E7%A3%95-python%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%9A%E8%BF%9B%E7%A8%8B/</loc>
+    <loc>https://xchcloud.cn/vscode%E4%BC%98%E7%A7%80%E6%8F%92%E4%BB%B6%E6%94%B6%E9%9B%86/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/web%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3%E4%B8%8E%E6%8A%93%E5%8C%85%E5%AE%9E%E6%88%98/</loc>
+    <loc>https://xchcloud.cn/%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7%E5%88%86%E5%89%B2%E6%A0%87%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/vue-%E5%89%8D%E7%AB%AF%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/Zabbix-%E5%8D%87%E7%BA%A7%E6%89%93%E6%80%AA%E4%B9%8B%E8%B7%AF/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/vscode%E4%BC%98%E7%A7%80%E6%8F%92%E4%BB%B6%E6%94%B6%E9%9B%86/</loc>
+    <loc>https://xchcloud.cn/%E6%AD%BB%E7%A3%95-python%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%9A%E8%BF%9B%E7%A8%8B/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Sonar/</loc>
+    <loc>https://xchcloud.cn/web%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3%E4%B8%8E%E6%8A%93%E5%8C%85%E5%AE%9E%E6%88%98/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Redis-%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/vue-%E5%89%8D%E7%AB%AF%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python%E5%90%84%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</loc>
+    <loc>https://xchcloud.cn/Sonar/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
+    <loc>https://xchcloud.cn/Redis-%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F/</loc>
+    <loc>https://xchcloud.cn/python%E5%90%84%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-peewee/</loc>
+    <loc>https://xchcloud.cn/Python%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-jupyter-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</loc>
+    <loc>https://xchcloud.cn/python%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-Flask%E6%A1%86%E6%9E%B6-%E9%B1%BC%E4%B9%A6%E7%BD%91%E7%AB%99%E5%AE%9E%E8%B7%B5/</loc>
+    <loc>https://xchcloud.cn/python-peewee/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-error-%E7%88%AC%E5%9D%91/</loc>
+    <loc>https://xchcloud.cn/python-jupyter-%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-Django%E6%A1%86%E6%9E%B6-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E5%8A%A9%E6%89%8B%E5%AE%9E%E8%B7%B5/</loc>
+    <loc>https://xchcloud.cn/python-Flask%E6%A1%86%E6%9E%B6-%E9%B1%BC%E4%B9%A6%E7%BD%91%E7%AB%99%E5%AE%9E%E8%B7%B5/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-Django-HFNU-Small-Size%E7%BD%91%E7%AB%99%E8%AE%BE%E8%AE%A1/</loc>
+    <loc>https://xchcloud.cn/python-error-%E7%88%AC%E5%9D%91/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-Django-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/python-Django%E6%A1%86%E6%9E%B6-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E5%8A%A9%E6%89%8B%E5%AE%9E%E8%B7%B5/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-%E5%AE%9E%E7%94%A8demo/</loc>
+    <loc>https://xchcloud.cn/python-Django-HFNU-Small-Size%E7%BD%91%E7%AB%99%E8%AE%BE%E8%AE%A1/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-%E5%85%A5%E9%97%A8%E7%AF%87/</loc>
+    <loc>https://xchcloud.cn/python-Django-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-%E7%88%AC%E8%99%AB/</loc>
+    <loc>https://xchcloud.cn/python-%E5%AE%9E%E7%94%A8demo/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/python-%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/python-%E5%85%A5%E9%97%A8%E7%AF%87/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/OpenResty%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/python-%E7%88%AC%E8%99%AB/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Nginx-%E8%BF%9B%E9%98%B6%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/python-%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Mysql%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/OpenResty%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/MongoDB%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/</loc>
+    <loc>https://xchcloud.cn/Nginx-%E8%BF%9B%E9%98%B6%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/MongoDB%E5%AE%9E%E6%88%98%E7%BB%8F%E9%AA%8C/</loc>
+    <loc>https://xchcloud.cn/Mysql%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Lua-%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F/</loc>
+    <loc>https://xchcloud.cn/MongoDB%E7%94%B1%E6%B5%85%E5%85%A5%E6%B7%B1/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Linux%E7%BB%8F%E9%AA%8C%E6%B1%87%E6%80%BB/</loc>
+    <loc>https://xchcloud.cn/MongoDB%E5%AE%9E%E6%88%98%E7%BB%8F%E9%AA%8C/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Linux%E5%A4%8D%E7%9B%98%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/Lua-%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/linux-shell-%E5%A4%8D%E7%9B%98/</loc>
+    <loc>https://xchcloud.cn/Linux%E7%BB%8F%E9%AA%8C%E6%B1%87%E6%80%BB/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Linux-Keepalived/</loc>
+    <loc>https://xchcloud.cn/Linux%E5%A4%8D%E7%9B%98%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Linux-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</loc>
+    <loc>https://xchcloud.cn/linux-shell-%E5%A4%8D%E7%9B%98/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/linux-%E7%B3%BB%E7%BB%9F%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</loc>
+    <loc>https://xchcloud.cn/Linux-Keepalived/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/linux-%E7%9B%91%E6%8E%A7/</loc>
+    <loc>https://xchcloud.cn/Linux-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Linux-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc>
+    <loc>https://xchcloud.cn/linux-%E7%B3%BB%E7%BB%9F%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/kali-linux%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%85%A5%E9%97%A8/</loc>
+    <loc>https://xchcloud.cn/linux-%E7%9B%91%E6%8E%A7/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Kali-linux%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%85%A5%E9%97%A8/</loc>
+    <loc>https://xchcloud.cn/Linux-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/kali-linux%E5%B7%A5%E5%85%B7%E7%AE%80%E4%BB%8B/</loc>
+    <loc>https://xchcloud.cn/kali-linux%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/jenkins%E8%BF%9B%E9%98%B6%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/Kali-linux%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Jenkins-Pipeline/</loc>
+    <loc>https://xchcloud.cn/kali-linux%E5%B7%A5%E5%85%B7%E7%AE%80%E4%BB%8B/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/jenkins-jcli/</loc>
+    <loc>https://xchcloud.cn/jenkins%E8%BF%9B%E9%98%B6%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/jenkins-cli/</loc>
+    <loc>https://xchcloud.cn/Jenkins-Pipeline/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-zookeeper/</loc>
+    <loc>https://xchcloud.cn/jenkins-jcli/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-web%E4%B9%8B%E9%9D%A2%E5%90%91%E7%99%BE%E5%BA%A6%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/jenkins-cli/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-web-Servlet/</loc>
+    <loc>https://xchcloud.cn/java-zookeeper/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-web-%E4%B9%8B%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://xchcloud.cn/java-web%E4%B9%8B%E9%9D%A2%E5%90%91%E7%99%BE%E5%BA%A6%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-web-%E4%BC%9A%E8%AF%9D%E5%8F%8A%E5%85%B6%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF/</loc>
+    <loc>https://xchcloud.cn/java-web-Servlet/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-spring/</loc>
+    <loc>https://xchcloud.cn/java-web-%E4%B9%8B%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-maven/</loc>
+    <loc>https://xchcloud.cn/java-web-%E4%BC%9A%E8%AF%9D%E5%8F%8A%E5%85%B6%E4%BC%9A%E8%AF%9D%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
+    <loc>https://xchcloud.cn/java-spring/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-storm/</loc>
+    <loc>https://xchcloud.cn/java-maven/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-spark/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-scala/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-storm/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-hive/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-spark/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-flink/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-scala/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E6%99%BA%E6%85%A7%E5%87%BA%E8%A1%8C/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-hive/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E6%95%B0%E4%BB%93/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-flink/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E7%94%B5%E4%BF%A1%E8%BF%90%E8%90%A5%E5%95%86%E6%B5%81%E9%87%8F%E7%BB%8F%E8%90%A5%E7%B3%BB%E7%BB%9F/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E6%99%BA%E6%85%A7%E5%87%BA%E8%A1%8C/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/hugo-blog%E6%90%AD%E5%BB%BA/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E6%95%B0%E4%BB%93/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Hadoop%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/Hadoop%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Docker%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</loc>
+    <loc>https://xchcloud.cn/Docker%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/docker-nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</loc>
+    <loc>https://xchcloud.cn/docker-nginx%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/DevOps/</loc>
+    <loc>https://xchcloud.cn/DevOps/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/CI%E5%A4%A7%E6%9D%82%E7%83%A9/</loc>
+    <loc>https://xchcloud.cn/CI%E5%A4%A7%E6%9D%82%E7%83%A9/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/C-%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F/</loc>
+    <loc>https://xchcloud.cn/C-%E6%9F%A5%E7%BC%BA%E8%A1%A5%E6%BC%8F/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Ansible%E5%A4%8D%E7%9B%98/</loc>
+    <loc>https://xchcloud.cn/Ansible%E5%A4%8D%E7%9B%98/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/Ansible-%E5%8D%87%E7%BA%A7%E6%89%93%E6%80%AA%E4%B9%8B%E8%B7%AF/</loc>
+    <loc>https://xchcloud.cn/Ansible-%E5%8D%87%E7%BA%A7%E6%89%93%E6%80%AA%E4%B9%8B%E8%B7%AF/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%B7%A6%E8%80%B3%E6%9C%B5%E5%A4%A7%E5%8F%94%E6%8E%A8%E8%8D%90%E7%9A%84%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/</loc>
+    <loc>https://xchcloud.cn/%E5%B7%A6%E8%80%B3%E6%9C%B5%E5%A4%A7%E5%8F%94%E6%8E%A8%E8%8D%90%E7%9A%84%E5%AE%9E%E6%88%98%E9%A1%B9%E7%9B%AE/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%B7%A6%E8%80%B3%E6%9C%B5%E5%A4%A7%E5%8F%94%E4%BB%8B%E7%BB%8D%E7%9A%84%E4%B9%A6%E7%B1%8D%E3%80%81%E6%96%87%E7%AB%A0%E3%80%81%E7%BD%91%E7%AB%99/</loc>
+    <loc>https://xchcloud.cn/%E5%B7%A6%E8%80%B3%E6%9C%B5%E5%A4%A7%E5%8F%94%E4%BB%8B%E7%BB%8D%E7%9A%84%E4%B9%A6%E7%B1%8D%E3%80%81%E6%96%87%E7%AB%A0%E3%80%81%E7%BD%91%E7%AB%99/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%8A%93%E5%8C%85-Fiddler/</loc>
+    <loc>https://xchcloud.cn/%E6%8A%93%E5%8C%85-Fiddler/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E9%87%8D%E5%AD%A6JAVA/</loc>
+    <loc>https://xchcloud.cn/%E9%87%8D%E5%AD%A6JAVA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%9F%A5%E8%AF%86%E5%A4%8D%E7%9B%98/</loc>
+    <loc>https://xchcloud.cn/%E7%9F%A5%E8%AF%86%E5%A4%8D%E7%9B%98/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%AD%A3%E5%88%99%E5%A4%A7%E6%B3%95%E5%A5%BD/</loc>
+    <loc>https://xchcloud.cn/%E6%AD%A3%E5%88%99%E5%A4%A7%E6%B3%95%E5%A5%BD/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%96%B0%E5%B9%B4%E6%96%B0%E8%AE%A1%E5%88%92%E6%96%B0%E8%B5%B7%E8%88%AA/</loc>
+    <loc>https://xchcloud.cn/%E6%96%B0%E5%B9%B4%E6%96%B0%E8%AE%A1%E5%88%92%E6%96%B0%E8%B5%B7%E8%88%AA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%BF%83%E6%80%81%E5%86%8D%E6%AC%A1%E5%8F%98%E5%8C%96%EF%BC%8C%E4%BD%8E%E6%B2%89/</loc>
+    <loc>https://xchcloud.cn/%E5%BF%83%E6%80%81%E5%86%8D%E6%AC%A1%E5%8F%98%E5%8C%96%EF%BC%8C%E4%BD%8E%E6%B2%89/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B/</loc>
+    <loc>https://xchcloud.cn/%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/</loc>
+    <loc>https://xchcloud.cn/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-HTTP%E7%BC%93%E5%AD%98/</loc>
+    <loc>https://xchcloud.cn/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-HTTP%E7%BC%93%E5%AD%98/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA/</loc>
+    <loc>https://xchcloud.cn/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%8E%A9%E8%BD%ACkali%E7%B3%BB%E7%BB%9F/</loc>
+    <loc>https://xchcloud.cn/%E7%8E%A9%E8%BD%ACkali%E7%B3%BB%E7%BB%9F/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%9B%BE%E5%BA%8A%E7%9B%B8%E5%85%B3%E4%BB%8B%E7%BB%8D/</loc>
+    <loc>https://xchcloud.cn/%E5%9B%BE%E5%BA%8A%E7%9B%B8%E5%85%B3%E4%BB%8B%E7%BB%8D/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</loc>
+    <loc>https://xchcloud.cn/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%A5%E9%97%A8%E7%BA%A7/</loc>
+    <loc>https://xchcloud.cn/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%A5%E9%97%A8%E7%BA%A7/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E8%8B%8F%E5%B7%9E%E4%B9%8B%E8%A1%8C/</loc>
+    <loc>https://xchcloud.cn/%E8%8B%8F%E5%B7%9E%E4%B9%8B%E8%A1%8C/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%B8%85%E5%BC%A0%E4%B8%80%E6%9C%9F%E6%98%9F%E7%90%83%E7%B2%BE%E5%8D%8E%EF%BC%9A%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/%E5%B8%85%E5%BC%A0%E4%B8%80%E6%9C%9F%E6%98%9F%E7%90%83%E7%B2%BE%E5%8D%8E%EF%BC%9A%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E7%9B%98%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E7%9B%98%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/</loc>
+    <loc>https://xchcloud.cn/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%A1%AB%E5%9D%91%E7%B3%BB%E5%88%97/</loc>
+    <loc>https://xchcloud.cn/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%A1%AB%E5%9D%91%E7%B3%BB%E5%88%97/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85kali-linux/</loc>
+    <loc>https://xchcloud.cn/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%AE%89%E8%A3%85kali-linux/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</loc>
+    <loc>https://xchcloud.cn/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%9D%A5%E4%B8%80%E6%AC%A1%E6%96%87%E5%AD%97%E9%87%8A%E6%94%BE/</loc>
+    <loc>https://xchcloud.cn/%E6%9D%A5%E4%B8%80%E6%AC%A1%E6%96%87%E5%AD%97%E9%87%8A%E6%94%BE/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%B0%86Ubuntu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%88%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98/</loc>
+    <loc>https://xchcloud.cn/%E5%B0%86Ubuntu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%88%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%AE%80%E6%98%93%E5%AF%BC%E8%88%AA/</loc>
+    <loc>https://xchcloud.cn/%E7%AE%80%E6%98%93%E5%AF%BC%E8%88%AA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%80%9D%E8%80%83/</loc>
+    <loc>https://xchcloud.cn/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%80%9D%E8%80%83/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/</loc>
+    <loc>https://xchcloud.cn/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E9%AB%98%E6%95%88%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E6%80%9D/</loc>
+    <loc>https://xchcloud.cn/%E9%AB%98%E6%95%88%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8F%8D%E6%80%9D/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5%E4%B9%8B%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5%E4%B9%8B%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%9B%B9%E5%A4%A7%E7%9A%84%E5%B9%B4%E7%BB%88%E7%A6%8F%E5%88%A9%E8%AF%BE/</loc>
+    <loc>https://xchcloud.cn/%E6%9B%B9%E5%A4%A7%E7%9A%84%E5%B9%B4%E7%BB%88%E7%A6%8F%E5%88%A9%E8%AF%BE/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%BC%96%E8%BE%91%E5%99%A8-VScode/</loc>
+    <loc>https://xchcloud.cn/%E7%BC%96%E8%BE%91%E5%99%A8-VScode/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%BC%96%E8%BE%91%E5%99%A8-vim/</loc>
+    <loc>https://xchcloud.cn/%E7%BC%96%E8%BE%91%E5%99%A8-vim/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%BC%96%E8%BE%91%E5%99%A8-IDEA/</loc>
+    <loc>https://xchcloud.cn/%E7%BC%96%E8%BE%91%E5%99%A8-IDEA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6-git%E5%85%A5%E9%97%A8/</loc>
+    <loc>https://xchcloud.cn/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6-git%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%AE%89%E5%8D%93%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/</loc>
+    <loc>https://xchcloud.cn/%E5%AE%89%E5%8D%93%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2021-linux-%E7%AC%94%E8%AE%B0%E6%B1%87%E6%80%BB/</loc>
+    <loc>https://xchcloud.cn/2021-linux-%E7%AC%94%E8%AE%B0%E6%B1%87%E6%80%BB/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2021-java-maven/</loc>
+    <loc>https://xchcloud.cn/2021-java-maven/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2021-java-%E7%AC%94%E8%AE%B0%E6%B1%87%E6%80%BB/</loc>
+    <loc>https://xchcloud.cn/2021-java-%E7%AC%94%E8%AE%B0%E6%B1%87%E6%80%BB/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2021-%E6%82%AC%E5%89%91%E7%9F%A5%E8%AF%86%E5%BA%93/</loc>
+    <loc>https://xchcloud.cn/2021-%E6%82%AC%E5%89%91%E7%9F%A5%E8%AF%86%E5%BA%93/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E4%B8%80%E6%B5%B7%E6%B8%B8%E9%A1%B9%E7%9B%AE/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E4%B8%80%E6%B5%B7%E6%B8%B8%E9%A1%B9%E7%9B%AE/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E8%8C%B6%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-%E8%8C%B6%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E5%B0%B1%E6%83%B3%E8%AE%B0%E5%BD%95%E4%B8%8B%E8%BF%99%E4%B8%80%E5%A4%A9/</loc>
+    <loc>https://xchcloud.cn/%E5%B0%B1%E6%83%B3%E8%AE%B0%E5%BD%95%E4%B8%8B%E8%BF%99%E4%B8%80%E5%A4%A9/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <loc>https://xchcloud.cn/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A4%87%E4%BB%BD/</loc>
+    <loc>https://xchcloud.cn/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A4%87%E4%BB%BD/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2020-%E6%9D%82%E8%B4%A7%E8%AE%B0%E5%BD%95/</loc>
+    <loc>https://xchcloud.cn/2020-%E6%9D%82%E8%B4%A7%E8%AE%B0%E5%BD%95/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2020-%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</loc>
+    <loc>https://xchcloud.cn/2020-%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2020-12-%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/2020-12-%E5%B7%A5%E4%BD%9C%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2020-11%E6%9C%88-%E6%80%9D%E8%80%83/</loc>
+    <loc>https://xchcloud.cn/2020-11%E6%9C%88-%E6%80%9D%E8%80%83/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B412%E6%9C%88%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B412%E6%9C%88%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B411%E6%9C%88%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B411%E6%9C%88%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B410%E6%9C%88%E4%B8%8A%E6%B5%B7%E4%B9%8B%E8%A1%8C/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B410%E6%9C%88%E4%B8%8A%E6%B5%B7%E4%B9%8B%E8%A1%8C/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B47%E3%80%818%E3%80%819%E6%9C%88%E6%80%BB%E7%BB%93%EF%BC%8C10%E6%9C%88%E6%96%B0%E8%B5%B7%E8%88%AA/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B47%E3%80%818%E3%80%819%E6%9C%88%E6%80%BB%E7%BB%93%EF%BC%8C10%E6%9C%88%E6%96%B0%E8%B5%B7%E8%88%AA/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B43%E6%9C%88%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B43%E6%9C%88%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B42%E6%9C%88%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B42%E6%9C%88%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019-python-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/</loc>
+    <loc>https://xchcloud.cn/2019-python-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019-linux-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/</loc>
+    <loc>https://xchcloud.cn/2019-linux-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019-%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/</loc>
+    <loc>https://xchcloud.cn/2019-%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%96%87%E7%AB%A0%E6%94%B6%E9%9B%86/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2018-8%E6%9C%88%E5%B9%B8%E4%BC%9A%EF%BC%8C%E4%B8%80%E6%AC%A1%E6%80%BB%E7%BB%93/</loc>
+    <loc>https://xchcloud.cn/2018-8%E6%9C%88%E5%B9%B8%E4%BC%9A%EF%BC%8C%E4%B8%80%E6%AC%A1%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E3%80%8A%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://xchcloud.cn/%E3%80%8A%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-09-11</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-jvm/</loc>
+    <loc>https://xchcloud.cn/java-jvm/</loc>
     <lastmod>2021-09-10</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%8F%8D%E5%B0%84/</loc>
+    <loc>https://xchcloud.cn/java-%E5%8F%8D%E5%B0%84/</loc>
     <lastmod>2021-01-05</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-Sqoop/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-Sqoop/</loc>
     <lastmod>2020-10-27</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-Presto/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-Presto/</loc>
     <lastmod>2020-10-27</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-Azkaban/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-Azkaban/</loc>
     <lastmod>2020-10-27</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-kafka/</loc>
+    <loc>https://xchcloud.cn/java-%E5%A4%A7%E6%95%B0%E6%8D%AE-kafka/</loc>
     <lastmod>2020-10-14</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6-svn%E5%85%A5%E9%97%A8/</loc>
+    <loc>https://xchcloud.cn/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6-svn%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2020-03-29</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B4%E4%B8%AD%E6%80%BB%E7%BB%93/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B4%E4%B8%AD%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2019-07-19</lastmod>
   </url>
   <url>
-    <loc>http://xchcloud.cn/2019%E5%B9%B44%E3%80%815%E6%9C%88%E6%80%BB%E7%BB%93/</loc>
+    <loc>https://xchcloud.cn/2019%E5%B9%B44%E3%80%815%E6%9C%88%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2019-06-03</lastmod>
   </url>
 </urlset> 
